@@ -1,9 +1,9 @@
 class_name PathSelect
 extends Control
 
-@onready var military_btn: Button = $MarginContainer/VBoxContainer/CardsContainer/MilitaryCard/SelectMilitaryBtn
-@onready var magic_btn: Button = $MarginContainer/VBoxContainer/CardsContainer/MagicCard/SelectMagicBtn
-@onready var economy_btn: Button = $MarginContainer/VBoxContainer/CardsContainer/EconomyCard/SelectEconomyBtn
+@onready var military_btn: Button = $MarginContainer/VBoxContainer/CardsContainer/MilitaryCard/Margin/VBox/SelectMilitaryBtn
+@onready var magic_btn: Button = $MarginContainer/VBoxContainer/CardsContainer/MagicCard/Margin/VBox/SelectMagicBtn
+@onready var economy_btn: Button = $MarginContainer/VBoxContainer/CardsContainer/EconomyCard/Margin/VBox/SelectEconomyBtn
 @onready var back_btn: Button = $MarginContainer/VBoxContainer/BackButton
 
 func _ready() -> void:
