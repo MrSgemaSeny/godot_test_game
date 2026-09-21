@@ -1,0 +1,124 @@
+[gd_scene format=3 uid="uid://b6kdw8qyjx7vm"]
+
+[ext_resource type="Script" path="res://scripts/help_modal.gd" id="1_help"]
+
+[node name="HelpModal" type="PanelContainer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -380.0
+offset_top = -240.0
+offset_right = 380.0
+offset_bottom = 240.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_help")
+
+[node name="Margin" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 16
+
+[node name="VBox" type="VBoxContainer" parent="Margin"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Header" type="HBoxContainer" parent="Margin/VBox"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="Margin/VBox/Header"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(1, 0.88, 0.3, 1)
+theme_override_font_sizes/font_size = 20
+text = "📖 Справка и Руководство игрока"
+
+[node name="CloseButton" type="Button" parent="Margin/VBox/Header"]
+custom_minimum_size = Vector2(36, 36)
+layout_mode = 2
+text = "❌"
+
+[node name="TabContainer" type="TabContainer" parent="Margin/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+current_tab = 0
+
+[node name="🎯 Цель игры" type="MarginContainer" parent="Margin/VBox/TabContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 14
+theme_override_constants/margin_top = 14
+theme_override_constants/margin_right = 14
+theme_override_constants/margin_bottom = 14
+
+[node name="GoalText" type="RichTextLabel" parent="Margin/VBox/TabContainer/🎯 Цель игры"]
+layout_mode = 2
+bbcode_enabled = true
+text = "[color=#fef08a][b]Добро пожаловать в Кудрявую Долину![/b][/color]
+
+1. [color=#f472b6][b]Спасите девочек[/b][/color]: В правой части карты находится сказочная деревня. Монстры маршируют по дороге, чтобы похитить девочек и утащить их в свое логово!
+2. [color=#60a5fa][b]Стройте и улучшайте башни[/b][/color]: Кликайте по каменным площадкам у дороги, чтобы строить лучников, ледяных магов и катапульты.
+3. [color=#4ade80][b]Возвращение домой[/b][/color]: Если монстр схватил девочку, но погиб по пути — девочка со счастливым сердечком побежит обратно в деревню!
+4. [color=#fbbf24][b]Интерактивное окружение[/b][/color]: Кликайте по пороховым бочкам на дороге в момент, когда рядом идет толпа монстров, для мощного взрыва!"
+
+[node name="🏹 Башни" type="MarginContainer" parent="Margin/VBox/TabContainer"]
+visible = false
+layout_mode = 2
+theme_override_constants/margin_left = 14
+theme_override_constants/margin_top = 14
+theme_override_constants/margin_right = 14
+theme_override_constants/margin_bottom = 14
+
+[node name="TowersText" type="RichTextLabel" parent="Margin/VBox/TabContainer/🏹 Башни"]
+layout_mode = 2
+bbcode_enabled = true
+text = "[b]Типы защитных орудий:[/b]
+
+• [color=#fbbf24]🏹 Деревянная Праща / Лук[/color] (60🪙) — Высокая скорость атаки, физический урон. Эффективна против быстрых и легких монстров.
+• [color=#67e8f9]❄️ Ледяной Маг[/color] (80🪙) — Магический урон и замедление на 40%. Позволяет остальным башням нанести максимум урона!
+• [color=#f87171]💣 Осадная Пушка[/color] (110🪙) — Навесной баллистический урон с огромным радиусом взрыва. Идеальна против плотных групп.
+• [color=#a78bfa]🛡️ Бастион поддержки[/color] (90🪙) — Усиливает урон и дальность соседних союзных башен."
+
+[node name="👾 Монстры" type="MarginContainer" parent="Margin/VBox/TabContainer"]
+visible = false
+layout_mode = 2
+theme_override_constants/margin_left = 14
+theme_override_constants/margin_top = 14
+theme_override_constants/margin_right = 14
+theme_override_constants/margin_bottom = 14
+
+[node name="MonstersText" type="RichTextLabel" parent="Margin/VBox/TabContainer/👾 Монстры"]
+layout_mode = 2
+bbcode_enabled = true
+text = "[b]Бестиарий монстров:[/b]
+
+• [color=#a3e635]🌱 Колюн (Spiky)[/color] — Обычный зеленый монстрик, среднее здоровье и скорость.
+• [color=#fb923c]👀 Пучеглаз (Goggle)[/color] — Очень быстрый, но хрупкий.
+• [color=#38bdf8]🐟 Летун (Fish Flyer)[/color] — Парит над землей.
+• [color=#94a3b8]🦀 Бронированный Крабик[/color] — 50% защиты от физического урона! Бейте его Ледяными Магами и Метеорами!
+• [color=#c084fc]🔮 Шаман[/color] — Лечит союзников вокруг себя. Уничтожайте в первую очередь!
+• [color=#facc15]👑 Король Колючек (Босс)[/color] — Огромный запас здоровья и корона. За победу дает 50 Очков Славы!"
+
+[node name="⌨️ Управление" type="MarginContainer" parent="Margin/VBox/TabContainer"]
+visible = false
+layout_mode = 2
+theme_override_constants/margin_left = 14
+theme_override_constants/margin_top = 14
+theme_override_constants/margin_right = 14
+theme_override_constants/margin_bottom = 14
+
+[node name="ControlsText" type="RichTextLabel" parent="Margin/VBox/TabContainer/⌨️ Управление"]
+layout_mode = 2
+bbcode_enabled = true
+text = "[b]Горячие клавиши для быстрой игры:[/b]
+
+• [b][Пробел][/b] — Начать волну / Пауза
+• [b][1][/b] — Заклинание: ☄️ Метеор (350 урона)
+• [b][2][/b] — Заклинание: ❄️ Заморозка всех врагов (5 сек)
+• [b][3][/b] — Заклинание: 💰 Золотой дождь (+120 золота)
+• [b][4][/b] — Заклинание: ⚡ Цепная молния (220 урона)
+• [b][Q] [W] [E][/b] — Управление скоростью игры (Пауза / 1x / 2x)
+• [b][ЛКМ][/b] — Выбор площадки, постройка, улучшение, взрыв бочек"

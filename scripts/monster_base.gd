@@ -4,6 +4,8 @@ extends PathFollow2D
 signal died(gold_reward: int)
 signal girl_kidnapped(girl: Node2D)
 signal escaped_with_girl()
+signal took_damage(amount: float, damage_type: String)
+signal healed(amount: float)
 
 enum MonsterState {
 	ADVANCING,
@@ -140,6 +142,7 @@ func take_damage(amount: float, damage_type: String = "physical") -> void:
 		
 	current_health -= actual_damage
 	hit_flash_timer = 0.1
+	took_damage.emit(actual_damage, damage_type)
 	queue_redraw()
 	
 	if current_health <= 0.0:
@@ -160,6 +163,7 @@ func heal(amount: float) -> void:
 	if is_dead:
 		return
 	current_health = min(max_health, current_health + amount)
+	healed.emit(amount)
 	queue_redraw()
 
 func _die() -> void:

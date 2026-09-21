@@ -2,6 +2,7 @@ class_name BuildSpot
 extends Area2D
 
 signal clicked(spot: BuildSpot)
+signal hovered(spot: BuildSpot, state: bool)
 
 var current_tower: TowerBase = null
 var is_hovered: bool = false
@@ -32,10 +33,12 @@ func _process(delta: float) -> void:
 
 func _on_mouse_entered() -> void:
 	is_hovered = true
+	hovered.emit(self, true)
 	queue_redraw()
 
 func _on_mouse_exited() -> void:
 	is_hovered = false
+	hovered.emit(self, false)
 	queue_redraw()
 
 func _input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
