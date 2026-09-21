@@ -1,0 +1,80 @@
+[
+  {
+    "wave_number": 1,
+    "spawn_groups": [
+      {"enemy_type": "grunt", "count": 6, "interval": 1.5, "delay": 0.0}
+    ]
+  },
+  {
+    "wave_number": 2,
+    "spawn_groups": [
+      {"enemy_type": "grunt", "count": 8, "interval": 1.2, "delay": 0.0},
+      {"enemy_type": "berserker", "count": 4, "interval": 0.9, "delay": 3.0}
+    ]
+  },
+  {
+    "wave_number": 3,
+    "spawn_groups": [
+      {"enemy_type": "grunt", "count": 8, "interval": 1.0, "delay": 0.0},
+      {"enemy_type": "berserker", "count": 6, "interval": 0.7, "delay": 3.0},
+      {"enemy_type": "armored", "count": 3, "interval": 2.0, "delay": 5.0}
+    ]
+  },
+  {
+    "wave_number": 4,
+    "spawn_groups": [
+      {"enemy_type": "grunt", "count": 10, "interval": 0.9, "delay": 0.0},
+      {"enemy_type": "shaman", "count": 2, "interval": 3.0, "delay": 2.0},
+      {"enemy_type": "armored", "count": 4, "interval": 1.8, "delay": 4.0}
+    ]
+  },
+  {
+    "wave_number": 5,
+    "spawn_groups": [
+      {"enemy_type": "grunt", "count": 12, "interval": 0.8, "delay": 0.0},
+      {"enemy_type": "berserker", "count": 8, "interval": 0.6, "delay": 3.0},
+      {"enemy_type": "warchief_boss", "count": 1, "interval": 1.0, "delay": 7.0}
+    ]
+  },
+  {
+    "wave_number": 6,
+    "spawn_groups": [
+      {"enemy_type": "stealth", "count": 10, "interval": 0.7, "delay": 0.0},
+      {"enemy_type": "berserker", "count": 10, "interval": 0.5, "delay": 3.0},
+      {"enemy_type": "shaman", "count": 3, "interval": 2.5, "delay": 5.0}
+    ]
+  },
+  {
+    "wave_number": 7,
+    "spawn_groups": [
+      {"enemy_type": "armored", "count": 8, "interval": 1.2, "delay": 0.0},
+      {"enemy_type": "troll", "count": 2, "interval": 4.0, "delay": 4.0},
+      {"enemy_type": "grunt", "count": 15, "interval": 0.6, "delay": 6.0}
+    ]
+  },
+  {
+    "wave_number": 8,
+    "spawn_groups": [
+      {"enemy_type": "stealth", "count": 14, "interval": 0.5, "delay": 0.0},
+      {"enemy_type": "troll", "count": 3, "interval": 3.0, "delay": 3.0},
+      {"enemy_type": "shaman", "count": 4, "interval": 2.0, "delay": 5.0}
+    ]
+  },
+  {
+    "wave_number": 9,
+    "spawn_groups": [
+      {"enemy_type": "armored", "count": 12, "interval": 0.9, "delay": 0.0},
+      {"enemy_type": "berserker", "count": 16, "interval": 0.4, "delay": 2.0},
+      {"enemy_type": "troll", "count": 4, "interval": 2.5, "delay": 6.0}
+    ]
+  },
+  {
+    "wave_number": 10,
+    "spawn_groups": [
+      {"enemy_type": "armored", "count": 10, "interval": 0.8, "delay": 0.0},
+      {"enemy_type": "berserker", "count": 15, "interval": 0.4, "delay": 2.0},
+      {"enemy_type": "shaman", "count": 4, "interval": 2.0, "delay": 4.0},
+      {"enemy_type": "archmage_boss", "count": 1, "interval": 1.0, "delay": 8.0}
+    ]
+  }
+]

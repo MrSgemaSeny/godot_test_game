@@ -1,0 +1,82 @@
+[
+  {
+    "id": "defense_1",
+    "name": "Закалка стали",
+    "branch": "defense",
+    "description": "+12% к урону всех башен.",
+    "cost": 1,
+    "requires": [],
+    "mutually_exclusive": [],
+    "effect": {"type": "damage_mult", "value": 0.12}
+  },
+  {
+    "id": "defense_2",
+    "name": "Дальнобойная оптика",
+    "branch": "defense",
+    "description": "+20% к радиусу обзора и атаки всех башен (Блокирует 'Спекуляцию').",
+    "cost": 1,
+    "requires": ["defense_1"],
+    "mutually_exclusive": ["econ_2"],
+    "effect": {"type": "range_mult", "value": 0.20}
+  },
+  {
+    "id": "defense_3",
+    "name": "Осадное мастерство",
+    "branch": "defense",
+    "description": "+30% дополнительного урона по боссам и бронированным оркам.",
+    "cost": 2,
+    "requires": ["defense_2"],
+    "mutually_exclusive": [],
+    "effect": {"type": "boss_damage_mult", "value": 0.30}
+  },
+  {
+    "id": "econ_1",
+    "name": "Торговые гильдии",
+    "branch": "economy",
+    "description": "+20% золота за каждого поверженного орка.",
+    "cost": 1,
+    "requires": [],
+    "mutually_exclusive": [],
+    "effect": {"type": "gold_reward_mult", "value": 0.20}
+  },
+  {
+    "id": "econ_2",
+    "name": "Спекуляция активами",
+    "branch": "economy",
+    "description": "Возврат 90% стоимости при продаже башен вместо 70% (Блокирует 'Оптику').",
+    "cost": 1,
+    "requires": ["econ_1"],
+    "mutually_exclusive": ["defense_2"],
+    "effect": {"type": "sell_ratio", "value": 0.90}
+  },
+  {
+    "id": "econ_3",
+    "name": "Королевская казна",
+    "branch": "economy",
+    "description": "+60 бонусного золота в конце каждой успешно завершенной волны.",
+    "cost": 2,
+    "requires": ["econ_2"],
+    "mutually_exclusive": [],
+    "effect": {"type": "end_wave_gold", "value": 60}
+  },
+  {
+    "id": "special_1",
+    "name": "Инженерные стандарты",
+    "branch": "special",
+    "description": "Стоимость постройки и улучшения всех башен снижена на 15%.",
+    "cost": 1,
+    "requires": [],
+    "mutually_exclusive": [],
+    "effect": {"type": "cost_discount", "value": 0.15}
+  },
+  {
+    "id": "special_2",
+    "name": "Тактический гений",
+    "branch": "special",
+    "description": "Ультимативная способность пути восстанавливается на 40% быстрее.",
+    "cost": 2,
+    "requires": ["special_1"],
+    "mutually_exclusive": [],
+    "effect": {"type": "ability_cooldown_mult", "value": 0.40}
+  }
+]

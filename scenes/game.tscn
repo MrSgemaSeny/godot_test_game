@@ -1,0 +1,263 @@
+[gd_scene load_steps=7 format=3 uid="uid://c2kdw8qyjx7vm"]
+
+[ext_resource type="Script" path="res://scripts/game.gd" id="1_game"]
+[ext_resource type="Script" path="res://scripts/game_manager.gd" id="2_gmanager"]
+[ext_resource type="Script" path="res://scripts/meta_manager.gd" id="3_meta"]
+[ext_resource type="Script" path="res://scripts/tech_tree_manager.gd" id="4_tech"]
+[ext_resource type="Script" path="res://scripts/spell_system.gd" id="5_spell"]
+[ext_resource type="Script" path="res://scripts/hud.gd" id="6_hud"]
+[ext_resource type="PackedScene" path="res://scenes/tech_tree_modal.tscn" id="7_modal"]
+
+[node name="Game" type="Node2D"]
+script = ExtResource("1_game")
+
+[node name="GameManager" type="Node" parent="."]
+script = ExtResource("2_gmanager")
+
+[node name="MetaManager" type="Node" parent="."]
+script = ExtResource("3_meta")
+
+[node name="TechTreeManager" type="Node" parent="."]
+script = ExtResource("4_tech")
+
+[node name="SpellSystem" type="Node" parent="."]
+script = ExtResource("5_spell")
+
+[node name="Path2D" type="Path2D" parent="."]
+
+[node name="BuildSpots" type="Node2D" parent="."]
+
+[node name="Projectiles" type="Node2D" parent="."]
+
+[node name="InteractiveObjects" type="Node2D" parent="."]
+
+[node name="Girls" type="Node2D" parent="."]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="HUD" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("6_hud")
+
+[node name="TopBar" type="PanelContainer" parent="CanvasLayer/HUD"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 54.0
+grow_horizontal = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/HUD/TopBar"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 8
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/HUD/TopBar/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="GoldLabel" type="Label" parent="CanvasLayer/HUD/TopBar/MarginContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "🪙 200"
+
+[node name="ManaLabel" type="Label" parent="CanvasLayer/HUD/TopBar/MarginContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.4, 0.7, 1, 1)
+theme_override_font_sizes/font_size = 16
+text = "🧪 60/100"
+
+[node name="GirlsLabel" type="Label" parent="CanvasLayer/HUD/TopBar/MarginContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.4, 0.7, 1)
+theme_override_font_sizes/font_size = 16
+text = "👧 5"
+
+[node name="WaveLabel" type="Label" parent="CanvasLayer/HUD/TopBar/MarginContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "🌊 0/10"
+
+[node name="TimerLabel" type="Label" parent="CanvasLayer/HUD/TopBar/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 14
+text = "⏱️ 30s (+10%)"
+horizontal_alignment = 1
+
+[node name="TechTreeButton" type="Button" parent="CanvasLayer/HUD/TopBar/MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(110, 36)
+layout_mode = 2
+theme_override_font_sizes/font_size = 13
+text = "📜 Древо (0)"
+
+[node name="StartWaveButton" type="Button" parent="CanvasLayer/HUD/TopBar/MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(130, 36)
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "⚔️ В бой!"
+
+[node name="SpellBar" type="PanelContainer" parent="CanvasLayer/HUD"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 16.0
+offset_top = -120.0
+offset_right = 90.0
+offset_bottom = 120.0
+grow_vertical = 2
+
+[node name="Margin" type="MarginContainer" parent="CanvasLayer/HUD/SpellBar"]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="HBox" type="VBoxContainer" parent="CanvasLayer/HUD/SpellBar/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="MeteorBtn" type="Button" parent="CanvasLayer/HUD/SpellBar/Margin/HBox"]
+custom_minimum_size = Vector2(56, 44)
+layout_mode = 2
+text = "☄️"
+
+[node name="FreezeBtn" type="Button" parent="CanvasLayer/HUD/SpellBar/Margin/HBox"]
+custom_minimum_size = Vector2(56, 44)
+layout_mode = 2
+text = "❄️"
+
+[node name="GoldRainBtn" type="Button" parent="CanvasLayer/HUD/SpellBar/Margin/HBox"]
+custom_minimum_size = Vector2(56, 44)
+layout_mode = 2
+text = "💰"
+
+[node name="LightningBtn" type="Button" parent="CanvasLayer/HUD/SpellBar/Margin/HBox"]
+custom_minimum_size = Vector2(56, 44)
+layout_mode = 2
+text = "⚡"
+
+[node name="ActionPanel" type="PanelContainer" parent="CanvasLayer/HUD"]
+visible = false
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -320.0
+offset_top = -140.0
+offset_right = 320.0
+offset_bottom = -16.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/HUD/ActionPanel"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="SpotTitle" type="Label" parent="CanvasLayer/HUD/ActionPanel/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Площадка под башню"
+horizontal_alignment = 1
+
+[node name="SpotDesc" type="Label" parent="CanvasLayer/HUD/ActionPanel/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 13
+text = "Выберите защитное орудие:"
+horizontal_alignment = 1
+
+[node name="BuildButtons" type="HBoxContainer" parent="CanvasLayer/HUD/ActionPanel/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="TowerActions" type="HBoxContainer" parent="CanvasLayer/HUD/ActionPanel/VBoxContainer"]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 14
+alignment = 1
+
+[node name="UpgradeBtn" type="Button" parent="CanvasLayer/HUD/ActionPanel/VBoxContainer/TowerActions"]
+custom_minimum_size = Vector2(140, 40)
+layout_mode = 2
+text = "⬆️ Улучшить"
+
+[node name="EvoABtn" type="Button" parent="CanvasLayer/HUD/ActionPanel/VBoxContainer/TowerActions"]
+visible = false
+custom_minimum_size = Vector2(130, 40)
+layout_mode = 2
+text = "🎯 Снайпер"
+
+[node name="EvoBBtn" type="Button" parent="CanvasLayer/HUD/ActionPanel/VBoxContainer/TowerActions"]
+visible = false
+custom_minimum_size = Vector2(130, 40)
+layout_mode = 2
+text = "⚙️ Пулемет"
+
+[node name="SellBtn" type="Button" parent="CanvasLayer/HUD/ActionPanel/VBoxContainer/TowerActions"]
+custom_minimum_size = Vector2(140, 40)
+layout_mode = 2
+text = "💰 Продать"
+
+[node name="TechTreeModal" parent="CanvasLayer/HUD" instance=ExtResource("7_modal")]
+visible = false
+layout_mode = 1
+
+[node name="EndScreen" type="PanelContainer" parent="CanvasLayer/HUD"]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -220.0
+offset_top = -140.0
+offset_right = 220.0
+offset_bottom = 140.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/HUD/EndScreen"]
+layout_mode = 2
+theme_override_constants/separation = 14
+alignment = 1
+
+[node name="EndTitle" type="Label" parent="CanvasLayer/HUD/EndScreen/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 28
+text = "👑 ПОБЕДА!"
+horizontal_alignment = 1
+
+[node name="EndSubtitle" type="Label" parent="CanvasLayer/HUD/EndScreen/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 15
+text = "Девочки спасены! Монстры разбиты!"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="RestartButton" type="Button" parent="CanvasLayer/HUD/EndScreen/VBoxContainer"]
+custom_minimum_size = Vector2(180, 42)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 16
+text = "🔄 Играть снова"
+
+[node name="MenuButton" type="Button" parent="CanvasLayer/HUD/EndScreen/VBoxContainer"]
+custom_minimum_size = Vector2(180, 38)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 15
+text = "🏛️ В главное меню"

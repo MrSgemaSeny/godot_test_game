@@ -1,0 +1,82 @@
+{
+  "spiky": {
+    "name": "Колючка",
+    "description": "Маленький шустрый монстрик. Обожает бегать толпами.",
+    "max_health": 65,
+    "speed": 95.0,
+    "armor": 0,
+    "gold_reward": 8,
+    "color": "#84cc16",
+    "size": 16,
+    "is_flyer": false
+  },
+  "goggle": {
+    "name": "Пучеглаз",
+    "description": "Неуклюжий, но крепкий монстр с большими глазами.",
+    "max_health": 120,
+    "speed": 75.0,
+    "armor": 10,
+    "gold_reward": 14,
+    "color": "#f97316",
+    "size": 20,
+    "is_flyer": false
+  },
+  "fish_flyer": {
+    "name": "Рыбокомар",
+    "description": "Летающий юркий монстр. Срезает углы и облетает наземные мины!",
+    "max_health": 55,
+    "speed": 145.0,
+    "armor": 0,
+    "gold_reward": 16,
+    "color": "#06b6d4",
+    "size": 15,
+    "is_flyer": true
+  },
+  "armored_crab": {
+    "name": "Панцирный Краб",
+    "description": "Тяжелая броня защищает от 75% урона стрел и камней.",
+    "max_health": 240,
+    "speed": 55.0,
+    "armor": 75,
+    "gold_reward": 25,
+    "color": "#64748b",
+    "size": 22,
+    "is_flyer": false
+  },
+  "shaman": {
+    "name": "Тотемный Шаман",
+    "description": "Периодически исцеляет всех монстров вокруг себя танцем тотема.",
+    "max_health": 160,
+    "speed": 70.0,
+    "armor": 15,
+    "gold_reward": 30,
+    "heal_pulse": 35.0,
+    "heal_interval": 3.0,
+    "color": "#8b5cf6",
+    "size": 19,
+    "is_flyer": false
+  },
+  "thief": {
+    "name": "Вор Монет",
+    "description": "Сверхбыстрый диверсант. Стремится украсть девочку с максимальной скоростью!",
+    "max_health": 90,
+    "speed": 160.0,
+    "armor": 0,
+    "gold_reward": 22,
+    "color": "#eab308",
+    "size": 16,
+    "is_flyer": false
+  },
+  "boss_thorn_king": {
+    "name": "Король Колючек (Босс Долины)",
+    "description": "Громадный босс. Топает, оглушая башни, и призывает свиту колючек!",
+    "max_health": 2200,
+    "speed": 45.0,
+    "armor": 35,
+    "gold_reward": 200,
+    "is_boss": true,
+    "color": "#4d7c0f",
+    "size": 34,
+    "is_flyer": false
+  }
+}

@@ -1,0 +1,38 @@
+[
+  {
+    "id": "meta_starting_gold",
+    "name": "Золотой запас цитадели",
+    "description": "+50 к начальному золоту на любой карте.",
+    "cost_per_level": 15,
+    "max_level": 4,
+    "effect_per_level": 50,
+    "type": "starting_gold"
+  },
+  {
+    "id": "meta_base_damage",
+    "name": "Элитное снаряжение",
+    "description": "+8% к постоянному урону всех типов башен.",
+    "cost_per_level": 20,
+    "max_level": 3,
+    "effect_per_level": 0.08,
+    "type": "damage_mult"
+  },
+  {
+    "id": "meta_bonus_lives",
+    "name": "Укрепленные ворота",
+    "description": "+5 дополнительных жизней крепости.",
+    "cost_per_level": 15,
+    "max_level": 3,
+    "effect_per_level": 5,
+    "type": "bonus_lives"
+  },
+  {
+    "id": "meta_research_start",
+    "name": "Архивы мудрецов",
+    "description": "+1 очко исследований сразу на старте игры.",
+    "cost_per_level": 25,
+    "max_level": 2,
+    "effect_per_level": 1,
+    "type": "starting_research"
+  }
+]

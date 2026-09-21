@@ -1,0 +1,89 @@
+{
+  "grunt": {
+    "name": "Рядовой орк",
+    "description": "Обычный пехотинец орков со стандартной выносливостью.",
+    "max_health": 80,
+    "speed": 85.0,
+    "armor": 0,
+    "gold_reward": 10,
+    "color": "#4d7c0f",
+    "size": 18
+  },
+  "berserker": {
+    "name": "Берсерк",
+    "description": "Быстрый и яростный, но менее защищенный.",
+    "max_health": 50,
+    "speed": 135.0,
+    "armor": 0,
+    "gold_reward": 14,
+    "color": "#dc2626",
+    "size": 16
+  },
+  "armored": {
+    "name": "Бронированный",
+    "description": "Тяжелый орк в латах. Снижает получаемый физический урон на 50%.",
+    "max_health": 180,
+    "speed": 60.0,
+    "armor": 50,
+    "gold_reward": 22,
+    "color": "#475569",
+    "size": 22
+  },
+  "shaman": {
+    "name": "Шаман",
+    "description": "Периодически исцеляет всех раненых орков вокруг себя.",
+    "max_health": 140,
+    "speed": 75.0,
+    "armor": 10,
+    "gold_reward": 28,
+    "heal_pulse": 25.0,
+    "heal_interval": 3.0,
+    "color": "#059669",
+    "size": 19
+  },
+  "troll": {
+    "name": "Горный тролль",
+    "description": "Огромный запас здоровья и постоянная регенерация.",
+    "max_health": 450,
+    "speed": 55.0,
+    "armor": 20,
+    "gold_reward": 45,
+    "regen_per_sec": 15.0,
+    "color": "#0d9488",
+    "size": 26
+  },
+  "stealth": {
+    "name": "Орк-лазутчик",
+    "description": "Быстрый скрытный орк с повышенным уклонением.",
+    "max_health": 90,
+    "speed": 120.0,
+    "armor": 15,
+    "gold_reward": 20,
+    "color": "#6b21a8",
+    "size": 17
+  },
+  "warchief_boss": {
+    "name": "Вождь Орды (Босс)",
+    "description": "Грозный вождь. Усиливает скорость и защиту всех орков в радиусе ауры.",
+    "max_health": 1400,
+    "speed": 50.0,
+    "armor": 40,
+    "gold_reward": 150,
+    "is_boss": true,
+    "aura_radius": 120,
+    "color": "#991b1b",
+    "size": 32
+  },
+  "archmage_boss": {
+    "name": "Шаман-Архимаг (Финальный Босс)",
+    "description": "Верховный чернокнижник. Обладает магическим щитом и мощной регенерацией.",
+    "max_health": 2800,
+    "speed": 45.0,
+    "armor": 30,
+    "shield": 800,
+    "gold_reward": 300,
+    "is_boss": true,
+    "color": "#581c87",
+    "size": 34
+  }
+}

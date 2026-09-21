@@ -1,0 +1,126 @@
+[gd_scene format=3 uid="uid://bvsm2mdf27q1a"]
+
+[ext_resource type="Script" path="res://scripts/tech_tree_modal.gd" id="1_tech_modal"]
+
+[node name="TechTreeModal" type="PanelContainer"]
+custom_minimum_size = Vector2(860, 520)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -430.0
+offset_top = -260.0
+offset_right = 430.0
+offset_bottom = 260.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_tech_modal")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 16
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Header" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="MarginContainer/VBoxContainer/Header"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 20
+text = "📜 ДЕРЕВО ИССЛЕДОВАНИЙ СЕССИИ"
+
+[node name="PointsLabel" type="Label" parent="MarginContainer/VBoxContainer/Header"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.85, 0.2, 1)
+theme_override_font_sizes/font_size = 18
+text = "📜 Очки исследований: 0"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 16
+
+[node name="DefenseBranch" type="PanelContainer" parent="MarginContainer/VBoxContainer/ScrollContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Margin" type="MarginContainer" parent="MarginContainer/VBoxContainer/ScrollContainer/HBoxContainer/DefenseBranch"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBox" type="VBoxContainer" parent="MarginContainer/VBoxContainer/ScrollContainer/HBoxContainer/DefenseBranch/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="BranchTitle" type="Label" parent="MarginContainer/VBoxContainer/ScrollContainer/HBoxContainer/DefenseBranch/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.3, 0.3, 1)
+theme_override_font_sizes/font_size = 16
+text = "🛡️ Ветка Обороны"
+horizontal_alignment = 1
+
+[node name="EconBranch" type="PanelContainer" parent="MarginContainer/VBoxContainer/ScrollContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Margin" type="MarginContainer" parent="MarginContainer/VBoxContainer/ScrollContainer/HBoxContainer/EconBranch"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBox" type="VBoxContainer" parent="MarginContainer/VBoxContainer/ScrollContainer/HBoxContainer/EconBranch/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="BranchTitle" type="Label" parent="MarginContainer/VBoxContainer/ScrollContainer/HBoxContainer/EconBranch/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.8, 0.2, 1)
+theme_override_font_sizes/font_size = 16
+text = "💰 Ветка Экономики"
+horizontal_alignment = 1
+
+[node name="SpecialBranch" type="PanelContainer" parent="MarginContainer/VBoxContainer/ScrollContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Margin" type="MarginContainer" parent="MarginContainer/VBoxContainer/ScrollContainer/HBoxContainer/SpecialBranch"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBox" type="VBoxContainer" parent="MarginContainer/VBoxContainer/ScrollContainer/HBoxContainer/SpecialBranch/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="BranchTitle" type="Label" parent="MarginContainer/VBoxContainer/ScrollContainer/HBoxContainer/SpecialBranch/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.6, 0.4, 1, 1)
+theme_override_font_sizes/font_size = 16
+text = "⚙️ Ветка Инженерии"
+horizontal_alignment = 1
+
+[node name="CloseButton" type="Button" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(180, 38)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "✖️ Закрыть древо"

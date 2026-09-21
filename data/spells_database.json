@@ -1,0 +1,39 @@
+{
+  "meteor": {
+    "id": "meteor",
+    "name": "Метеоритный Залп",
+    "icon": "☄️",
+    "mana_cost": 40,
+    "cooldown": 18.0,
+    "damage": 350,
+    "radius": 130,
+    "description": "Призывает огненный метеор, наносящий 350 AoE урона в указанную точку."
+  },
+  "freeze": {
+    "id": "freeze",
+    "name": "Абсолютный Ноль",
+    "icon": "❄️",
+    "mana_cost": 50,
+    "cooldown": 25.0,
+    "duration": 5.0,
+    "description": "Мгновенно замораживает ВСЕХ монстров на карте на 5 секунд."
+  },
+  "gold_rain": {
+    "id": "gold_rain",
+    "name": "Золотой Дождь",
+    "icon": "💰",
+    "mana_cost": 35,
+    "cooldown": 20.0,
+    "gold_amount": 120,
+    "description": "Мгновенно дарует +120 золотых монет в казну города."
+  },
+  "lightning": {
+    "id": "lightning",
+    "name": "Гнев Небес",
+    "icon": "⚡",
+    "mana_cost": 30,
+    "cooldown": 12.0,
+    "damage": 220,
+    "description": "Прицельный удар молнии, уничтожающий сильных или опасных монстров."
+  }
+}
