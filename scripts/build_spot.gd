@@ -140,33 +140,45 @@ func sell_tower() -> int:
 
 func _draw() -> void:
 	# Тень под постаментом
-	draw_circle(Vector2(2, 4), spot_radius + 2.0, Color(0.0, 0.0, 0.0, 0.35))
+	draw_circle(Vector2(2, 6), spot_radius + 3.0, Color(0.0, 0.0, 0.0, 0.35))
 	
-	# Каменное основание (двойное кольцо)
-	draw_circle(Vector2.ZERO, spot_radius, Color(0.38, 0.38, 0.42))
-	draw_circle(Vector2.ZERO, spot_radius - 3.0, Color(0.52, 0.52, 0.56))
-	draw_circle(Vector2.ZERO, spot_radius - 6.0, Color(0.62, 0.62, 0.66))
-	draw_arc(Vector2.ZERO, spot_radius, 0, TAU, 28, Color(0.25, 0.25, 0.28), 2.5)
-	draw_arc(Vector2.ZERO, spot_radius - 5.0, 0, TAU, 24, Color(0.75, 0.7, 0.5, 0.8), 1.5)
+	# Каменная кладка башенки-постамента (конусообразное основание)
+	var base_col = Color(0.42, 0.44, 0.46)
+	var light_col = Color(0.62, 0.64, 0.68)
+	var dark_col = Color(0.28, 0.30, 0.32)
 	
-	# Детали кладки (4 сектора плит)
-	for i in range(4):
-		var ang = i * (PI / 2.0)
-		var p1 = Vector2(cos(ang), sin(ang)) * 6.0
-		var p2 = Vector2(cos(ang), sin(ang)) * (spot_radius - 6.0)
-		draw_line(p1, p2, Color(0.4, 0.4, 0.45), 1.5)
+	# Нижнее основание
+	draw_circle(Vector2(0, 4), spot_radius, dark_col)
+	draw_circle(Vector2(0, 2), spot_radius - 2.0, base_col)
+	
+	# Текстура отдельных каменных блоков
+	for i in range(6):
+		var ang = i * (PI / 3.0) + 0.2
+		var p1 = Vector2(cos(ang), sin(ang)) * (spot_radius * 0.4) + Vector2(0, 2)
+		var p2 = Vector2(cos(ang), sin(ang)) * (spot_radius * 0.95) + Vector2(0, 2)
+		draw_line(p1, p2, Color(0.22, 0.24, 0.26, 0.7), 1.5)
+	
+	# Верхняя площадка с темным углублением
+	draw_circle(Vector2(0, -2), spot_radius * 0.78, light_col)
+	draw_circle(Vector2(0, -2), spot_radius * 0.65, Color(0.18, 0.16, 0.14)) # Темное жерло
+	draw_arc(Vector2(0, -2), spot_radius * 0.65, 0, TAU, 24, Color(0.1, 0.08, 0.08), 2.0)
+	
+	# Каменные зубцы (Battlements) по ободу
+	for i in range(8):
+		var ang = i * (TAU / 8.0)
+		var tooth_pos = Vector2(cos(ang), sin(ang)) * (spot_radius * 0.75) + Vector2(0, -2)
+		draw_circle(tooth_pos, 3.2, light_col)
+		draw_arc(tooth_pos, 3.2, 0, TAU, 8, dark_col, 1.0)
 		
 	if not has_tower():
-		# Золотистая руническая звезда в центре
-		var glow_alpha = 0.5 + sin(pulse_time) * 0.25 if (is_hovered or is_selected) else 0.4
-		draw_circle(Vector2.ZERO, 7.0, Color(0.85, 0.75, 0.3, glow_alpha))
-		draw_line(Vector2(-8, 0), Vector2(8, 0), Color(1.0, 0.9, 0.4, glow_alpha + 0.3), 2.0)
-		draw_line(Vector2(0, -8), Vector2(0, 8), Color(1.0, 0.9, 0.4, glow_alpha + 0.3), 2.0)
+		# Золотистый огонек в центре площадки
+		var glow_alpha = 0.6 + sin(pulse_time) * 0.3 if (is_hovered or is_selected) else 0.35
+		draw_circle(Vector2(0, -2), 5.0, Color(1.0, 0.85, 0.3, glow_alpha))
 		
 	# Пульсирующий ореол при выборе
 	if is_selected:
 		var pulse_rad = spot_radius + 4.0 + sin(pulse_time) * 2.0
-		draw_arc(Vector2.ZERO, pulse_rad, 0, TAU, 32, Color(1.0, 0.85, 0.2, 0.9), 3.0)
-		draw_arc(Vector2.ZERO, pulse_rad + 3.0, 0, TAU, 32, Color(1.0, 0.85, 0.2, 0.4), 1.5)
+		draw_arc(Vector2(0, 0), pulse_rad, 0, TAU, 32, Color(1.0, 0.85, 0.2, 0.9), 3.0)
+		draw_arc(Vector2(0, 0), pulse_rad + 3.0, 0, TAU, 32, Color(1.0, 0.85, 0.2, 0.4), 1.5)
 	elif is_hovered:
-		draw_arc(Vector2.ZERO, spot_radius + 3.0, 0, TAU, 32, Color(0.4, 0.85, 1.0, 0.8), 2.0)
+		draw_arc(Vector2(0, 0), spot_radius + 3.0, 0, TAU, 32, Color(0.4, 0.85, 1.0, 0.8), 2.0)

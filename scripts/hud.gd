@@ -14,6 +14,7 @@ signal speed_changed(multiplier: float)
 @onready var tech_btn: Button = $TopBar/MarginContainer/HBoxContainer/TechTreeButton
 @onready var start_wave_btn: Button = $TopBar/MarginContainer/HBoxContainer/StartWaveButton
 @onready var help_btn: Button = $TopBar/MarginContainer/HBoxContainer/HelpButton
+@onready var wave_clock: WaveClock = $TopBar/MarginContainer/HBoxContainer/WaveClock
 
 # Управление скоростью
 @onready var pause_btn: Button = $TopBar/MarginContainer/HBoxContainer/SpeedBox/PauseBtn
@@ -67,6 +68,8 @@ func _ready() -> void:
 	
 	if is_instance_valid(start_wave_btn):
 		start_wave_btn.pressed.connect(_on_start_wave_clicked)
+	if is_instance_valid(wave_clock):
+		wave_clock.clicked.connect(_on_start_wave_clicked)
 	if is_instance_valid(tech_btn):
 		tech_btn.pressed.connect(_on_tech_tree_clicked)
 	if is_instance_valid(help_btn):
@@ -167,9 +170,13 @@ func _cast_player_spell(spell_id: String) -> void:
 func set_countdown(seconds: float) -> void:
 	wave_countdown = seconds
 	counting_down = true
+	if is_instance_valid(wave_clock):
+		wave_clock.set_countdown(seconds, GameManager.PRE_WAVE_TIME)
 
 func stop_countdown() -> void:
 	counting_down = false
+	if is_instance_valid(wave_clock):
+		wave_clock.set_countdown(0.0)
 	if is_instance_valid(timer_label):
 		timer_label.text = "⚔️ Защищайте девочек!"
 

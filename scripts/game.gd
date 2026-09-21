@@ -90,14 +90,16 @@ func _setup_signals() -> void:
 
 func _setup_path() -> void:
 	var curve = Curve2D.new()
-	curve.add_point(Vector2(-40, 260))
-	curve.add_point(Vector2(240, 260))
-	curve.add_point(Vector2(240, 480))
-	curve.add_point(Vector2(580, 480))
-	curve.add_point(Vector2(580, 230))
-	curve.add_point(Vector2(920, 230))
-	curve.add_point(Vector2(920, 520))
-	curve.add_point(Vector2(1140, 520)) # Деревня девочек
+	curve.add_point(Vector2(-40, 460))
+	curve.add_point(Vector2(300, 460))
+	curve.add_point(Vector2(300, 330))
+	curve.add_point(Vector2(840, 330))
+	curve.add_point(Vector2(840, 650))
+	curve.add_point(Vector2(260, 650))
+	curve.add_point(Vector2(260, 530))
+	curve.add_point(Vector2(950, 530))
+	curve.add_point(Vector2(950, 680))
+	curve.add_point(Vector2(1120, 680)) # Сказочная деревня
 	path2d.curve = curve
 
 func _setup_build_spots() -> void:
@@ -105,19 +107,17 @@ func _setup_build_spots() -> void:
 		for child in build_spots_container.get_children():
 			child.queue_free()
 		
+	# Аутентичное расположение каменных башенок-постаментов как на скриншоте
 	var spot_positions = [
-		Vector2(150, 180),
-		Vector2(340, 370),
-		Vector2(150, 560),
-		Vector2(480, 560),
-		Vector2(480, 150),
-		Vector2(680, 150),
-		Vector2(680, 360),
-		Vector2(810, 350),
-		Vector2(810, 600),
-		Vector2(1020, 410),
-		Vector2(1020, 600),
-		Vector2(1100, 360)
+		Vector2(190, 525), Vector2(250, 525), # У таблички слева
+		Vector2(330, 260), # Вверху слева
+		Vector2(430, 260), # Вверху по центру у мостика
+		Vector2(440, 390), # В центре у изгиба
+		Vector2(430, 525), # В центре
+		Vector2(310, 695), # У подсолнухов
+		Vector2(730, 580), Vector2(785, 580), # Справа у поворота
+		Vector2(785, 390), Vector2(785, 450), # Справа вверху
+		Vector2(800, 610)  # У спуска к деревне
 	]
 	
 	if is_instance_valid(build_spots_container):
@@ -419,84 +419,148 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func _draw() -> void:
 	# 1. Сказочный изумрудный холмистый ландшафт Кудрявой Долины
-	draw_rect(Rect2(0, 0, 1280, 720), Color(0.25, 0.52, 0.22))
+	draw_rect(Rect2(0, 0, 1280, 720), Color(0.32, 0.65, 0.25))
 	
-	# Объемные мягкие холмы с градиентными слоями
-	var hill_col1 = Color(0.30, 0.58, 0.26)
-	var hill_col2 = Color(0.22, 0.46, 0.20)
-	draw_circle(Vector2(120, 80), 160, hill_col1)
-	draw_circle(Vector2(450, 60), 200, hill_col1)
-	draw_circle(Vector2(880, 70), 220, hill_col1)
-	draw_circle(Vector2(160, 680), 190, hill_col2)
-	draw_circle(Vector2(700, 690), 240, hill_col2)
-	draw_circle(Vector2(1100, 680), 210, hill_col2)
+	# Объемные мягкие холмы сочной травы
+	var hill_col1 = Color(0.38, 0.72, 0.30)
+	var hill_col2 = Color(0.26, 0.58, 0.22)
+	draw_circle(Vector2(160, 140), 190, hill_col1)
+	draw_circle(Vector2(520, 130), 220, hill_col1)
+	draw_circle(Vector2(920, 150), 230, hill_col1)
+	draw_circle(Vector2(140, 680), 200, hill_col2)
+	draw_circle(Vector2(550, 680), 230, hill_col2)
+	draw_circle(Vector2(1050, 680), 220, hill_col2)
 	
-	# 2. Сказочные поляны с цветами
+	# 2. Песчаный пляж / пруд вверху по центру и справа
+	var pond_water = Color(0.35, 0.72, 0.90)
+	var sand_col = Color(0.92, 0.84, 0.58)
+	draw_circle(Vector2(550, 240), 65, sand_col)
+	draw_circle(Vector2(550, 240), 50, pond_water)
+	draw_circle(Vector2(950, 210), 80, sand_col)
+	draw_circle(Vector2(960, 190), 55, pond_water)
+	
+	# Деревянная лодочка на песке вверху справа
+	var boat_p = Vector2(940, 240)
+	draw_polygon(
+		PackedVector2Array([boat_p + Vector2(-30, 0), boat_p + Vector2(25, -12), boat_p + Vector2(40, 0), boat_p + Vector2(20, 12)]),
+		PackedColorArray([Color(0.48, 0.32, 0.18), Color(0.58, 0.38, 0.22), Color(0.48, 0.32, 0.18), Color(0.4, 0.26, 0.14)])
+	)
+	draw_line(boat_p + Vector2(-15, 0), boat_p + Vector2(20, 0), Color(0.3, 0.18, 0.1), 2.0)
+	
+	# 3. Сказочные поляны с цветами
 	for flower in flower_patches:
 		draw_circle(flower["pos"], flower["size"], flower["col"])
 		draw_circle(flower["pos"], flower["size"] * 0.4, Color(1.0, 0.9, 0.2))
 		
-	# 3. Сказочные деревья
-	for tree in trees:
-		var tp = tree["pos"]
-		var ts = tree["scale"]
-		draw_circle(tp + Vector2(6, 12), 26.0 * ts, Color(0.0, 0.0, 0.0, 0.25))
-		draw_rect(Rect2(tp.x - 6 * ts, tp.y, 12 * ts, 20 * ts), Color(0.45, 0.3, 0.15))
-		draw_circle(tp + Vector2(0, -18 * ts), 24.0 * ts, Color(0.18, 0.42, 0.15))
-		draw_circle(tp + Vector2(-12 * ts, -8 * ts), 18.0 * ts, Color(0.22, 0.48, 0.18))
-		draw_circle(tp + Vector2(12 * ts, -8 * ts), 18.0 * ts, Color(0.26, 0.54, 0.22))
-		draw_circle(tp + Vector2(-4 * ts, -22 * ts), 10.0 * ts, Color(0.35, 0.65, 0.3, 0.7))
-	
-	# 4. Текстурированная извилистая дорога из булыжника и теплого песка
+	# 4. Текстурированная извилистая песчаная дорога (как на скриншотах «Башенок»)
 	if path2d and path2d.curve:
 		var baked_points = path2d.curve.get_baked_points()
 		if baked_points.size() > 1:
-			draw_polyline(baked_points, Color(0.0, 0.0, 0.0, 0.22), 68.0)
-			draw_polyline(baked_points, Color(0.48, 0.42, 0.32), 58.0)
-			draw_polyline(baked_points, Color(0.86, 0.76, 0.52), 44.0)
-			draw_polyline(baked_points, Color(0.78, 0.68, 0.45), 20.0)
+			# Мягкая тень обочины
+			draw_polyline(baked_points, Color(0.0, 0.0, 0.0, 0.24), 74.0)
+			# Каменная/травяная окантовка дороги
+			draw_polyline(baked_points, Color(0.58, 0.52, 0.38), 64.0)
+			# Основное теплое песчаное полотно
+			draw_polyline(baked_points, Color(0.92, 0.82, 0.56), 50.0)
+			# Протоптанная дорожка со следами
+			draw_polyline(baked_points, Color(0.84, 0.74, 0.48), 24.0)
 			
-	# 5. Логово Монстров слева
+	# 5. Деревянный мостик через верхний пруд (по центру)
+	var bridge_pos = Vector2(550, 240)
+	draw_rect(Rect2(bridge_pos.x - 45, bridge_pos.y - 20, 90, 40), Color(0.55, 0.38, 0.22))
+	for b_i in range(8):
+		var plank_x = bridge_pos.x - 40 + b_i * 11
+		draw_rect(Rect2(plank_x, bridge_pos.y - 22, 9, 44), Color(0.68, 0.48, 0.28))
+		draw_line(Vector2(plank_x, bridge_pos.y - 22), Vector2(plank_x + 9, bridge_pos.y - 22), Color(0.35, 0.22, 0.12), 1.5)
+		draw_line(Vector2(plank_x + 4, bridge_pos.y - 18), Vector2(plank_x + 4, bridge_pos.y + 18), Color(0.4, 0.28, 0.15), 1.0)
+		
+	# 6. Деревянный указатель со страшком/монстром слева
+	var sign_p = Vector2(120, 420)
+	draw_rect(Rect2(sign_p.x + 8, sign_p.y + 10, 8, 32), Color(0.45, 0.3, 0.15)) # Столбик
+	draw_rect(Rect2(sign_p.x + 44, sign_p.y + 10, 8, 32), Color(0.45, 0.3, 0.15))
+	draw_rect(Rect2(sign_p.x, sign_p.y - 20, 60, 32), Color(0.65, 0.45, 0.26)) # Доска
+	draw_rect(Rect2(sign_p.x + 2, sign_p.y - 18, 56, 28), Color(0.75, 0.55, 0.32))
+	# Нарисованный белый монстрик на табличке
+	draw_circle(sign_p + Vector2(30, -5), 8.0, Color(1.0, 1.0, 1.0, 0.85))
+	draw_circle(sign_p + Vector2(27, -6), 1.5, Color(0.2, 0.2, 0.3))
+	draw_circle(sign_p + Vector2(33, -6), 1.5, Color(0.2, 0.2, 0.3))
+	draw_line(sign_p + Vector2(22, -4), sign_p + Vector2(17, -10), Color(1.0, 1.0, 1.0, 0.85), 2.0)
+	draw_line(sign_p + Vector2(38, -4), sign_p + Vector2(43, -10), Color(1.0, 1.0, 1.0, 0.85), 2.0)
+	
+	# 7. Пугало и подсолнухи в левом нижнем углу 🌻
+	var scarecrow_p = Vector2(180, 640)
+	# Поле ярких подсолнухов
+	var sunflower_offsets = [
+		Vector2(-40, 15), Vector2(-25, 25), Vector2(-10, 30), Vector2(10, 28),
+		Vector2(25, 20), Vector2(-35, 40), Vector2(-15, 45), Vector2(15, 42),
+		Vector2(35, 35), Vector2(-45, 28), Vector2(5, 50)
+	]
+	for s_off in sunflower_offsets:
+		var sp = scarecrow_p + s_off
+		# Зеленый стебель
+		draw_line(sp + Vector2(0, 10), sp, Color(0.2, 0.5, 0.15), 2.5)
+		# Желтые лепестки
+		draw_circle(sp, 8.0, Color(1.0, 0.85, 0.1))
+		# Темная серединка
+		draw_circle(sp, 4.0, Color(0.28, 0.16, 0.08))
+		
+	# Пугало (Scarecrow)
+	draw_line(scarecrow_p + Vector2(0, 20), scarecrow_p + Vector2(0, -25), Color(0.45, 0.3, 0.15), 3.5) # Шест
+	draw_line(scarecrow_p + Vector2(-24, -10), scarecrow_p + Vector2(24, -10), Color(0.45, 0.3, 0.15), 3.0) # Поперечина
+	# Синяя рубаха
 	draw_polygon(
-		PackedVector2Array([Vector2(-40, 160), Vector2(70, 180), Vector2(60, 340), Vector2(-40, 360)]),
-		PackedColorArray([Color(0.2, 0.18, 0.22), Color(0.28, 0.25, 0.3), Color(0.18, 0.16, 0.2), Color(0.15, 0.13, 0.18)])
+		PackedVector2Array([scarecrow_p + Vector2(-18, -10), scarecrow_p + Vector2(18, -10), scarecrow_p + Vector2(12, 10), scarecrow_p + Vector2(-12, 10)]),
+		PackedColorArray([Color(0.25, 0.45, 0.75), Color(0.35, 0.55, 0.85), Color(0.2, 0.4, 0.7), Color(0.2, 0.4, 0.7)])
 	)
-	draw_circle(Vector2(0, 260), 45.0, Color(0.08, 0.05, 0.1))
-	draw_circle(Vector2(0, 260), 32.0, Color(0.35, 0.1, 0.45, 0.6 + sin(scene_anim_time * 3.0) * 0.2))
-	draw_circle(Vector2(55, 200), 5.0, Color(1.0, 0.5, 0.1))
-	draw_circle(Vector2(55, 320), 5.0, Color(1.0, 0.5, 0.1))
+	# Голова из мешковины
+	draw_circle(scarecrow_p + Vector2(0, -22), 7.5, Color(0.9, 0.8, 0.65))
+	# Шляпа
+	draw_circle(scarecrow_p + Vector2(0, -26), 12.0, Color(0.85, 0.65, 0.25))
+	draw_rect(Rect2(scarecrow_p.x - 7, scarecrow_p.y - 34, 14, 8), Color(0.85, 0.65, 0.25))
+	draw_line(scarecrow_p + Vector2(-7, -26), scarecrow_p + Vector2(7, -26), Color(0.8, 0.2, 0.2), 2.0)
 	
-	# 6. Сказочная деревня Девочек справа
-	var village_origin = Vector2(1080, 420)
-	draw_circle(village_origin + Vector2(60, 90), 100.0, Color(0.32, 0.62, 0.28))
-	draw_arc(village_origin + Vector2(60, 90), 100.0, 0, TAU, 32, Color(0.65, 0.55, 0.35), 3.0)
+	# 8. Сказочная деревушка справа внизу (с черепичными домиками, заборчиком и мостиком)
+	var village_origin = Vector2(980, 620)
+	# Каменная площадка деревни
+	draw_circle(village_origin + Vector2(80, 50), 90.0, Color(0.78, 0.74, 0.65))
+	draw_arc(village_origin + Vector2(80, 50), 90.0, 0, TAU, 32, Color(0.55, 0.48, 0.38), 2.5)
 	
-	var h1_pos = village_origin + Vector2(10, 20)
-	draw_rect(Rect2(h1_pos.x, h1_pos.y, 60, 55), Color(0.85, 0.78, 0.65))
-	draw_rect(Rect2(h1_pos.x + 8, h1_pos.y + 12, 16, 16), Color(1.0, 0.9, 0.4))
-	draw_rect(Rect2(h1_pos.x + 36, h1_pos.y + 24, 18, 31), Color(0.55, 0.35, 0.2))
+	# Деревянный заборчик (плетень)
+	for f_i in range(9):
+		var fx = village_origin.x - 10 + f_i * 14
+		var fy = village_origin.y + 45 - f_i * 4
+		draw_line(Vector2(fx, fy), Vector2(fx, fy + 16), Color(0.48, 0.32, 0.18), 3.0)
+	draw_line(Vector2(village_origin.x - 10, village_origin.y + 50), Vector2(village_origin.x + 110, village_origin.y + 20), Color(0.55, 0.4, 0.22), 2.0)
+	
+	# Маленький мостик перед деревней
+	var v_bridge = village_origin + Vector2(-40, 40)
+	draw_rect(Rect2(v_bridge.x - 20, v_bridge.y - 12, 40, 24), Color(0.62, 0.45, 0.28))
+	draw_circle(v_bridge + Vector2(0, 15), 14.0, pond_water)
+	
+	# Домик 1 (Оранжевая черепица)
+	var h1 = village_origin + Vector2(25, -20)
+	draw_rect(Rect2(h1.x, h1.y, 48, 42), Color(0.88, 0.82, 0.72))
+	draw_rect(Rect2(h1.x + 6, h1.y + 10, 12, 12), Color(1.0, 0.9, 0.4))
 	draw_polygon(
-		PackedVector2Array([Vector2(h1_pos.x - 8, h1_pos.y), Vector2(h1_pos.x + 30, h1_pos.y - 32), Vector2(h1_pos.x + 68, h1_pos.y)]),
-		PackedColorArray([Color(0.88, 0.28, 0.22), Color(0.95, 0.35, 0.28), Color(0.82, 0.22, 0.18)])
+		PackedVector2Array([h1 + Vector2(-6, 0), h1 + Vector2(24, -24), h1 + Vector2(54, 0)]),
+		PackedColorArray([Color(0.85, 0.35, 0.2), Color(0.95, 0.45, 0.25), Color(0.75, 0.25, 0.15)])
 	)
-	var smoke_y = h1_pos.y - 35 - fmod(scene_anim_time * 25.0, 40.0)
-	draw_circle(Vector2(h1_pos.x + 46, smoke_y), 6.0, Color(0.9, 0.9, 0.95, 0.5))
 	
-	var h2_pos = village_origin + Vector2(75, 70)
-	draw_rect(Rect2(h2_pos.x, h2_pos.y, 50, 45), Color(0.78, 0.72, 0.6))
-	draw_rect(Rect2(h2_pos.x + 28, h2_pos.y + 10, 14, 14), Color(1.0, 0.9, 0.4))
+	# Домик 2 (Коричневая мансарда)
+	var h2 = village_origin + Vector2(80, 15)
+	draw_rect(Rect2(h2.x, h2.y, 42, 38), Color(0.82, 0.76, 0.68))
+	draw_rect(Rect2(h2.x + 22, h2.y + 8, 11, 11), Color(1.0, 0.9, 0.4))
 	draw_polygon(
-		PackedVector2Array([Vector2(h2_pos.x - 6, h2_pos.y), Vector2(h2_pos.x + 25, h2_pos.y - 26), Vector2(h2_pos.x + 56, h2_pos.y)]),
-		PackedColorArray([Color(0.25, 0.45, 0.85), Color(0.35, 0.55, 0.95), Color(0.2, 0.38, 0.75)])
+		PackedVector2Array([h2 + Vector2(-5, 0), h2 + Vector2(21, -20), h2 + Vector2(47, 0)]),
+		PackedColorArray([Color(0.65, 0.32, 0.2), Color(0.75, 0.42, 0.25), Color(0.55, 0.22, 0.15)])
 	)
 	
-	# 7. Интерактивная подсветка радиуса атаки выбранной башни / площадки
+	# 9. Интерактивная подсветка радиуса атаки выбранной башни / площадки
 	if is_instance_valid(game_manager) and is_instance_valid(game_manager.selected_spot):
 		var spot: BuildSpot = game_manager.selected_spot as BuildSpot
 		if is_instance_valid(spot):
 			var r = 190.0
 			if spot.has_tower():
 				r = spot.current_tower.get_effective_range()
-			# Полупрозрачный светящийся круг зоны поражения
 			draw_circle(spot.position, r, Color(0.3, 0.8, 1.0, 0.10 + sin(scene_anim_time * 4.0) * 0.03))
 			draw_arc(spot.position, r, 0, TAU, 48, Color(0.4, 0.9, 1.0, 0.75), 2.5)

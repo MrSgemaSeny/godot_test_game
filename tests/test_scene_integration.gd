@@ -35,8 +35,21 @@ func test_instantiate_game_scene() -> void:
 	var instance = scene.instantiate()
 	assert_not_null(instance, "game.tscn must instantiate")
 	assert_not_null(instance.get_node_or_null("CanvasLayer/HUD"), "HUD must exist in Game scene")
+	assert_not_null(instance.get_node_or_null("CanvasLayer/HUD/TopBar/MarginContainer/HBoxContainer/WaveClock"), "WaveClock must exist in Game scene")
 	assert_not_null(instance.get_node_or_null("GameManager"), "GameManager must exist in Game scene")
 	assert_not_null(instance.get_node_or_null("SpellSystem"), "SpellSystem must exist in Game scene")
 	assert_not_null(instance.get_node_or_null("TechTreeManager"), "TechTreeManager must exist in Game scene")
 	assert_not_null(instance.get_node_or_null("MetaManager"), "MetaManager must exist in Game scene")
 	instance.free()
+
+func test_wave_clock_widget() -> void:
+	var clock = WaveClock.new()
+	clock.set_countdown(20.0, 30.0, false)
+	assert_eq(clock.time_left, 20.0, "Clock time_left should be 20")
+	assert_true(clock.is_active, "Clock should be active")
+	
+	var clicked_emitted = [false]
+	clock.clicked.connect(func(): clicked_emitted[0] = true)
+	clock.clicked.emit()
+	assert_true(clicked_emitted[0], "Clock clicked signal should work")
+	clock.free()

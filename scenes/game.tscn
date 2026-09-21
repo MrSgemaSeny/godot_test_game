@@ -8,6 +8,7 @@
 [ext_resource type="Script" path="res://scripts/hud.gd" id="6_hud"]
 [ext_resource type="PackedScene" path="res://scenes/tech_tree_modal.tscn" id="7_modal"]
 [ext_resource type="PackedScene" path="res://scenes/help_modal.tscn" id="8_help_modal"]
+[ext_resource type="Script" path="res://scripts/wave_clock.gd" id="9_clock"]
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_game")
@@ -109,6 +110,12 @@ custom_minimum_size = Vector2(36, 36)
 layout_mode = 2
 tooltip_text = "Ускорение 2x [E]"
 text = "⏩"
+
+[node name="WaveClock" type="Control" parent="CanvasLayer/HUD/TopBar/MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(56, 56)
+layout_mode = 2
+tooltip_text = "Часы-таймер волны. Нажмите для досрочного старта (+10% золота)!"
+script = ExtResource("9_clock")
 
 [node name="TimerLabel" type="Label" parent="CanvasLayer/HUD/TopBar/MarginContainer/HBoxContainer"]
 layout_mode = 2
