@@ -52,6 +52,7 @@ func test_instantiate_game_scene() -> void:
 	assert_not_null(instance.get_node_or_null("CanvasLayer/HUD"), "HUD must exist in Game scene")
 	assert_not_null(instance.get_node_or_null("CanvasLayer/HUD/TopBar/MarginContainer/HBoxContainer/WaveClock"), "WaveClock must exist in Game scene")
 	assert_not_null(instance.get_node_or_null("GameManager"), "GameManager must exist in Game scene")
+	assert_not_null(instance.get_node_or_null("WaveController"), "WaveController must exist in Game scene")
 	assert_not_null(instance.get_node_or_null("SpellSystem"), "SpellSystem must exist in Game scene")
 	assert_not_null(instance.get_node_or_null("TechTreeManager"), "TechTreeManager must exist in Game scene")
 	assert_not_null(instance.get_node_or_null("MetaManager"), "MetaManager must exist in Game scene")

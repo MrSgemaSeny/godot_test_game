@@ -45,15 +45,38 @@ func test_girl_kidnapped_and_rescue_flow() -> void:
 	monster.free()
 
 func test_monster_database_types_instantiation() -> void:
-	var types = ["spiky", "goggle", "fish_flyer", "armored_crab", "shaman", "thief", "boss_thorn_king"]
+	var types = ["grunt", "berserker", "armored", "shaman", "troll", "stealth", "warchief_boss", "archmage_boss"]
 	for m_type in types:
 		var monster = MonsterBase.new()
 		monster.monster_type = m_type
-		monster._load_monster_data()
+		monster._load_enemy_data()
 		assert_gt(monster.max_health, 0.0, "Monster %s should have positive max_health" % m_type)
 		assert_gt(monster.speed, 0.0, "Monster %s should have positive speed" % m_type)
-		if m_type == "boss_thorn_king":
-			assert_true(monster.is_boss, "boss_thorn_king should have is_boss = true")
-		if m_type == "fish_flyer":
-			assert_true(monster.is_flyer, "fish_flyer should have is_flyer = true")
+		if m_type == "warchief_boss" or m_type == "archmage_boss":
+			assert_true(monster.is_boss, "%s should have is_boss = true" % m_type)
 		monster.free()
+
+func test_enemy_outcome_lifecycle_killed() -> void:
+	var monster = MonsterBase.new()
+	monster.monster_type = "grunt"
+	monster._load_enemy_data()
+	
+	var finished_outcome = []
+	monster.finished.connect(func(outcome, _reward): finished_outcome.append(outcome))
+	
+	monster._finish_enemy(MonsterBase.EnemyOutcome.KILLED)
+	assert_eq(finished_outcome.size(), 1, "finished signal must emit exactly once")
+	assert_eq(finished_outcome[0], MonsterBase.EnemyOutcome.KILLED, "Outcome should be KILLED")
+
+func test_enemy_outcome_lifecycle_reached_base() -> void:
+	var monster = MonsterBase.new()
+	monster.monster_type = "berserker"
+	monster._load_enemy_data()
+	
+	var finished_outcome = []
+	monster.finished.connect(func(outcome, _reward): finished_outcome.append(outcome))
+	
+	monster._finish_enemy(MonsterBase.EnemyOutcome.REACHED_BASE)
+	assert_eq(finished_outcome.size(), 1, "finished signal must emit when reaching base")
+	assert_eq(finished_outcome[0], MonsterBase.EnemyOutcome.REACHED_BASE, "Outcome should be REACHED_BASE")
+

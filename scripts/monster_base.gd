@@ -1,30 +1,47 @@
 class_name MonsterBase
 extends PathFollow2D
 
+enum EnemyOutcome {
+	KILLED,
+	ESCAPED_WITH_GIRL,
+	REACHED_BASE
+}
+
 signal died(gold_reward: int)
 signal girl_kidnapped(girl: Node2D)
 signal escaped_with_girl()
+signal finished(outcome: EnemyOutcome, reward: int)
 signal took_damage(amount: float, damage_type: String)
 signal healed(amount: float)
 
 enum MonsterState {
 	ADVANCING,
 	RETREATING_WITH_GIRL,
-	ESCAPED
+	FINISHED
 }
 
-@export var monster_type: String = "spiky"
+@export var monster_type: String = "grunt"
 
-var max_health: float = 65.0
-var current_health: float = 65.0
-var base_speed: float = 95.0
-var speed: float = 95.0
+var monster_name: String = "Рядовой орк"
+var max_health: float = 80.0
+var current_health: float = 80.0
+var base_speed: float = 85.0
+var speed: float = 85.0
 var armor: float = 0.0
-var gold_reward: int = 8
+var gold_reward: int = 10
 var is_boss: bool = false
 var is_flyer: bool = false
-var body_color: Color = Color(0.5, 0.8, 0.1)
-var body_size: float = 16.0
+var body_color: Color = Color(0.3, 0.5, 0.1)
+var body_size: float = 18.0
+
+# Способности
+var heal_pulse: float = 0.0
+var heal_interval: float = 0.0
+var heal_timer: float = 0.0
+var regen_per_sec: float = 0.0
+var shield: float = 0.0
+var max_shield: float = 0.0
+var aura_radius: float = 0.0
 
 var current_state: MonsterState = MonsterState.ADVANCING
 var carried_girl: GirlNPC = null
@@ -39,30 +56,45 @@ var walk_anim: float = 0.0
 func _ready() -> void:
 	rotates = false
 	loop = false
-	_load_monster_data()
+	add_to_group("enemies")
+	_load_enemy_data()
 	queue_redraw()
 
-func _load_monster_data() -> void:
-	if not FileAccess.file_exists("res://data/monsters_database.json"):
+func _load_enemy_data() -> void:
+	if not FileAccess.file_exists("res://data/enemies.json"):
 		return
-	var file = FileAccess.open("res://data/monsters_database.json", FileAccess.READ)
+	var file = FileAccess.open("res://data/enemies.json", FileAccess.READ)
 	var json = JSON.new()
 	if json.parse(file.get_as_text()) == OK and json.data is Dictionary:
-		if json.data.has(monster_type):
-			var data = json.data[monster_type]
-			max_health = data.get("max_health", max_health)
-			current_health = max_health
-			base_speed = data.get("speed", base_speed)
-			speed = base_speed
-			armor = data.get("armor", armor)
-			gold_reward = data.get("gold_reward", gold_reward)
-			is_boss = data.get("is_boss", false)
-			is_flyer = data.get("is_flyer", false)
-			body_color = Color.from_string(data.get("color", "#84cc16"), body_color)
-			body_size = data.get("size", body_size)
+		var dict = json.data
+		var key = monster_type
+		if not dict.has(key):
+			key = "grunt" # Default fallback
+			
+		var data = dict.get(key, {})
+		monster_name = data.get("name", "Орк")
+		max_health = float(data.get("max_health", 80.0))
+		current_health = max_health
+		base_speed = float(data.get("speed", 85.0))
+		speed = base_speed
+		armor = float(data.get("armor", 0.0))
+		gold_reward = int(data.get("gold_reward", 10))
+		is_boss = bool(data.get("is_boss", false))
+		is_flyer = bool(data.get("is_flyer", false))
+		body_color = Color.from_string(data.get("color", "#4d7c0f"), body_color)
+		body_size = float(data.get("size", 18.0))
+		
+		# Специальные механики
+		heal_pulse = float(data.get("heal_pulse", 0.0))
+		heal_interval = float(data.get("heal_interval", 0.0))
+		heal_timer = heal_interval
+		regen_per_sec = float(data.get("regen_per_sec", 0.0))
+		shield = float(data.get("shield", 0.0))
+		max_shield = shield
+		aura_radius = float(data.get("aura_radius", 0.0))
 
 func _process(delta: float) -> void:
-	if is_dead:
+	if is_dead or current_state == MonsterState.FINISHED:
 		return
 		
 	walk_anim += delta * (speed / 10.0)
@@ -84,6 +116,17 @@ func _process(delta: float) -> void:
 	if hit_flash_timer > 0.0:
 		hit_flash_timer -= delta
 		
+	# Регенерация здоровья (тролль / архимаг)
+	if regen_per_sec > 0.0 and current_health < max_health:
+		current_health = min(max_health, current_health + regen_per_sec * delta)
+		
+	# Периодическое лечение союзников (шаман)
+	if heal_pulse > 0.0 and heal_interval > 0.0:
+		heal_timer -= delta
+		if heal_timer <= 0.0:
+			heal_timer = heal_interval
+			_pulse_heal_allies()
+		
 	if current_state == MonsterState.ADVANCING:
 		progress += speed * delta
 		if progress_ratio >= 1.0:
@@ -95,8 +138,19 @@ func _process(delta: float) -> void:
 			
 	queue_redraw()
 
+func _pulse_heal_allies() -> void:
+	var tree = get_tree()
+	if not tree:
+		return
+	var enemies = tree.get_nodes_in_group("enemies")
+	for e in enemies:
+		if is_instance_valid(e) and e is MonsterBase and not e.is_dead and e != self:
+			if global_position.distance_to(e.global_position) <= 150.0:
+				e.heal(heal_pulse)
+
 func _attempt_kidnap_girl() -> void:
-	var girls = get_tree().get_nodes_in_group("girls")
+	var tree = get_tree()
+	var girls = tree.get_nodes_in_group("girls") if tree else []
 	var target_girl: GirlNPC = null
 	for g in girls:
 		if is_instance_valid(g) and g.current_state == GirlNPC.State.IN_VILLAGE:
@@ -109,26 +163,51 @@ func _attempt_kidnap_girl() -> void:
 		current_state = MonsterState.RETREATING_WITH_GIRL
 		girl_kidnapped.emit(target_girl)
 	else:
-		var gm = get_tree().get_first_node_in_group("game_manager") as GameManager
-		if gm:
-			gm.reduce_lives(1)
-		is_dead = true
-		queue_free()
+		# Девочек больше нет в деревне — монстр проник в цитадель и наносит урон жизням
+		_finish_enemy(EnemyOutcome.REACHED_BASE)
 
 func _complete_escape_with_girl() -> void:
+	_finish_enemy(EnemyOutcome.ESCAPED_WITH_GIRL)
+
+func _finish_enemy(outcome: EnemyOutcome) -> void:
 	if is_dead:
 		return
 	is_dead = true
-	current_state = MonsterState.ESCAPED
-	if is_instance_valid(carried_girl):
-		carried_girl.escaped_with_monster.emit(carried_girl)
-		carried_girl.queue_free()
-		carried_girl = null
-		
-	var gm = get_tree().get_first_node_in_group("game_manager") as GameManager
-	if gm:
-		gm.reduce_lives(1)
-	escaped_with_girl.emit()
+	current_state = MonsterState.FINISHED
+	
+	match outcome:
+		EnemyOutcome.KILLED:
+			if is_instance_valid(carried_girl):
+				carried_girl._start_running_home()
+				carried_girl = null
+			var spell_sys = (get_tree().get_first_node_in_group("spell_system") if is_inside_tree() and get_tree() else null)
+			if spell_sys and spell_sys.has_method("add_mana"):
+				spell_sys.add_mana(6 if is_boss else 2)
+			died.emit(gold_reward)
+			finished.emit(EnemyOutcome.KILLED, gold_reward)
+			
+		EnemyOutcome.ESCAPED_WITH_GIRL:
+			if is_instance_valid(carried_girl):
+				carried_girl.escaped_with_monster.emit(carried_girl)
+				carried_girl.queue_free()
+				carried_girl = null
+			var gm = (get_tree().get_first_node_in_group("game_manager") as GameManager if is_inside_tree() and get_tree() else null)
+			if gm:
+				gm.reduce_lives(1)
+			escaped_with_girl.emit()
+			finished.emit(EnemyOutcome.ESCAPED_WITH_GIRL, 0)
+			
+		EnemyOutcome.REACHED_BASE:
+			if is_instance_valid(carried_girl):
+				carried_girl.queue_free()
+				carried_girl = null
+			var gm = (get_tree().get_first_node_in_group("game_manager") as GameManager if is_inside_tree() and get_tree() else null)
+			if gm:
+				gm.reduce_lives(1)
+			escaped_with_girl.emit()
+			finished.emit(EnemyOutcome.REACHED_BASE, 0)
+
+			
 	queue_free()
 
 func take_damage(amount: float, damage_type: String = "physical") -> void:
@@ -136,17 +215,28 @@ func take_damage(amount: float, damage_type: String = "physical") -> void:
 		return
 		
 	var actual_damage = amount
-	if damage_type == "physical":
-		var damage_reduction = clamp(armor / 100.0, 0.0, 0.85)
-		actual_damage = amount * (1.0 - damage_reduction)
-		
-	current_health -= actual_damage
-	hit_flash_timer = 0.1
-	took_damage.emit(actual_damage, damage_type)
-	queue_redraw()
 	
-	if current_health <= 0.0:
-		_die()
+	# Поглощение щитом
+	if shield > 0.0:
+		if shield >= actual_damage:
+			shield -= actual_damage
+			actual_damage = 0.0
+		else:
+			actual_damage -= shield
+			shield = 0.0
+			
+	if actual_damage > 0.0:
+		if damage_type == "physical":
+			var damage_reduction = clamp(armor / 100.0, 0.0, 0.85)
+			actual_damage = actual_damage * (1.0 - damage_reduction)
+			
+		current_health -= actual_damage
+		hit_flash_timer = 0.1
+		took_damage.emit(actual_damage, damage_type)
+		queue_redraw()
+		
+		if current_health <= 0.0:
+			_finish_enemy(EnemyOutcome.KILLED)
 
 func apply_slow(factor: float, duration: float) -> void:
 	if is_dead:
@@ -166,28 +256,10 @@ func heal(amount: float) -> void:
 	healed.emit(amount)
 	queue_redraw()
 
-func _die() -> void:
-	if is_dead:
-		return
-	is_dead = true
-	
-	if is_instance_valid(carried_girl):
-		carried_girl._start_running_home()
-		carried_girl = null
-		
-	var spell_sys = get_tree().get_first_node_in_group("spell_system")
-	if spell_sys and spell_sys.has_method("add_mana"):
-		spell_sys.add_mana(5 if is_boss else 2)
-		
-	died.emit(gold_reward)
-	queue_free()
-
 func _draw() -> void:
 	var bounce = sin(walk_anim) * 3.0
-	var squash_x = 1.0 + cos(walk_anim) * 0.12
-	var squash_y = 1.0 - cos(walk_anim) * 0.12
 	
-	# Мягкая тень под монстром
+	# Тень
 	draw_circle(Vector2(0, body_size * 0.8), body_size * 0.85, Color(0.0, 0.0, 0.0, 0.28))
 	
 	var draw_col = body_color
@@ -198,22 +270,29 @@ func _draw() -> void:
 	elif slow_timer > 0.0:
 		draw_col = draw_col.lerp(Color(0.2, 0.6, 1.0), 0.5)
 		
-	# Мультяшное объемное тело монстра с бликом
+	# Магический щит (Архимаг)
+	if shield > 0.0:
+		draw_arc(Vector2(0, bounce), body_size + 6.0, 0, TAU, 24, Color(0.6, 0.3, 1.0, 0.7), 2.5)
+		
+	# Тело орка / монстра
 	draw_circle(Vector2(0, bounce), body_size, draw_col)
 	draw_circle(Vector2(-body_size * 0.3, bounce - body_size * 0.3), body_size * 0.45, draw_col.lightened(0.25))
 	draw_arc(Vector2(0, bounce), body_size, 0, TAU, 22, Color(0.12, 0.18, 0.1, 0.85), 2.5)
 	
-	# Рожки и шипы
-	if monster_type == "spiky" or is_boss:
-		for i in range(5):
-			var angle = -PI * 0.8 + i * (PI * 0.4)
-			var spike_p1 = Vector2(cos(angle), sin(angle)) * body_size + Vector2(0, bounce)
-			var spike_p2 = Vector2(cos(angle), sin(angle)) * (body_size + 7.0) + Vector2(0, bounce)
-			draw_line(spike_p1, spike_p2, Color(0.25, 0.45, 0.08), 3.0)
-			draw_circle(spike_p2, 2.0, Color(0.9, 0.85, 0.2))
+	# Броня для бронированных
+	if armor >= 40.0:
+		draw_arc(Vector2(0, bounce), body_size * 0.9, -PI * 0.7, PI * 0.7, 12, Color(0.8, 0.85, 0.9), 3.5)
+		
+	# Рога вождя / колючки
+	if is_boss or monster_type == "grunt" or monster_type == "berserker":
+		for i in range(5 if is_boss else 3):
+			var angle = -PI * 0.75 + i * (PI * 0.35)
+			var p1 = Vector2(cos(angle), sin(angle)) * body_size + Vector2(0, bounce)
+			var p2 = Vector2(cos(angle), sin(angle)) * (body_size + (9.0 if is_boss else 5.0)) + Vector2(0, bounce)
+			draw_line(p1, p2, Color(0.25, 0.15, 0.08), 3.0)
 			
 	if is_boss:
-		# Золотая корона Короля Колючек
+		# Золотая корона Вождя
 		var crown_poly = PackedVector2Array([
 			Vector2(-14, bounce - body_size),
 			Vector2(-7, bounce - body_size - 14),
@@ -222,36 +301,17 @@ func _draw() -> void:
 			Vector2(14, bounce - body_size)
 		])
 		draw_polygon(crown_poly, PackedColorArray([Color(1.0, 0.85, 0.2), Color(1.0, 0.9, 0.3), Color(1.0, 0.85, 0.2), Color(1.0, 0.9, 0.3), Color(1.0, 0.85, 0.2)]))
-		draw_circle(Vector2(0, bounce - body_size - 6), 2.5, Color(0.9, 0.2, 0.2))
 	
-	# Большие выразительные глаза
+	# Глаза
 	var look_dir = 1.0 if current_state == MonsterState.ADVANCING else -1.0
 	var eye_center = Vector2(3.0 * look_dir, -3.0 + bounce)
 	
-	# Белки глаз
-	draw_circle(eye_center + Vector2(-4, 0), body_size * 0.26, Color(1.0, 1.0, 1.0))
-	draw_circle(eye_center + Vector2(4, 0), body_size * 0.26, Color(1.0, 1.0, 1.0))
-	# Зрачки
-	draw_circle(eye_center + Vector2(-4 + look_dir * 1.5, 0), body_size * 0.13, Color(0.1, 0.1, 0.12))
-	draw_circle(eye_center + Vector2(4 + look_dir * 1.5, 0), body_size * 0.13, Color(0.1, 0.1, 0.12))
-	# Блики в глазах
-	draw_circle(eye_center + Vector2(-5 + look_dir * 1.5, -1.5), 1.0, Color(1.0, 1.0, 1.0))
-	draw_circle(eye_center + Vector2(3 + look_dir * 1.5, -1.5), 1.0, Color(1.0, 1.0, 1.0))
+	draw_circle(eye_center + Vector2(-4, 0), body_size * 0.24, Color(1.0, 1.0, 1.0))
+	draw_circle(eye_center + Vector2(4, 0), body_size * 0.24, Color(1.0, 1.0, 1.0))
+	draw_circle(eye_center + Vector2(-4 + look_dir * 1.5, 0), body_size * 0.12, Color(0.8, 0.1, 0.1) if is_boss else Color(0.1, 0.1, 0.12))
+	draw_circle(eye_center + Vector2(4 + look_dir * 1.5, 0), body_size * 0.12, Color(0.8, 0.1, 0.1) if is_boss else Color(0.1, 0.1, 0.12))
 	
-	# Зубастый ротик
-	draw_arc(eye_center + Vector2(0, 8), 5.0, 0, PI, 8, Color(0.15, 0.15, 0.2), 2.0)
-	draw_polygon(
-		PackedVector2Array([eye_center + Vector2(-3, 8), eye_center + Vector2(-1, 11), eye_center + Vector2(1, 8)]),
-		PackedColorArray([Color(1, 1, 1), Color(1, 1, 1), Color(1, 1, 1)])
-	)
-	
-	# Крылья летунов
-	if is_flyer:
-		var wing_y = -body_size * 0.5 + sin(walk_anim * 2.5) * 6.0
-		draw_circle(Vector2(-body_size * 0.9, wing_y), 7.0, Color(0.8, 0.95, 1.0, 0.75))
-		draw_circle(Vector2(body_size * 0.9, wing_y), 7.0, Color(0.8, 0.95, 1.0, 0.75))
-		
-	# HP Bar с градиентом
+	# HP Bar
 	var bar_w = body_size * 2.4
 	var bar_h = 5.0 if is_boss else 4.0
 	var bar_y = -body_size - (16.0 if is_boss else 9.0) + bounce
@@ -263,3 +323,4 @@ func _draw() -> void:
 	var fg_rect = Rect2(-bar_w / 2.0, bar_y, bar_w * health_ratio, bar_h)
 	draw_rect(fg_rect, hp_color)
 	draw_rect(bg_rect, Color(0.0, 0.0, 0.0, 0.9), false, 1.0)
+

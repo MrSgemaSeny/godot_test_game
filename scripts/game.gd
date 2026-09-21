@@ -2,6 +2,7 @@ class_name Game
 extends Node2D
 
 @onready var game_manager: GameManager = $GameManager
+@onready var wave_controller = $WaveController
 @onready var meta_manager: MetaManager = $MetaManager
 @onready var tech_tree_manager: TechTreeManager = $TechTreeManager
 @onready var spell_system: SpellSystem = $SpellSystem
@@ -18,10 +19,6 @@ var girl_script = preload("res://scripts/girl_npc.gd")
 var map_obj_script = preload("res://scripts/interactive_map_obj.gd")
 var floating_text_script = preload("res://scripts/floating_text.gd")
 
-var active_enemies: int = 0
-var wave_in_progress: bool = false
-var auto_start_timer: float = 0.0
-var is_counting_down: bool = false
 var total_girls: int = 5
 var scene_anim_time: float = 0.0
 var tip_timer: float = 0.0
@@ -87,6 +84,13 @@ func _setup_signals() -> void:
 	
 	hud.start_wave_pressed.connect(_on_start_wave_pressed)
 	hud.restart_pressed.connect(_start_new_game)
+	
+	if is_instance_valid(wave_controller):
+		wave_controller.wave_countdown_tick.connect(_on_wave_countdown_tick)
+		wave_controller.wave_started.connect(_on_wave_started)
+		wave_controller.enemy_spawn_requested.connect(_spawn_monster)
+		wave_controller.wave_completed.connect(_on_wave_completed)
+		wave_controller.all_waves_completed.connect(_on_all_waves_completed)
 
 func _setup_path() -> void:
 	var curve = Curve2D.new()
@@ -168,7 +172,7 @@ func _setup_girls() -> void:
 func _start_new_game() -> void:
 	if is_instance_valid(enemies_container):
 		for child in enemies_container.get_children():
-			if child is MonsterBase or child is EnemyBase:
+			if child is MonsterBase:
 				child.queue_free()
 	if is_instance_valid(projectiles_container):
 		for child in projectiles_container.get_children():
@@ -179,20 +183,18 @@ func _start_new_game() -> void:
 			if spot is BuildSpot and spot.has_tower():
 				spot.sell_tower()
 			
-	active_enemies = 0
-	wave_in_progress = false
-	is_counting_down = false
-	
 	if is_instance_valid(game_manager):
 		game_manager.reset_game()
 	_setup_girls()
 	_setup_interactive_objects()
+	
 	if is_instance_valid(hud):
 		hud.end_screen.visible = false
-		hud.set_countdown(GameManager.PRE_WAVE_TIME)
 		hud.set_wave_button_enabled(true)
-		is_counting_down = true
-		auto_start_timer = GameManager.PRE_WAVE_TIME
+		
+	if is_instance_valid(wave_controller):
+		wave_controller.reset_waves()
+		wave_controller.start_wave_countdown(GameManager.PRE_WAVE_TIME)
 
 func _process(delta: float) -> void:
 	scene_anim_time += delta
@@ -205,82 +207,30 @@ func _process(delta: float) -> void:
 		tip_index = (tip_index + 1) % tips.size()
 		if is_instance_valid(hud):
 			hud.set_hint(tips[tip_index])
-			
-	if is_counting_down:
-		auto_start_timer -= delta
-		if auto_start_timer <= 0.0:
-			is_counting_down = false
-			_start_wave()
 
-func _start_intermission_timer() -> void:
-	if game_manager.current_wave >= GameManager.TOTAL_WAVES:
-		return
-	auto_start_timer = GameManager.PRE_WAVE_TIME
-	is_counting_down = true
-	hud.set_countdown(auto_start_timer)
-	hud.set_wave_button_enabled(true)
+func _on_wave_countdown_tick(time_left: float, total_time: float, is_boss: bool) -> void:
+	if is_instance_valid(hud):
+		hud.set_countdown(time_left)
+		if is_instance_valid(hud.wave_clock):
+			hud.wave_clock.set_countdown(time_left, total_time, is_boss)
 
 func _on_start_wave_pressed() -> void:
-	if is_counting_down and auto_start_timer > 0.0:
-		var bonus = int(game_manager.gold * 0.10)
-		if bonus > 0:
+	if is_instance_valid(wave_controller) and wave_controller.is_counting_down:
+		var bonus = int(game_manager.gold * 0.10) if is_instance_valid(game_manager) else 0
+		if bonus > 0 and is_instance_valid(game_manager):
 			game_manager.add_gold(bonus)
 			_spawn_floating_text("+%d🪙 Ранний старт!" % bonus, Color(1.0, 0.88, 0.2), Vector2(640, 200), 16)
-	_start_wave()
+		wave_controller.start_current_wave(true)
 
-func _start_wave() -> void:
-	if wave_in_progress:
-		return
-		
-	is_counting_down = false
-	wave_in_progress = true
-	hud.stop_countdown()
-	hud.set_wave_button_enabled(false)
-	
-	game_manager.current_wave += 1
-	game_manager.wave_changed.emit(game_manager.current_wave, GameManager.TOTAL_WAVES)
-	game_manager.set_state(GameManager.GameState.WAVE_IN_PROGRESS)
-	game_manager.on_wave_started()
-	
-	var wave_idx = game_manager.current_wave - 1
-	if wave_idx < game_manager.waves_data.size():
-		var wave_cfg = game_manager.waves_data[wave_idx]
-		_spawn_wave_groups(wave_cfg.get("spawn_groups", []))
-	else:
-		_spawn_fallback_wave(game_manager.current_wave)
-
-func _spawn_wave_groups(groups: Array) -> void:
-	var total_to_spawn = 0
-	for g in groups:
-		total_to_spawn += g.get("count", 0)
-	active_enemies = total_to_spawn
-	
-	for group in groups:
-		var enemy_type = group.get("enemy_type", "spiky")
-		var count = group.get("count", 5)
-		var interval = group.get("interval", 1.0)
-		var delay = group.get("delay", 0.0)
-		_spawn_group_coroutine(enemy_type, count, interval, delay)
-
-func _spawn_group_coroutine(enemy_type: String, count: int, interval: float, delay: float) -> void:
-	if delay > 0.0:
-		await get_tree().create_timer(delay).timeout
-		
-	for i in range(count):
-		if game_manager.game_state == GameManager.GameState.GAME_OVER:
-			return
-		_spawn_monster(enemy_type)
-		if i < count - 1:
-			await get_tree().create_timer(interval).timeout
-
-func _spawn_fallback_wave(wave_num: int) -> void:
-	var count = 6 + wave_num * 3
-	active_enemies = count
-	for i in range(count):
-		if game_manager.game_state == GameManager.GameState.GAME_OVER:
-			return
-		_spawn_monster("spiky")
-		await get_tree().create_timer(1.0).timeout
+func _on_wave_started(wave_num: int, total_waves: int, _is_boss: bool) -> void:
+	if is_instance_valid(game_manager):
+		game_manager.current_wave = wave_num
+		game_manager.wave_changed.emit(wave_num, total_waves)
+		game_manager.set_state(GameManager.GameState.WAVE_IN_PROGRESS)
+		game_manager.on_wave_started()
+	if is_instance_valid(hud):
+		hud.stop_countdown()
+		hud.set_wave_button_enabled(false)
 
 func _spawn_monster(enemy_type: String) -> void:
 	var monster = PathFollow2D.new()
@@ -289,7 +239,10 @@ func _spawn_monster(enemy_type: String) -> void:
 	monster.add_to_group("enemies")
 	
 	monster.died.connect(func(r): _on_monster_died(r, monster.global_position))
-	monster.escaped_with_girl.connect(_on_monster_escaped)
+	monster.finished.connect(func(outcome, reward): 
+		if is_instance_valid(wave_controller):
+			wave_controller.register_enemy_finished(outcome, reward)
+	)
 	monster.took_damage.connect(func(dmg, type): _on_monster_took_damage(dmg, type, monster.global_position))
 	monster.healed.connect(func(amt): _spawn_floating_text("+%d HP" % int(amt), Color(0.2, 0.95, 0.3), monster.global_position, 12))
 	
@@ -300,12 +253,32 @@ func _on_monster_took_damage(dmg: float, type: String, pos: Vector2) -> void:
 	_spawn_floating_text("-%d" % int(ceil(dmg)), col, pos + Vector2(0, -10), 12)
 
 func _on_monster_died(reward: int, pos: Vector2) -> void:
-	game_manager.add_gold(reward)
+	if is_instance_valid(game_manager):
+		game_manager.add_gold(reward)
 	_spawn_floating_text("+%d🪙" % reward, Color(1.0, 0.88, 0.25), pos, 15)
-	_check_monster_count()
 
-func _on_monster_escaped() -> void:
-	_check_monster_count()
+func _on_wave_completed(_wave_num: int, is_last_wave: bool) -> void:
+	if is_instance_valid(tech_tree_manager):
+		tech_tree_manager.add_points(1)
+	
+	var end_bonus = tech_tree_manager.get_end_wave_bonus_gold() if is_instance_valid(tech_tree_manager) else 0
+	if end_bonus > 0 and is_instance_valid(game_manager):
+		game_manager.add_gold(end_bonus)
+		_spawn_floating_text("+%d🪙 Казна" % end_bonus, Color(1.0, 0.88, 0.2), Vector2(640, 200), 16)
+		
+	if is_instance_valid(game_manager):
+		if is_last_wave:
+			game_manager.set_state(GameManager.GameState.VICTORY)
+		else:
+			game_manager.set_state(GameManager.GameState.BUILDING)
+			if is_instance_valid(wave_controller):
+				wave_controller.start_wave_countdown(GameManager.PRE_WAVE_TIME)
+			if is_instance_valid(hud):
+				hud.set_wave_button_enabled(true)
+
+func _on_all_waves_completed() -> void:
+	if is_instance_valid(game_manager):
+		game_manager.set_state(GameManager.GameState.VICTORY)
 
 func _on_girl_rescued(girl: GirlNPC) -> void:
 	_spawn_floating_text("❤️ Спасена!", Color(1.0, 0.3, 0.6), girl.global_position + Vector2(0, -20), 16)
@@ -330,36 +303,18 @@ func _spawn_floating_text(p_text: String, p_color: Color, p_pos: Vector2, p_size
 	ft.setup(p_text, p_color, p_size, 0.85)
 	add_child(ft)
 
-func _check_monster_count() -> void:
-	active_enemies = max(0, active_enemies - 1)
-	if active_enemies == 0 and wave_in_progress:
-		wave_in_progress = false
-		if is_instance_valid(tech_tree_manager):
-			tech_tree_manager.add_points(1)
-		
-		var end_bonus = tech_tree_manager.get_end_wave_bonus_gold() if is_instance_valid(tech_tree_manager) else 0
-		if end_bonus > 0 and is_instance_valid(game_manager):
-			game_manager.add_gold(end_bonus)
-			_spawn_floating_text("+%d🪙 Казна" % end_bonus, Color(1.0, 0.88, 0.2), Vector2(640, 200), 16)
-			
-		if is_instance_valid(game_manager):
-			if game_manager.current_wave >= GameManager.TOTAL_WAVES:
-				game_manager.set_state(GameManager.GameState.VICTORY)
-			else:
-				game_manager.set_state(GameManager.GameState.BUILDING)
-				_start_intermission_timer()
-
 func _on_game_state_changed(state: GameManager.GameState) -> void:
 	if state == GameManager.GameState.GAME_OVER:
-		wave_in_progress = false
-		is_counting_down = false
+		if is_instance_valid(wave_controller):
+			wave_controller.stop_countdown()
 		if is_instance_valid(hud):
 			hud.show_game_over(false)
 	elif state == GameManager.GameState.VICTORY:
-		wave_in_progress = false
-		is_counting_down = false
+		if is_instance_valid(wave_controller):
+			wave_controller.stop_countdown()
 		if is_instance_valid(hud):
 			hud.show_game_over(true)
+
 
 func _on_spot_clicked(spot: BuildSpot) -> void:
 	if is_instance_valid(build_spots_container):
@@ -386,7 +341,7 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo:
 		match event.keycode:
 			KEY_SPACE:
-				if is_counting_down:
+				if is_instance_valid(wave_controller) and wave_controller.is_counting_down:
 					_on_start_wave_pressed()
 				else:
 					var new_spd = 0.0 if Engine.time_scale > 0.0 else 1.0

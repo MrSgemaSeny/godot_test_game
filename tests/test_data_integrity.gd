@@ -2,15 +2,15 @@ class_name TestDataIntegrity
 extends TestBase
 
 func test_towers_database_integrity() -> void:
-	assert_true(FileAccess.file_exists("res://data/towers_database.json"), "towers_database.json must exist")
-	var file = FileAccess.open("res://data/towers_database.json", FileAccess.READ)
+	assert_true(FileAccess.file_exists("res://data/towers.json"), "towers.json must exist")
+	var file = FileAccess.open("res://data/towers.json", FileAccess.READ)
 	var json = JSON.new()
 	var parse_err = json.parse(file.get_as_text())
-	assert_eq(parse_err, OK, "towers_database.json must be valid JSON")
-	assert_true(json.data is Dictionary, "towers_database.json root must be a Dictionary")
+	assert_eq(parse_err, OK, "towers.json must be valid JSON")
+	assert_true(json.data is Dictionary, "towers.json root must be a Dictionary")
 	
 	var data: Dictionary = json.data
-	assert_gt(data.size(), 0, "towers_database.json must contain towers")
+	assert_gt(data.size(), 0, "towers.json must contain towers")
 	
 	var expected_keys = ["name", "cost", "damage_type", "levels"]
 	for tower_id in data:
@@ -23,20 +23,21 @@ func test_towers_database_integrity() -> void:
 		assert_gt(levels.size(), 0, "Tower %s must have at least 1 level" % tower_id)
 		assert_gt(levels[0].range, 0.0, "Tower %s level 1 range must be > 0" % tower_id)
 
-func test_monsters_database_integrity() -> void:
-	assert_true(FileAccess.file_exists("res://data/monsters_database.json"), "monsters_database.json must exist")
-	var file = FileAccess.open("res://data/monsters_database.json", FileAccess.READ)
+func test_enemies_database_integrity() -> void:
+	assert_true(FileAccess.file_exists("res://data/enemies.json"), "enemies.json must exist")
+	var file = FileAccess.open("res://data/enemies.json", FileAccess.READ)
 	var json = JSON.new()
-	assert_eq(json.parse(file.get_as_text()), OK, "monsters_database.json must be valid JSON")
+	assert_eq(json.parse(file.get_as_text()), OK, "enemies.json must be valid JSON")
 	var data: Dictionary = json.data
 	
-	var required_monsters = ["spiky", "goggle", "fish_flyer", "armored_crab", "shaman", "thief", "boss_thorn_king"]
-	for m_id in required_monsters:
-		assert_true(data.has(m_id), "monsters_database must contain monster '%s'" % m_id)
-		var minfo = data[m_id]
-		assert_gt(minfo.max_health, 0.0, "Monster %s max_health must be > 0" % m_id)
-		assert_gt(minfo.speed, 0.0, "Monster %s speed must be > 0" % m_id)
-		assert_gt(minfo.gold_reward, 0, "Monster %s gold_reward must be > 0" % m_id)
+	var required_enemies = ["grunt", "berserker", "armored", "shaman", "troll", "stealth", "warchief_boss", "archmage_boss"]
+	for e_id in required_enemies:
+		assert_true(data.has(e_id), "enemies.json must contain enemy '%s'" % e_id)
+		var einfo = data[e_id]
+		assert_gt(einfo.max_health, 0.0, "Enemy %s max_health must be > 0" % e_id)
+		assert_gt(einfo.speed, 0.0, "Enemy %s speed must be > 0" % e_id)
+		assert_gt(einfo.gold_reward, 0, "Enemy %s gold_reward must be > 0" % e_id)
+
 
 func test_spells_database_integrity() -> void:
 	assert_true(FileAccess.file_exists("res://data/spells_database.json"), "spells_database.json must exist")

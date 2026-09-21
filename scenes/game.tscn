@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" path="res://scenes/tech_tree_modal.tscn" id="7_modal"]
 [ext_resource type="PackedScene" path="res://scenes/help_modal.tscn" id="8_help_modal"]
 [ext_resource type="Script" path="res://scripts/wave_clock.gd" id="9_clock"]
+[ext_resource type="Script" path="res://scripts/wave_controller.gd" id="10_wave"]
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_game")
@@ -16,8 +17,12 @@ script = ExtResource("1_game")
 [node name="GameManager" type="Node" parent="."]
 script = ExtResource("2_gmanager")
 
+[node name="WaveController" type="Node" parent="."]
+script = ExtResource("10_wave")
+
 [node name="MetaManager" type="Node" parent="."]
 script = ExtResource("3_meta")
+
 
 [node name="TechTreeManager" type="Node" parent="."]
 script = ExtResource("4_tech")

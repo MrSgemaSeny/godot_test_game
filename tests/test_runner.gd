@@ -39,6 +39,7 @@ func run_all_tests() -> void:
 		preload("res://tests/test_towers_and_combat.gd"),
 		preload("res://tests/test_monsters_and_girls.gd"),
 		preload("res://tests/test_interactive_objects.gd"),
+		preload("res://tests/test_wave_controller.gd"),
 		preload("res://tests/test_scene_integration.gd")
 	]
 	

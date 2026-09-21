@@ -23,6 +23,41 @@ func load_tech_data() -> void:
 	if json.parse(file.get_as_text()) == OK and json.data is Array:
 		tech_nodes_data = json.data
 
+func validate_tech_tree() -> Dictionary:
+	var errors: Array = []
+	var known_ids: Dictionary = {}
+	
+	for node in tech_nodes_data:
+		var node_id = node.get("id", "")
+		if node_id.is_empty():
+			errors.append("Found tech node with empty ID")
+			continue
+		if known_ids.has(node_id):
+			errors.append("Duplicate tech node ID: %s" % node_id)
+		known_ids[node_id] = node
+		
+		var cost = node.get("cost", 0)
+		if cost < 0:
+			errors.append("Negative cost for node: %s" % node_id)
+			
+	for node in tech_nodes_data:
+		var node_id = node.get("id", "")
+		var reqs = node.get("requires", [])
+		for r in reqs:
+			if not known_ids.has(r):
+				errors.append("Node %s requires unknown node %s" % [node_id, r])
+				
+		var muts = node.get("mutually_exclusive", [])
+		for m in muts:
+			if not known_ids.has(m):
+				errors.append("Node %s has unknown mutually_exclusive node %s" % [node_id, m])
+				
+	return {
+		"valid": errors.is_empty(),
+		"errors": errors
+	}
+
+
 func reset_tree(initial_points: int = 0) -> void:
 	research_points = initial_points
 	unlocked_nodes = []
