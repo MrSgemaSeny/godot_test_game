@@ -25,9 +25,24 @@ func test_instantiate_meta_tree() -> void:
 func test_instantiate_tech_tree_modal() -> void:
 	var scene = load("res://scenes/tech_tree_modal.tscn")
 	assert_not_null(scene, "tech_tree_modal.tscn must load")
-	var instance = scene.instantiate()
+	var instance = scene.instantiate() as TechTreeModal
 	assert_not_null(instance, "tech_tree_modal.tscn must instantiate")
-	instance.free()
+	
+	# Test opening modal and rendering cards without crashing
+	var tech_manager = TechTreeManager.new()
+	tech_manager.load_tech_data()
+	tech_manager.add_to_group("tech_tree_manager")
+	instance.tech_tree = tech_manager
+	
+	# Add to dummy tree node to initialize @onready nodes
+	var root = Node.new()
+	root.add_child(instance)
+	instance.open_modal()
+	assert_true(instance.visible, "Modal should be visible when opened")
+	
+	root.free()
+	tech_manager.free()
+
 
 func test_instantiate_game_scene() -> void:
 	var scene = load("res://scenes/game.tscn")

@@ -4,9 +4,9 @@ extends PanelContainer
 signal closed()
 
 @onready var points_label: Label = $MarginContainer/VBoxContainer/Header/PointsLabel
-@onready var defense_box: VBoxContainer = $MarginContainer/VBoxContainer/ScrollContainer/HBoxContainer/DefenseBranch/VBox
-@onready var econ_box: VBoxContainer = $MarginContainer/VBoxContainer/ScrollContainer/HBoxContainer/EconBranch/VBox
-@onready var special_box: VBoxContainer = $MarginContainer/VBoxContainer/ScrollContainer/HBoxContainer/SpecialBranch/VBox
+@onready var defense_box: VBoxContainer = $MarginContainer/VBoxContainer/ScrollContainer/HBoxContainer/DefenseBranch/Margin/VBox
+@onready var econ_box: VBoxContainer = $MarginContainer/VBoxContainer/ScrollContainer/HBoxContainer/EconBranch/Margin/VBox
+@onready var special_box: VBoxContainer = $MarginContainer/VBoxContainer/ScrollContainer/HBoxContainer/SpecialBranch/Margin/VBox
 @onready var close_btn: Button = $MarginContainer/VBoxContainer/CloseButton
 
 var tech_tree: TechTreeManager = null
@@ -15,7 +15,8 @@ func _ready() -> void:
 	close_btn.pressed.connect(_on_close_pressed)
 
 func open_modal() -> void:
-	tech_tree = get_tree().get_first_node_in_group("tech_tree_manager") as TechTreeManager
+	if not tech_tree and is_inside_tree() and get_tree():
+		tech_tree = get_tree().get_first_node_in_group("tech_tree_manager") as TechTreeManager
 	if tech_tree:
 		if not tech_tree.research_points_changed.is_connected(_update_ui):
 			tech_tree.research_points_changed.connect(_update_ui)
@@ -28,7 +29,8 @@ func _on_node_unlocked(_id: String) -> void:
 	_update_ui(tech_tree.research_points if tech_tree else 0)
 
 func _update_ui(points: int) -> void:
-	points_label.text = "📜 Очки исследований: %d" % points
+	if is_instance_valid(points_label):
+		points_label.text = "📜 Очки исследований: %d" % points
 	_render_nodes()
 
 func _render_nodes() -> void:
@@ -47,7 +49,8 @@ func _render_nodes() -> void:
 		elif branch == "special":
 			target_box = special_box
 			
-		_create_node_card(node, target_box)
+		if is_instance_valid(target_box):
+			_create_node_card(node, target_box)
 
 func _clear_container(box: VBoxContainer) -> void:
 	if is_instance_valid(box):
@@ -55,6 +58,8 @@ func _clear_container(box: VBoxContainer) -> void:
 			child.queue_free()
 
 func _create_node_card(node_data: Dictionary, container: VBoxContainer) -> void:
+	if not is_instance_valid(container):
+		return
 	var node_id = node_data.get("id", "")
 	var node_name = node_data.get("name", "")
 	var node_desc = node_data.get("description", "")

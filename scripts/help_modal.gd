@@ -3,7 +3,7 @@ extends PanelContainer
 
 signal closed()
 
-@onready var close_btn: Button = $Margin/VBox/CloseButton
+@onready var close_btn: Button = $Margin/VBox/Header/CloseButton
 @onready var tabs: TabContainer = $Margin/VBox/TabContainer
 
 func _ready() -> void:

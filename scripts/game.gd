@@ -416,6 +416,22 @@ func _unhandled_input(event: InputEvent) -> void:
 			KEY_H:
 				if is_instance_valid(hud):
 					hud._on_help_clicked()
+			KEY_T:
+				if is_instance_valid(hud):
+					hud._on_tech_tree_clicked()
+			KEY_ESCAPE:
+				if is_instance_valid(hud):
+					if is_instance_valid(hud.tech_tree_modal) and hud.tech_tree_modal.visible:
+						hud.tech_tree_modal.visible = false
+					elif is_instance_valid(hud.help_modal) and hud.help_modal.visible:
+						hud.help_modal.visible = false
+					elif is_instance_valid(game_manager):
+						game_manager.select_spot(null)
+						if is_instance_valid(build_spots_container):
+							for child in build_spots_container.get_children():
+								if child is BuildSpot:
+									child.set_selected(false)
+						queue_redraw()
 
 func _draw() -> void:
 	# 1. Сказочный изумрудный холмистый ландшафт Кудрявой Долины
