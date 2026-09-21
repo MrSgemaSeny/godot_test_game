@@ -58,10 +58,20 @@ func set_chosen_path(path_id: String) -> void:
 	path_changed.emit(selected_path)
 
 func reset_game() -> void:
-	var meta = get_tree().get_first_node_in_group("meta_manager") as MetaManager
-	var bonus_gold = meta.get_starting_gold_bonus() if meta else 0
-	var bonus_lives = meta.get_bonus_lives() if meta else 0
-	var start_research = meta.get_starting_research_bonus() if meta else 0
+	var bonus_gold = 0
+	var bonus_lives = 0
+	var start_research = 0
+	
+	if is_inside_tree():
+		var meta = get_tree().get_first_node_in_group("meta_manager") as MetaManager
+		if meta:
+			bonus_gold = meta.get_starting_gold_bonus()
+			bonus_lives = meta.get_bonus_lives()
+			start_research = meta.get_starting_research_bonus()
+			
+		var tech_tree = get_tree().get_first_node_in_group("tech_tree_manager") as TechTreeManager
+		if tech_tree:
+			tech_tree.reset_tree(start_research)
 	
 	gold = BASE_GOLD + bonus_gold
 	lives = BASE_LIVES + bonus_lives
@@ -73,10 +83,6 @@ func reset_game() -> void:
 	ability_active = false
 	ability_timer = 0.0
 	discount_active_wave = false
-	
-	var tech_tree = get_tree().get_first_node_in_group("tech_tree_manager") as TechTreeManager
-	if tech_tree:
-		tech_tree.reset_tree(start_research)
 	
 	gold_changed.emit(gold)
 	lives_changed.emit(lives)
@@ -115,10 +121,11 @@ func trigger_path_ability() -> bool:
 		return true
 	elif selected_path == "magic":
 		# Аркан-сеть: Заморозка всех активных орков на карте на 3 сек
-		var enemies = get_tree().get_nodes_in_group("enemies")
-		for enemy in enemies:
-			if is_instance_valid(enemy) and enemy.has_method("apply_slow"):
-				enemy.apply_slow(0.95, 3.0)
+		if is_inside_tree():
+			var enemies = get_tree().get_nodes_in_group("enemies")
+			for enemy in enemies:
+				if is_instance_valid(enemy) and enemy.has_method("apply_slow"):
+					enemy.apply_slow(0.95, 3.0)
 		ability_status_changed.emit(ability_ready, false, 0.0)
 		return true
 	elif selected_path == "economy":

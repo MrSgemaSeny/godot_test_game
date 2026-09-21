@@ -90,8 +90,9 @@ func _setup_path() -> void:
 	path2d.curve = curve
 
 func _setup_build_spots() -> void:
-	for child in build_spots_container.get_children():
-		child.queue_free()
+	if is_instance_valid(build_spots_container):
+		for child in build_spots_container.get_children():
+			child.queue_free()
 		
 	# 12 тактических мест у поворотов дороги
 	var spot_positions = [
@@ -109,63 +110,71 @@ func _setup_build_spots() -> void:
 		Vector2(1100, 360)
 	]
 	
-	for pos in spot_positions:
-		var spot = Area2D.new()
-		spot.set_script(preload("res://scripts/build_spot.gd"))
-		spot.position = pos
-		spot.clicked.connect(_on_spot_clicked)
-		build_spots_container.add_child(spot)
+	if is_instance_valid(build_spots_container):
+		for pos in spot_positions:
+			var spot = Area2D.new()
+			spot.set_script(preload("res://scripts/build_spot.gd"))
+			spot.position = pos
+			spot.clicked.connect(_on_spot_clicked)
+			build_spots_container.add_child(spot)
 
 func _setup_interactive_objects() -> void:
-	for child in interactive_container.get_children():
-		child.queue_free()
+	if is_instance_valid(interactive_container):
+		for child in interactive_container.get_children():
+			child.queue_free()
 		
-	# Размещаем бочки с порохом на обочине у поворотов
-	var barrel_positions = [Vector2(260, 370), Vector2(600, 350), Vector2(940, 370)]
-	for pos in barrel_positions:
-		var barrel = Area2D.new()
-		barrel.set_script(map_obj_script)
-		barrel.object_type = "barrel"
-		barrel.position = pos
-		interactive_container.add_child(barrel)
-		
-	var chest = Area2D.new()
-	chest.set_script(map_obj_script)
-	chest.object_type = "chest"
-	chest.position = Vector2(1120, 420)
-	interactive_container.add_child(chest)
+		# Размещаем бочки с порохом на обочине у поворотов
+		var barrel_positions = [Vector2(260, 370), Vector2(600, 350), Vector2(940, 370)]
+		for pos in barrel_positions:
+			var barrel = Area2D.new()
+			barrel.set_script(map_obj_script)
+			barrel.object_type = "barrel"
+			barrel.position = pos
+			interactive_container.add_child(barrel)
+			
+		var chest = Area2D.new()
+		chest.set_script(map_obj_script)
+		chest.object_type = "chest"
+		chest.position = Vector2(1120, 420)
+		interactive_container.add_child(chest)
 
 func _setup_girls() -> void:
-	for child in girls_container.get_children():
-		child.queue_free()
+	if is_instance_valid(girls_container):
+		for child in girls_container.get_children():
+			child.queue_free()
 		
-	var village_center = Vector2(1150, 530)
-	for i in range(total_girls):
-		var girl = Node2D.new()
-		girl.set_script(girl_script)
-		girl.position = village_center + Vector2(randf_range(-30, 30), randf_range(-30, 30))
-		girl.add_to_group("girls")
-		girl.rescued.connect(_on_girl_rescued)
-		girls_container.add_child(girl)
+		var village_center = Vector2(1150, 530)
+		for i in range(total_girls):
+			var girl = Node2D.new()
+			girl.set_script(girl_script)
+			girl.position = village_center + Vector2(randf_range(-30, 30), randf_range(-30, 30))
+			girl.add_to_group("girls")
+			girl.rescued.connect(_on_girl_rescued)
+			girls_container.add_child(girl)
 		
-	hud.update_girls_count(total_girls)
+	if is_instance_valid(hud):
+		hud.update_girls_count(total_girls)
 
 func _start_new_game() -> void:
-	for child in enemies_container.get_children():
-		if child is MonsterBase or child is EnemyBase:
+	if is_instance_valid(enemies_container):
+		for child in enemies_container.get_children():
+			if child is MonsterBase or child is EnemyBase:
+				child.queue_free()
+	if is_instance_valid(projectiles_container):
+		for child in projectiles_container.get_children():
 			child.queue_free()
-	for child in projectiles_container.get_children():
-		child.queue_free()
 		
-	for spot in build_spots_container.get_children():
-		if spot is BuildSpot and spot.has_tower():
-			spot.sell_tower()
+	if is_instance_valid(build_spots_container):
+		for spot in build_spots_container.get_children():
+			if spot is BuildSpot and spot.has_tower():
+				spot.sell_tower()
 			
 	active_enemies = 0
 	wave_in_progress = false
 	is_counting_down = false
 	
-	game_manager.reset_game()
+	if is_instance_valid(game_manager):
+		game_manager.reset_game()
 	_setup_girls()
 	_setup_interactive_objects()
 	hud.end_screen.visible = false
@@ -276,51 +285,61 @@ func _on_lives_changed(_new_lives: int) -> void:
 
 func _update_girls_ui() -> void:
 	var free_girls = 0
-	for g in girls_container.get_children():
-		if is_instance_valid(g) and g.current_state != GirlNPC.State.BEING_CARRIED:
-			free_girls += 1
-	hud.update_girls_count(free_girls)
+	if is_instance_valid(girls_container):
+		for g in girls_container.get_children():
+			if is_instance_valid(g) and g.current_state != GirlNPC.State.BEING_CARRIED:
+				free_girls += 1
+	if is_instance_valid(hud):
+		hud.update_girls_count(free_girls)
 
 func _check_monster_count() -> void:
 	active_enemies = max(0, active_enemies - 1)
 	if active_enemies == 0 and wave_in_progress:
 		wave_in_progress = false
-		tech_tree_manager.add_points(1)
+		if is_instance_valid(tech_tree_manager):
+			tech_tree_manager.add_points(1)
 		
-		var end_bonus = tech_tree_manager.get_end_wave_bonus_gold()
-		if end_bonus > 0:
+		var end_bonus = tech_tree_manager.get_end_wave_bonus_gold() if is_instance_valid(tech_tree_manager) else 0
+		if end_bonus > 0 and is_instance_valid(game_manager):
 			game_manager.add_gold(end_bonus)
 			
-		if game_manager.current_wave >= GameManager.TOTAL_WAVES:
-			game_manager.set_state(GameManager.GameState.VICTORY)
-		else:
-			game_manager.set_state(GameManager.GameState.BUILDING)
-			_start_intermission_timer()
+		if is_instance_valid(game_manager):
+			if game_manager.current_wave >= GameManager.TOTAL_WAVES:
+				game_manager.set_state(GameManager.GameState.VICTORY)
+			else:
+				game_manager.set_state(GameManager.GameState.BUILDING)
+				_start_intermission_timer()
 
 func _on_game_state_changed(state: GameManager.GameState) -> void:
 	if state == GameManager.GameState.GAME_OVER:
 		wave_in_progress = false
 		is_counting_down = false
-		hud.show_game_over(false)
+		if is_instance_valid(hud):
+			hud.show_game_over(false)
 	elif state == GameManager.GameState.VICTORY:
 		wave_in_progress = false
 		is_counting_down = false
-		hud.show_game_over(true)
+		if is_instance_valid(hud):
+			hud.show_game_over(true)
 
 func _on_spot_clicked(spot: BuildSpot) -> void:
-	for child in build_spots_container.get_children():
-		if child is BuildSpot and child != spot:
-			child.set_selected(false)
+	if is_instance_valid(build_spots_container):
+		for child in build_spots_container.get_children():
+			if child is BuildSpot and child != spot:
+				child.set_selected(false)
 			
 	spot.set_selected(true)
-	game_manager.select_spot(spot)
+	if is_instance_valid(game_manager):
+		game_manager.select_spot(spot)
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
-		for child in build_spots_container.get_children():
-			if child is BuildSpot:
-				child.set_selected(false)
-		game_manager.select_spot(null)
+		if is_instance_valid(build_spots_container):
+			for child in build_spots_container.get_children():
+				if child is BuildSpot:
+					child.set_selected(false)
+		if is_instance_valid(game_manager):
+			game_manager.select_spot(null)
 
 func _draw() -> void:
 	# 1. Сказочный изумрудный холмистый ландшафт Кудрявой Долины

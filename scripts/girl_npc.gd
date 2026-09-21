@@ -66,13 +66,18 @@ func _process_village_wander(delta: float) -> void:
 		global_position += dir.normalized() * 22.0 * delta
 
 func _process_running_home(delta: float) -> void:
-	var dir = (home_position - global_position)
+	var cur_pos = global_position if is_inside_tree() else position
+	var dir = (home_position - cur_pos)
 	if dir.length() <= 8.0:
 		current_state = State.IN_VILLAGE
 		carrier_monster = null
 		rescued.emit(self)
 	else:
-		global_position += dir.normalized() * run_speed * delta
+		var step = dir.normalized() * run_speed * delta
+		if is_inside_tree():
+			global_position += step
+		else:
+			position += step
 
 func get_kidnapped_by(monster: Node2D) -> void:
 	current_state = State.BEING_CARRIED

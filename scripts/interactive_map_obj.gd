@@ -37,18 +37,20 @@ func activate() -> void:
 	
 	if object_type == "barrel":
 		# Взрыв бочки с порохом!
-		var enemies = get_tree().get_nodes_in_group("enemies")
-		for enemy in enemies:
-			if is_instance_valid(enemy) and not enemy.get("is_dead"):
-				if global_position.distance_to(enemy.global_position) <= radius:
-					enemy.take_damage(damage, "physical")
+		if is_inside_tree():
+			var enemies = get_tree().get_nodes_in_group("enemies")
+			for enemy in enemies:
+				if is_instance_valid(enemy) and not enemy.get("is_dead"):
+					if global_position.distance_to(enemy.global_position) <= radius:
+						enemy.take_damage(damage, "physical")
 		exploded.emit(global_position, damage, radius)
 		queue_free()
 	elif object_type == "chest":
 		# Сбор сундука с золотом
-		var gm = get_tree().get_first_node_in_group("game_manager") as GameManager
-		if gm:
-			gm.add_gold(gold_reward)
+		if is_inside_tree():
+			var gm = get_tree().get_first_node_in_group("game_manager") as GameManager
+			if gm:
+				gm.add_gold(gold_reward)
 		queue_free()
 
 func _draw() -> void:

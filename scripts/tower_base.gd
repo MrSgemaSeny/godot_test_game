@@ -61,6 +61,8 @@ func _load_stats() -> void:
 
 func get_effective_damage() -> float:
 	var dmg = damage
+	if not is_inside_tree():
+		return dmg
 	var meta = get_tree().get_first_node_in_group("meta_manager") as MetaManager
 	if meta:
 		dmg *= (1.0 + meta.get_base_damage_mult())
@@ -74,6 +76,8 @@ func get_effective_damage() -> float:
 
 func get_effective_range() -> float:
 	var r = range_radius
+	if not is_inside_tree():
+		return r
 	var tech = get_tree().get_first_node_in_group("tech_tree_manager") as TechTreeManager
 	if tech:
 		r *= (1.0 + tech.get_range_bonus())
@@ -81,6 +85,8 @@ func get_effective_range() -> float:
 
 func get_effective_attack_speed() -> float:
 	var spd = attack_speed
+	if not is_inside_tree():
+		return spd
 	var gm = get_tree().get_first_node_in_group("game_manager") as GameManager
 	if gm and gm.ability_active and gm.selected_path == "military":
 		spd *= 2.0

@@ -72,6 +72,8 @@ func cast_spell(spell_id: String, target_pos: Vector2 = Vector2.ZERO) -> bool:
 	return true
 
 func _cast_meteor(target_pos: Vector2, dmg: float, radius: float) -> void:
+	if not is_inside_tree():
+		return
 	var enemies = get_tree().get_nodes_in_group("enemies")
 	for enemy in enemies:
 		if is_instance_valid(enemy) and not enemy.get("is_dead"):
@@ -80,6 +82,8 @@ func _cast_meteor(target_pos: Vector2, dmg: float, radius: float) -> void:
 				enemy.take_damage(dmg, "magic")
 
 func _cast_freeze(duration: float) -> void:
+	if not is_inside_tree():
+		return
 	var enemies = get_tree().get_nodes_in_group("enemies")
 	for enemy in enemies:
 		if is_instance_valid(enemy) and not enemy.get("is_dead"):
@@ -87,11 +91,15 @@ func _cast_freeze(duration: float) -> void:
 				enemy.apply_freeze(duration)
 
 func _cast_gold_rain(amount: int) -> void:
+	if not is_inside_tree():
+		return
 	var gm = get_tree().get_first_node_in_group("game_manager") as GameManager
 	if gm:
 		gm.add_gold(amount)
 
 func _cast_lightning(target_pos: Vector2, dmg: float) -> void:
+	if not is_inside_tree():
+		return
 	var enemies = get_tree().get_nodes_in_group("enemies")
 	var closest_enemy: Node2D = null
 	var min_dist: float = 999999.0

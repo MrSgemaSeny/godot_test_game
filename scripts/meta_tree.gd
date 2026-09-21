@@ -30,8 +30,9 @@ func _on_meta_upgraded(_id: String, _lvl: int) -> void:
 	_render_cards()
 
 func _render_cards() -> void:
-	for child in cards_container.get_children():
-		child.queue_free()
+	if is_instance_valid(cards_container):
+		for child in cards_container.get_children():
+			child.queue_free()
 		
 	for item in meta_manager.meta_tree_data:
 		var item_id = item.get("id", "")

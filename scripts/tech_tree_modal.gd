@@ -50,8 +50,9 @@ func _render_nodes() -> void:
 		_create_node_card(node, target_box)
 
 func _clear_container(box: VBoxContainer) -> void:
-	for child in box.get_children():
-		child.queue_free()
+	if is_instance_valid(box):
+		for child in box.get_children():
+			child.queue_free()
 
 func _create_node_card(node_data: Dictionary, container: VBoxContainer) -> void:
 	var node_id = node_data.get("id", "")

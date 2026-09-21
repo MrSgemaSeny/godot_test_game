@@ -91,32 +91,40 @@ func stop_countdown() -> void:
 	timer_label.text = "⚔️ Защищайте девочек!"
 
 func update_gold(amount: int) -> void:
-	gold_label.text = "🪙 %d" % amount
+	if is_instance_valid(gold_label):
+		gold_label.text = "🪙 %d" % amount
 	_refresh_action_panel()
 
 func update_mana(cur: int, max_m: int) -> void:
-	mana_label.text = "🧪 %d/%d" % [cur, max_m]
+	if is_instance_valid(mana_label):
+		mana_label.text = "🧪 %d/%d" % [cur, max_m]
 	var spell_sys = get_tree().get_first_node_in_group("spell_system") as SpellSystem
-	if spell_sys:
+	if spell_sys and is_instance_valid(spell_meteor_btn):
 		spell_meteor_btn.disabled = not spell_sys.can_cast("meteor")
 		spell_freeze_btn.disabled = not spell_sys.can_cast("freeze")
 		spell_gold_btn.disabled = not spell_sys.can_cast("gold_rain")
 		spell_lightning_btn.disabled = not spell_sys.can_cast("lightning")
 
 func update_girls_count(girls_left: int) -> void:
-	girls_label.text = "👧 %d" % girls_left
+	if is_instance_valid(girls_label):
+		girls_label.text = "👧 %d" % girls_left
 
 func update_wave(current: int, total: int) -> void:
-	wave_label.text = "🌊 %d/%d" % [current, total]
+	if is_instance_valid(wave_label):
+		wave_label.text = "🌊 %d/%d" % [current, total]
 
 func update_research_points(amount: int) -> void:
-	tech_btn.text = "📜 Древо (%d)" % amount
+	if is_instance_valid(tech_btn):
+		tech_btn.text = "📜 Древо (%d)" % amount
 
 func set_wave_button_enabled(enabled: bool) -> void:
-	start_wave_btn.disabled = not enabled
+	if is_instance_valid(start_wave_btn):
+		start_wave_btn.disabled = not enabled
 
 func show_spot_panel(spot: BuildSpot) -> void:
 	current_spot = spot
+	if not is_instance_valid(action_panel):
+		return
 	if not spot:
 		action_panel.visible = false
 		return
@@ -125,6 +133,8 @@ func show_spot_panel(spot: BuildSpot) -> void:
 	_refresh_action_panel()
 
 func _refresh_action_panel() -> void:
+	if not is_instance_valid(action_panel) or not is_instance_valid(build_buttons_box) or not is_instance_valid(tower_action_box):
+		return
 	if not is_instance_valid(current_spot):
 		action_panel.visible = false
 		return
@@ -133,8 +143,10 @@ func _refresh_action_panel() -> void:
 	var current_gold = game_manager.gold if game_manager else 0
 	
 	if not current_spot.has_tower():
-		spot_title.text = "Площадка под башню"
-		spot_desc.text = "Выберите защитное орудие для постройки:"
+		if is_instance_valid(spot_title):
+			spot_title.text = "Площадка под башню"
+		if is_instance_valid(spot_desc):
+			spot_desc.text = "Выберите защитное орудие для постройки:"
 		build_buttons_box.visible = true
 		tower_action_box.visible = false
 		
