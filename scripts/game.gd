@@ -22,15 +22,46 @@ var wave_in_progress: bool = false
 var auto_start_timer: float = 0.0
 var is_counting_down: bool = false
 var total_girls: int = 5
+var scene_anim_time: float = 0.0
+
+# Процедурные декоративные элементы
+var flower_patches: Array = []
+var trees: Array = []
 
 func _ready() -> void:
 	game_manager.set_chosen_path(GlobalState.selected_path)
-	
+	_generate_decorations()
 	_setup_signals()
 	_setup_path()
 	_setup_build_spots()
 	_setup_interactive_objects()
 	_start_new_game()
+
+func _generate_decorations() -> void:
+	var rng = RandomNumberGenerator.new()
+	rng.seed = 42 # Фиксированный красивый сид
+	
+	flower_patches.clear()
+	for i in range(40):
+		var pos = Vector2(rng.randf_range(60, 1220), rng.randf_range(80, 680))
+		var col_type = rng.randi_range(0, 3)
+		var col = Color(1.0, 1.0, 1.0) # Ромашки
+		if col_type == 1:
+			col = Color(0.95, 0.25, 0.3) # Маки
+		elif col_type == 2:
+			col = Color(0.35, 0.65, 1.0) # Незабудки
+		elif col_type == 3:
+			col = Color(1.0, 0.85, 0.2) # Лютики
+		flower_patches.append({"pos": pos, "col": col, "size": rng.randf_range(2.5, 4.0)})
+		
+	trees.clear()
+	var tree_positions = [
+		Vector2(140, 100), Vector2(280, 90), Vector2(740, 100), Vector2(880, 95),
+		Vector2(100, 640), Vector2(320, 650), Vector2(580, 660), Vector2(760, 650),
+		Vector2(1180, 200), Vector2(1200, 320), Vector2(560, 360)
+	]
+	for tp in tree_positions:
+		trees.append({"pos": tp, "scale": rng.randf_range(0.9, 1.25)})
 
 func _setup_signals() -> void:
 	game_manager.gold_changed.connect(hud.update_gold)
@@ -46,35 +77,36 @@ func _setup_signals() -> void:
 	hud.restart_pressed.connect(_start_new_game)
 
 func _setup_path() -> void:
-	# Сказочная извилистая дорожка через Кудрявую Долину
+	# Красивый извилистый маршрут через всю карту 1280x720
 	var curve = Curve2D.new()
-	curve.add_point(Vector2(-30, 200))
-	curve.add_point(Vector2(200, 200))
-	curve.add_point(Vector2(200, 380))
-	curve.add_point(Vector2(460, 380))
-	curve.add_point(Vector2(460, 190))
-	curve.add_point(Vector2(700, 190))
-	curve.add_point(Vector2(700, 470))
-	curve.add_point(Vector2(880, 470)) # Деревня девочек!
+	curve.add_point(Vector2(-40, 260))
+	curve.add_point(Vector2(240, 260))
+	curve.add_point(Vector2(240, 480))
+	curve.add_point(Vector2(580, 480))
+	curve.add_point(Vector2(580, 230))
+	curve.add_point(Vector2(920, 230))
+	curve.add_point(Vector2(920, 520))
+	curve.add_point(Vector2(1140, 520)) # Сказочная деревня девочек!
 	path2d.curve = curve
 
 func _setup_build_spots() -> void:
 	for child in build_spots_container.get_children():
 		child.queue_free()
 		
+	# 12 тактических мест у поворотов дороги
 	var spot_positions = [
-		Vector2(120, 130),
-		Vector2(275, 290),
-		Vector2(120, 455),
-		Vector2(380, 455),
-		Vector2(380, 120),
-		Vector2(545, 120),
-		Vector2(545, 270),
-		Vector2(620, 270),
-		Vector2(620, 545),
-		Vector2(780, 390),
-		Vector2(780, 545),
-		Vector2(840, 290)
+		Vector2(150, 180),
+		Vector2(340, 370),
+		Vector2(150, 560),
+		Vector2(480, 560),
+		Vector2(480, 150),
+		Vector2(680, 150),
+		Vector2(680, 360),
+		Vector2(810, 350),
+		Vector2(810, 600),
+		Vector2(1020, 410),
+		Vector2(1020, 600),
+		Vector2(1100, 360)
 	]
 	
 	for pos in spot_positions:
@@ -88,8 +120,8 @@ func _setup_interactive_objects() -> void:
 	for child in interactive_container.get_children():
 		child.queue_free()
 		
-	# Размещаем взрывные бочки и сундук с золотом у дороги
-	var barrel_positions = [Vector2(210, 290), Vector2(460, 280), Vector2(700, 330)]
+	# Размещаем бочки с порохом на обочине у поворотов
+	var barrel_positions = [Vector2(260, 370), Vector2(600, 350), Vector2(940, 370)]
 	for pos in barrel_positions:
 		var barrel = Area2D.new()
 		barrel.set_script(map_obj_script)
@@ -100,18 +132,18 @@ func _setup_interactive_objects() -> void:
 	var chest = Area2D.new()
 	chest.set_script(map_obj_script)
 	chest.object_type = "chest"
-	chest.position = Vector2(870, 380)
+	chest.position = Vector2(1120, 420)
 	interactive_container.add_child(chest)
 
 func _setup_girls() -> void:
 	for child in girls_container.get_children():
 		child.queue_free()
 		
-	var village_center = Vector2(880, 470)
+	var village_center = Vector2(1150, 530)
 	for i in range(total_girls):
 		var girl = Node2D.new()
 		girl.set_script(girl_script)
-		girl.position = village_center + Vector2(randf_range(-25, 25), randf_range(-25, 25))
+		girl.position = village_center + Vector2(randf_range(-30, 30), randf_range(-30, 30))
 		girl.add_to_group("girls")
 		girl.rescued.connect(_on_girl_rescued)
 		girls_container.add_child(girl)
@@ -140,6 +172,9 @@ func _start_new_game() -> void:
 	_start_intermission_timer()
 
 func _process(delta: float) -> void:
+	scene_anim_time += delta
+	queue_redraw()
+	
 	if is_counting_down:
 		auto_start_timer -= delta
 		if auto_start_timer <= 0.0:
@@ -288,39 +323,90 @@ func _unhandled_input(event: InputEvent) -> void:
 		game_manager.select_spot(null)
 
 func _draw() -> void:
-	# Сказочный изумрудный газон Кудрявой Долины
-	draw_rect(Rect2(0, 0, 960, 640), Color(0.24, 0.48, 0.22))
+	# 1. Сказочный изумрудный холмистый ландшафт Кудрявой Долины
+	draw_rect(Rect2(0, 0, 1280, 720), Color(0.25, 0.52, 0.22))
 	
-	# Холмы и цветочные поляны
-	var hill_col = Color(0.28, 0.55, 0.25)
-	draw_circle(Vector2(90, 60), 90, hill_col)
-	draw_circle(Vector2(340, 70), 130, hill_col)
-	draw_circle(Vector2(660, 80), 140, hill_col)
-	draw_circle(Vector2(110, 580), 120, hill_col)
-	draw_circle(Vector2(550, 590), 150, hill_col)
+	# Объемные мягкие холмы с градиентными слоями
+	var hill_col1 = Color(0.30, 0.58, 0.26)
+	var hill_col2 = Color(0.22, 0.46, 0.20)
+	draw_circle(Vector2(120, 80), 160, hill_col1)
+	draw_circle(Vector2(450, 60), 200, hill_col1)
+	draw_circle(Vector2(880, 70), 220, hill_col1)
+	draw_circle(Vector2(160, 680), 190, hill_col2)
+	draw_circle(Vector2(700, 690), 240, hill_col2)
+	draw_circle(Vector2(1100, 680), 210, hill_col2)
 	
-	# Дорожка из желтого песка и камешков
+	# 2. Сказочные поляны с цветами
+	for flower in flower_patches:
+		draw_circle(flower["pos"], flower["size"], flower["col"])
+		draw_circle(flower["pos"], flower["size"] * 0.4, Color(1.0, 0.9, 0.2))
+		
+	# 3. Сказочные деревья
+	for tree in trees:
+		var tp = tree["pos"]
+		var ts = tree["scale"]
+		# Тень дерева
+		draw_circle(tp + Vector2(6, 12), 26.0 * ts, Color(0.0, 0.0, 0.0, 0.25))
+		# Ствол
+		draw_rect(Rect2(tp.x - 6 * ts, tp.y, 12 * ts, 20 * ts), Color(0.45, 0.3, 0.15))
+		# Крона (3 пышных круга)
+		draw_circle(tp + Vector2(0, -18 * ts), 24.0 * ts, Color(0.18, 0.42, 0.15))
+		draw_circle(tp + Vector2(-12 * ts, -8 * ts), 18.0 * ts, Color(0.22, 0.48, 0.18))
+		draw_circle(tp + Vector2(12 * ts, -8 * ts), 18.0 * ts, Color(0.26, 0.54, 0.22))
+		# Блик света на кроне
+		draw_circle(tp + Vector2(-4 * ts, -22 * ts), 10.0 * ts, Color(0.35, 0.65, 0.3, 0.7))
+	
+	# 4. Текстурированная извилистая дорога из булыжника и теплого песка
 	if path2d and path2d.curve:
 		var baked_points = path2d.curve.get_baked_points()
 		if baked_points.size() > 1:
-			draw_polyline(baked_points, Color(0.55, 0.45, 0.25), 50.0)
-			draw_polyline(baked_points, Color(0.85, 0.75, 0.45), 38.0)
-			draw_polyline(baked_points, Color(0.75, 0.65, 0.35), 14.0)
+			# Мягкая тень обочины
+			draw_polyline(baked_points, Color(0.0, 0.0, 0.0, 0.22), 68.0)
+			# Каменная окантовка дороги
+			draw_polyline(baked_points, Color(0.48, 0.42, 0.32), 58.0)
+			# Основное песчаное полотно
+			draw_polyline(baked_points, Color(0.86, 0.76, 0.52), 44.0)
+			# Протоптанная колея
+			draw_polyline(baked_points, Color(0.78, 0.68, 0.45), 20.0)
 			
-	# Логово монстров (пещера слева)
-	draw_rect(Rect2(-20, 160, 50, 80), Color(0.18, 0.12, 0.1))
-	var font = ThemeDB.get_fallback_font()
-	if font:
-		draw_string(font, Vector2(8, 155), "ЛОГОВО МОНСТРОВ", HORIZONTAL_ALIGNMENT_LEFT, -1, 11, Color(0.95, 0.3, 0.3))
+	# 5. Логово Монстров (Пещера слева с горящими факелами и черепом)
+	# Скалистый свод
+	draw_polygon(
+		PackedVector2Array([Vector2(-40, 160), Vector2(70, 180), Vector2(60, 340), Vector2(-40, 360)]),
+		PackedColorArray([Color(0.2, 0.18, 0.22), Color(0.28, 0.25, 0.3), Color(0.18, 0.16, 0.2), Color(0.15, 0.13, 0.18)])
+	)
+	# Зев пещеры (глубокая тьма и светящийся зловещий фиолетовый туман)
+	draw_circle(Vector2(0, 260), 45.0, Color(0.08, 0.05, 0.1))
+	draw_circle(Vector2(0, 260), 32.0, Color(0.35, 0.1, 0.45, 0.6 + sin(scene_anim_time * 3.0) * 0.2))
+	# Факелы у входа
+	draw_circle(Vector2(55, 200), 5.0, Color(1.0, 0.5, 0.1))
+	draw_circle(Vector2(55, 320), 5.0, Color(1.0, 0.5, 0.1))
 	
-	# Сказочная деревня девочек справа
-	draw_rect(Rect2(830, 420, 120, 110), Color(0.35, 0.65, 0.3)) # Заборчик
-	# Домик 1
-	draw_rect(Rect2(850, 410, 45, 40), Color(0.8, 0.7, 0.55))
-	draw_polygon(PackedVector2Array([Vector2(845, 410), Vector2(872, 385), Vector2(900, 410)]), PackedColorArray([Color(0.85, 0.25, 0.2), Color(0.85, 0.25, 0.2), Color(0.85, 0.25, 0.2)]))
-	# Домик 2
-	draw_rect(Rect2(905, 460, 40, 35), Color(0.75, 0.65, 0.5))
-	draw_polygon(PackedVector2Array([Vector2(900, 460), Vector2(925, 440), Vector2(950, 460)]), PackedColorArray([Color(0.3, 0.5, 0.8), Color(0.3, 0.5, 0.8), Color(0.3, 0.5, 0.8)]))
+	# 6. Сказочная деревня Девочек справа (Деревянные домики, черепичные крыши, забор, дым из трубы)
+	var village_origin = Vector2(1080, 420)
+	# Зеленая полянка вокруг деревни
+	draw_circle(village_origin + Vector2(60, 90), 100.0, Color(0.32, 0.62, 0.28))
+	draw_arc(village_origin + Vector2(60, 90), 100.0, 0, TAU, 32, Color(0.65, 0.55, 0.35), 3.0)
 	
-	if font:
-		draw_string(font, Vector2(840, 375), "ДОМИК ДЕВОЧЕК", HORIZONTAL_ALIGNMENT_LEFT, -1, 12, Color(1.0, 0.9, 0.3))
+	# Домик 1 (Уютный дом с черепичной крышей)
+	var h1_pos = village_origin + Vector2(10, 20)
+	draw_rect(Rect2(h1_pos.x, h1_pos.y, 60, 55), Color(0.85, 0.78, 0.65)) # Стены
+	draw_rect(Rect2(h1_pos.x + 8, h1_pos.y + 12, 16, 16), Color(1.0, 0.9, 0.4)) # Теплое светящееся окно
+	draw_rect(Rect2(h1_pos.x + 36, h1_pos.y + 24, 18, 31), Color(0.55, 0.35, 0.2)) # Дверь
+	# Черепичная треугольная крыша
+	draw_polygon(
+		PackedVector2Array([Vector2(h1_pos.x - 8, h1_pos.y), Vector2(h1_pos.x + 30, h1_pos.y - 32), Vector2(h1_pos.x + 68, h1_pos.y)]),
+		PackedColorArray([Color(0.88, 0.28, 0.22), Color(0.95, 0.35, 0.28), Color(0.82, 0.22, 0.18)])
+	)
+	# Дым из трубы
+	var smoke_y = h1_pos.y - 35 - fmod(scene_anim_time * 25.0, 40.0)
+	draw_circle(Vector2(h1_pos.x + 46, smoke_y), 6.0, Color(0.9, 0.9, 0.95, 0.5))
+	
+	# Домик 2 (Синяя мансарда)
+	var h2_pos = village_origin + Vector2(75, 70)
+	draw_rect(Rect2(h2_pos.x, h2_pos.y, 50, 45), Color(0.78, 0.72, 0.6))
+	draw_rect(Rect2(h2_pos.x + 28, h2_pos.y + 10, 14, 14), Color(1.0, 0.9, 0.4))
+	draw_polygon(
+		PackedVector2Array([Vector2(h2_pos.x - 6, h2_pos.y), Vector2(h2_pos.x + 25, h2_pos.y - 26), Vector2(h2_pos.x + 56, h2_pos.y)]),
+		PackedColorArray([Color(0.25, 0.45, 0.85), Color(0.35, 0.55, 0.95), Color(0.2, 0.38, 0.75)])
+	)

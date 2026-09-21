@@ -25,8 +25,11 @@ var shoot_timer: float = 0.0
 var scan_timer: float = 0.0
 var gold_timer: float = 0.0
 var current_target: Node2D = null
+var anim_time: float = 0.0
+var turret_angle: float = 0.0
 
 var projectile_script = preload("res://scripts/projectile.gd")
+var ballistic_script = preload("res://scripts/ballistic_projectile.gd")
 
 func _ready() -> void:
 	_load_stats()
@@ -64,12 +67,9 @@ func get_effective_damage() -> float:
 	var tech = get_tree().get_first_node_in_group("tech_tree_manager") as TechTreeManager
 	if tech:
 		dmg *= (1.0 + tech.get_damage_bonus())
-		
-	# Синергия Аркан-сети для магических башен
 	var gm = get_tree().get_first_node_in_group("game_manager") as GameManager
 	if gm and gm.selected_path == "magic" and damage_type == "magic":
 		dmg *= 1.15
-		
 	return dmg
 
 func get_effective_range() -> float:
@@ -82,13 +82,13 @@ func get_effective_range() -> float:
 func get_effective_attack_speed() -> float:
 	var spd = attack_speed
 	var gm = get_tree().get_first_node_in_group("game_manager") as GameManager
-	# Режим Берсерка удваивает скорость атаки
 	if gm and gm.ability_active and gm.selected_path == "military":
 		spd *= 2.0
 	return spd
 
 func _process(delta: float) -> void:
-	# Доход от Торгового поста
+	anim_time += delta * 3.0
+	
 	if gold_per_sec > 0:
 		gold_timer += delta
 		if gold_timer >= 1.0:
@@ -104,6 +104,11 @@ func _process(delta: float) -> void:
 	if scan_timer <= 0.0:
 		scan_timer = 0.15
 		_find_best_target()
+		
+	if is_instance_valid(current_target):
+		var target_angle = (current_target.global_position - global_position).angle()
+		turret_angle = lerp_angle(turret_angle, target_angle, delta * 12.0)
+		queue_redraw()
 		
 	if shoot_timer <= 0.0:
 		if tower_type == "bastion":
@@ -135,27 +140,45 @@ func _shoot_single(target_node: Node2D) -> void:
 	var spd = get_effective_attack_speed()
 	shoot_timer = 1.0 / max(0.05, spd)
 	
-	var proj = Node2D.new()
-	proj.set_script(projectile_script)
-	proj.global_position = global_position
-	
-	proj.init_projectile(
-		target_node,
-		projectile_speed,
-		get_effective_damage(),
-		damage_type,
-		slow_factor,
-		slow_duration,
-		projectile_type,
-		splash_radius,
-		pierce_count
-	)
-	
-	var projectles_container = get_tree().root.get_node_or_null("Game/Projectiles")
-	if projectles_container:
-		projectles_container.add_child(proj)
+	if tower_type == "cannon" or tower_type == "siege_cannon":
+		# Баллистический снаряд с дугой и тенью
+		var b_proj = Node2D.new()
+		b_proj.set_script(ballistic_script)
+		b_proj.init_ballistic(
+			global_position,
+			target_node.global_position,
+			0.6,
+			get_effective_damage(),
+			splash_radius,
+			"cannonball",
+			0.5 if tower_type == "siege_cannon" else 0.0
+		)
+		var proj_cont = get_tree().root.get_node_or_null("Game/Projectiles")
+		if proj_cont:
+			proj_cont.add_child(b_proj)
+		else:
+			get_parent().add_child(b_proj)
 	else:
-		get_parent().add_child(proj)
+		# Прямой снаряд
+		var proj = Node2D.new()
+		proj.set_script(projectile_script)
+		proj.global_position = global_position
+		proj.init_projectile(
+			target_node,
+			projectile_speed,
+			get_effective_damage(),
+			damage_type,
+			slow_factor,
+			slow_duration,
+			projectile_type,
+			splash_radius,
+			pierce_count
+		)
+		var proj_cont = get_tree().root.get_node_or_null("Game/Projectiles")
+		if proj_cont:
+			proj_cont.add_child(proj)
+		else:
+			get_parent().add_child(proj)
 
 func _shoot_bastion() -> void:
 	var enemies = get_tree().get_nodes_in_group("enemies")
@@ -172,7 +195,6 @@ func _shoot_bastion() -> void:
 		
 	var spd = get_effective_attack_speed()
 	shoot_timer = 1.0 / max(0.05, spd)
-	
 	for enemy in in_range_enemies:
 		_shoot_single(enemy)
 
@@ -200,49 +222,67 @@ func set_selected(selected: bool) -> void:
 func _draw() -> void:
 	var eff_range = get_effective_range()
 	if is_selected:
-		draw_circle(Vector2.ZERO, eff_range, Color(0.3, 0.7, 1.0, 0.12))
-		draw_arc(Vector2.ZERO, eff_range, 0, TAU, 36, Color(0.3, 0.7, 1.0, 0.5), 1.5)
+		# Сказочный мягкий радиус атаки с золотистой окантовкой
+		draw_circle(Vector2.ZERO, eff_range, Color(0.3, 0.75, 1.0, 0.08))
+		draw_arc(Vector2.ZERO, eff_range, 0, TAU, 48, Color(0.4, 0.85, 1.0, 0.6), 2.0)
+		draw_arc(Vector2.ZERO, eff_range - 4.0, 0, TAU, 36, Color(1.0, 0.85, 0.2, 0.3), 1.0)
 	
+	# Отрисовка башни
 	match tower_type:
-		"archer":
-			draw_rect(Rect2(-16, -16, 32, 32), Color(0.35, 0.35, 0.4))
-			draw_rect(Rect2(-10, -10, 20, 20), Color(0.55, 0.35, 0.15))
-			draw_arc(Vector2.ZERO, 6.0, -PI/2, PI/2, 8, Color(0.85, 0.7, 0.2), 2.0)
-		"crossbowman":
-			draw_rect(Rect2(-16, -16, 32, 32), Color(0.3, 0.25, 0.25))
-			draw_line(Vector2(-12, 0), Vector2(12, 0), Color(0.9, 0.2, 0.2), 3.0)
-			draw_line(Vector2(4, -8), Vector2(4, 8), Color(0.7, 0.7, 0.7), 2.5)
-		"siege_cannon":
-			draw_circle(Vector2.ZERO, 16.0, Color(0.2, 0.2, 0.25))
-			draw_circle(Vector2.ZERO, 10.0, Color(0.1, 0.1, 0.15))
-			draw_line(Vector2(0, 0), Vector2(16, 0), Color(0.3, 0.3, 0.35), 6.0)
+		"archer", "sling":
+			# Деревянная башенка лучников с частоколом
+			draw_circle(Vector2(0, 4), 16.0, Color(0.32, 0.22, 0.12))
+			draw_circle(Vector2(0, 0), 14.0, Color(0.55, 0.38, 0.2))
+			# Балкончик
+			draw_arc(Vector2.ZERO, 14.0, 0, TAU, 16, Color(0.38, 0.25, 0.15), 3.0)
+			# Поворотный арбалет
+			var aim_dir = Vector2(cos(turret_angle), sin(turret_angle))
+			draw_line(Vector2.ZERO, aim_dir * 16.0, Color(0.2, 0.2, 0.25), 3.5)
+			draw_line(aim_dir * 8.0 + aim_dir.orthogonal() * -8.0, aim_dir * 8.0 + aim_dir.orthogonal() * 8.0, Color(0.85, 0.3, 0.2), 2.5)
+		"cannon", "siege_cannon":
+			# Чугунная осадная мортира на лафете
+			draw_circle(Vector2(0, 2), 17.0, Color(0.2, 0.2, 0.25))
+			draw_rect(Rect2(-12, -6, 24, 14), Color(0.45, 0.32, 0.18))
+			# Ствол орудия
+			var aim_dir = Vector2(cos(turret_angle), sin(turret_angle))
+			draw_line(Vector2.ZERO, aim_dir * 18.0, Color(0.18, 0.18, 0.22), 8.0)
+			draw_line(Vector2.ZERO, aim_dir * 19.0, Color(0.8, 0.7, 0.3), 2.0)
+			draw_circle(aim_dir * 18.0, 4.0, Color(0.1, 0.1, 0.12))
+		"ice", "ice_mage":
+			# Левитирующий кристалл льда с пульсацией
+			var float_y = sin(anim_time) * 4.0
+			# Обелиск основание
+			draw_polygon(PackedVector2Array([Vector2(0, -18), Vector2(14, 10), Vector2(-14, 10)]), PackedColorArray([Color(0.2, 0.4, 0.7), Color(0.15, 0.25, 0.5), Color(0.15, 0.25, 0.5)]))
+			# Парящий хрусталь
+			var crystal_col = Color(0.4, 0.88, 1.0, 0.9)
+			var c_poly = PackedVector2Array([
+				Vector2(0, -22 + float_y),
+				Vector2(8, -10 + float_y),
+				Vector2(0, 2 + float_y),
+				Vector2(-8, -10 + float_y)
+			])
+			draw_polygon(c_poly, PackedColorArray([Color(0.9, 0.98, 1.0), crystal_col, Color(0.2, 0.6, 0.9), crystal_col]))
+			draw_circle(Vector2(0, -10 + float_y), 3.0, Color(1.0, 1.0, 1.0))
+		"tesla":
+			# Катушка Тесла с электрическими кольцами
+			draw_circle(Vector2.ZERO, 15.0, Color(0.35, 0.28, 0.15))
+			draw_rect(Rect2(-5, -16, 10, 20), Color(0.75, 0.55, 0.2))
+			draw_circle(Vector2(0, -18), 7.0, Color(1.0, 0.9, 0.3))
+			draw_arc(Vector2(0, -18), 11.0 + sin(anim_time * 2.0) * 2.0, 0, TAU, 12, Color(0.4, 0.8, 1.0, 0.8), 2.0)
 		"bastion":
-			draw_rect(Rect2(-18, -18, 36, 36), Color(0.4, 0.25, 0.15))
-			draw_rect(Rect2(-12, -12, 24, 24), Color(0.5, 0.35, 0.2))
-			draw_circle(Vector2.ZERO, 6.0, Color(0.9, 0.6, 0.2))
-		"ice_mage":
-			draw_polygon(PackedVector2Array([Vector2(0, -20), Vector2(16, 12), Vector2(-16, 12)]), PackedColorArray([Color(0.2, 0.4, 0.7), Color(0.15, 0.25, 0.5), Color(0.15, 0.25, 0.5)]))
-			draw_polygon(PackedVector2Array([Vector2(0, -14), Vector2(7, -4), Vector2(0, 6), Vector2(-7, -4)]), PackedColorArray([Color(0.4, 0.85, 1.0), Color(0.4, 0.85, 1.0), Color(0.4, 0.85, 1.0), Color(0.4, 0.85, 1.0)]))
-		"necromancer":
-			draw_polygon(PackedVector2Array([Vector2(0, -20), Vector2(14, 14), Vector2(-14, 14)]), PackedColorArray([Color(0.3, 0.1, 0.4), Color(0.2, 0.05, 0.3), Color(0.2, 0.05, 0.3)]))
-			draw_circle(Vector2.ZERO, 5.0, Color(0.8, 0.2, 1.0))
-		"time_tower":
-			draw_circle(Vector2.ZERO, 15.0, Color(0.2, 0.2, 0.5))
-			draw_arc(Vector2.ZERO, 11.0, 0, TAU, 12, Color(0.5, 0.5, 1.0), 2.0)
-			draw_line(Vector2.ZERO, Vector2(0, -8), Color(1.0, 1.0, 1.0), 2.0)
-		"trading_post":
-			draw_rect(Rect2(-16, -16, 32, 32), Color(0.6, 0.45, 0.2))
-			draw_circle(Vector2.ZERO, 7.0, Color(1.0, 0.85, 0.2))
-		"trap":
-			draw_circle(Vector2.ZERO, 12.0, Color(0.7, 0.3, 0.1))
-			draw_circle(Vector2.ZERO, 5.0, Color(1.0, 0.4, 0.1))
-		"auto_turret":
-			draw_circle(Vector2.ZERO, 13.0, Color(0.35, 0.4, 0.45))
-			draw_line(Vector2(0, 0), Vector2(12, 0), Color(0.2, 0.2, 0.2), 3.0)
+			# Каменная шестигранная крепость
+			draw_circle(Vector2.ZERO, 18.0, Color(0.35, 0.35, 0.4))
+			draw_circle(Vector2.ZERO, 12.0, Color(0.5, 0.5, 0.55))
+			for i in range(6):
+				var ang = i * (PI / 3.0)
+				draw_line(Vector2.ZERO, Vector2(cos(ang), sin(ang)) * 17.0, Color(0.85, 0.3, 0.2), 2.5)
+			draw_circle(Vector2.ZERO, 4.0, Color(1.0, 0.85, 0.2))
 		_:
-			draw_rect(Rect2(-14, -14, 28, 28), Color(0.4, 0.4, 0.4))
-	
-	# Звездочки уровня
+			draw_circle(Vector2.ZERO, 15.0, Color(0.5, 0.4, 0.3))
+			draw_circle(Vector2.ZERO, 10.0, Color(0.7, 0.6, 0.5))
+			
+	# Золотые звезды уровня под башней
 	for i in range(current_level):
-		var offset_x = (i - (current_level - 1) * 0.5) * 8.0
-		draw_circle(Vector2(offset_x, 18), 2.5, Color(1.0, 0.85, 0.2))
+		var offset_x = (i - (current_level - 1) * 0.5) * 9.0
+		draw_circle(Vector2(offset_x, 18), 3.0, Color(1.0, 0.85, 0.2))
+		draw_circle(Vector2(offset_x, 18), 1.5, Color(1.0, 1.0, 0.8))

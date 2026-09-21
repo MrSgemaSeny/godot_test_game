@@ -6,8 +6,9 @@ signal clicked(spot: BuildSpot)
 var current_tower: TowerBase = null
 var is_hovered: bool = false
 var is_selected: bool = false
-var spot_size: Vector2 = Vector2(40, 40)
+var spot_radius: float = 26.0
 
+var pulse_time: float = 0.0
 var tower_script = preload("res://scripts/tower_base.gd")
 
 func _ready() -> void:
@@ -17,12 +18,17 @@ func _ready() -> void:
 	
 	if not has_node("CollisionShape2D"):
 		var shape = CollisionShape2D.new()
-		var rect_shape = RectangleShape2D.new()
-		rect_shape.size = spot_size
-		shape.shape = rect_shape
+		var circle_shape = CircleShape2D.new()
+		circle_shape.radius = spot_radius
+		shape.shape = circle_shape
 		add_child(shape)
 		
 	queue_redraw()
+
+func _process(delta: float) -> void:
+	if is_selected or is_hovered:
+		pulse_time += delta * 4.0
+		queue_redraw()
 
 func _on_mouse_entered() -> void:
 	is_hovered = true
@@ -130,17 +136,34 @@ func sell_tower() -> int:
 	return sell_val
 
 func _draw() -> void:
-	var rect = Rect2(-spot_size / 2.0, spot_size)
+	# Тень под постаментом
+	draw_circle(Vector2(2, 4), spot_radius + 2.0, Color(0.0, 0.0, 0.0, 0.35))
 	
+	# Каменное основание (двойное кольцо)
+	draw_circle(Vector2.ZERO, spot_radius, Color(0.38, 0.38, 0.42))
+	draw_circle(Vector2.ZERO, spot_radius - 3.0, Color(0.52, 0.52, 0.56))
+	draw_circle(Vector2.ZERO, spot_radius - 6.0, Color(0.62, 0.62, 0.66))
+	draw_arc(Vector2.ZERO, spot_radius, 0, TAU, 28, Color(0.25, 0.25, 0.28), 2.5)
+	draw_arc(Vector2.ZERO, spot_radius - 5.0, 0, TAU, 24, Color(0.75, 0.7, 0.5, 0.8), 1.5)
+	
+	# Детали кладки (4 сектора плит)
+	for i in range(4):
+		var ang = i * (PI / 2.0)
+		var p1 = Vector2(cos(ang), sin(ang)) * 6.0
+		var p2 = Vector2(cos(ang), sin(ang)) * (spot_radius - 6.0)
+		draw_line(p1, p2, Color(0.4, 0.4, 0.45), 1.5)
+		
 	if not has_tower():
-		draw_rect(rect, Color(0.22, 0.2, 0.22, 0.7))
-		draw_rect(rect, Color(0.4, 0.38, 0.35, 0.8), false, 1.5)
+		# Золотистая руническая звезда в центре
+		var glow_alpha = 0.5 + sin(pulse_time) * 0.25 if (is_hovered or is_selected) else 0.4
+		draw_circle(Vector2.ZERO, 7.0, Color(0.85, 0.75, 0.3, glow_alpha))
+		draw_line(Vector2(-8, 0), Vector2(8, 0), Color(1.0, 0.9, 0.4, glow_alpha + 0.3), 2.0)
+		draw_line(Vector2(0, -8), Vector2(0, 8), Color(1.0, 0.9, 0.4, glow_alpha + 0.3), 2.0)
 		
-		var icon_col = Color(0.8, 0.75, 0.6, 0.5 if not is_hovered else 0.9)
-		draw_line(Vector2(-6, 0), Vector2(6, 0), icon_col, 2.0)
-		draw_line(Vector2(0, -6), Vector2(0, 6), icon_col, 2.0)
-		
+	# Пульсирующий ореол при выборе
 	if is_selected:
-		draw_rect(rect.grow(2.0), Color(1.0, 0.85, 0.2, 0.9), false, 2.0)
+		var pulse_rad = spot_radius + 4.0 + sin(pulse_time) * 2.0
+		draw_arc(Vector2.ZERO, pulse_rad, 0, TAU, 32, Color(1.0, 0.85, 0.2, 0.9), 3.0)
+		draw_arc(Vector2.ZERO, pulse_rad + 3.0, 0, TAU, 32, Color(1.0, 0.85, 0.2, 0.4), 1.5)
 	elif is_hovered:
-		draw_rect(rect.grow(1.0), Color(0.5, 0.8, 1.0, 0.6), false, 1.5)
+		draw_arc(Vector2.ZERO, spot_radius + 3.0, 0, TAU, 32, Color(0.4, 0.85, 1.0, 0.8), 2.0)

@@ -65,13 +65,11 @@ func _process(delta: float) -> void:
 		
 	walk_anim += delta * (speed / 10.0)
 	
-	# Заморозка (Абсолютный ноль / Лед)
 	if freeze_timer > 0.0:
 		freeze_timer -= delta
 		queue_redraw()
 		return
 		
-	# Замедление
 	if slow_timer > 0.0:
 		slow_timer -= delta
 		speed = base_speed * (1.0 - slow_factor)
@@ -84,7 +82,6 @@ func _process(delta: float) -> void:
 	if hit_flash_timer > 0.0:
 		hit_flash_timer -= delta
 		
-	# Движение по маршруту
 	if current_state == MonsterState.ADVANCING:
 		progress += speed * delta
 		if progress_ratio >= 1.0:
@@ -110,7 +107,6 @@ func _attempt_kidnap_girl() -> void:
 		current_state = MonsterState.RETREATING_WITH_GIRL
 		girl_kidnapped.emit(target_girl)
 	else:
-		# Если свободных девочек нет (все уже похищены)
 		var gm = get_tree().get_first_node_in_group("game_manager") as GameManager
 		if gm:
 			gm.reduce_lives(1)
@@ -171,12 +167,10 @@ func _die() -> void:
 		return
 	is_dead = true
 	
-	# Если нес девочку — отпускаем её домой
 	if is_instance_valid(carried_girl):
 		carried_girl._start_running_home()
 		carried_girl = null
 		
-	# Добавляем ману игроку за убийство
 	var spell_sys = get_tree().get_first_node_in_group("spell_system")
 	if spell_sys and spell_sys.has_method("add_mana"):
 		spell_sys.add_mana(5 if is_boss else 2)
@@ -185,9 +179,14 @@ func _die() -> void:
 	queue_free()
 
 func _draw() -> void:
-	var bounce = sin(walk_anim) * 2.5
-	var draw_col = body_color
+	var bounce = sin(walk_anim) * 3.0
+	var squash_x = 1.0 + cos(walk_anim) * 0.12
+	var squash_y = 1.0 - cos(walk_anim) * 0.12
 	
+	# Мягкая тень под монстром
+	draw_circle(Vector2(0, body_size * 0.8), body_size * 0.85, Color(0.0, 0.0, 0.0, 0.28))
+	
+	var draw_col = body_color
 	if hit_flash_timer > 0.0:
 		draw_col = Color(1.0, 1.0, 1.0)
 	elif freeze_timer > 0.0:
@@ -195,39 +194,68 @@ func _draw() -> void:
 	elif slow_timer > 0.0:
 		draw_col = draw_col.lerp(Color(0.2, 0.6, 1.0), 0.5)
 		
-	# Тело монстра (овальное / круглое с покачиванием)
+	# Мультяшное объемное тело монстра с бликом
 	draw_circle(Vector2(0, bounce), body_size, draw_col)
-	draw_arc(Vector2(0, bounce), body_size, 0, TAU, 18, Color(0.1, 0.15, 0.1, 0.8), 2.0)
+	draw_circle(Vector2(-body_size * 0.3, bounce - body_size * 0.3), body_size * 0.45, draw_col.lightened(0.25))
+	draw_arc(Vector2(0, bounce), body_size, 0, TAU, 22, Color(0.12, 0.18, 0.1, 0.85), 2.5)
 	
-	# Рожки или колючки
+	# Рожки и шипы
 	if monster_type == "spiky" or is_boss:
 		for i in range(5):
 			var angle = -PI * 0.8 + i * (PI * 0.4)
 			var spike_p1 = Vector2(cos(angle), sin(angle)) * body_size + Vector2(0, bounce)
-			var spike_p2 = Vector2(cos(angle), sin(angle)) * (body_size + 6.0) + Vector2(0, bounce)
-			draw_line(spike_p1, spike_p2, Color(0.2, 0.4, 0.05), 2.5)
+			var spike_p2 = Vector2(cos(angle), sin(angle)) * (body_size + 7.0) + Vector2(0, bounce)
+			draw_line(spike_p1, spike_p2, Color(0.25, 0.45, 0.08), 3.0)
+			draw_circle(spike_p2, 2.0, Color(0.9, 0.85, 0.2))
+			
+	if is_boss:
+		# Золотая корона Короля Колючек
+		var crown_poly = PackedVector2Array([
+			Vector2(-14, bounce - body_size),
+			Vector2(-7, bounce - body_size - 14),
+			Vector2(0, bounce - body_size - 8),
+			Vector2(7, bounce - body_size - 14),
+			Vector2(14, bounce - body_size)
+		])
+		draw_polygon(crown_poly, PackedColorArray([Color(1.0, 0.85, 0.2), Color(1.0, 0.9, 0.3), Color(1.0, 0.85, 0.2), Color(1.0, 0.9, 0.3), Color(1.0, 0.85, 0.2)]))
+		draw_circle(Vector2(0, bounce - body_size - 6), 2.5, Color(0.9, 0.2, 0.2))
 	
-	# Глазки
-	var eye_offset = Vector2(-4, -3 + bounce) if current_state == MonsterState.ADVANCING else Vector2(4, -3 + bounce)
-	draw_circle(eye_offset + Vector2(-3, 0), body_size * 0.22, Color(1.0, 1.0, 1.0))
-	draw_circle(eye_offset + Vector2(3, 0), body_size * 0.22, Color(1.0, 1.0, 1.0))
-	draw_circle(eye_offset + Vector2(-2, 0), body_size * 0.1, Color(0.1, 0.1, 0.1))
-	draw_circle(eye_offset + Vector2(4, 0), body_size * 0.1, Color(0.1, 0.1, 0.1))
+	# Большие выразительные глаза
+	var look_dir = 1.0 if current_state == MonsterState.ADVANCING else -1.0
+	var eye_center = Vector2(3.0 * look_dir, -3.0 + bounce)
 	
-	# Крылышки для летунов
+	# Белки глаз
+	draw_circle(eye_center + Vector2(-4, 0), body_size * 0.26, Color(1.0, 1.0, 1.0))
+	draw_circle(eye_center + Vector2(4, 0), body_size * 0.26, Color(1.0, 1.0, 1.0))
+	# Зрачки
+	draw_circle(eye_center + Vector2(-4 + look_dir * 1.5, 0), body_size * 0.13, Color(0.1, 0.1, 0.12))
+	draw_circle(eye_center + Vector2(4 + look_dir * 1.5, 0), body_size * 0.13, Color(0.1, 0.1, 0.12))
+	# Блики в глазах
+	draw_circle(eye_center + Vector2(-5 + look_dir * 1.5, -1.5), 1.0, Color(1.0, 1.0, 1.0))
+	draw_circle(eye_center + Vector2(3 + look_dir * 1.5, -1.5), 1.0, Color(1.0, 1.0, 1.0))
+	
+	# Зубастый ротик
+	draw_arc(eye_center + Vector2(0, 8), 5.0, 0, PI, 8, Color(0.15, 0.15, 0.2), 2.0)
+	draw_polygon(
+		PackedVector2Array([eye_center + Vector2(-3, 8), eye_center + Vector2(-1, 11), eye_center + Vector2(1, 8)]),
+		PackedColorArray([Color(1, 1, 1), Color(1, 1, 1), Color(1, 1, 1)])
+	)
+	
+	# Крылья летунов
 	if is_flyer:
-		var wing_y = -body_size + sin(walk_anim * 2.0) * 4.0
-		draw_circle(Vector2(-body_size * 0.8, wing_y), 6.0, Color(0.8, 0.95, 1.0, 0.7))
-		draw_circle(Vector2(body_size * 0.8, wing_y), 6.0, Color(0.8, 0.95, 1.0, 0.7))
+		var wing_y = -body_size * 0.5 + sin(walk_anim * 2.5) * 6.0
+		draw_circle(Vector2(-body_size * 0.9, wing_y), 7.0, Color(0.8, 0.95, 1.0, 0.75))
+		draw_circle(Vector2(body_size * 0.9, wing_y), 7.0, Color(0.8, 0.95, 1.0, 0.75))
 		
-	# HP Bar
+	# HP Bar с градиентом
 	var bar_w = body_size * 2.4
-	var bar_h = 4.0
-	var bar_y = -body_size - 8.0 + bounce
+	var bar_h = 5.0 if is_boss else 4.0
+	var bar_y = -body_size - (16.0 if is_boss else 9.0) + bounce
 	var bg_rect = Rect2(-bar_w / 2.0, bar_y, bar_w, bar_h)
-	draw_rect(bg_rect, Color(0.1, 0.1, 0.1, 0.8))
+	draw_rect(bg_rect, Color(0.1, 0.1, 0.12, 0.85))
 	
 	var health_ratio = clamp(current_health / max_health, 0.0, 1.0)
-	var hp_color = Color(0.2, 0.9, 0.2).lerp(Color(0.9, 0.1, 0.1), 1.0 - health_ratio)
+	var hp_color = Color(0.2, 0.9, 0.2).lerp(Color(0.95, 0.15, 0.15), 1.0 - health_ratio)
 	var fg_rect = Rect2(-bar_w / 2.0, bar_y, bar_w * health_ratio, bar_h)
 	draw_rect(fg_rect, hp_color)
+	draw_rect(bg_rect, Color(0.0, 0.0, 0.0, 0.9), false, 1.0)
