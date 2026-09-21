@@ -67,11 +67,14 @@ func _process(delta: float) -> void:
 				queue_free()
 	else:
 		if global_position.distance_to(target_pos) <= step + 10.0:
-			_on_hit(target)
+			var hit_target = target if is_instance_valid(target) else null
+			_on_hit(hit_target)
 		else:
 			global_position += dir * step
 
 func _check_pierce_collision() -> void:
+	if not is_inside_tree():
+		return
 	var enemies = get_tree().get_nodes_in_group("enemies")
 	for enemy in enemies:
 		if is_instance_valid(enemy) and not (enemy in pierced_enemies):
@@ -82,12 +85,12 @@ func _check_pierce_collision() -> void:
 					queue_free()
 					return
 
-func _on_hit(hit_target: Node2D) -> void:
+func _on_hit(hit_target = null) -> void:
 	if is_instance_valid(hit_target):
 		_apply_hit_effect(hit_target)
 		
 	# Если есть радиус взрыва (пушка, маг льда, ловушка)
-	if splash_radius > 0.0:
+	if splash_radius > 0.0 and is_inside_tree():
 		var enemies = get_tree().get_nodes_in_group("enemies")
 		for enemy in enemies:
 			if is_instance_valid(enemy) and enemy != hit_target:
@@ -97,7 +100,7 @@ func _on_hit(hit_target: Node2D) -> void:
 					
 	queue_free()
 
-func _apply_hit_effect(enemy: Node2D, mult: float = 1.0) -> void:
+func _apply_hit_effect(enemy = null, mult: float = 1.0) -> void:
 	if is_instance_valid(enemy) and enemy.has_method("take_damage"):
 		enemy.take_damage(damage * mult, damage_type)
 		if slow_factor > 0.0 and enemy.has_method("apply_slow"):

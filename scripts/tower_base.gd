@@ -159,11 +159,7 @@ func _shoot_single(target_node: Node2D) -> void:
 			"cannonball",
 			0.5 if tower_type == "siege_cannon" else 0.0
 		)
-		var proj_cont = get_tree().root.get_node_or_null("Game/Projectiles")
-		if proj_cont:
-			proj_cont.add_child(b_proj)
-		else:
-			get_parent().add_child(b_proj)
+		_spawn_projectile(b_proj)
 	else:
 		# Прямой снаряд
 		var proj = Node2D.new()
@@ -180,11 +176,19 @@ func _shoot_single(target_node: Node2D) -> void:
 			splash_radius,
 			pierce_count
 		)
-		var proj_cont = get_tree().root.get_node_or_null("Game/Projectiles")
-		if proj_cont:
-			proj_cont.add_child(proj)
-		else:
-			get_parent().add_child(proj)
+		_spawn_projectile(proj)
+
+func _spawn_projectile(proj: Node2D) -> void:
+	if not is_inside_tree():
+		proj.free()
+		return
+	var proj_cont = get_tree().root.get_node_or_null("Game/Projectiles")
+	if is_instance_valid(proj_cont):
+		proj_cont.add_child(proj)
+	elif is_instance_valid(get_parent()):
+		get_parent().add_child(proj)
+	else:
+		add_child(proj)
 
 func _shoot_bastion() -> void:
 	var enemies = get_tree().get_nodes_in_group("enemies")

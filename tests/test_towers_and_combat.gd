@@ -56,3 +56,20 @@ func test_monster_healing() -> void:
 	assert_eq(monster.current_health, 100.0, "Health should not exceed max_health")
 	
 	monster.free()
+
+func test_projectile_target_freed_handling() -> void:
+	var proj = Projectile.new()
+	var monster = MonsterBase.new()
+	proj.target = monster
+	proj.damage = 10.0
+	
+	# Free monster before projectile arrives/hits
+	monster.free()
+	
+	# Projectile process and on_hit should handle freed target gracefully without crashing
+	proj._process(0.1)
+	proj._on_hit(null)
+	assert_true(true, "Projectile safely handled previously freed target")
+	
+	proj.free()
+
