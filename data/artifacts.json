@@ -1,0 +1,215 @@
+{
+  "boots_of_speed": {
+    "name": "Сапоги Скорохода",
+    "description": "Башни строятся мгновенно без задержки анимации.",
+    "rarity": "rare",
+    "effect": "instant_build",
+    "value": 1.0
+  },
+  "alchemist_ring": {
+    "name": "Кольцо Алхимика",
+    "description": "Каждое 10-е попадание башни приносит +5 золота.",
+    "rarity": "uncommon",
+    "effect": "hit_gold",
+    "hits_required": 10,
+    "value": 5
+  },
+  "frozen_heart": {
+    "name": "Ледяное Сердце",
+    "description": "Все башни имеют 10% шанс заморозить цель на 1.5 сек.",
+    "rarity": "epic",
+    "effect": "chance_freeze",
+    "chance": 0.10,
+    "duration": 1.5
+  },
+  "horn_of_plenty": {
+    "name": "Рог Изобилия",
+    "description": "Бесплатное заклинание Метеора в начале каждой четной волны.",
+    "rarity": "legendary",
+    "effect": "free_meteor_even_waves",
+    "value": 1.0
+  },
+  "mirror_of_shadows": {
+    "name": "Зеркало Теней",
+    "description": "Невидимые враги обнаруживаются автоматически через 3 сек после выхода.",
+    "rarity": "rare",
+    "effect": "auto_reveal_stealth",
+    "value": 3.0
+  },
+  "necromancer_amulet": {
+    "name": "Амулет Некроманта",
+    "description": "Убитые боссы поднимаются как гигантские скелеты на стороне цитадели.",
+    "rarity": "legendary",
+    "effect": "boss_reanimate",
+    "value": 1.0
+  },
+  "time_crystal": {
+    "name": "Кристалл Времени",
+    "description": "Заклинание Хроносдвига перезаряжается в 2 раза быстрее.",
+    "rarity": "rare",
+    "effect": "cooldown_reduction",
+    "spell": "chronoshift",
+    "value": 0.50
+  },
+  "thief_curse": {
+    "name": "Проклятие Вора",
+    "description": "Воры монет при гибели дают x3 награду вместо обычной.",
+    "rarity": "uncommon",
+    "effect": "thief_gold_mult",
+    "value": 3.0
+  },
+  "paladin_shield": {
+    "name": "Щит Паладина",
+    "description": "Первая потеря жизни в каждой игре полностью игнорируется.",
+    "rarity": "legendary",
+    "effect": "absorb_first_life_loss",
+    "value": 1.0
+  },
+  "philosopher_stone": {
+    "name": "Философский Камень",
+    "description": "Яд конвертирует 5% нанесенного урона напрямую в золото.",
+    "rarity": "epic",
+    "effect": "poison_damage_to_gold",
+    "value": 0.05
+  },
+  "blood_chalice": {
+    "name": "Кровавая Чаша",
+    "description": "Убийство врага ускоряет все башни на +5% на 2 секунды.",
+    "rarity": "rare",
+    "effect": "kill_speed_surge",
+    "value": 0.05
+  },
+  "lightning_rod": {
+    "name": "Громоотвод",
+    "description": "Молния цепляет на 2 дополнительные цели больше.",
+    "rarity": "uncommon",
+    "effect": "chain_lightning_bonus",
+    "value": 2
+  },
+  "flame_tongue": {
+    "name": "Язык Пламени",
+    "description": "Огненный урон поджигает врагов на 50% дольше.",
+    "rarity": "uncommon",
+    "effect": "burn_duration_mult",
+    "value": 1.50
+  },
+  "obsidian_core": {
+    "name": "Обсидиановое Ядро",
+    "description": "Все физические башни игнорируют 20% брони цели.",
+    "rarity": "rare",
+    "effect": "armor_penetration",
+    "value": 0.20
+  },
+  "golden_compass": {
+    "name": "Золотой Компас",
+    "description": "Дальность атаки всех башен увеличена на +15%.",
+    "rarity": "uncommon",
+    "effect": "all_towers_range_bonus",
+    "value": 0.15
+  },
+  "royal_treasury_key": {
+    "name": "Ключ Казначея",
+    "description": "Стартовое золото на любой карте увеличено на +75.",
+    "rarity": "common",
+    "effect": "start_gold_bonus",
+    "value": 75
+  },
+  "troll_tusk": {
+    "name": "Клык Тролля",
+    "description": "Подавление регенерации врагов при получении любого урона.",
+    "rarity": "rare",
+    "effect": "anti_regen",
+    "value": 1.0
+  },
+  "storm_gem": {
+    "name": "Самоцвет Бури",
+    "description": "В дождливую погоду урон молний удваивается.",
+    "rarity": "rare",
+    "effect": "weather_lightning_synergy",
+    "value": 2.0
+  },
+  "runic_chisel": {
+    "name": "Руническое Долото",
+    "description": "Продажа башен возвращает 95% потраченного золота.",
+    "rarity": "uncommon",
+    "effect": "sell_ratio_bonus",
+    "value": 0.95
+  },
+  "shadow_cloak": {
+    "name": "Плащ Теней",
+    "description": "Башни получают +25% урона против невидимых и скрытных врагов.",
+    "rarity": "uncommon",
+    "effect": "anti_stealth_damage",
+    "value": 0.25
+  },
+  "berserker_axe": {
+    "name": "Топор Берсерка",
+    "description": "Длительность режима берсерка увеличена на +5 секунд.",
+    "rarity": "epic",
+    "effect": "berserk_duration_bonus",
+    "value": 5.0
+  },
+  "arcanist_prism": {
+    "name": "Призма Арканиста",
+    "description": "Магический урон наносит +20% дополнительного урона щитам.",
+    "rarity": "rare",
+    "effect": "shield_shred_mult",
+    "value": 1.20
+  },
+  "dragon_scale": {
+    "name": "Чешуйка Дракона",
+    "description": "Иммунитет башен к разрушению от огненных боссов.",
+    "rarity": "epic",
+    "effect": "tower_invulnerability_fire",
+    "value": 1.0
+  },
+  "crown_of_command": {
+    "name": "Венец Командования",
+    "description": "Башня поддержки дает +35% урона вместо 20%.",
+    "rarity": "rare",
+    "effect": "support_aura_mult",
+    "value": 1.75
+  },
+  "hunters_trap": {
+    "name": "Охотничья Ловушка",
+    "description": "Ловушки получают 2 заряда использования перед уничтожением.",
+    "rarity": "uncommon",
+    "effect": "trap_extra_charges",
+    "value": 2
+  },
+  "spider_silk": {
+    "name": "Паучий Шёлк",
+    "description": "Все замедления действуют на 30% эффективнее.",
+    "rarity": "uncommon",
+    "effect": "slow_intensity_mult",
+    "value": 1.30
+  },
+  "celestial_hourglas": {
+    "name": "Песочные Часы Небес",
+    "description": "Башня времени останавливает врагов на 5 секунд вместо 3.",
+    "rarity": "epic",
+    "effect": "time_stop_duration",
+    "value": 5.0
+  },
+  "merchant_contract": {
+    "name": "Купеческий Контракт",
+    "description": "Цены у бродячего торговца снижены на 25%.",
+    "rarity": "uncommon",
+    "effect": "merchant_discount",
+    "value": 0.25
+  },
+  "demon_horn": {
+    "name": "Рог Демона",
+    "description": "Критический урон башен наносит истинный (true) урон.",
+    "rarity": "legendary",
+    "effect": "crit_to_true_damage",
+    "value": 1.0
+  },
+  "infinity_stone": {
+    "name": "Камень Бесконечности",
+    "description": "Все характеристики всех башен увеличены на +10%.",
+    "rarity": "legendary",
+    "effect": "all_stats_buff",
+    "value": 0.10
+  }
+}

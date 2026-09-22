@@ -13,10 +13,14 @@ extends Node2D
 var target: Node2D = null
 var target_pos: Vector2 = Vector2.ZERO
 var lifetime: float = 3.5
+var pierced_enemy_ids: Dictionary = {}
 var pierced_enemies: Array = []
 
+func _is_target_alive(node) -> bool:
+	return is_instance_valid(node) and node.is_inside_tree() and not node.is_queued_for_deletion() and not node.get("is_dead")
+
 func _ready() -> void:
-	if is_instance_valid(target):
+	if _is_target_alive(target):
 		target_pos = target.global_position
 	queue_redraw()
 
@@ -40,7 +44,7 @@ func init_projectile(
 	projectile_type = p_type
 	splash_radius = p_splash
 	max_pierce = p_pierce
-	if is_instance_valid(target):
+	if _is_target_alive(target):
 		target_pos = target.global_position
 	queue_redraw()
 
@@ -50,50 +54,64 @@ func _process(delta: float) -> void:
 		queue_free()
 		return
 		
-	if is_instance_valid(target) and not target.get("is_dead"):
+	if _is_target_alive(target):
 		target_pos = target.global_position
 	
-	var dir = (target_pos - global_position).normalized()
-	if dir != Vector2.ZERO:
-		rotation = dir.angle()
+	var to_target = target_pos - global_position
+	var dist = to_target.length()
 	var step = speed * delta
 	
-	# Проверка пробивания для стрел/болтов
-	if max_pierce > 1:
-		_check_pierce_collision()
-		global_position += dir * step
-		if global_position.distance_to(target_pos) <= step:
-			if pierced_enemies.size() >= max_pierce:
-				queue_free()
+	if dist > 0.001:
+		var dir = to_target / dist
+		rotation = dir.angle()
+		
+		if max_pierce > 1:
+			_check_pierce_collision()
+			if dist <= step:
+				global_position = target_pos
+				if pierced_enemy_ids.size() >= max_pierce or not is_instance_valid(target):
+					queue_free()
+					return
+			else:
+				global_position += dir * step
+		else:
+			if dist <= step + 10.0:
+				var hit_target = target if _is_target_alive(target) else null
+				_on_hit(hit_target)
+			else:
+				global_position += dir * step
 	else:
-		if global_position.distance_to(target_pos) <= step + 10.0:
-			var hit_target = target if is_instance_valid(target) else null
+		if max_pierce <= 1:
+			var hit_target = target if _is_target_alive(target) else null
 			_on_hit(hit_target)
 		else:
-			global_position += dir * step
+			queue_free()
 
 func _check_pierce_collision() -> void:
-	if not is_inside_tree():
+	if not is_inside_tree() or get_tree() == null:
 		return
 	var enemies = get_tree().get_nodes_in_group("enemies")
 	for enemy in enemies:
-		if is_instance_valid(enemy) and not (enemy in pierced_enemies):
+		if not _is_target_alive(enemy):
+			continue
+		var eid = enemy.get_instance_id()
+		if not pierced_enemy_ids.has(eid):
 			if global_position.distance_to(enemy.global_position) <= 18.0:
+				pierced_enemy_ids[eid] = true
 				pierced_enemies.append(enemy)
 				_apply_hit_effect(enemy)
-				if pierced_enemies.size() >= max_pierce:
+				if pierced_enemy_ids.size() >= max_pierce:
 					queue_free()
 					return
 
 func _on_hit(hit_target = null) -> void:
-	if is_instance_valid(hit_target):
+	if _is_target_alive(hit_target):
 		_apply_hit_effect(hit_target)
 		
-	# Если есть радиус взрыва (пушка, маг льда, ловушка)
-	if splash_radius > 0.0 and is_inside_tree():
+	if splash_radius > 0.0 and is_inside_tree() and get_tree() != null:
 		var enemies = get_tree().get_nodes_in_group("enemies")
 		for enemy in enemies:
-			if is_instance_valid(enemy) and enemy != hit_target:
+			if _is_target_alive(enemy) and enemy != hit_target:
 				var dist = global_position.distance_to(enemy.global_position)
 				if dist <= splash_radius:
 					_apply_hit_effect(enemy, 0.6)
@@ -101,8 +119,11 @@ func _on_hit(hit_target = null) -> void:
 	queue_free()
 
 func _apply_hit_effect(enemy = null, mult: float = 1.0) -> void:
-	if is_instance_valid(enemy) and enemy.has_method("take_damage"):
+	if not _is_target_alive(enemy):
+		return
+	if enemy.has_method("take_damage"):
 		enemy.take_damage(damage * mult, damage_type)
+	if _is_target_alive(enemy):
 		if slow_factor > 0.0 and enemy.has_method("apply_slow"):
 			enemy.apply_slow(slow_factor, slow_duration)
 

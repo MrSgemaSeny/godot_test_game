@@ -45,7 +45,16 @@ func test_girl_kidnapped_and_rescue_flow() -> void:
 	monster.free()
 
 func test_monster_database_types_instantiation() -> void:
-	var types = ["grunt", "berserker", "armored", "shaman", "troll", "stealth", "warchief_boss", "archmage_boss"]
+	var types = [
+		"grunt", "berserker", "armored", "shaman", "troll", "stealth",
+		"warchief_boss", "archmage_boss", "fish_mosquito", "windwing",
+		"shadow_wolf", "carapace_beetle", "stone_golem", "iron_guard",
+		"flying_pumpkin", "spore_flyer", "carrion_griffin", "splitter",
+		"frost_orc", "exploding_troll"
+	]
+	var flyers = ["windwing", "flying_pumpkin", "spore_flyer", "carrion_griffin"]
+	var stealths = ["stealth", "shadow_wolf"]
+	
 	for m_type in types:
 		var monster = MonsterBase.new()
 		monster.monster_type = m_type
@@ -54,7 +63,12 @@ func test_monster_database_types_instantiation() -> void:
 		assert_gt(monster.speed, 0.0, "Monster %s should have positive speed" % m_type)
 		if m_type == "warchief_boss" or m_type == "archmage_boss":
 			assert_true(monster.is_boss, "%s should have is_boss = true" % m_type)
+		if flyers.has(m_type):
+			assert_true(monster.is_flyer, "%s should have is_flyer = true" % m_type)
+		if stealths.has(m_type):
+			assert_true(monster.is_stealth, "%s should have is_stealth = true" % m_type)
 		monster.free()
+
 
 func test_enemy_outcome_lifecycle_killed() -> void:
 	var monster = MonsterBase.new()

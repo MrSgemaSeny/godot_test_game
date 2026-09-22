@@ -37,3 +37,24 @@ func test_cast_cooldown_trigger() -> void:
 	# Simulate cooldown elapsing
 	spell_sys._process(30.0)
 	assert_le(spell_sys.cooldowns.get("freeze", 0.0), 0.0, "Cooldown should expire after time")
+
+func test_all_eight_spells_present() -> void:
+	var required = ["meteor", "freeze", "gold_rain", "lightning", "vortex", "roots", "chronoshift", "stone_wall"]
+	for s_id in required:
+		assert_true(spell_sys.spells_data.has(s_id), "Spells data must contain %s" % s_id)
+		var s = spell_sys.spells_data[s_id]
+		assert_gt(int(s.get("mana_cost", 0)), 0, "%s mana_cost must be > 0" % s_id)
+		assert_gt(float(s.get("cooldown", 0.0)), 0.0, "%s cooldown must be > 0.0" % s_id)
+		assert_true(s.has("damage_type"), "%s must define damage_type" % s_id)
+		assert_true(s.has("effect_type"), "%s must define effect_type" % s_id)
+
+func test_cast_new_spells() -> void:
+	var new_spells = ["vortex", "roots", "chronoshift", "stone_wall"]
+	for s_id in new_spells:
+		spell_sys.current_mana = 100
+		spell_sys.cooldowns.clear()
+		assert_true(spell_sys.can_cast(s_id), "Should be able to cast %s with full mana" % s_id)
+		var res = spell_sys.cast_spell(s_id, Vector2(100, 100))
+		assert_true(res, "Casting %s should succeed" % s_id)
+		assert_gt(spell_sys.cooldowns.get(s_id, 0.0), 0.0, "%s should set cooldown" % s_id)
+

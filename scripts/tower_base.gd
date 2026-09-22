@@ -20,6 +20,18 @@ var gold_per_sec: int = 0
 var upgrade_cost: int = 60
 var total_spent: int = 70
 
+# === Evolution System (Stage 3) ===
+var evolution_chosen: String = ""
+var evolution_data_a: Dictionary = {}
+var evolution_data_b: Dictionary = {}
+var special_ability: String = ""
+
+signal buff_applied(buff_type: String, duration: float, multiplier: float)
+signal buff_expired(buff_type: String)
+signal evolution_applied(branch: String)
+
+var active_buffs: Array[Dictionary] = []
+
 var is_selected: bool = false
 var shoot_timer: float = 0.0
 var scan_timer: float = 0.0
@@ -36,6 +48,8 @@ func _ready() -> void:
 	queue_redraw()
 
 func _load_stats() -> void:
+	if not is_inside_tree() or get_tree() == null:
+		return
 	var game_manager = get_tree().get_first_node_in_group("game_manager") as GameManager
 	if not game_manager:
 		game_manager = get_tree().root.get_node_or_null("Game/GameManager")
@@ -58,10 +72,88 @@ func _load_stats() -> void:
 			pierce_count = ldata.get("pierce", 1)
 			gold_per_sec = ldata.get("gold_per_sec", 0)
 			upgrade_cost = ldata.get("upgrade_cost", 0)
+			
+		evolution_data_a = tdata.get("evolution_a", {}).duplicate()
+		evolution_data_b = tdata.get("evolution_b", {}).duplicate()
+
+# Public Buff API
+func apply_buff(buff_type: String, duration: float, multiplier: float) -> void:
+	var b_type: String = buff_type.to_lower().strip_edges()
+	if b_type == "speed" or b_type == "attackspeed":
+		b_type = "attack_speed"
+		
+	if not b_type in ["damage", "range", "attack_speed"]:
+		push_warning("TowerBase: Unsupported buff type '%s'" % buff_type)
+		return
+		
+	if duration <= 0.0 or multiplier <= 0.0:
+		return
+		
+	var found: bool = false
+	for b in active_buffs:
+		if b.get("type", "") == b_type and is_equal_approx(float(b.get("multiplier", 1.0)), multiplier):
+			b["duration"] = max(float(b.get("duration", 0.0)), duration)
+			found = true
+			break
+			
+	if not found:
+		active_buffs.append({
+			"type": b_type,
+			"duration": duration,
+			"multiplier": multiplier
+		})
+		
+	buff_applied.emit(b_type, duration, multiplier)
+	if b_type == "range" or is_selected:
+		queue_redraw()
+
+func has_buff(buff_type: String) -> bool:
+	var b_type = buff_type.to_lower().strip_edges()
+	if b_type == "speed" or b_type == "attackspeed":
+		b_type = "attack_speed"
+	for b in active_buffs:
+		if b.get("type", "") == b_type and float(b.get("duration", 0.0)) > 0.0:
+			return true
+	return false
+
+func get_buff_multiplier(buff_type: String) -> float:
+	var mult: float = 1.0
+	var b_type = buff_type.to_lower().strip_edges()
+	if b_type == "speed" or b_type == "attackspeed":
+		b_type = "attack_speed"
+	for b in active_buffs:
+		if b.get("type", "") == b_type:
+			mult *= float(b.get("multiplier", 1.0))
+	return mult
+
+func clear_buffs() -> void:
+	active_buffs.clear()
+	queue_redraw()
+
+func _update_buffs(delta: float) -> void:
+	if active_buffs.is_empty():
+		return
+	var had_range_buff: bool = false
+	var changed: bool = false
+	var i: int = active_buffs.size() - 1
+	while i >= 0:
+		var b = active_buffs[i]
+		b["duration"] = float(b.get("duration", 0.0)) - delta
+		if b["duration"] <= 0.0:
+			var b_type = b.get("type", "")
+			if b_type == "range":
+				had_range_buff = true
+			buff_expired.emit(b_type)
+			active_buffs.remove_at(i)
+			changed = true
+		i -= 1
+	if changed:
+		if had_range_buff or is_selected:
+			queue_redraw()
 
 func get_effective_damage() -> float:
-	var dmg = damage
-	if not is_inside_tree():
+	var dmg: float = damage * get_buff_multiplier("damage")
+	if not is_inside_tree() or get_tree() == null:
 		return dmg
 	var meta = get_tree().get_first_node_in_group("meta_manager") as MetaManager
 	if meta:
@@ -75,8 +167,8 @@ func get_effective_damage() -> float:
 	return dmg
 
 func get_effective_range() -> float:
-	var r = range_radius
-	if not is_inside_tree():
+	var r: float = range_radius * get_buff_multiplier("range")
+	if not is_inside_tree() or get_tree() == null:
 		return r
 	var tech = get_tree().get_first_node_in_group("tech_tree_manager") as TechTreeManager
 	if tech:
@@ -84,8 +176,8 @@ func get_effective_range() -> float:
 	return r
 
 func get_effective_attack_speed() -> float:
-	var spd = attack_speed
-	if not is_inside_tree():
+	var spd: float = attack_speed * get_buff_multiplier("attack_speed")
+	if not is_inside_tree() or get_tree() == null:
 		return spd
 	var gm = get_tree().get_first_node_in_group("game_manager") as GameManager
 	if gm and gm.ability_active and gm.selected_path == "military":
@@ -95,13 +187,17 @@ func get_effective_attack_speed() -> float:
 func _process(delta: float) -> void:
 	anim_time += delta * 3.0
 	
+	# Process buff countdown
+	_update_buffs(delta)
+	
 	if gold_per_sec > 0:
 		gold_timer += delta
 		if gold_timer >= 1.0:
 			gold_timer = 0.0
-			var gm = get_tree().get_first_node_in_group("game_manager") as GameManager
-			if gm and gm.game_state == GameManager.GameState.WAVE_IN_PROGRESS:
-				gm.add_gold(gold_per_sec)
+			if is_inside_tree() and get_tree() != null:
+				var gm = get_tree().get_first_node_in_group("game_manager") as GameManager
+				if gm and gm.game_state == GameManager.GameState.WAVE_IN_PROGRESS:
+					gm.add_gold(gold_per_sec)
 				
 	if shoot_timer > 0.0:
 		shoot_timer -= delta
@@ -110,6 +206,12 @@ func _process(delta: float) -> void:
 	if scan_timer <= 0.0:
 		scan_timer = 0.15
 		_find_best_target()
+		
+	if current_target != null:
+		if not is_instance_valid(current_target) or not current_target.is_inside_tree() or current_target.is_queued_for_deletion() or current_target.get("is_dead"):
+			current_target = null
+		elif global_position.distance_to(current_target.global_position) > get_effective_range():
+			current_target = null
 		
 	if is_instance_valid(current_target):
 		var target_angle = (current_target.global_position - global_position).angle()
@@ -123,13 +225,16 @@ func _process(delta: float) -> void:
 			_shoot_single(current_target)
 
 func _find_best_target() -> void:
+	if not is_inside_tree() or get_tree() == null:
+		current_target = null
+		return
 	var enemies = get_tree().get_nodes_in_group("enemies")
 	var best_target: Node2D = null
 	var best_progress: float = -1.0
 	var eff_range = get_effective_range()
 	
 	for enemy in enemies:
-		if is_instance_valid(enemy) and not enemy.get("is_dead"):
+		if is_instance_valid(enemy) and enemy.is_inside_tree() and not enemy.is_queued_for_deletion() and not enemy.get("is_dead"):
 			var dist = global_position.distance_to(enemy.global_position)
 			if dist <= eff_range:
 				var prog = enemy.get("progress") if "progress" in enemy else 0.0
@@ -140,7 +245,7 @@ func _find_best_target() -> void:
 	current_target = best_target
 
 func _shoot_single(target_node: Node2D) -> void:
-	if not is_instance_valid(target_node):
+	if not is_instance_valid(target_node) or not target_node.is_inside_tree() or target_node.is_queued_for_deletion() or target_node.get("is_dead"):
 		return
 		
 	var spd = get_effective_attack_speed()
@@ -179,24 +284,26 @@ func _shoot_single(target_node: Node2D) -> void:
 		_spawn_projectile(proj)
 
 func _spawn_projectile(proj: Node2D) -> void:
-	if not is_inside_tree():
-		proj.free()
+	if not is_inside_tree() or get_tree() == null:
+		proj.queue_free()
 		return
 	var proj_cont = get_tree().root.get_node_or_null("Game/Projectiles")
-	if is_instance_valid(proj_cont):
+	if is_instance_valid(proj_cont) and proj_cont.is_inside_tree():
 		proj_cont.add_child(proj)
-	elif is_instance_valid(get_parent()):
+	elif is_instance_valid(get_parent()) and get_parent().is_inside_tree():
 		get_parent().add_child(proj)
 	else:
 		add_child(proj)
 
 func _shoot_bastion() -> void:
+	if not is_inside_tree() or get_tree() == null:
+		return
 	var enemies = get_tree().get_nodes_in_group("enemies")
 	var in_range_enemies: Array = []
 	var eff_range = get_effective_range()
 	
 	for enemy in enemies:
-		if is_instance_valid(enemy) and not enemy.get("is_dead"):
+		if is_instance_valid(enemy) and enemy.is_inside_tree() and not enemy.is_queued_for_deletion() and not enemy.get("is_dead"):
 			if global_position.distance_to(enemy.global_position) <= eff_range:
 				in_range_enemies.append(enemy)
 				
@@ -220,7 +327,50 @@ func upgrade() -> bool:
 	queue_redraw()
 	return true
 
+func can_evolve() -> bool:
+	return current_level >= max_level and evolution_chosen == "" and (not evolution_data_a.is_empty() or not evolution_data_b.is_empty())
+
+func get_evolution_info(branch: String) -> Dictionary:
+	if branch == "evolution_a":
+		return evolution_data_a
+	elif branch == "evolution_b":
+		return evolution_data_b
+	return {}
+
+func apply_evolution(branch: String) -> bool:
+	if not can_evolve():
+		return false
+	if branch != "evolution_a" and branch != "evolution_b":
+		return false
+	var info = get_evolution_info(branch)
+	if info.is_empty():
+		return false
+		
+	evolution_chosen = branch
+	current_level = 4
+	tower_name = info.get("name", tower_name)
+	damage = float(info.get("damage", damage))
+	range_radius = float(info.get("range", range_radius))
+	attack_speed = float(info.get("attack_speed", attack_speed))
+	projectile_speed = float(info.get("projectile_speed", projectile_speed))
+	projectile_type = str(info.get("projectile_type", projectile_type))
+	special_ability = str(info.get("special_ability", ""))
+	if info.has("pierce"):
+		pierce_count = int(info["pierce"])
+	if info.has("splash_radius"):
+		splash_radius = float(info["splash_radius"])
+	if info.has("slow_factor"):
+		slow_factor = float(info["slow_factor"])
+	if info.has("slow_duration"):
+		slow_duration = float(info["slow_duration"])
+		
+	evolution_applied.emit(branch)
+	queue_redraw()
+	return true
+
 func get_sell_value() -> int:
+	if not is_inside_tree() or get_tree() == null:
+		return int(total_spent * 0.70)
 	var tech = get_tree().get_first_node_in_group("tech_tree_manager") as TechTreeManager
 	var ratio = tech.get_sell_ratio() if tech else 0.70
 	return int(total_spent * ratio)
@@ -236,6 +386,11 @@ func _draw() -> void:
 		draw_circle(Vector2.ZERO, eff_range, Color(0.3, 0.75, 1.0, 0.08))
 		draw_arc(Vector2.ZERO, eff_range, 0, TAU, 48, Color(0.4, 0.85, 1.0, 0.6), 2.0)
 		draw_arc(Vector2.ZERO, eff_range - 4.0, 0, TAU, 36, Color(1.0, 0.85, 0.2, 0.3), 1.0)
+		
+	# Buff aura ring
+	if not active_buffs.is_empty():
+		var aura_alpha = 0.3 + sin(anim_time * 2.0) * 0.15
+		draw_arc(Vector2.ZERO, 20.0, 0, TAU, 24, Color(1.0, 0.85, 0.2, aura_alpha), 2.0)
 	
 	# Отрисовка башни
 	match tower_type:

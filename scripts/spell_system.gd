@@ -60,29 +60,37 @@ func cast_spell(spell_id: String, target_pos: Vector2 = Vector2.ZERO) -> bool:
 	
 	match spell_id:
 		"meteor":
-			_cast_meteor(target_pos, sdata.get("damage", 350), sdata.get("radius", 130))
+			_cast_meteor(target_pos, sdata.get("damage", 350), sdata.get("radius", 130), sdata.get("damage_type", "fire"))
 		"freeze":
 			_cast_freeze(sdata.get("duration", 5.0))
 		"gold_rain":
 			_cast_gold_rain(sdata.get("gold_amount", 120))
 		"lightning":
-			_cast_lightning(target_pos, sdata.get("damage", 220))
+			_cast_lightning(target_pos, sdata.get("damage", 220), sdata.get("damage_type", "lightning"))
+		"vortex":
+			_cast_vortex(target_pos, sdata.get("radius", 200.0), sdata.get("duration", 4.0))
+		"roots":
+			_cast_roots(target_pos, sdata.get("radius", 150.0), sdata.get("duration", 6.0))
+		"chronoshift":
+			_cast_chronoshift(sdata.get("duration", 5.0), sdata.get("power", 3.0))
+		"stone_wall":
+			_cast_stone_wall(target_pos, sdata.get("duration", 8.0))
 			
 	spell_cast_success.emit(spell_id)
 	return true
 
-func _cast_meteor(target_pos: Vector2, dmg: float, radius: float) -> void:
-	if not is_inside_tree():
+func _cast_meteor(target_pos: Vector2, dmg: float, radius: float, dmg_type: String = "fire") -> void:
+	if not is_inside_tree() or get_tree() == null:
 		return
 	var enemies = get_tree().get_nodes_in_group("enemies")
 	for enemy in enemies:
 		if is_instance_valid(enemy) and not enemy.get("is_dead"):
 			var dist = target_pos.distance_to(enemy.global_position)
 			if dist <= radius:
-				enemy.take_damage(dmg, "magic")
+				enemy.take_damage(dmg, dmg_type)
 
 func _cast_freeze(duration: float) -> void:
-	if not is_inside_tree():
+	if not is_inside_tree() or get_tree() == null:
 		return
 	var enemies = get_tree().get_nodes_in_group("enemies")
 	for enemy in enemies:
@@ -91,14 +99,14 @@ func _cast_freeze(duration: float) -> void:
 				enemy.apply_freeze(duration)
 
 func _cast_gold_rain(amount: int) -> void:
-	if not is_inside_tree():
+	if not is_inside_tree() or get_tree() == null:
 		return
 	var gm = get_tree().get_first_node_in_group("game_manager") as GameManager
 	if gm:
 		gm.add_gold(amount)
 
-func _cast_lightning(target_pos: Vector2, dmg: float) -> void:
-	if not is_inside_tree():
+func _cast_lightning(target_pos: Vector2, dmg: float, dmg_type: String = "lightning") -> void:
+	if not is_inside_tree() or get_tree() == null:
 		return
 	var enemies = get_tree().get_nodes_in_group("enemies")
 	var closest_enemy: Node2D = null
@@ -111,4 +119,59 @@ func _cast_lightning(target_pos: Vector2, dmg: float) -> void:
 				closest_enemy = enemy
 				
 	if is_instance_valid(closest_enemy) and min_dist <= 180.0:
-		closest_enemy.take_damage(dmg, "magic")
+		closest_enemy.take_damage(dmg, dmg_type)
+
+func _cast_vortex(target_pos: Vector2, radius: float, _duration: float) -> void:
+	if not is_inside_tree() or get_tree() == null:
+		return
+	var enemies = get_tree().get_nodes_in_group("enemies")
+	for enemy in enemies:
+		if is_instance_valid(enemy) and not enemy.get("is_dead"):
+			var dist = target_pos.distance_to(enemy.global_position)
+			if dist <= radius:
+				var dir = (target_pos - enemy.global_position).normalized()
+				var pull_strength = (1.0 - (dist / radius)) * 40.0
+				enemy.global_position += dir * pull_strength
+
+func _cast_roots(target_pos: Vector2, radius: float, duration: float) -> void:
+	if not is_inside_tree() or get_tree() == null:
+		return
+	var enemies = get_tree().get_nodes_in_group("enemies")
+	for enemy in enemies:
+		if is_instance_valid(enemy) and not enemy.get("is_dead"):
+			var dist = target_pos.distance_to(enemy.global_position)
+			if dist <= radius:
+				if enemy.has_method("apply_status_effect"):
+					enemy.apply_status_effect(StatusEffect.Type.STUN, duration, 1.0)
+				elif enemy.has_method("apply_freeze"):
+					enemy.apply_freeze(duration)
+
+func _cast_chronoshift(duration: float, factor: float) -> void:
+	if not is_inside_tree() or get_tree() == null:
+		return
+	var enemies = get_tree().get_nodes_in_group("enemies")
+	for enemy in enemies:
+		if is_instance_valid(enemy) and not enemy.get("is_dead"):
+			if enemy.has_method("apply_status_effect"):
+				enemy.apply_status_effect(StatusEffect.Type.SLOW, duration, 1.0 - (1.0 / factor))
+			elif enemy.has_method("apply_slow"):
+				enemy.apply_slow(1.0 - (1.0 / factor), duration)
+
+func _cast_stone_wall(target_pos: Vector2, duration: float) -> void:
+	if not is_inside_tree() or get_tree() == null:
+		return
+	var barrier = Node2D.new()
+	barrier.name = "StoneWallBarrier_%d" % Time.get_ticks_msec()
+	barrier.global_position = target_pos
+	barrier.add_to_group("barricades")
+	if get_tree().current_scene:
+		get_tree().current_scene.add_child(barrier)
+	else:
+		add_child(barrier)
+	
+	var timer = get_tree().create_timer(duration)
+	timer.timeout.connect(func():
+		if is_instance_valid(barrier):
+			barrier.queue_free()
+	)
+

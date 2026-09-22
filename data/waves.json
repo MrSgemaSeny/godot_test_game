@@ -1,80 +1,536 @@
 [
   {
     "wave_number": 1,
+    "wave_event": "none",
     "spawn_groups": [
-      {"enemy_type": "grunt", "count": 6, "interval": 1.5, "delay": 0.0}
+      {
+        "enemy_type": "grunt",
+        "count": 8,
+        "interval": 1.5,
+        "delay": 0.0
+      }
     ]
   },
   {
     "wave_number": 2,
+    "wave_event": "none",
     "spawn_groups": [
-      {"enemy_type": "grunt", "count": 8, "interval": 1.2, "delay": 0.0},
-      {"enemy_type": "berserker", "count": 4, "interval": 0.9, "delay": 3.0}
+      {
+        "enemy_type": "grunt",
+        "count": 10,
+        "interval": 1.2,
+        "delay": 0.0
+      },
+      {
+        "enemy_type": "berserker",
+        "count": 4,
+        "interval": 0.9,
+        "delay": 3.0
+      }
     ]
   },
   {
     "wave_number": 3,
+    "wave_event": "none",
     "spawn_groups": [
-      {"enemy_type": "grunt", "count": 8, "interval": 1.0, "delay": 0.0},
-      {"enemy_type": "berserker", "count": 6, "interval": 0.7, "delay": 3.0},
-      {"enemy_type": "armored", "count": 3, "interval": 2.0, "delay": 5.0}
+      {
+        "enemy_type": "grunt",
+        "count": 10,
+        "interval": 1.0,
+        "delay": 0.0
+      },
+      {
+        "enemy_type": "berserker",
+        "count": 6,
+        "interval": 0.7,
+        "delay": 3.0
+      },
+      {
+        "enemy_type": "armored",
+        "count": 3,
+        "interval": 2.0,
+        "delay": 5.0
+      }
     ]
   },
   {
     "wave_number": 4,
+    "wave_event": "none",
     "spawn_groups": [
-      {"enemy_type": "grunt", "count": 10, "interval": 0.9, "delay": 0.0},
-      {"enemy_type": "shaman", "count": 2, "interval": 3.0, "delay": 2.0},
-      {"enemy_type": "armored", "count": 4, "interval": 1.8, "delay": 4.0}
+      {
+        "enemy_type": "grunt",
+        "count": 12,
+        "interval": 0.9,
+        "delay": 0.0
+      },
+      {
+        "enemy_type": "shaman",
+        "count": 2,
+        "interval": 3.0,
+        "delay": 2.0
+      },
+      {
+        "enemy_type": "armored",
+        "count": 4,
+        "interval": 1.8,
+        "delay": 4.0
+      }
     ]
   },
   {
     "wave_number": 5,
+    "wave_event": "boss_wave",
     "spawn_groups": [
-      {"enemy_type": "grunt", "count": 12, "interval": 0.8, "delay": 0.0},
-      {"enemy_type": "berserker", "count": 8, "interval": 0.6, "delay": 3.0},
-      {"enemy_type": "warchief_boss", "count": 1, "interval": 1.0, "delay": 7.0}
+      {
+        "enemy_type": "grunt",
+        "count": 14,
+        "interval": 0.8,
+        "delay": 0.0
+      },
+      {
+        "enemy_type": "berserker",
+        "count": 8,
+        "interval": 0.6,
+        "delay": 3.0
+      },
+      {
+        "enemy_type": "warchief_boss",
+        "count": 1,
+        "interval": 1.0,
+        "delay": 7.0
+      }
     ]
   },
   {
     "wave_number": 6,
+    "wave_event": "speed_surge",
     "spawn_groups": [
-      {"enemy_type": "stealth", "count": 10, "interval": 0.7, "delay": 0.0},
-      {"enemy_type": "berserker", "count": 10, "interval": 0.5, "delay": 3.0},
-      {"enemy_type": "shaman", "count": 3, "interval": 2.5, "delay": 5.0}
+      {
+        "enemy_type": "fish_mosquito",
+        "count": 12,
+        "interval": 0.6,
+        "delay": 0.0
+      },
+      {
+        "enemy_type": "berserker",
+        "count": 10,
+        "interval": 0.5,
+        "delay": 2.0
+      }
     ]
   },
   {
     "wave_number": 7,
+    "wave_event": "air_wave",
     "spawn_groups": [
-      {"enemy_type": "armored", "count": 8, "interval": 1.2, "delay": 0.0},
-      {"enemy_type": "troll", "count": 2, "interval": 4.0, "delay": 4.0},
-      {"enemy_type": "grunt", "count": 15, "interval": 0.6, "delay": 6.0}
+      {
+        "enemy_type": "windwing",
+        "count": 10,
+        "interval": 0.8,
+        "delay": 0.0
+      },
+      {
+        "enemy_type": "flying_pumpkin",
+        "count": 8,
+        "interval": 1.0,
+        "delay": 3.0
+      }
     ]
   },
   {
     "wave_number": 8,
+    "wave_event": "stealth_wave",
     "spawn_groups": [
-      {"enemy_type": "stealth", "count": 14, "interval": 0.5, "delay": 0.0},
-      {"enemy_type": "troll", "count": 3, "interval": 3.0, "delay": 3.0},
-      {"enemy_type": "shaman", "count": 4, "interval": 2.0, "delay": 5.0}
+      {
+        "enemy_type": "stealth",
+        "count": 12,
+        "interval": 0.6,
+        "delay": 0.0
+      },
+      {
+        "enemy_type": "shadow_wolf",
+        "count": 8,
+        "interval": 0.7,
+        "delay": 2.0
+      }
     ]
   },
   {
     "wave_number": 9,
+    "wave_event": "armor_surge",
     "spawn_groups": [
-      {"enemy_type": "armored", "count": 12, "interval": 0.9, "delay": 0.0},
-      {"enemy_type": "berserker", "count": 16, "interval": 0.4, "delay": 2.0},
-      {"enemy_type": "troll", "count": 4, "interval": 2.5, "delay": 6.0}
+      {
+        "enemy_type": "carapace_beetle",
+        "count": 8,
+        "interval": 1.2,
+        "delay": 0.0
+      },
+      {
+        "enemy_type": "stone_golem",
+        "count": 4,
+        "interval": 3.0,
+        "delay": 4.0
+      }
     ]
   },
   {
     "wave_number": 10,
+    "wave_event": "boss_wave",
     "spawn_groups": [
-      {"enemy_type": "armored", "count": 10, "interval": 0.8, "delay": 0.0},
-      {"enemy_type": "berserker", "count": 15, "interval": 0.4, "delay": 2.0},
-      {"enemy_type": "shaman", "count": 4, "interval": 2.0, "delay": 4.0},
-      {"enemy_type": "archmage_boss", "count": 1, "interval": 1.0, "delay": 8.0}
+      {
+        "enemy_type": "armored",
+        "count": 12,
+        "interval": 0.8,
+        "delay": 0.0
+      },
+      {
+        "enemy_type": "shaman",
+        "count": 4,
+        "interval": 2.0,
+        "delay": 2.0
+      },
+      {
+        "enemy_type": "archmage_boss",
+        "count": 1,
+        "interval": 1.0,
+        "delay": 8.0
+      }
+    ]
+  },
+  {
+    "wave_number": 11,
+    "wave_event": "double_rewards",
+    "spawn_groups": [
+      {
+        "enemy_type": "splitter",
+        "count": 10,
+        "interval": 0.9,
+        "delay": 0.0
+      },
+      {
+        "enemy_type": "grunt",
+        "count": 20,
+        "interval": 0.5,
+        "delay": 4.0
+      }
+    ]
+  },
+  {
+    "wave_number": 12,
+    "wave_event": "air_wave",
+    "spawn_groups": [
+      {
+        "enemy_type": "spore_flyer",
+        "count": 12,
+        "interval": 0.7,
+        "delay": 0.0
+      },
+      {
+        "enemy_type": "windwing",
+        "count": 12,
+        "interval": 0.6,
+        "delay": 3.0
+      }
+    ]
+  },
+  {
+    "wave_number": 13,
+    "wave_event": "none",
+    "spawn_groups": [
+      {
+        "enemy_type": "iron_guard",
+        "count": 10,
+        "interval": 1.1,
+        "delay": 0.0
+      },
+      {
+        "enemy_type": "troll",
+        "count": 6,
+        "interval": 2.5,
+        "delay": 4.0
+      }
+    ]
+  },
+  {
+    "wave_number": 14,
+    "wave_event": "ambush",
+    "spawn_groups": [
+      {
+        "enemy_type": "frost_orc",
+        "count": 14,
+        "interval": 0.6,
+        "delay": 0.0
+      },
+      {
+        "enemy_type": "berserker",
+        "count": 16,
+        "interval": 0.4,
+        "delay": 2.0
+      }
+    ]
+  },
+  {
+    "wave_number": 15,
+    "wave_event": "boss_wave",
+    "spawn_groups": [
+      {
+        "enemy_type": "iron_guard",
+        "count": 10,
+        "interval": 1.0,
+        "delay": 0.0
+      },
+      {
+        "enemy_type": "exploding_troll",
+        "count": 6,
+        "interval": 2.0,
+        "delay": 3.0
+      },
+      {
+        "enemy_type": "warchief_boss",
+        "count": 1,
+        "interval": 1.0,
+        "delay": 8.0
+      }
+    ]
+  },
+  {
+    "wave_number": 16,
+    "wave_event": "stealth_wave",
+    "spawn_groups": [
+      {
+        "enemy_type": "stealth",
+        "count": 16,
+        "interval": 0.5,
+        "delay": 0.0
+      },
+      {
+        "enemy_type": "shadow_wolf",
+        "count": 12,
+        "interval": 0.5,
+        "delay": 2.0
+      }
+    ]
+  },
+  {
+    "wave_number": 17,
+    "wave_event": "speed_surge",
+    "spawn_groups": [
+      {
+        "enemy_type": "fish_mosquito",
+        "count": 15,
+        "interval": 0.5,
+        "delay": 0.0
+      },
+      {
+        "enemy_type": "berserker",
+        "count": 20,
+        "interval": 0.4,
+        "delay": 2.0
+      },
+      {
+        "enemy_type": "exploding_troll",
+        "count": 8,
+        "interval": 0.8,
+        "delay": 4.0
+      }
+    ]
+  },
+  {
+    "wave_number": 18,
+    "wave_event": "armor_surge",
+    "spawn_groups": [
+      {
+        "enemy_type": "stone_golem",
+        "count": 8,
+        "interval": 2.0,
+        "delay": 0.0
+      },
+      {
+        "enemy_type": "shaman",
+        "count": 6,
+        "interval": 2.0,
+        "delay": 2.0
+      },
+      {
+        "enemy_type": "carapace_beetle",
+        "count": 10,
+        "interval": 1.0,
+        "delay": 4.0
+      }
+    ]
+  },
+  {
+    "wave_number": 19,
+    "wave_event": "air_wave",
+    "spawn_groups": [
+      {
+        "enemy_type": "carrion_griffin",
+        "count": 12,
+        "interval": 0.7,
+        "delay": 0.0
+      },
+      {
+        "enemy_type": "spore_flyer",
+        "count": 14,
+        "interval": 0.6,
+        "delay": 2.0
+      },
+      {
+        "enemy_type": "flying_pumpkin",
+        "count": 10,
+        "interval": 0.8,
+        "delay": 3.0
+      }
+    ]
+  },
+  {
+    "wave_number": 20,
+    "wave_event": "boss_wave",
+    "spawn_groups": [
+      {
+        "enemy_type": "iron_guard",
+        "count": 12,
+        "interval": 0.8,
+        "delay": 0.0
+      },
+      {
+        "enemy_type": "frost_orc",
+        "count": 10,
+        "interval": 0.8,
+        "delay": 2.0
+      },
+      {
+        "enemy_type": "warchief_boss",
+        "count": 2,
+        "interval": 3.0,
+        "delay": 7.0
+      }
+    ]
+  },
+  {
+    "wave_number": 21,
+    "wave_event": "speed_surge",
+    "spawn_groups": [
+      {
+        "enemy_type": "fish_mosquito",
+        "count": 20,
+        "interval": 0.4,
+        "delay": 0.0
+      },
+      {
+        "enemy_type": "berserker",
+        "count": 20,
+        "interval": 0.35,
+        "delay": 1.5
+      },
+      {
+        "enemy_type": "shadow_wolf",
+        "count": 14,
+        "interval": 0.45,
+        "delay": 3.0
+      }
+    ]
+  },
+  {
+    "wave_number": 22,
+    "wave_event": "armor_surge",
+    "spawn_groups": [
+      {
+        "enemy_type": "carapace_beetle",
+        "count": 16,
+        "interval": 0.7,
+        "delay": 0.0
+      },
+      {
+        "enemy_type": "iron_guard",
+        "count": 14,
+        "interval": 0.8,
+        "delay": 2.5
+      },
+      {
+        "enemy_type": "stone_golem",
+        "count": 6,
+        "interval": 2.0,
+        "delay": 4.0
+      }
+    ]
+  },
+  {
+    "wave_number": 23,
+    "wave_event": "ambush",
+    "spawn_groups": [
+      {
+        "enemy_type": "splitter",
+        "count": 16,
+        "interval": 0.6,
+        "delay": 0.0
+      },
+      {
+        "enemy_type": "exploding_troll",
+        "count": 12,
+        "interval": 0.8,
+        "delay": 3.0
+      },
+      {
+        "enemy_type": "troll",
+        "count": 8,
+        "interval": 1.5,
+        "delay": 5.0
+      }
+    ]
+  },
+  {
+    "wave_number": 24,
+    "wave_event": "stealth_wave",
+    "spawn_groups": [
+      {
+        "enemy_type": "shadow_wolf",
+        "count": 22,
+        "interval": 0.4,
+        "delay": 0.0
+      },
+      {
+        "enemy_type": "stealth",
+        "count": 18,
+        "interval": 0.45,
+        "delay": 2.0
+      },
+      {
+        "enemy_type": "frost_orc",
+        "count": 12,
+        "interval": 0.7,
+        "delay": 3.5
+      }
+    ]
+  },
+  {
+    "wave_number": 25,
+    "wave_event": "boss_wave",
+    "spawn_groups": [
+      {
+        "enemy_type": "iron_guard",
+        "count": 16,
+        "interval": 0.7,
+        "delay": 0.0
+      },
+      {
+        "enemy_type": "shaman",
+        "count": 6,
+        "interval": 1.8,
+        "delay": 2.0
+      },
+      {
+        "enemy_type": "troll",
+        "count": 8,
+        "interval": 1.5,
+        "delay": 4.0
+      },
+      {
+        "enemy_type": "archmage_boss",
+        "count": 1,
+        "interval": 1.0,
+        "delay": 8.0
+      }
     ]
   }
 ]

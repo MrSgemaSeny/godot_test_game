@@ -1,0 +1,130 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/evolution_preview_modal.gd" id="1_evo"]
+
+[node name="EvolutionPreviewModal" type="PanelContainer"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -380.0
+offset_top = -240.0
+offset_right = 380.0
+offset_bottom = 240.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_evo")
+
+[node name="VBox" type="VBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="TitleLabel" type="Label" parent="VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.88, 0.3, 1)
+theme_override_font_sizes/font_size = 20
+text = "⚔️ Выберите специализацию"
+horizontal_alignment = 1
+
+[node name="WarningLabel" type="Label" parent="VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.45, 0.3, 1)
+theme_override_font_sizes/font_size = 13
+text = "⚠️ Выбор необратим!"
+horizontal_alignment = 1
+
+[node name="Columns" type="HBoxContainer" parent="VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="ColumnA" type="VBoxContainer" parent="VBox/Columns"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 8
+
+[node name="EvoAName" type="Label" parent="VBox/Columns/ColumnA"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.4, 0.8, 1, 1)
+theme_override_font_sizes/font_size = 18
+text = "🔵 Ветка A"
+horizontal_alignment = 1
+
+[node name="EvoADesc" type="Label" parent="VBox/Columns/ColumnA"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 13
+text = "Описание..."
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="EvoAStats" type="Label" parent="VBox/Columns/ColumnA"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.85, 0.95, 0.85, 1)
+theme_override_font_sizes/font_size = 13
+text = "⚔️ Урон: 0"
+
+[node name="EvoAAbility" type="Label" parent="VBox/Columns/ColumnA"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.85, 0.2, 1)
+theme_override_font_sizes/font_size = 12
+text = "✨ Способность"
+autowrap_mode = 2
+
+[node name="ConfirmABtn" type="Button" parent="VBox/Columns/ColumnA"]
+custom_minimum_size = Vector2(160, 44)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 14
+text = "✅ Выбрать A"
+
+[node name="Separator" type="VSeparator" parent="VBox/Columns"]
+layout_mode = 2
+
+[node name="ColumnB" type="VBoxContainer" parent="VBox/Columns"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 8
+
+[node name="EvoBName" type="Label" parent="VBox/Columns/ColumnB"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.45, 0.35, 1)
+theme_override_font_sizes/font_size = 18
+text = "🔴 Ветка B"
+horizontal_alignment = 1
+
+[node name="EvoBDesc" type="Label" parent="VBox/Columns/ColumnB"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 13
+text = "Описание..."
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="EvoBStats" type="Label" parent="VBox/Columns/ColumnB"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.85, 0.95, 0.85, 1)
+theme_override_font_sizes/font_size = 13
+text = "⚔️ Урон: 0"
+
+[node name="EvoBAbility" type="Label" parent="VBox/Columns/ColumnB"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.85, 0.2, 1)
+theme_override_font_sizes/font_size = 12
+text = "✨ Способность"
+autowrap_mode = 2
+
+[node name="ConfirmBBtn" type="Button" parent="VBox/Columns/ColumnB"]
+custom_minimum_size = Vector2(160, 44)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 14
+text = "✅ Выбрать B"
+
+[node name="CloseBtn" type="Button" parent="VBox"]
+custom_minimum_size = Vector2(140, 36)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 13
+text = "✖ Закрыть"

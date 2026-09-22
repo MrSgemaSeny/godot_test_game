@@ -37,9 +37,18 @@ func run_all_tests() -> void:
 		preload("res://tests/test_meta_manager.gd"),
 		preload("res://tests/test_spells.gd"),
 		preload("res://tests/test_towers_and_combat.gd"),
+		preload("res://tests/test_combat_pipeline.gd"),
 		preload("res://tests/test_monsters_and_girls.gd"),
 		preload("res://tests/test_interactive_objects.gd"),
 		preload("res://tests/test_wave_controller.gd"),
+		preload("res://tests/test_evolutions.gd"),
+		preload("res://tests/test_boss_and_special_enemies.gd"),
+		preload("res://tests/test_world_map.gd"),
+		preload("res://tests/test_artifacts_and_combo.gd"),
+		preload("res://tests/test_synergy_and_weather.gd"),
+		preload("res://tests/test_game_modes.gd"),
+		preload("res://tests/test_narrative_and_achievements.gd"),
+		preload("res://tests/test_simulation_and_pooling.gd"),
 		preload("res://tests/test_scene_integration.gd")
 	]
 	

@@ -1,0 +1,42 @@
+{
+  "ice_and_cannon": {
+    "name": "Ледяной Взрыв",
+    "description": "Ледяная башня рядом с пушкой усиливает радиус и урон взрыва по замедленным целям на +40%.",
+    "towers": ["ice_mage", "cannon"],
+    "effect": "aoe_shatter",
+    "damage_mult": 1.40,
+    "max_distance": 140.0
+  },
+  "poison_and_tesla": {
+    "name": "Токсичный Разряд",
+    "description": "Цепная молния рядом с башней яда распространяет эффект отравления на все пораженные цели.",
+    "towers": ["poison_spitter", "tesla"],
+    "effect": "chain_poison",
+    "damage_mult": 1.25,
+    "max_distance": 140.0
+  },
+  "support_and_sniper": {
+    "name": "Орлиный Глаз",
+    "description": "Башня поддержки рядом со снайпером увеличивает радиус обнаружения невидимок и дает +25% крита.",
+    "towers": ["support_shrine", "sniper"],
+    "effect": "eagle_eye",
+    "damage_mult": 1.30,
+    "max_distance": 150.0
+  },
+  "fire_and_necromancer": {
+    "name": "Пылающие Мертвецы",
+    "description": "Огнемёт рядом с некромантом поджигает поднимаемых скелетов, наносящих DoT при касании.",
+    "towers": ["flamethrower", "necromancer"],
+    "effect": "burning_skeletons",
+    "damage_mult": 1.35,
+    "max_distance": 130.0
+  },
+  "frost_and_poison": {
+    "name": "Хрупкая Заморозка",
+    "description": "Замороженные цели получают удвоенный периодический урон от яда.",
+    "towers": ["frost_nova", "poison_spitter"],
+    "effect": "frost_poison_combo",
+    "damage_mult": 1.50,
+    "max_distance": 140.0
+  }
+}

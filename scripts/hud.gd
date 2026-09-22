@@ -43,6 +43,9 @@ signal speed_changed(multiplier: float)
 @onready var help_modal: HelpModal = $HelpModal
 @onready var hint_label: Label = $HintContainer/HintLabel
 
+# Модал превью эволюции (Stage 3)
+@onready var evo_preview_modal: EvolutionPreviewModal = $EvolutionPreviewModal
+
 # Экран окончания
 @onready var end_screen: PanelContainer = $EndScreen
 @onready var end_title: Label = $EndScreen/VBoxContainer/EndTitle
@@ -82,6 +85,14 @@ func _ready() -> void:
 		restart_btn.pressed.connect(_on_restart_clicked)
 	if is_instance_valid(menu_btn):
 		menu_btn.pressed.connect(_on_menu_clicked)
+	
+	# Evolution buttons (Stage 3)
+	if is_instance_valid(evo_a_btn):
+		evo_a_btn.pressed.connect(_on_evo_a_clicked)
+	if is_instance_valid(evo_b_btn):
+		evo_b_btn.pressed.connect(_on_evo_b_clicked)
+	if is_instance_valid(evo_preview_modal):
+		evo_preview_modal.evolution_confirmed.connect(_on_evolution_confirmed)
 		
 	if is_instance_valid(pause_btn):
 		pause_btn.pressed.connect(func(): set_game_speed(0.0))
@@ -279,26 +290,65 @@ func _refresh_action_panel() -> void:
 		build_buttons_box.visible = false
 		tower_action_box.visible = true
 		
-		if tower.can_upgrade():
+		# === Evolution System (Stage 3) ===
+		if tower.can_evolve():
+			# Башня на максимальном уровне и доступна эволюция
+			upgrade_btn.visible = false
+			
+			var info_a = tower.get_evolution_info("evolution_a")
+			var info_b = tower.get_evolution_info("evolution_b")
+			
+			if is_instance_valid(evo_a_btn):
+				evo_a_btn.text = "🔵 %s" % info_a.get("name", "Ветка A")
+				evo_a_btn.visible = not info_a.is_empty()
+				evo_a_btn.disabled = false
+			if is_instance_valid(evo_b_btn):
+				evo_b_btn.text = "🔴 %s" % info_b.get("name", "Ветка B")
+				evo_b_btn.visible = not info_b.is_empty()
+				evo_b_btn.disabled = false
+		elif tower.evolution_chosen != "":
+			# Эволюция уже выбрана
+			upgrade_btn.text = "⭐ %s" % tower.tower_name
+			upgrade_btn.disabled = true
+			upgrade_btn.visible = true
+			if is_instance_valid(evo_a_btn):
+				evo_a_btn.visible = false
+			if is_instance_valid(evo_b_btn):
+				evo_b_btn.visible = false
+		elif tower.can_upgrade():
 			var tech = get_tree().get_first_node_in_group("tech_tree_manager") as TechTreeManager
 			var mult = 1.0 - (tech.get_cost_discount() if tech else 0.0)
 			var cost = max(10, int(tower.upgrade_cost * mult))
 			upgrade_btn.text = "⬆️ Улучшить (+Урон) — %dg" % cost
 			upgrade_btn.disabled = current_gold < cost
 			upgrade_btn.visible = true
+			if is_instance_valid(evo_a_btn):
+				evo_a_btn.visible = false
+			if is_instance_valid(evo_b_btn):
+				evo_b_btn.visible = false
 		else:
 			upgrade_btn.text = "⭐ Максимальный уровень"
 			upgrade_btn.disabled = true
 			upgrade_btn.visible = true
+			if is_instance_valid(evo_a_btn):
+				evo_a_btn.visible = false
+			if is_instance_valid(evo_b_btn):
+				evo_b_btn.visible = false
 			
 		sell_btn.text = "💰 Продать (+%dg)" % tower.get_sell_value()
 
 func _get_tower_icon(t_type: String) -> String:
 	match t_type:
 		"archer": return "🏹"
-		"ice_mage": return "❄️"
+		"crossbowman": return "🎯"
 		"siege_cannon": return "💣"
 		"bastion": return "🛡️"
+		"ice_mage": return "❄️"
+		"necromancer": return "💀"
+		"time_tower": return "⏳"
+		"trading_post": return "🪙"
+		"trap": return "💥"
+		"auto_turret": return "⚙️"
 		"sling": return "🪨"
 	return "🏰"
 
@@ -350,3 +400,19 @@ func _on_restart_clicked() -> void:
 
 func _on_menu_clicked() -> void:
 	get_tree().change_scene_to_file("res://scenes/main_menu.tscn")
+
+# === Evolution Handlers (Stage 3) ===
+func _on_evo_a_clicked() -> void:
+	if is_instance_valid(current_spot) and current_spot.has_tower():
+		if is_instance_valid(evo_preview_modal):
+			evo_preview_modal.show_preview(current_spot.current_tower)
+
+func _on_evo_b_clicked() -> void:
+	if is_instance_valid(current_spot) and current_spot.has_tower():
+		if is_instance_valid(evo_preview_modal):
+			evo_preview_modal.show_preview(current_spot.current_tower)
+
+func _on_evolution_confirmed(branch: String) -> void:
+	if is_instance_valid(current_spot):
+		if current_spot.evolve_tower(branch):
+			_refresh_action_panel()

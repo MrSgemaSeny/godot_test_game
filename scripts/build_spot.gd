@@ -48,12 +48,12 @@ func _input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
 
 func set_selected(val: bool) -> void:
 	is_selected = val
-	if is_instance_valid(current_tower):
+	if is_instance_valid(current_tower) and not current_tower.is_queued_for_deletion():
 		current_tower.set_selected(val)
 	queue_redraw()
 
 func has_tower() -> bool:
-	return is_instance_valid(current_tower)
+	return is_instance_valid(current_tower) and not current_tower.is_queued_for_deletion()
 
 func _get_game_manager() -> GameManager:
 	var gm = get_tree().get_first_node_in_group("game_manager") as GameManager
@@ -137,6 +137,17 @@ func sell_tower() -> int:
 	current_tower = null
 	queue_redraw()
 	return sell_val
+
+# === Evolution System (Stage 3) ===
+func can_evolve_tower() -> bool:
+	return has_tower() and current_tower.can_evolve()
+
+func evolve_tower(branch: String) -> bool:
+	if not has_tower() or not current_tower.can_evolve():
+		return false
+	current_tower.apply_evolution(branch)
+	queue_redraw()
+	return true
 
 func _draw() -> void:
 	# Тень под постаментом

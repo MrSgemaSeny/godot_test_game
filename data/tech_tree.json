@@ -7,7 +7,11 @@
     "cost": 1,
     "requires": [],
     "mutually_exclusive": [],
-    "effect": {"type": "damage_mult", "value": 0.12}
+    "blocks": [],
+    "effect": {
+      "type": "damage_mult",
+      "value": 0.12
+    }
   },
   {
     "id": "defense_2",
@@ -17,7 +21,11 @@
     "cost": 1,
     "requires": ["defense_1"],
     "mutually_exclusive": ["econ_2"],
-    "effect": {"type": "range_mult", "value": 0.20}
+    "blocks": ["econ_2"],
+    "effect": {
+      "type": "range_mult",
+      "value": 0.20
+    }
   },
   {
     "id": "defense_3",
@@ -27,7 +35,67 @@
     "cost": 2,
     "requires": ["defense_2"],
     "mutually_exclusive": [],
-    "effect": {"type": "boss_damage_mult", "value": 0.30}
+    "blocks": [],
+    "effect": {
+      "type": "boss_damage_mult",
+      "value": 0.30
+    }
+  },
+  {
+    "id": "defense_4",
+    "name": "Бронебойные снаряды",
+    "branch": "defense",
+    "description": "Физический урон всех башен игнорирует 25% брони врагов (Блокирует 'Чёрный рынок').",
+    "cost": 2,
+    "requires": ["defense_2"],
+    "mutually_exclusive": ["econ_4"],
+    "blocks": ["econ_4"],
+    "effect": {
+      "type": "armor_penetration",
+      "value": 0.25
+    }
+  },
+  {
+    "id": "defense_5",
+    "name": "Берсерк-режим",
+    "branch": "defense",
+    "description": "Боевой раж: скорость атаки всех башен возрастает на +100% (Блокирует 'Инвестиционный фонд').",
+    "cost": 3,
+    "requires": ["defense_3", "defense_4"],
+    "mutually_exclusive": ["econ_6"],
+    "blocks": ["econ_6"],
+    "effect": {
+      "type": "berserk_attack_speed",
+      "value": 1.00
+    }
+  },
+  {
+    "id": "defense_6",
+    "name": "Форт-модернизация",
+    "branch": "defense",
+    "description": "Стоимость возведения фортификаций и башен снижена на 15%.",
+    "cost": 2,
+    "requires": ["defense_1"],
+    "mutually_exclusive": [],
+    "blocks": [],
+    "effect": {
+      "type": "cost_discount",
+      "value": 0.15
+    }
+  },
+  {
+    "id": "defense_7",
+    "name": "Стальной кулак",
+    "branch": "defense",
+    "description": "20% шанс оглушить врагов на 1.5 сек при попадании снарядов (Блокирует 'Синергетику').",
+    "cost": 3,
+    "requires": ["defense_5"],
+    "mutually_exclusive": ["special_4"],
+    "blocks": ["special_4"],
+    "effect": {
+      "type": "aoe_stun_chance",
+      "value": 0.20
+    }
   },
   {
     "id": "econ_1",
@@ -37,7 +105,11 @@
     "cost": 1,
     "requires": [],
     "mutually_exclusive": [],
-    "effect": {"type": "gold_reward_mult", "value": 0.20}
+    "blocks": [],
+    "effect": {
+      "type": "gold_reward_mult",
+      "value": 0.20
+    }
   },
   {
     "id": "econ_2",
@@ -47,7 +119,11 @@
     "cost": 1,
     "requires": ["econ_1"],
     "mutually_exclusive": ["defense_2"],
-    "effect": {"type": "sell_ratio", "value": 0.90}
+    "blocks": ["defense_2"],
+    "effect": {
+      "type": "sell_ratio",
+      "value": 0.90
+    }
   },
   {
     "id": "econ_3",
@@ -57,7 +133,67 @@
     "cost": 2,
     "requires": ["econ_2"],
     "mutually_exclusive": [],
-    "effect": {"type": "end_wave_gold", "value": 60}
+    "blocks": [],
+    "effect": {
+      "type": "end_wave_gold",
+      "value": 60
+    }
+  },
+  {
+    "id": "econ_4",
+    "name": "Чёрный рынок",
+    "branch": "economy",
+    "description": "Скидка 30% на товары торговца и покупку артефактов (Блокирует 'Бронебойные снаряды').",
+    "cost": 2,
+    "requires": ["econ_2"],
+    "mutually_exclusive": ["defense_4"],
+    "blocks": ["defense_4"],
+    "effect": {
+      "type": "merchant_discount",
+      "value": 0.30
+    }
+  },
+  {
+    "id": "econ_5",
+    "name": "Налоговые сборы",
+    "branch": "economy",
+    "description": "Пассивный доход королевства приносит +2 золота в секунду.",
+    "cost": 2,
+    "requires": ["econ_3"],
+    "mutually_exclusive": [],
+    "blocks": [],
+    "effect": {
+      "type": "passive_gold_sec",
+      "value": 2
+    }
+  },
+  {
+    "id": "econ_6",
+    "name": "Инвестиционный фонд",
+    "branch": "economy",
+    "description": "Банковские проценты: +10% от неизрасходованного золота в конце волны (Блокирует 'Берсерк-режим').",
+    "cost": 3,
+    "requires": ["econ_4", "econ_5"],
+    "mutually_exclusive": ["defense_5"],
+    "blocks": ["defense_5"],
+    "effect": {
+      "type": "wave_end_interest",
+      "value": 0.10
+    }
+  },
+  {
+    "id": "econ_7",
+    "name": "Экономия масштаба",
+    "branch": "economy",
+    "description": "Каждые 3 однотипные башни снижают стоимость последующих на 8% (Блокирует 'Опытного командира').",
+    "cost": 3,
+    "requires": ["econ_6"],
+    "mutually_exclusive": ["special_6"],
+    "blocks": ["special_6"],
+    "effect": {
+      "type": "bulk_tower_discount",
+      "value": 0.08
+    }
   },
   {
     "id": "special_1",
@@ -67,16 +203,80 @@
     "cost": 1,
     "requires": [],
     "mutually_exclusive": [],
-    "effect": {"type": "cost_discount", "value": 0.15}
+    "blocks": [],
+    "effect": {
+      "type": "cost_discount",
+      "value": 0.15
+    }
   },
   {
     "id": "special_2",
     "name": "Тактический гений",
     "branch": "special",
-    "description": "Ультимативная способность пути восстанавливается на 40% быстрее.",
+    "description": "Ультимативные способности башен восстанавливаются на 40% быстрее.",
     "cost": 2,
     "requires": ["special_1"],
     "mutually_exclusive": [],
-    "effect": {"type": "ability_cooldown_mult", "value": 0.40}
+    "blocks": [],
+    "effect": {
+      "type": "ability_cooldown_mult",
+      "value": 0.40
+    }
+  },
+  {
+    "id": "special_3",
+    "name": "Школа магии",
+    "branch": "special",
+    "description": "Восстановление маны правителя ускорено на 35%.",
+    "cost": 2,
+    "requires": ["special_1"],
+    "mutually_exclusive": [],
+    "blocks": [],
+    "effect": {
+      "type": "mana_regen_mult",
+      "value": 0.35
+    }
+  },
+  {
+    "id": "special_4",
+    "name": "Синергетика",
+    "branch": "special",
+    "description": "Бонусы от соседства взаимодополняющих башен усилены на +50% (Блокирует 'Стальной кулак').",
+    "cost": 3,
+    "requires": ["special_2", "special_3"],
+    "mutually_exclusive": ["defense_7"],
+    "blocks": ["defense_7"],
+    "effect": {
+      "type": "synergy_bonus_mult",
+      "value": 0.50
+    }
+  },
+  {
+    "id": "special_5",
+    "name": "Разведка волн",
+    "branch": "special",
+    "description": "Заблаговременное раскрытие невидимых врагов при входе на карту.",
+    "cost": 2,
+    "requires": ["special_1"],
+    "mutually_exclusive": [],
+    "blocks": [],
+    "effect": {
+      "type": "reveal_stealth_wave",
+      "value": 1.0
+    }
+  },
+  {
+    "id": "special_6",
+    "name": "Опытный командир",
+    "branch": "special",
+    "description": "5% шанс выпадения временного боевого усиления при гибели элитного врага (Блокирует 'Экономию масштаба').",
+    "cost": 3,
+    "requires": ["special_4"],
+    "mutually_exclusive": ["econ_7"],
+    "blocks": ["econ_7"],
+    "effect": {
+      "type": "buff_drop_chance",
+      "value": 0.05
+    }
   }
 ]

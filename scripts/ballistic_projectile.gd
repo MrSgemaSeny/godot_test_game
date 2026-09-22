@@ -50,17 +50,17 @@ func _process(delta: float) -> void:
 		_on_impact(ground_pos)
 
 func _on_impact(impact_pos: Vector2) -> void:
-	if is_inside_tree():
+	if is_inside_tree() and get_tree() != null:
 		var enemies = get_tree().get_nodes_in_group("enemies")
 		for enemy in enemies:
-			if is_instance_valid(enemy) and not enemy.get("is_dead"):
+			if is_instance_valid(enemy) and enemy.is_inside_tree() and not enemy.is_queued_for_deletion() and not enemy.get("is_dead"):
 				var dist = impact_pos.distance_to(enemy.global_position)
 				if dist <= splash_radius:
 					var falloff = 1.0 - (dist / (splash_radius * 1.5))
 					enemy.take_damage(damage * max(0.4, falloff), damage_type)
-					if stun_duration > 0.0 and enemy.has_method("apply_freeze"):
-						enemy.apply_freeze(stun_duration)
-					
+					if is_instance_valid(enemy) and enemy.is_inside_tree() and not enemy.is_queued_for_deletion() and not enemy.get("is_dead"):
+						if stun_duration > 0.0 and enemy.has_method("apply_freeze"):
+							enemy.apply_freeze(stun_duration)
 	queue_free()
 
 func _draw() -> void:

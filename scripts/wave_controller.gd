@@ -1,4 +1,4 @@
-﻿class_name WaveController
+class_name WaveController
 extends Node
 
 signal wave_countdown_started(duration: float, is_boss: bool)
@@ -7,6 +7,7 @@ signal wave_started(wave_number: int, total_waves: int, is_boss: bool)
 signal enemy_spawn_requested(enemy_type: String)
 signal wave_completed(wave_number: int, is_last_wave: bool)
 signal all_waves_completed()
+signal wave_event_triggered(event_name: String)
 
 const DEFAULT_PRE_WAVE_TIME: float = 30.0
 
@@ -115,6 +116,8 @@ func start_current_wave(is_early: bool = false) -> bool:
 	# Сортировка очереди по времени
 	spawn_queue.sort_custom(func(a, b): return a["time"] < b["time"])
 	
+	var wave_event = str(w.get("wave_event", "none"))
+	wave_event_triggered.emit(wave_event)
 	wave_started.emit(w_num, get_total_waves(), is_boss)
 	return true
 

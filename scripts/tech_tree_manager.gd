@@ -147,3 +147,39 @@ func get_cost_discount() -> float:
 
 func get_ability_cooldown_mult() -> float:
 	return 0.40 if is_unlocked("special_2") else 0.0
+
+# === Stage 2 New Tech Tree Accessors ===
+
+func get_armor_penetration() -> float:
+	return 0.25 if is_unlocked("defense_4") else 0.0
+
+func is_berserk_unlocked() -> bool:
+	return is_unlocked("defense_5")
+
+func get_stun_chance() -> float:
+	return 0.20 if is_unlocked("defense_7") else 0.0
+
+func get_merchant_discount() -> float:
+	return 0.30 if is_unlocked("econ_4") else 0.0
+
+func get_passive_gold_per_sec() -> int:
+	return 2 if is_unlocked("econ_5") else 0
+
+func get_wave_end_interest_ratio() -> float:
+	return 0.10 if is_unlocked("econ_6") else 0.0
+
+func get_bulk_tower_discount() -> float:
+	return 0.08 if is_unlocked("econ_7") else 0.0
+
+func get_mana_regen_bonus() -> float:
+	return 0.35 if is_unlocked("special_3") else 0.0
+
+func get_synergy_multiplier_bonus() -> float:
+	return 0.50 if is_unlocked("special_4") else 0.0
+
+func can_reveal_stealth_waves() -> bool:
+	return is_unlocked("special_5")
+
+func get_buff_drop_chance() -> float:
+	return 0.05 if is_unlocked("special_6") else 0.0
+
