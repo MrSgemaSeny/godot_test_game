@@ -7,6 +7,7 @@ signal spell_cast_success(spell_id: String)
 var max_mana: int = 100
 var current_mana: int = 60
 var mana_regen_rate: float = 2.5
+var _mana_accum: float = 0.0
 var spells_data: Dictionary = {}
 var cooldowns: Dictionary = {}
 
@@ -26,8 +27,12 @@ func _load_spells_data() -> void:
 
 func _process(delta: float) -> void:
 	if current_mana < max_mana:
-		current_mana = min(max_mana, int(current_mana + mana_regen_rate * delta * 10.0) / 10)
-		mana_changed.emit(current_mana, max_mana)
+		_mana_accum += mana_regen_rate * delta
+		if _mana_accum >= 1.0:
+			var add = int(_mana_accum)
+			_mana_accum -= add
+			current_mana = min(max_mana, current_mana + add)
+			mana_changed.emit(current_mana, max_mana)
 		
 	# Обновление кулдаунов
 	for s_id in cooldowns.keys():

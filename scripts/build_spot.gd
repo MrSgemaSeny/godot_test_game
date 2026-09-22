@@ -55,6 +55,9 @@ func set_selected(val: bool) -> void:
 func has_tower() -> bool:
 	return is_instance_valid(current_tower) and not current_tower.is_queued_for_deletion()
 
+func can_upgrade_tower() -> bool:
+	return has_tower() and current_tower.can_upgrade()
+
 func _get_game_manager() -> GameManager:
 	var gm = get_tree().get_first_node_in_group("game_manager") as GameManager
 	if not gm:

@@ -169,6 +169,43 @@ func get_available_towers() -> Array:
 		return paths_data[selected_path].get("available_towers", ["archer"])
 	return ["archer"]
 
+func get_tower_cost(tower_type: String) -> int:
+	if not tower_data.has(tower_type):
+		return 100
+	var base_cost = tower_data[tower_type].get("cost", 100)
+	var mult = 1.0
+	if is_inside_tree():
+		var tech = get_tree().get_first_node_in_group("tech_tree_manager") as TechTreeManager
+		if tech:
+			mult -= tech.get_cost_discount()
+	if discount_active_wave:
+		mult -= 0.25
+	return max(10, int(base_cost * mult))
+
+func get_tower_name(tower_type: String) -> String:
+	if tower_data.has(tower_type):
+		return tower_data[tower_type].get("name", tower_type)
+	return tower_type
+
+func get_tower_desc(tower_type: String) -> String:
+	if tower_data.has(tower_type):
+		return tower_data[tower_type].get("description", "")
+	return ""
+
+func get_tower_stats(tower_type: String) -> Dictionary:
+	if not tower_data.has(tower_type):
+		return {}
+	var tdata = tower_data[tower_type]
+	var levels = tdata.get("levels", [])
+	if levels.is_empty():
+		return {}
+	var lvl1 = levels[0]
+	return {
+		"damage": lvl1.get("damage", 0),
+		"range": lvl1.get("range", 0),
+		"attack_speed": lvl1.get("attack_speed", 1.0)
+	}
+
 func _load_json(path: String) -> Dictionary:
 	if not FileAccess.file_exists(path):
 		push_error("Файл не найден: " + path)

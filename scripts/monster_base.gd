@@ -587,13 +587,12 @@ func heal(amount: float) -> void:
 
 func _draw() -> void:
 	var bounce = sin(walk_anim) * 3.0
-	
-	# Shadow
-	draw_circle(Vector2(0, body_size * 0.8), body_size * 0.85, Color(0.0, 0.0, 0.0, 0.28))
-	
+	var bs = body_size
+
+	# --- Determine render color with status effects ---
 	var draw_col = body_color
 	if hit_flash_timer > 0.0:
-		draw_col = Color(1.0, 1.0, 1.0)
+		draw_col = Color(1.0, 1.0, 1.0, 0.95)
 	elif freeze_timer > 0.0 or has_status_effect(StatusEffect.Type.FREEZE):
 		draw_col = Color(0.3, 0.8, 1.0)
 	elif stun_timer > 0.0 or has_status_effect(StatusEffect.Type.STUN):
@@ -603,59 +602,277 @@ func _draw() -> void:
 	elif has_status_effect(StatusEffect.Type.POISON):
 		draw_col = draw_col.lerp(Color(0.2, 0.8, 0.2), 0.6)
 	elif slow_timer > 0.0 or has_status_effect(StatusEffect.Type.SLOW):
-		draw_col = draw_col.lerp(Color(0.2, 0.6, 1.0), 0.5)
-		
-	# Magic Shield (Archmage / Buffs)
-	if shield > 0.0:
-		draw_arc(Vector2(0, bounce), body_size + 6.0, 0, TAU, 24, Color(0.6, 0.3, 1.0, 0.7), 2.5)
-		
-	# Body
-	draw_circle(Vector2(0, bounce), body_size, draw_col)
-	draw_circle(Vector2(-body_size * 0.3, bounce - body_size * 0.3), body_size * 0.45, draw_col.lightened(0.25))
-	draw_arc(Vector2(0, bounce), body_size, 0, TAU, 22, Color(0.12, 0.18, 0.1, 0.85), 2.5)
-	
-	# Armor plates for armored units
-	if armor >= 40.0:
-		draw_arc(Vector2(0, bounce), body_size * 0.9, -PI * 0.7, PI * 0.7, 12, Color(0.8, 0.85, 0.9), 3.5)
-		
-	# Horns / Spikes
-	if is_boss or monster_type == "grunt" or monster_type == "berserker":
-		for i in range(5 if is_boss else 3):
-			var angle = -PI * 0.75 + i * (PI * 0.35)
-			var p1 = Vector2(cos(angle), sin(angle)) * body_size + Vector2(0, bounce)
-			var p2 = Vector2(cos(angle), sin(angle)) * (body_size + (9.0 if is_boss else 5.0)) + Vector2(0, bounce)
-			draw_line(p1, p2, Color(0.25, 0.15, 0.08), 3.0)
-			
-	if is_boss:
-		# Golden crown for Boss
-		var crown_poly = PackedVector2Array([
-			Vector2(-14, bounce - body_size),
-			Vector2(-7, bounce - body_size - 14),
-			Vector2(0, bounce - body_size - 8),
-			Vector2(7, bounce - body_size - 14),
-			Vector2(14, bounce - body_size)
+		draw_col = draw_col.lerp(Color(0.2, 0.6, 1.0, 0.5), 0.5)
+
+	# --- Burrow (underground = invisible) ---
+	if burrow_timer > 0.0:
+		draw_circle(Vector2(0, 4), bs * 0.55, Color(0.25, 0.18, 0.08, 0.35))
+		_draw_hp_bar(bs, bounce)
+		return
+
+	# --- Stealth / Invisible ghost form ---
+	if is_stealth or monster_type == "shadow_assassin" or monster_type == "phantom":
+		var ghost_alpha = 0.38 + sin(walk_anim * 0.7) * 0.12
+		draw_circle(Vector2(0, bounce), bs, Color(draw_col.r, draw_col.g, draw_col.b, ghost_alpha))
+		draw_arc(Vector2(0, bounce), bs, 0, TAU, 20, Color(0.8, 0.6, 1.0, ghost_alpha * 1.6), 2.0)
+		# Ghost wisp tail
+		for i in range(3):
+			var wy = bounce + bs * 0.5 + i * 6.0
+			draw_circle(Vector2(0, wy), bs * (0.35 - i * 0.08), Color(0.85, 0.7, 1.0, ghost_alpha * 0.7))
+		# Eyes glow
+		draw_circle(Vector2(-4, bounce - 2), bs * 0.18, Color(1.0, 0.2, 1.0, 0.9))
+		draw_circle(Vector2(4, bounce - 2), bs * 0.18, Color(1.0, 0.2, 1.0, 0.9))
+		_draw_hp_bar(bs, bounce)
+		return
+
+	# --- Flying enemies (bats, dragons, etc.) ---
+	if is_flyer:
+		var wing_flap = sin(walk_anim * 2.5) * 0.3
+		var w_col_dark = draw_col.darkened(0.3)
+		var w_col_mid = draw_col.darkened(0.15)
+		w_col_dark.a = 0.85
+		w_col_mid.a = 0.7
+		# Wing left
+		var wl = PackedVector2Array([
+			Vector2(0, bounce),
+			Vector2(-bs * 1.8 - sin(walk_anim) * 4.0, bounce - bs * (0.8 + wing_flap)),
+			Vector2(-bs * 0.7, bounce + bs * 0.3)
 		])
-		draw_polygon(crown_poly, PackedColorArray([Color(1.0, 0.85, 0.2), Color(1.0, 0.9, 0.3), Color(1.0, 0.85, 0.2), Color(1.0, 0.9, 0.3), Color(1.0, 0.85, 0.2)]))
-	
-	# Eyes
-	var look_dir = 1.0 if current_state == MonsterState.ADVANCING else -1.0
-	var eye_center = Vector2(3.0 * look_dir, -3.0 + bounce)
-	
-	draw_circle(eye_center + Vector2(-4, 0), body_size * 0.24, Color(1.0, 1.0, 1.0))
-	draw_circle(eye_center + Vector2(4, 0), body_size * 0.24, Color(1.0, 1.0, 1.0))
-	draw_circle(eye_center + Vector2(-4 + look_dir * 1.5, 0), body_size * 0.12, Color(0.8, 0.1, 0.1) if is_boss else Color(0.1, 0.1, 0.12))
-	draw_circle(eye_center + Vector2(4 + look_dir * 1.5, 0), body_size * 0.12, Color(0.8, 0.1, 0.1) if is_boss else Color(0.1, 0.1, 0.12))
-	
-	# HP Bar
-	var bar_w = body_size * 2.4
+		draw_polygon(wl, PackedColorArray([w_col_dark, w_col_mid, w_col_dark]))
+		# Wing right
+		var wr = PackedVector2Array([
+			Vector2(0, bounce),
+			Vector2(bs * 1.8 + sin(walk_anim) * 4.0, bounce - bs * (0.8 + wing_flap)),
+			Vector2(bs * 0.7, bounce + bs * 0.3)
+		])
+		draw_polygon(wr, PackedColorArray([w_col_dark, w_col_mid, w_col_dark]))
+		# Body core (bat/dragon)
+		draw_circle(Vector2(0, bounce), bs * 0.7, draw_col)
+		draw_arc(Vector2(0, bounce), bs * 0.7, 0, TAU, 18, draw_col.darkened(0.4), 2.0)
+		# Eyes
+		draw_circle(Vector2(-bs * 0.22, bounce - bs * 0.12), bs * 0.18, Color(1.0, 0.15, 0.15))
+		draw_circle(Vector2(bs * 0.22, bounce - bs * 0.12), bs * 0.18, Color(1.0, 0.15, 0.15))
+		_draw_hp_bar(bs, bounce)
+		return
+
+
+	# --- BOSS rendering ---
+	if is_boss:
+		# Shadow
+		draw_circle(Vector2(3, bs + 4), bs * 1.1, Color(0, 0, 0, 0.3))
+		# Outer glow aura
+		var glow_r = bs + 6.0 + sin(walk_anim * 1.2) * 2.0
+		draw_arc(Vector2(0, bounce), glow_r, 0, TAU, 32, Color(0.9, 0.3, 0.1, 0.35), 4.0)
+		# Body
+		draw_circle(Vector2(0, bounce), bs, draw_col)
+		draw_circle(Vector2(-bs * 0.3, bounce - bs * 0.25), bs * 0.5, draw_col.lightened(0.2))
+		draw_arc(Vector2(0, bounce), bs, 0, TAU, 24, Color(0.08, 0.04, 0.02), 3.0)
+		# Armor plates
+		if armor >= 30.0:
+			for i in range(5):
+				var ang = -PI * 0.8 + i * (PI * 0.4)
+				var p1 = Vector2(cos(ang), sin(ang)) * (bs * 0.7) + Vector2(0, bounce)
+				var p2 = Vector2(cos(ang), sin(ang)) * (bs + 1.0) + Vector2(0, bounce)
+				draw_line(p1, p2, Color(0.75, 0.8, 0.85), 4.0)
+		# Boss spikes (5 big horns)
+		for i in range(5):
+			var ang = -PI * 0.85 + i * (PI * 0.42)
+			var p1 = Vector2(cos(ang), sin(ang)) * bs + Vector2(0, bounce)
+			var p2 = Vector2(cos(ang), sin(ang)) * (bs + 13.0) + Vector2(0, bounce)
+			draw_line(p1, p2, Color(0.22, 0.10, 0.05), 4.5)
+		# Golden crown
+		var crown_y = bounce - bs - 2.0
+		var crown_pts = PackedVector2Array([
+			Vector2(-14, crown_y),
+			Vector2(-10, crown_y - 10),
+			Vector2(-5, crown_y - 5),
+			Vector2(0, crown_y - 16),
+			Vector2(5, crown_y - 5),
+			Vector2(10, crown_y - 10),
+			Vector2(14, crown_y)
+		])
+		draw_polyline(crown_pts, Color(1.0, 0.85, 0.15), 3.5)
+		draw_polyline(crown_pts, Color(1.0, 0.95, 0.5, 0.5), 1.5)
+		# Crown gems
+		draw_circle(Vector2(0, crown_y - 14), 3.5, Color(0.95, 0.15, 0.15))
+		draw_circle(Vector2(-10, crown_y - 9), 2.5, Color(0.15, 0.5, 0.95))
+		draw_circle(Vector2(10, crown_y - 9), 2.5, Color(0.95, 0.6, 0.15))
+		# Boss eyes (larger, red)
+		var look_dir = 1.0 if current_state == MonsterState.ADVANCING else -1.0
+		var eye_y = bounce - bs * 0.2
+		draw_circle(Vector2(-bs * 0.28 + look_dir, eye_y), bs * 0.3, Color(1.0, 1.0, 1.0))
+		draw_circle(Vector2(bs * 0.28 + look_dir, eye_y), bs * 0.3, Color(1.0, 1.0, 1.0))
+		draw_circle(Vector2(-bs * 0.28 + look_dir * 2.5, eye_y), bs * 0.15, Color(0.9, 0.05, 0.05))
+		draw_circle(Vector2(bs * 0.28 + look_dir * 2.5, eye_y), bs * 0.15, Color(0.9, 0.05, 0.05))
+		# Shield barrier ring
+		if shield > 0.0:
+			draw_arc(Vector2(0, bounce), bs + 8.0, 0, TAU, 24, Color(0.55, 0.25, 0.95, 0.8), 3.0)
+		_draw_hp_bar(bs, bounce)
+		return
+
+	# --- Per monster_type distinct shapes ---
+	# Shadow
+	draw_circle(Vector2(2, bs * 0.8), bs * 0.85, Color(0.0, 0.0, 0.0, 0.25))
+
+	match monster_type:
+
+		"berserker":
+			# Big red beefy orc – wider, angrier
+			draw_circle(Vector2(0, bounce), bs * 1.05, draw_col)
+			# Muscular shoulders
+			draw_circle(Vector2(-bs * 0.75, bounce - bs * 0.1), bs * 0.42, draw_col.lightened(0.1))
+			draw_circle(Vector2(bs * 0.75, bounce - bs * 0.1), bs * 0.42, draw_col.lightened(0.1))
+			draw_arc(Vector2(0, bounce), bs * 1.05, 0, TAU, 20, draw_col.darkened(0.5), 2.5)
+			# 3 rage horns
+			for i in range(3):
+				var ang = -PI * 0.6 + i * (PI * 0.6)
+				var p1 = Vector2(cos(ang), sin(ang)) * bs + Vector2(0, bounce)
+				var p2 = Vector2(cos(ang), sin(ang)) * (bs + 9.0) + Vector2(0, bounce)
+				draw_line(p1, p2, Color(0.6, 0.1, 0.0), 3.5)
+			# Angry slash scar
+			draw_line(Vector2(-bs * 0.35, bounce - bs * 0.35), Vector2(bs * 0.25, bounce + bs * 0.05), Color(0.8, 0.1, 0.1, 0.9), 2.5)
+
+		"shaman":
+			# Purple-robed shaman – tall narrow oval with staff
+			draw_circle(Vector2(0, bounce), bs * 0.75, draw_col)  # robe body
+			# Staff (left side)
+			draw_line(Vector2(-bs * 0.6, bounce + bs * 0.9), Vector2(-bs * 0.6, bounce - bs * 1.3), Color(0.6, 0.4, 0.15), 3.0)
+			# Staff orb
+			draw_circle(Vector2(-bs * 0.6, bounce - bs * 1.3), 5.0, Color(0.6, 0.15, 0.95, 0.9))
+			draw_circle(Vector2(-bs * 0.6, bounce - bs * 1.3), 3.0, Color(0.95, 0.6, 1.0))
+			# Headdress
+			var head_pts = PackedVector2Array([
+				Vector2(-bs * 0.5, bounce - bs),
+				Vector2(0, bounce - bs - 12),
+				Vector2(bs * 0.5, bounce - bs)
+			])
+			draw_polygon(head_pts, PackedColorArray([draw_col.lightened(0.3), draw_col.lightened(0.5), draw_col.lightened(0.3)]))
+			# Rune markings
+			draw_arc(Vector2(0, bounce), bs * 0.55, -PI * 0.6, PI * 0.6, 12, Color(0.9, 0.6, 1.0, 0.7), 2.0)
+
+		"troll":
+			# Giant moss-green troll – huge, lumbering
+			var troll_col = Color(0.2, 0.55, 0.15)
+			draw_circle(Vector2(0, bounce + 4), bs * 1.25, troll_col)  # big body
+			# Stone armor chunks
+			draw_arc(Vector2(0, bounce + 4), bs * 1.1, -PI * 0.5, PI * 0.5, 10, Color(0.5, 0.5, 0.45), 4.5)
+			draw_arc(Vector2(0, bounce + 4), bs * 0.9, 0, TAU, 18, troll_col.darkened(0.35), 2.0)
+			# 2 short wide horns
+			for i in range(2):
+				var ang = -PI * 0.45 + i * (PI * 0.9)
+				var p1 = Vector2(cos(ang), sin(ang)) * bs * 1.2 + Vector2(0, bounce + 4)
+				var p2 = Vector2(cos(ang), sin(ang)) * (bs * 1.2 + 7.0) + Vector2(0, bounce + 4)
+				draw_line(p1, p2, Color(0.55, 0.45, 0.2), 5.0)
+			# Regen sparkle
+			if regen_per_sec > 0.0:
+				var sp = sin(walk_anim * 3.0)
+				draw_circle(Vector2(bs * 0.6, bounce - bs * 0.3), 3.5 + sp * 1.0, Color(0.3, 1.0, 0.5, 0.7))
+
+		"necromancer":
+			# Dark mage skull robe
+			var nc = Color(0.1, 0.05, 0.2)
+			draw_circle(Vector2(0, bounce), bs * 0.8, nc)
+			draw_arc(Vector2(0, bounce), bs * 0.8, 0, TAU, 18, Color(0.5, 0.1, 0.9, 0.8), 2.5)
+			# Bone staff
+			draw_line(Vector2(bs * 0.55, bounce + bs * 0.9), Vector2(bs * 0.55, bounce - bs * 1.2), Color(0.88, 0.88, 0.78), 2.5)
+			draw_circle(Vector2(bs * 0.55, bounce - bs * 1.2), 4.5, Color(0.9, 0.85, 0.75))
+			draw_circle(Vector2(bs * 0.55, bounce - bs * 1.2), 2.5, Color(0.1, 0.0, 0.1))
+			# Floating skulls
+			for i in range(2):
+				var ang = walk_anim * 0.8 + i * PI
+				var sp = Vector2(cos(ang) * bs * 1.1, sin(ang) * bs * 0.5 + bounce)
+				draw_circle(sp, 4.0, Color(0.88, 0.85, 0.78, 0.85))
+				draw_circle(sp + Vector2(-1.5, 0), 1.2, Color(0.05, 0.05, 0.05))
+				draw_circle(sp + Vector2(1.5, 0), 1.2, Color(0.05, 0.05, 0.05))
+
+		"spider":
+			# Spider with 8 legs
+			var sp_col = Color(0.12, 0.08, 0.05)
+			# Legs (4 per side)
+			for i in range(4):
+				var leg_y = bounce - bs * 0.3 + i * (bs * 0.2)
+				var leg_len = bs * 1.4 - i * (bs * 0.1)
+				draw_line(Vector2(0, leg_y), Vector2(-leg_len, leg_y - 3.0), sp_col, 2.5)
+				draw_line(Vector2(0, leg_y), Vector2(leg_len, leg_y - 3.0), sp_col, 2.5)
+			# Body
+			draw_circle(Vector2(0, bounce), bs * 0.75, draw_col)
+			# Abdomen (rear)
+			draw_circle(Vector2(0, bounce + bs * 0.9), bs * 0.6, draw_col.darkened(0.2))
+			draw_arc(Vector2(0, bounce + bs * 0.9), bs * 0.6, 0, TAU, 14, sp_col, 1.5)
+			# Fang eyes cluster
+			for i in range(4):
+				var ex = -bs * 0.3 + i * (bs * 0.2)
+				draw_circle(Vector2(ex, bounce - bs * 0.2), bs * 0.1, Color(0.9, 0.15, 0.15))
+
+		"archmage":
+			# Archmage in shimmering robe + shield ring
+			var am_col = Color(0.1, 0.2, 0.7)
+			draw_circle(Vector2(0, bounce), bs * 0.72, am_col)
+			# Animated shield ring
+			var shield_ang = walk_anim * 1.5
+			for i in range(6):
+				var sa = shield_ang + i * (TAU / 6.0)
+				var sp = Vector2(cos(sa), sin(sa)) * (bs + 7.0) + Vector2(0, bounce)
+				draw_circle(sp, 3.2, Color(0.35, 0.65, 1.0, 0.85))
+			# Staff
+			draw_line(Vector2(-bs * 0.5, bounce + bs * 0.8), Vector2(-bs * 0.5, bounce - bs * 1.1), Color(0.7, 0.6, 0.3), 2.5)
+			draw_circle(Vector2(-bs * 0.5, bounce - bs * 1.1), 5.5, Color(0.2, 0.5, 1.0, 0.9))
+			draw_circle(Vector2(-bs * 0.5, bounce - bs * 1.1), 3.0, Color(0.8, 0.95, 1.0))
+			# Robe shimmer lines
+			for i in range(3):
+				var ry = bounce - bs * 0.3 + i * (bs * 0.3)
+				draw_line(Vector2(-bs * 0.5, ry), Vector2(bs * 0.5, ry), Color(0.4, 0.6, 1.0, 0.4), 1.5)
+
+		_:
+			# DEFAULT: grunt, soldier, heavy, and all unspecified types
+			# Grunt/soldier - standard orc with armor distinction
+			draw_circle(Vector2(0, bounce), bs, draw_col)
+			draw_circle(Vector2(-bs * 0.28, bounce - bs * 0.28), bs * 0.45, draw_col.lightened(0.22))
+			draw_arc(Vector2(0, bounce), bs, 0, TAU, 20, Color(0.1, 0.15, 0.08, 0.85), 2.5)
+			# Armor plates for heavy units
+			if armor >= 40.0:
+				draw_arc(Vector2(0, bounce), bs * 0.88, -PI * 0.7, PI * 0.7, 12, Color(0.75, 0.8, 0.88), 3.5)
+				draw_arc(Vector2(0, bounce), bs * 0.72, -PI * 0.4, PI * 0.4, 8, Color(0.65, 0.7, 0.78), 2.0)
+			# Horns (grunt/berserker style)
+			var horn_count = 3 if monster_type == "grunt" else 2
+			for i in range(horn_count):
+				var ang = -PI * 0.6 + i * (PI * 0.6 / max(horn_count - 1, 1))
+				var p1 = Vector2(cos(ang), sin(ang)) * bs + Vector2(0, bounce)
+				var p2 = Vector2(cos(ang), sin(ang)) * (bs + 6.0) + Vector2(0, bounce)
+				draw_line(p1, p2, Color(0.22, 0.12, 0.06), 3.0)
+
+	# --- Shared eyes for non-special types ---
+	if not is_boss and not is_stealth and not is_flyer:
+		var look_dir = 1.0 if current_state == MonsterState.ADVANCING else -1.0
+		var ey = bounce - bs * 0.18
+		var eye_r = bs * 0.22
+		draw_circle(Vector2(-bs * 0.28, ey), eye_r, Color(1.0, 1.0, 1.0))
+		draw_circle(Vector2(bs * 0.28, ey), eye_r, Color(1.0, 1.0, 1.0))
+		draw_circle(Vector2(-bs * 0.28 + look_dir * 1.5, ey), eye_r * 0.5, Color(0.08, 0.06, 0.08))
+		draw_circle(Vector2(bs * 0.28 + look_dir * 1.5, ey), eye_r * 0.5, Color(0.08, 0.06, 0.08))
+		# Tusk / fang detail
+		draw_line(Vector2(-bs * 0.18, bounce + bs * 0.2), Vector2(-bs * 0.28, bounce + bs * 0.5), Color(0.95, 0.92, 0.82), 2.0)
+		draw_line(Vector2(bs * 0.18, bounce + bs * 0.2), Vector2(bs * 0.28, bounce + bs * 0.5), Color(0.95, 0.92, 0.82), 2.0)
+
+	# --- Magic Shield ring ---
+	if shield > 0.0 and not is_boss:
+		draw_arc(Vector2(0, bounce), bs + 6.0, 0, TAU, 24, Color(0.55, 0.25, 0.95, 0.75), 2.5)
+
+	_draw_hp_bar(bs, bounce)
+
+func _draw_hp_bar(bs: float, bounce: float) -> void:
+	var bar_w = bs * 2.4
 	var bar_h = 5.0 if is_boss else 4.0
-	var bar_y = -body_size - (16.0 if is_boss else 9.0) + bounce
-	var bg_rect = Rect2(-bar_w / 2.0, bar_y, bar_w, bar_h)
-	draw_rect(bg_rect, Color(0.1, 0.1, 0.12, 0.85))
-	
-	var health_ratio = clamp(current_health / max_health, 0.0, 1.0)
-	var hp_color = Color(0.2, 0.9, 0.2).lerp(Color(0.95, 0.15, 0.15), 1.0 - health_ratio)
-	var fg_rect = Rect2(-bar_w / 2.0, bar_y, bar_w * health_ratio, bar_h)
-	draw_rect(fg_rect, hp_color)
-	draw_rect(bg_rect, Color(0.0, 0.0, 0.0, 0.9), false, 1.0)
+	var bar_y = -bs - (16.0 if is_boss else 9.0) + bounce
+	var bg = Rect2(-bar_w / 2.0, bar_y, bar_w, bar_h)
+	draw_rect(bg, Color(0.08, 0.08, 0.1, 0.88))
+	var ratio = clamp(current_health / max_health, 0.0, 1.0)
+	var hp_col = Color(0.2, 0.9, 0.2).lerp(Color(0.95, 0.15, 0.15), 1.0 - ratio)
+	draw_rect(Rect2(-bar_w / 2.0, bar_y, bar_w * ratio, bar_h), hp_col)
+	draw_rect(bg, Color(0.0, 0.0, 0.0, 0.9), false, 1.0)
+	# Shield bar overlay (blue)
+	if shield > 0.0 and max_shield > 0.0:
+		var shld_ratio = clamp(shield / max_shield, 0.0, 1.0)
+		draw_rect(Rect2(-bar_w / 2.0, bar_y - bar_h - 1.0, bar_w * shld_ratio, bar_h - 1.0), Color(0.4, 0.3, 1.0, 0.85))
+
 

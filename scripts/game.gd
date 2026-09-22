@@ -380,7 +380,7 @@ func _on_monster_died(reward: int, pos: Vector2, monster: Node2D = null) -> void
 
 func _on_wave_completed(wave_num: int, is_last_wave: bool) -> void:
 	if is_instance_valid(game_manager):
-		game_manager.on_wave_completed()
+		game_manager.set_state(GameManager.GameState.BUILDING)
 	if is_instance_valid(hud):
 		hud.set_wave_button_enabled(true)
 		hud.hide_boss_bar()
@@ -399,7 +399,7 @@ func _update_wave_preview(next_wave: int) -> void:
 
 func _on_all_waves_completed() -> void:
 	if is_instance_valid(game_manager):
-		game_manager.set_state(GameManager.GameState.GAME_OVER)
+		game_manager.set_state(GameManager.GameState.VICTORY)
 	if is_instance_valid(hud):
 		hud.end_title.text = "👑 ПОБЕДА В БИОМЕ!"
 		hud.end_subtitle.text = "Вы спасли королевство и защитили всех жителей!\nНачислено 30 Очков Славы!"
@@ -407,6 +407,7 @@ func _on_all_waves_completed() -> void:
 	if is_instance_valid(meta_manager):
 		meta_manager.add_glory(30)
 		meta_manager.record_map_stars(GlobalState.selected_map, 3)
+
 
 func _on_lives_changed(new_lives: int) -> void:
 	if is_instance_valid(hud):
