@@ -382,72 +382,152 @@ func set_selected(selected: bool) -> void:
 func _draw() -> void:
 	var eff_range = get_effective_range()
 	if is_selected:
-		# Сказочный мягкий радиус атаки с золотистой окантовкой
 		draw_circle(Vector2.ZERO, eff_range, Color(0.3, 0.75, 1.0, 0.08))
 		draw_arc(Vector2.ZERO, eff_range, 0, TAU, 48, Color(0.4, 0.85, 1.0, 0.6), 2.0)
 		draw_arc(Vector2.ZERO, eff_range - 4.0, 0, TAU, 36, Color(1.0, 0.85, 0.2, 0.3), 1.0)
-		
+
 	# Buff aura ring
 	if not active_buffs.is_empty():
 		var aura_alpha = 0.3 + sin(anim_time * 2.0) * 0.15
 		draw_arc(Vector2.ZERO, 20.0, 0, TAU, 24, Color(1.0, 0.85, 0.2, aura_alpha), 2.0)
-	
-	# Отрисовка башни
+
+	var aim_dir = Vector2(cos(turret_angle), sin(turret_angle))
+
 	match tower_type:
-		"archer", "sling":
-			# Деревянная башенка лучников с частоколом
-			draw_circle(Vector2(0, 4), 16.0, Color(0.32, 0.22, 0.12))
-			draw_circle(Vector2(0, 0), 14.0, Color(0.55, 0.38, 0.2))
-			# Балкончик
-			draw_arc(Vector2.ZERO, 14.0, 0, TAU, 16, Color(0.38, 0.25, 0.15), 3.0)
-			# Поворотный арбалет
-			var aim_dir = Vector2(cos(turret_angle), sin(turret_angle))
+
+		"archer", "crossbowman":
+			# Wood tower with bow/crossbow turret
+			draw_circle(Vector2(0, 4), 16.0, Color(0.28, 0.18, 0.10))
+			draw_circle(Vector2(0, 0), 14.0, Color(0.52, 0.36, 0.18))
+			draw_arc(Vector2.ZERO, 14.0, 0, TAU, 16, Color(0.35, 0.22, 0.12), 3.0)
 			draw_line(Vector2.ZERO, aim_dir * 16.0, Color(0.2, 0.2, 0.25), 3.5)
 			draw_line(aim_dir * 8.0 + aim_dir.orthogonal() * -8.0, aim_dir * 8.0 + aim_dir.orthogonal() * 8.0, Color(0.85, 0.3, 0.2), 2.5)
+
 		"cannon", "siege_cannon":
-			# Чугунная осадная мортира на лафете
-			draw_circle(Vector2(0, 2), 17.0, Color(0.2, 0.2, 0.25))
-			draw_rect(Rect2(-12, -6, 24, 14), Color(0.45, 0.32, 0.18))
-			# Ствол орудия
-			var aim_dir = Vector2(cos(turret_angle), sin(turret_angle))
-			draw_line(Vector2.ZERO, aim_dir * 18.0, Color(0.18, 0.18, 0.22), 8.0)
-			draw_line(Vector2.ZERO, aim_dir * 19.0, Color(0.8, 0.7, 0.3), 2.0)
-			draw_circle(aim_dir * 18.0, 4.0, Color(0.1, 0.1, 0.12))
-		"ice", "ice_mage":
-			# Левитирующий кристалл льда с пульсацией
+			# Iron cannon on wooden carriage
+			draw_rect(Rect2(-12, -4, 24, 12), Color(0.42, 0.30, 0.16))
+			draw_circle(Vector2(0, 2), 16.0, Color(0.22, 0.22, 0.27))
+			draw_line(Vector2.ZERO, aim_dir * 19.0, Color(0.18, 0.18, 0.22), 8.0)
+			draw_line(Vector2.ZERO, aim_dir * 20.0, Color(0.75, 0.65, 0.25), 2.0)
+			draw_circle(aim_dir * 18.0, 4.5, Color(0.1, 0.1, 0.12))
+
+		"ice_mage":
+			# Floating ice crystal obelisk
 			var float_y = sin(anim_time) * 4.0
-			# Обелиск основание
-			draw_polygon(PackedVector2Array([Vector2(0, -18), Vector2(14, 10), Vector2(-14, 10)]), PackedColorArray([Color(0.2, 0.4, 0.7), Color(0.15, 0.25, 0.5), Color(0.15, 0.25, 0.5)]))
-			# Парящий хрусталь
+			draw_polygon(PackedVector2Array([Vector2(0, -18), Vector2(14, 10), Vector2(-14, 10)]),
+				PackedColorArray([Color(0.2, 0.4, 0.7), Color(0.15, 0.25, 0.5), Color(0.15, 0.25, 0.5)]))
 			var crystal_col = Color(0.4, 0.88, 1.0, 0.9)
 			var c_poly = PackedVector2Array([
-				Vector2(0, -22 + float_y),
-				Vector2(8, -10 + float_y),
-				Vector2(0, 2 + float_y),
-				Vector2(-8, -10 + float_y)
+				Vector2(0, -22 + float_y), Vector2(9, -10 + float_y),
+				Vector2(0, 2 + float_y), Vector2(-9, -10 + float_y)
 			])
 			draw_polygon(c_poly, PackedColorArray([Color(0.9, 0.98, 1.0), crystal_col, Color(0.2, 0.6, 0.9), crystal_col]))
-			draw_circle(Vector2(0, -10 + float_y), 3.0, Color(1.0, 1.0, 1.0))
-		"tesla":
-			# Катушка Тесла с электрическими кольцами
-			draw_circle(Vector2.ZERO, 15.0, Color(0.35, 0.28, 0.15))
-			draw_rect(Rect2(-5, -16, 10, 20), Color(0.75, 0.55, 0.2))
-			draw_circle(Vector2(0, -18), 7.0, Color(1.0, 0.9, 0.3))
-			draw_arc(Vector2(0, -18), 11.0 + sin(anim_time * 2.0) * 2.0, 0, TAU, 12, Color(0.4, 0.8, 1.0, 0.8), 2.0)
-		"bastion":
-			# Каменная шестигранная крепость
-			draw_circle(Vector2.ZERO, 18.0, Color(0.35, 0.35, 0.4))
-			draw_circle(Vector2.ZERO, 12.0, Color(0.5, 0.5, 0.55))
+			draw_circle(Vector2(0, -10 + float_y), 3.5, Color(1.0, 1.0, 1.0))
+
+		"tesla", "auto_turret":
+			# Tesla coil / auto turret with electric rings
+			draw_circle(Vector2.ZERO, 15.0, Color(0.3, 0.25, 0.12))
+			draw_rect(Rect2(-5, -18, 10, 22), Color(0.72, 0.52, 0.18))
+			draw_circle(Vector2(0, -20), 7.0, Color(1.0, 0.9, 0.3))
+			draw_arc(Vector2(0, -20), 11.0 + sin(anim_time * 3.0) * 2.5, 0, TAU, 12, Color(0.4, 0.8, 1.0, 0.85), 2.0)
+			draw_arc(Vector2(0, -20), 16.0 + sin(anim_time * 2.0 + 1.0) * 2.0, 0, TAU, 10, Color(0.7, 0.9, 1.0, 0.4), 1.5)
+			draw_line(Vector2.ZERO, aim_dir * 14.0, Color(0.4, 0.8, 1.0), 3.0)
+
+		"bastion", "wall":
+			# Hexagonal stone fortress / wall
+			draw_circle(Vector2.ZERO, 19.0, Color(0.32, 0.32, 0.38))
+			draw_circle(Vector2.ZERO, 13.0, Color(0.50, 0.50, 0.56))
 			for i in range(6):
 				var ang = i * (PI / 3.0)
-				draw_line(Vector2.ZERO, Vector2(cos(ang), sin(ang)) * 17.0, Color(0.85, 0.3, 0.2), 2.5)
-			draw_circle(Vector2.ZERO, 4.0, Color(1.0, 0.85, 0.2))
+				draw_line(Vector2.ZERO, Vector2(cos(ang), sin(ang)) * 18.0, Color(0.82, 0.28, 0.18), 2.5)
+			draw_circle(Vector2.ZERO, 4.5, Color(1.0, 0.85, 0.2))
+
+		"flame_tower":
+			# Lava pillar with animated flame crown
+			draw_circle(Vector2(0, 4), 16.0, Color(0.22, 0.10, 0.05))
+			draw_circle(Vector2.ZERO, 13.0, Color(0.7, 0.22, 0.05))
+			for i in range(5):
+				var fang = i * (TAU / 5.0) + anim_time * 0.8
+				var fp = Vector2(cos(fang), sin(fang)) * 10.0
+				draw_circle(fp, 4.5 + sin(anim_time * 2.0 + i) * 1.5, Color(1.0, 0.5, 0.05, 0.85))
+				draw_circle(fp, 2.5, Color(1.0, 0.9, 0.3))
+
+		"poison_tower":
+			# Green bubbling poison vat
+			draw_circle(Vector2(0, 4), 16.0, Color(0.10, 0.18, 0.08))
+			draw_circle(Vector2.ZERO, 13.0, Color(0.22, 0.55, 0.12))
+			for i in range(4):
+				var bang = i * (TAU / 4.0) + anim_time * 0.5
+				var bp = Vector2(cos(bang), sin(bang)) * 7.0
+				draw_circle(bp, 3.0 + sin(anim_time * 1.5 + i * 1.2) * 1.0, Color(0.5, 0.9, 0.2, 0.75))
+			draw_circle(Vector2.ZERO, 3.5, Color(0.8, 1.0, 0.3))
+
+		"trading_post":
+			# Golden coin stack
+			draw_circle(Vector2(0, 5), 16.0, Color(0.38, 0.28, 0.06))
+			draw_circle(Vector2.ZERO, 13.0, Color(0.85, 0.68, 0.12))
+			draw_circle(Vector2.ZERO, 9.0, Color(1.0, 0.88, 0.3))
+			draw_circle(Vector2(-3, -3), 3.5, Color(1.0, 1.0, 0.8, 0.9))
+			draw_circle(Vector2(3, 3), 2.5, Color(1.0, 0.95, 0.5, 0.8))
+
+		"necromancer":
+			# Dark purple arcane tower with orbiting skull orbs
+			draw_circle(Vector2.ZERO, 14.0, Color(0.12, 0.06, 0.28))
+			draw_arc(Vector2.ZERO, 14.0, 0, TAU, 18, Color(0.55, 0.15, 0.85, 0.8), 2.5)
+			for i in range(3):
+				var oang = anim_time * 1.0 + i * (TAU / 3.0)
+				var op = Vector2(cos(oang), sin(oang)) * 12.0
+				draw_circle(op, 3.5, Color(0.88, 0.85, 0.78, 0.9))
+				draw_circle(op + Vector2(-1.2, 0), 1.2, Color(0.1, 0.05, 0.1))
+				draw_circle(op + Vector2(1.2, 0), 1.2, Color(0.1, 0.05, 0.1))
+			draw_circle(Vector2.ZERO, 4.5, Color(0.5, 0.15, 0.8))
+
+		"time_tower":
+			# Clock tower with rotating hands
+			draw_circle(Vector2.ZERO, 14.0, Color(0.20, 0.18, 0.35))
+			draw_arc(Vector2.ZERO, 14.0, 0, TAU, 24, Color(0.6, 0.55, 0.85, 0.85), 2.5)
+			var hour_ang = anim_time * 0.3
+			var min_ang = anim_time * 1.8
+			draw_line(Vector2.ZERO, Vector2(cos(hour_ang), sin(hour_ang)) * 8.0, Color(1.0, 0.9, 0.5), 2.5)
+			draw_line(Vector2.ZERO, Vector2(cos(min_ang), sin(min_ang)) * 11.0, Color(0.8, 0.8, 1.0), 1.5)
+			draw_circle(Vector2.ZERO, 2.5, Color(1.0, 0.95, 0.6))
+
+		"watchtower":
+			# Tall watchtower with sniper scope
+			draw_circle(Vector2(0, 4), 12.0, Color(0.30, 0.22, 0.14))
+			draw_circle(Vector2.ZERO, 10.0, Color(0.55, 0.42, 0.25))
+			draw_line(Vector2.ZERO, aim_dir * 22.0, Color(0.18, 0.18, 0.22), 3.0)
+			draw_line(Vector2.ZERO, aim_dir * 23.0, Color(0.6, 0.55, 0.3), 1.0)
+			draw_circle(aim_dir * 14.0, 2.5, Color(0.9, 0.15, 0.15, 0.9))
+
+		"support_tower":
+			# Support pillar with pulsing aura rings
+			draw_circle(Vector2.ZERO, 13.0, Color(0.5, 0.4, 0.15))
+			draw_circle(Vector2.ZERO, 9.0, Color(0.9, 0.8, 0.3))
+			for i in range(3):
+				var ring_r = 11.0 + i * 6.0 + sin(anim_time * 1.5 + i) * 2.0
+				draw_arc(Vector2.ZERO, ring_r, 0, TAU, 20, Color(1.0, 0.9, 0.3, 0.4 - i * 0.1), 1.5)
+			draw_circle(Vector2.ZERO, 4.0, Color(1.0, 1.0, 0.6))
+
+		"trap":
+			# Spike trap
+			for i in range(8):
+				var tang = i * (TAU / 8.0)
+				draw_line(Vector2(cos(tang), sin(tang)) * 8.0, Vector2(cos(tang), sin(tang)) * 16.0, Color(0.55, 0.45, 0.15), 3.0)
+			draw_circle(Vector2.ZERO, 8.0, Color(0.35, 0.28, 0.10))
+			draw_circle(Vector2.ZERO, 5.0, Color(0.7, 0.55, 0.2))
+
+
 		_:
-			draw_circle(Vector2.ZERO, 15.0, Color(0.5, 0.4, 0.3))
-			draw_circle(Vector2.ZERO, 10.0, Color(0.7, 0.6, 0.5))
-			
-	# Золотые звезды уровня под башней
+			# Generic fallback — stone circle tower
+			draw_circle(Vector2(0, 3), 16.0, Color(0.28, 0.28, 0.32))
+			draw_circle(Vector2.ZERO, 13.0, Color(0.48, 0.46, 0.50))
+			draw_circle(Vector2.ZERO, 7.0, Color(0.32, 0.30, 0.34))
+			draw_line(Vector2.ZERO, aim_dir * 15.0, Color(0.7, 0.6, 0.4), 3.0)
+
+	# Level stars beneath tower
 	for i in range(current_level):
 		var offset_x = (i - (current_level - 1) * 0.5) * 9.0
-		draw_circle(Vector2(offset_x, 18), 3.0, Color(1.0, 0.85, 0.2))
-		draw_circle(Vector2(offset_x, 18), 1.5, Color(1.0, 1.0, 0.8))
+		draw_circle(Vector2(offset_x, 20), 3.0, Color(1.0, 0.85, 0.2))
+		draw_circle(Vector2(offset_x, 20), 1.5, Color(1.0, 1.0, 0.8))
+

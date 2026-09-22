@@ -437,11 +437,10 @@ func _on_spot_clicked(spot: BuildSpot) -> void:
 func _spawn_floating_text(text: String, color: Color, pos: Vector2, font_size: int = 14) -> void:
 	var ft = Node2D.new()
 	ft.set_script(floating_text_script)
-	ft.text = text
-	ft.color = color
-	ft.font_size = font_size
 	ft.position = pos
 	add_child(ft)
+	ft.setup(text, color, font_size)
+
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo:

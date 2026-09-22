@@ -41,10 +41,12 @@ func _on_mouse_exited() -> void:
 	hovered.emit(self, false)
 	queue_redraw()
 
-func _input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
+func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
-		clicked.emit(self)
-		get_viewport().set_input_as_handled()
+		var local_pos = to_local(get_global_mouse_position())
+		if local_pos.length() <= spot_radius + 4.0:
+			clicked.emit(self)
+			get_viewport().set_input_as_handled()
 
 func set_selected(val: bool) -> void:
 	is_selected = val
