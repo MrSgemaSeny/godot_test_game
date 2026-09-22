@@ -1,0 +1,120 @@
+[gd_scene format=3 uid="uid://c6lmap17xra0y"]
+
+[ext_resource type="Script" path="res://scripts/world_map.gd" id="1_wmap"]
+
+[node name="WorldMap" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_wmap")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.06, 0.08, 0.11, 1)
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 32
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 32
+theme_override_constants/margin_bottom = 24
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 24
+
+[node name="LeftPanel" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(360, 0)
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="HeaderLabel" type="Label" parent="MarginContainer/HBoxContainer/LeftPanel"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.85, 0.3, 1)
+theme_override_font_sizes/font_size = 24
+text = "🗺️ КАРТА КАМПАНИИ"
+
+[node name="TotalStarsLabel" type="Label" parent="MarginContainer/HBoxContainer/LeftPanel"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.8, 0.2, 1)
+theme_override_font_sizes/font_size = 16
+text = "⭐ Всего звезд: 0 / 15"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/HBoxContainer/LeftPanel"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="MapList" type="VBoxContainer" parent="MarginContainer/HBoxContainer/LeftPanel/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 10
+
+[node name="RightPanel" type="PanelContainer" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VBox" type="VBoxContainer" parent="MarginContainer/HBoxContainer/RightPanel"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="TitleLabel" type="Label" parent="MarginContainer/HBoxContainer/RightPanel/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.88, 0.3, 1)
+theme_override_font_sizes/font_size = 28
+text = "🌾 Кудрявая Долина"
+
+[node name="StarsLabel" type="Label" parent="MarginContainer/HBoxContainer/RightPanel/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.8, 0.2, 1)
+theme_override_font_sizes/font_size = 18
+text = "Звёзды: ⭐⭐⭐"
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/HBoxContainer/RightPanel/VBox"]
+layout_mode = 2
+
+[node name="DescLabel" type="Label" parent="MarginContainer/HBoxContainer/RightPanel/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Описание карты..."
+autowrap_mode = 2
+
+[node name="ModifiersLabel" type="Label" parent="MarginContainer/HBoxContainer/RightPanel/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8, 0.85, 1, 1)
+theme_override_font_sizes/font_size = 15
+text = "Особенности биома:"
+
+[node name="BonusLabel" type="Label" parent="MarginContainer/HBoxContainer/RightPanel/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.3, 0.95, 0.5, 1)
+theme_override_font_sizes/font_size = 15
+text = "🎯 Задание на 3-ю звезду:"
+
+[node name="Spacer" type="Control" parent="MarginContainer/HBoxContainer/RightPanel/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="StartBattleButton" type="Button" parent="MarginContainer/HBoxContainer/RightPanel/VBox"]
+custom_minimum_size = Vector2(0, 52)
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "⚔️ В БОЙ! (Выбрать путь развития)"
+
+[node name="BackButton" type="Button" parent="MarginContainer/HBoxContainer/RightPanel/VBox"]
+custom_minimum_size = Vector2(0, 42)
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "↩️ Назад в Главное Меню"

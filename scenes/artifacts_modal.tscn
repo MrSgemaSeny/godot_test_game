@@ -1,0 +1,115 @@
+[gd_scene format=3 uid="uid://dmqm7u3xeq63k"]
+
+[ext_resource type="Script" path="res://scripts/artifacts_modal.gd" id="1_art"]
+
+[node name="ArtifactsModal" type="PanelContainer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -450.0
+offset_top = -290.0
+offset_right = 450.0
+offset_bottom = 290.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_art")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="HeaderLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.85, 0.3, 1)
+theme_override_font_sizes/font_size = 22
+text = "💎 КОЛЛЕКЦИЯ АРТЕФАКТОВ И РЕЛИКВИЙ"
+
+[node name="SlotsRow" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="SlotsContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/SlotsRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 12
+
+[node name="Slot1" type="Button" parent="MarginContainer/VBoxContainer/SlotsRow/SlotsContainer"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Слот 1: [Пусто]"
+
+[node name="Slot2" type="Button" parent="MarginContainer/VBoxContainer/SlotsRow/SlotsContainer"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Слот 2: [Пусто]"
+
+[node name="Slot3" type="Button" parent="MarginContainer/VBoxContainer/SlotsRow/SlotsContainer"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Слот 3: [Пусто]"
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 18
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(320, 0)
+layout_mode = 2
+
+[node name="ArtifactList" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 6
+
+[node name="DetailsPanel" type="PanelContainer" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VBox" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/DetailsPanel"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="RarityLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/DetailsPanel/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "Редкость: ОБЫЧНЫЙ"
+
+[node name="DescLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/DetailsPanel/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 15
+text = "Выберите артефакт слева..."
+autowrap_mode = 2
+
+[node name="Spacer" type="Control" parent="MarginContainer/VBoxContainer/HBoxContainer/DetailsPanel/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="EquipButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer/DetailsPanel/VBox"]
+custom_minimum_size = Vector2(0, 42)
+layout_mode = 2
+text = "Экипировать в слот"
+
+[node name="BottomRow" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+alignment = 2
+
+[node name="CloseButton" type="Button" parent="MarginContainer/VBoxContainer/BottomRow"]
+custom_minimum_size = Vector2(120, 38)
+layout_mode = 2
+text = "✖️ Закрыть"

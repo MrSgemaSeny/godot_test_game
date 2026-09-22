@@ -24,21 +24,33 @@ var scene_anim_time: float = 0.0
 var tip_timer: float = 0.0
 var tip_index: int = 0
 
+# Системы расширения (Этапы 5, 6, 7, 9)
+var combo_tracker: ComboTracker = null
+var weather_system: WeatherSystem = null
+var lore_system: LoreSystem = null
+var artifact_manager: ArtifactManager = null
+
+var active_boss: MonsterBase = null
+var lightning_flash_timer: float = 0.0
+
 var tips: Array = [
 	"💡 Совет: Ледяные маги замедляют монстров, давая пушкам время сделать мощный залп!",
 	"💡 Совет: Кликайте по пороховым бочкам на обочине, когда рядом идет толпа монстров!",
 	"💡 Совет: Если монстр схватил девочку, убейте его — и она с сердечком побежит домой!",
 	"💡 Совет: Нажмите [Пробел] для досрочного старта волны и получите +10% бонусного золота!",
-	"💡 Совет: Используйте клавиши [1]-[4] для быстрого применения заклинаний маны!",
-	"💡 Совет: Изучайте новые технологии в Древе Исследований за очки побед!"
+	"💡 Совет: Используйте клавиши [1]-[8] для быстрого применения заклинаний маны!",
+	"💡 Совет: Открывайте Бестиарий и Реликвии на верхней панели для тактических подсказок!"
 ]
 
 # Процедурные декоративные элементы
 var flower_patches: Array = []
 var trees: Array = []
+var crystals: Array = []
+var swamp_mushrooms: Array = []
 
 func _ready() -> void:
 	game_manager.set_chosen_path(GlobalState.selected_path)
+	_setup_expansion_systems()
 	_generate_decorations()
 	_setup_signals()
 	_setup_path()
@@ -46,22 +58,66 @@ func _ready() -> void:
 	_setup_interactive_objects()
 	_start_new_game()
 
+func _setup_expansion_systems() -> void:
+	combo_tracker = ComboTracker.new()
+	add_child(combo_tracker)
+	combo_tracker.combo_updated.connect(func(streak, mult):
+		if is_instance_valid(hud):
+			hud.update_combo(streak, mult, combo_tracker.timer, combo_tracker.window_duration)
+	)
+	combo_tracker.combo_broken.connect(func():
+		if is_instance_valid(hud):
+			hud.update_combo(0, 1.0, 0.0, 2.5)
+	)
+	
+	weather_system = WeatherSystem.new()
+	add_child(weather_system)
+	weather_system.weather_changed.connect(func(w):
+		if is_instance_valid(hud):
+			hud.update_weather(w)
+	)
+	
+	lore_system = LoreSystem.new()
+	add_child(lore_system)
+	lore_system.dialogue_spoken.connect(func(spk, txt):
+		if is_instance_valid(hud):
+			hud.show_dialogue(spk, txt)
+	)
+	
+	artifact_manager = ArtifactManager.new()
+	add_child(artifact_manager)
+	
+	# Установка начальной погоды в зависимости от карты
+	match GlobalState.selected_map:
+		"swamp": weather_system.set_weather("rain")
+		"frost_peak": weather_system.set_weather("snow")
+		"caves": weather_system.set_weather("fog")
+		_: weather_system.set_weather("clear")
+
 func _generate_decorations() -> void:
 	var rng = RandomNumberGenerator.new()
-	rng.seed = 42 # Фиксированный красивый сид
+	rng.seed = 42
 	
 	flower_patches.clear()
 	for i in range(40):
 		var pos = Vector2(rng.randf_range(60, 1220), rng.randf_range(80, 680))
 		var col_type = rng.randi_range(0, 3)
-		var col = Color(1.0, 1.0, 1.0) # Ромашки
-		if col_type == 1:
-			col = Color(0.95, 0.25, 0.3) # Маки
-		elif col_type == 2:
-			col = Color(0.35, 0.65, 1.0) # Незабудки
-		elif col_type == 3:
-			col = Color(1.0, 0.85, 0.2) # Лютики
+		var col = Color(1.0, 1.0, 1.0)
+		if col_type == 1: col = Color(0.95, 0.25, 0.3)
+		elif col_type == 2: col = Color(0.35, 0.65, 1.0)
+		elif col_type == 3: col = Color(1.0, 0.85, 0.2)
 		flower_patches.append({"pos": pos, "col": col, "size": rng.randf_range(2.5, 4.0)})
+		
+	crystals.clear()
+	for i in range(25):
+		var pos = Vector2(rng.randf_range(50, 1230), rng.randf_range(70, 690))
+		var c_col = Color(0.1, 0.85, 1.0) if i % 2 == 0 else Color(0.85, 0.3, 1.0)
+		crystals.append({"pos": pos, "col": c_col, "size": rng.randf_range(8.0, 16.0)})
+		
+	swamp_mushrooms.clear()
+	for i in range(25):
+		var pos = Vector2(rng.randf_range(50, 1230), rng.randf_range(70, 690))
+		swamp_mushrooms.append({"pos": pos, "size": rng.randf_range(10.0, 20.0)})
 		
 	trees.clear()
 	var tree_positions = [
@@ -103,7 +159,7 @@ func _setup_path() -> void:
 	curve.add_point(Vector2(260, 530))
 	curve.add_point(Vector2(950, 530))
 	curve.add_point(Vector2(950, 680))
-	curve.add_point(Vector2(1120, 680)) # Сказочная деревня
+	curve.add_point(Vector2(1120, 680))
 	path2d.curve = curve
 
 func _setup_build_spots() -> void:
@@ -111,17 +167,16 @@ func _setup_build_spots() -> void:
 		for child in build_spots_container.get_children():
 			child.queue_free()
 		
-	# Аутентичное расположение каменных башенок-постаментов как на скриншоте
 	var spot_positions = [
-		Vector2(190, 525), Vector2(250, 525), # У таблички слева
-		Vector2(330, 260), # Вверху слева
-		Vector2(430, 260), # Вверху по центру у мостика
-		Vector2(440, 390), # В центре у изгиба
-		Vector2(430, 525), # В центре
-		Vector2(310, 695), # У подсолнухов
-		Vector2(730, 580), Vector2(785, 580), # Справа у поворота
-		Vector2(785, 390), Vector2(785, 450), # Справа вверху
-		Vector2(800, 610)  # У спуска к деревне
+		Vector2(190, 525), Vector2(250, 525),
+		Vector2(330, 260),
+		Vector2(430, 260),
+		Vector2(440, 390),
+		Vector2(430, 525),
+		Vector2(310, 695),
+		Vector2(730, 580), Vector2(785, 580),
+		Vector2(785, 390), Vector2(785, 450),
+		Vector2(800, 610)
 	]
 	
 	if is_instance_valid(build_spots_container):
@@ -188,19 +243,52 @@ func _start_new_game() -> void:
 	_setup_girls()
 	_setup_interactive_objects()
 	
+	if is_instance_valid(combo_tracker):
+		combo_tracker.reset_combo()
+	if is_instance_valid(lore_system):
+		lore_system.reset_session()
+	
 	if is_instance_valid(hud):
 		hud.end_screen.visible = false
 		hud.set_wave_button_enabled(true)
+		hud.hide_boss_bar()
 		
 	if is_instance_valid(wave_controller):
 		wave_controller.reset_waves()
 		wave_controller.start_wave_countdown(GameManager.PRE_WAVE_TIME)
+		_update_wave_preview(1)
 
 func _process(delta: float) -> void:
 	scene_anim_time += delta
+	if lightning_flash_timer > 0.0:
+		lightning_flash_timer -= delta
+		
 	queue_redraw()
 	
-	# Ротация подсказок новичку
+	# Обновление комбо-индикатора в реальном времени
+	if is_instance_valid(combo_tracker) and combo_tracker.current_streak > 0:
+		if is_instance_valid(hud):
+			hud.update_combo(combo_tracker.current_streak, combo_tracker.current_multiplier, combo_tracker.timer, combo_tracker.window_duration)
+			
+	# Обновление полоски здоровья босса
+	if is_instance_valid(active_boss) and not active_boss.get("is_dead"):
+		var cur_hp = active_boss.current_health
+		var max_hp = active_boss.max_health
+		var shld = active_boss.shield
+		var m_shld = active_boss.max_shield
+		var b_name = active_boss.monster_name
+		var phase_text = "⚔️ Фаза боя"
+		if cur_hp <= max_hp * 0.3: phase_text = "⚡ ФАЗА 3: ЯРОСТЬ БЕРСЕРКА!"
+		elif cur_hp <= max_hp * 0.6: phase_text = "🛡️ ФАЗА 2: ЗАЩИТНЫЙ ЩИТ"
+		if is_instance_valid(hud):
+			hud.show_boss_bar(b_name, cur_hp, max_hp, shld, m_shld, phase_text)
+	else:
+		if is_instance_valid(active_boss):
+			active_boss = null
+			if is_instance_valid(hud):
+				hud.hide_boss_bar()
+	
+	# Ротация подсказок
 	tip_timer += delta
 	if tip_timer >= 12.0:
 		tip_timer = 0.0
@@ -222,7 +310,7 @@ func _on_start_wave_pressed() -> void:
 			_spawn_floating_text("+%d🪙 Ранний старт!" % bonus, Color(1.0, 0.88, 0.2), Vector2(640, 200), 16)
 		wave_controller.start_current_wave(true)
 
-func _on_wave_started(wave_num: int, total_waves: int, _is_boss: bool) -> void:
+func _on_wave_started(wave_num: int, total_waves: int, is_boss: bool) -> void:
 	if is_instance_valid(game_manager):
 		game_manager.current_wave = wave_num
 		game_manager.wave_changed.emit(wave_num, total_waves)
@@ -231,6 +319,18 @@ func _on_wave_started(wave_num: int, total_waves: int, _is_boss: bool) -> void:
 	if is_instance_valid(hud):
 		hud.stop_countdown()
 		hud.set_wave_button_enabled(false)
+		hud.show_wave_preview("")
+		
+	if is_instance_valid(lore_system):
+		lore_system.trigger_event(GlobalState.selected_map, wave_num, "wave_start")
+		
+	# Смена погоды на волнах боссов
+	if is_boss and is_instance_valid(weather_system):
+		weather_system.set_weather("thunderstorm")
+		lightning_flash_timer = 0.4
+	elif is_instance_valid(weather_system) and wave_num % 3 == 0:
+		var weathers = ["clear", "rain", "fog", "snow"]
+		weather_system.set_weather(weathers[wave_num % weathers.size()])
 
 func _spawn_monster(enemy_type: String) -> void:
 	var monster = PathFollow2D.new()
@@ -238,7 +338,12 @@ func _spawn_monster(enemy_type: String) -> void:
 	monster.monster_type = enemy_type
 	monster.add_to_group("enemies")
 	
-	monster.died.connect(func(r): _on_monster_died(r, monster.global_position))
+	if monster.is_boss:
+		active_boss = monster
+		if is_instance_valid(lore_system):
+			lore_system.trigger_event(GlobalState.selected_map, game_manager.current_wave, "boss_spawn")
+	
+	monster.died.connect(func(r): _on_monster_died(r, monster.global_position, monster))
 	monster.finished.connect(func(outcome, reward): 
 		if is_instance_valid(wave_controller):
 			wave_controller.register_enemy_finished(outcome, reward)
@@ -249,284 +354,144 @@ func _spawn_monster(enemy_type: String) -> void:
 	path2d.add_child(monster)
 
 func _on_monster_took_damage(dmg: float, type: String, pos: Vector2) -> void:
-	var col = Color(1.0, 1.0, 1.0) if type == "physical" else Color(0.4, 0.85, 1.0)
+	var col = Color(1.0, 1.0, 1.0)
+	match type:
+		"fire": col = Color(1.0, 0.4, 0.1)
+		"cold": col = Color(0.3, 0.8, 1.0)
+		"poison": col = Color(0.4, 0.9, 0.2)
+		"lightning": col = Color(1.0, 0.9, 0.2)
+		"magic": col = Color(0.8, 0.4, 1.0)
+		"true": col = Color(1.0, 0.2, 0.3)
 	_spawn_floating_text("-%d" % int(ceil(dmg)), col, pos + Vector2(0, -10), 12)
 
-func _on_monster_died(reward: int, pos: Vector2) -> void:
-	if is_instance_valid(game_manager):
-		game_manager.add_gold(reward)
-	_spawn_floating_text("+%d🪙" % reward, Color(1.0, 0.88, 0.25), pos, 15)
-
-func _on_wave_completed(_wave_num: int, is_last_wave: bool) -> void:
-	if is_instance_valid(tech_tree_manager):
-		tech_tree_manager.add_points(1)
-	
-	var end_bonus = tech_tree_manager.get_end_wave_bonus_gold() if is_instance_valid(tech_tree_manager) else 0
-	if end_bonus > 0 and is_instance_valid(game_manager):
-		game_manager.add_gold(end_bonus)
-		_spawn_floating_text("+%d🪙 Казна" % end_bonus, Color(1.0, 0.88, 0.2), Vector2(640, 200), 16)
+func _on_monster_died(reward: int, pos: Vector2, monster: Node2D = null) -> void:
+	var mult = 1.0
+	if is_instance_valid(combo_tracker):
+		mult = combo_tracker.register_kill()
 		
+	var final_reward = int(ceil(reward * mult))
 	if is_instance_valid(game_manager):
-		if is_last_wave:
-			game_manager.set_state(GameManager.GameState.VICTORY)
-		else:
-			game_manager.set_state(GameManager.GameState.BUILDING)
-			if is_instance_valid(wave_controller):
-				wave_controller.start_wave_countdown(GameManager.PRE_WAVE_TIME)
-			if is_instance_valid(hud):
-				hud.set_wave_button_enabled(true)
+		game_manager.add_gold(final_reward)
+		
+	var txt = "+%d🪙" % final_reward
+	if mult > 1.0:
+		txt += " (x%.1f)" % mult
+	_spawn_floating_text(txt, Color(1.0, 0.88, 0.25), pos, 15)
+
+func _on_wave_completed(wave_num: int, is_last_wave: bool) -> void:
+	if is_instance_valid(game_manager):
+		game_manager.on_wave_completed()
+	if is_instance_valid(hud):
+		hud.set_wave_button_enabled(true)
+		hud.hide_boss_bar()
+		
+	if is_instance_valid(wave_controller) and not is_last_wave:
+		_update_wave_preview(wave_num + 1)
+		wave_controller.start_wave_countdown(GameManager.PRE_WAVE_TIME)
+
+func _update_wave_preview(next_wave: int) -> void:
+	if not is_instance_valid(hud):
+		return
+	var text = "🌊 Волна %d: Наступают полчища орков!" % next_wave
+	if next_wave % 5 == 0:
+		text = "⚠️ ВНИМАНИЕ! Волна %d: ПРИБЛИЖАЕТСЯ БОСС ОРДЫ! 👑" % next_wave
+	hud.show_wave_preview(text)
 
 func _on_all_waves_completed() -> void:
 	if is_instance_valid(game_manager):
-		game_manager.set_state(GameManager.GameState.VICTORY)
-
-func _on_girl_rescued(girl: GirlNPC) -> void:
-	_spawn_floating_text("❤️ Спасена!", Color(1.0, 0.3, 0.6), girl.global_position + Vector2(0, -20), 16)
-	_update_girls_ui()
-
-func _on_lives_changed(_new_lives: int) -> void:
-	_update_girls_ui()
-
-func _update_girls_ui() -> void:
-	var free_girls = 0
-	if is_instance_valid(girls_container):
-		for g in girls_container.get_children():
-			if is_instance_valid(g) and g.current_state != GirlNPC.State.BEING_CARRIED:
-				free_girls += 1
+		game_manager.set_state(GameManager.GameState.GAME_OVER)
 	if is_instance_valid(hud):
-		hud.update_girls_count(free_girls)
+		hud.end_title.text = "👑 ПОБЕДА В БИОМЕ!"
+		hud.end_subtitle.text = "Вы спасли королевство и защитили всех жителей!\nНачислено 30 Очков Славы!"
+		hud.end_screen.visible = true
+	if is_instance_valid(meta_manager):
+		meta_manager.add_glory(30)
+		meta_manager.record_map_stars(GlobalState.selected_map, 3)
 
-func _spawn_floating_text(p_text: String, p_color: Color, p_pos: Vector2, p_size: int = 14) -> void:
-	var ft = Node2D.new()
-	ft.set_script(floating_text_script)
-	ft.position = p_pos
-	ft.setup(p_text, p_color, p_size, 0.85)
-	add_child(ft)
+func _on_lives_changed(new_lives: int) -> void:
+	if is_instance_valid(hud):
+		hud.update_girls_count(new_lives)
+	if is_instance_valid(combo_tracker):
+		combo_tracker.reset_combo()
 
-func _on_game_state_changed(state: GameManager.GameState) -> void:
-	if state == GameManager.GameState.GAME_OVER:
-		if is_instance_valid(wave_controller):
-			wave_controller.stop_countdown()
+func _on_game_state_changed(new_state: GameManager.GameState) -> void:
+	if new_state == GameManager.GameState.GAME_OVER:
 		if is_instance_valid(hud):
-			hud.show_game_over(false)
-	elif state == GameManager.GameState.VICTORY:
-		if is_instance_valid(wave_controller):
-			wave_controller.stop_countdown()
-		if is_instance_valid(hud):
-			hud.show_game_over(true)
+			hud.end_title.text = "💀 ПОРАЖЕНИЕ..."
+			hud.end_subtitle.text = "Оркам удалось пленить всех девочек королевства.\nПопробуйте другую тактику!"
+			hud.end_screen.visible = true
 
+func _on_girl_rescued(girl_pos: Vector2) -> void:
+	_spawn_floating_text("💖 Девочка спасена!", Color(1.0, 0.4, 0.8), girl_pos, 16)
 
 func _on_spot_clicked(spot: BuildSpot) -> void:
-	if is_instance_valid(build_spots_container):
-		for child in build_spots_container.get_children():
-			if child is BuildSpot and child != spot:
-				child.set_selected(false)
-			
-	spot.set_selected(true)
 	if is_instance_valid(game_manager):
 		game_manager.select_spot(spot)
-	queue_redraw()
-
-func _unhandled_input(event: InputEvent) -> void:
-	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 		if is_instance_valid(build_spots_container):
 			for child in build_spots_container.get_children():
 				if child is BuildSpot:
-					child.set_selected(false)
-		if is_instance_valid(game_manager):
-			game_manager.select_spot(null)
+					child.set_selected(child == spot)
 		queue_redraw()
-		
-	# Горячие клавиши управления
+
+func _spawn_floating_text(text: String, color: Color, pos: Vector2, font_size: int = 14) -> void:
+	var ft = Node2D.new()
+	ft.set_script(floating_text_script)
+	ft.text = text
+	ft.color = color
+	ft.font_size = font_size
+	ft.position = pos
+	add_child(ft)
+
+func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo:
 		match event.keycode:
 			KEY_SPACE:
-				if is_instance_valid(wave_controller) and wave_controller.is_counting_down:
-					_on_start_wave_pressed()
-				else:
-					var new_spd = 0.0 if Engine.time_scale > 0.0 else 1.0
-					if is_instance_valid(hud):
-						hud.set_game_speed(new_spd)
-			KEY_1:
-				if is_instance_valid(hud):
-					hud._cast_player_spell("meteor")
-			KEY_2:
-				if is_instance_valid(hud):
-					hud._cast_player_spell("freeze")
-			KEY_3:
-				if is_instance_valid(hud):
-					hud._cast_player_spell("gold_rain")
-			KEY_4:
-				if is_instance_valid(hud):
-					hud._cast_player_spell("lightning")
-			KEY_Q:
-				if is_instance_valid(hud):
-					hud.set_game_speed(0.0)
-			KEY_W:
-				if is_instance_valid(hud):
-					hud.set_game_speed(1.0)
-			KEY_E:
-				if is_instance_valid(hud):
-					hud.set_game_speed(2.0)
-			KEY_H:
-				if is_instance_valid(hud):
-					hud._on_help_clicked()
-			KEY_T:
-				if is_instance_valid(hud):
-					hud._on_tech_tree_clicked()
+				_on_start_wave_pressed()
+			KEY_1: if is_instance_valid(hud): hud._cast_player_spell("meteor")
+			KEY_2: if is_instance_valid(hud): hud._cast_player_spell("freeze")
+			KEY_3: if is_instance_valid(hud): hud._cast_player_spell("gold_rain")
+			KEY_4: if is_instance_valid(hud): hud._cast_player_spell("lightning")
+			KEY_5: if is_instance_valid(hud): hud._cast_player_spell("vortex")
+			KEY_6: if is_instance_valid(hud): hud._cast_player_spell("roots")
+			KEY_7: if is_instance_valid(hud): hud._cast_player_spell("chronoshift")
+			KEY_8: if is_instance_valid(hud): hud._cast_player_spell("stone_wall")
+			KEY_Q: if is_instance_valid(hud): hud.set_game_speed(0.0)
+			KEY_W: if is_instance_valid(hud): hud.set_game_speed(1.0)
+			KEY_E: if is_instance_valid(hud): hud.set_game_speed(2.0)
+			KEY_H: if is_instance_valid(hud): hud._on_help_clicked()
+			KEY_T: if is_instance_valid(hud): hud._on_tech_tree_clicked()
 			KEY_ESCAPE:
 				if is_instance_valid(hud):
 					if is_instance_valid(hud.tech_tree_modal) and hud.tech_tree_modal.visible:
 						hud.tech_tree_modal.visible = false
 					elif is_instance_valid(hud.help_modal) and hud.help_modal.visible:
 						hud.help_modal.visible = false
+					elif is_instance_valid(hud.bestiary_modal) and hud.bestiary_modal.visible:
+						hud.bestiary_modal.visible = false
+					elif is_instance_valid(hud.artifacts_modal) and hud.artifacts_modal.visible:
+						hud.artifacts_modal.visible = false
 					elif is_instance_valid(game_manager):
 						game_manager.select_spot(null)
 						if is_instance_valid(build_spots_container):
 							for child in build_spots_container.get_children():
-								if child is BuildSpot:
-									child.set_selected(false)
+								if child is BuildSpot: child.set_selected(false)
 						queue_redraw()
 
 func _draw() -> void:
-	# 1. Сказочный изумрудный холмистый ландшафт Кудрявой Долины
-	draw_rect(Rect2(0, 0, 1280, 720), Color(0.32, 0.65, 0.25))
+	var biome = GlobalState.selected_map
 	
-	# Объемные мягкие холмы сочной травы
-	var hill_col1 = Color(0.38, 0.72, 0.30)
-	var hill_col2 = Color(0.26, 0.58, 0.22)
-	draw_circle(Vector2(160, 140), 190, hill_col1)
-	draw_circle(Vector2(520, 130), 220, hill_col1)
-	draw_circle(Vector2(920, 150), 230, hill_col1)
-	draw_circle(Vector2(140, 680), 200, hill_col2)
-	draw_circle(Vector2(550, 680), 230, hill_col2)
-	draw_circle(Vector2(1050, 680), 220, hill_col2)
-	
-	# 2. Песчаный пляж / пруд вверху по центру и справа
-	var pond_water = Color(0.35, 0.72, 0.90)
-	var sand_col = Color(0.92, 0.84, 0.58)
-	draw_circle(Vector2(550, 240), 65, sand_col)
-	draw_circle(Vector2(550, 240), 50, pond_water)
-	draw_circle(Vector2(950, 210), 80, sand_col)
-	draw_circle(Vector2(960, 190), 55, pond_water)
-	
-	# Деревянная лодочка на песке вверху справа
-	var boat_p = Vector2(940, 240)
-	draw_polygon(
-		PackedVector2Array([boat_p + Vector2(-30, 0), boat_p + Vector2(25, -12), boat_p + Vector2(40, 0), boat_p + Vector2(20, 12)]),
-		PackedColorArray([Color(0.48, 0.32, 0.18), Color(0.58, 0.38, 0.22), Color(0.48, 0.32, 0.18), Color(0.4, 0.26, 0.14)])
-	)
-	draw_line(boat_p + Vector2(-15, 0), boat_p + Vector2(20, 0), Color(0.3, 0.18, 0.1), 2.0)
-	
-	# 3. Сказочные поляны с цветами
-	for flower in flower_patches:
-		draw_circle(flower["pos"], flower["size"], flower["col"])
-		draw_circle(flower["pos"], flower["size"] * 0.4, Color(1.0, 0.9, 0.2))
+	# 1. Отрисовка ландшафта в зависимости от выбранного биома
+	match biome:
+		"swamp": _draw_swamp_biome()
+		"caves": _draw_caves_biome()
+		"frost_peak": _draw_frost_biome()
+		"besieged_citadel": _draw_citadel_biome()
+		_: _draw_valley_biome()
 		
-	# 4. Текстурированная извилистая песчаная дорога (как на скриншотах «Башенок»)
-	if path2d and path2d.curve:
-		var baked_points = path2d.curve.get_baked_points()
-		if baked_points.size() > 1:
-			# Мягкая тень обочины
-			draw_polyline(baked_points, Color(0.0, 0.0, 0.0, 0.24), 74.0)
-			# Каменная/травяная окантовка дороги
-			draw_polyline(baked_points, Color(0.58, 0.52, 0.38), 64.0)
-			# Основное теплое песчаное полотно
-			draw_polyline(baked_points, Color(0.92, 0.82, 0.56), 50.0)
-			# Протоптанная дорожка со следами
-			draw_polyline(baked_points, Color(0.84, 0.74, 0.48), 24.0)
-			
-	# 5. Деревянный мостик через верхний пруд (по центру)
-	var bridge_pos = Vector2(550, 240)
-	draw_rect(Rect2(bridge_pos.x - 45, bridge_pos.y - 20, 90, 40), Color(0.55, 0.38, 0.22))
-	for b_i in range(8):
-		var plank_x = bridge_pos.x - 40 + b_i * 11
-		draw_rect(Rect2(plank_x, bridge_pos.y - 22, 9, 44), Color(0.68, 0.48, 0.28))
-		draw_line(Vector2(plank_x, bridge_pos.y - 22), Vector2(plank_x + 9, bridge_pos.y - 22), Color(0.35, 0.22, 0.12), 1.5)
-		draw_line(Vector2(plank_x + 4, bridge_pos.y - 18), Vector2(plank_x + 4, bridge_pos.y + 18), Color(0.4, 0.28, 0.15), 1.0)
-		
-	# 6. Деревянный указатель со страшком/монстром слева
-	var sign_p = Vector2(120, 420)
-	draw_rect(Rect2(sign_p.x + 8, sign_p.y + 10, 8, 32), Color(0.45, 0.3, 0.15)) # Столбик
-	draw_rect(Rect2(sign_p.x + 44, sign_p.y + 10, 8, 32), Color(0.45, 0.3, 0.15))
-	draw_rect(Rect2(sign_p.x, sign_p.y - 20, 60, 32), Color(0.65, 0.45, 0.26)) # Доска
-	draw_rect(Rect2(sign_p.x + 2, sign_p.y - 18, 56, 28), Color(0.75, 0.55, 0.32))
-	# Нарисованный белый монстрик на табличке
-	draw_circle(sign_p + Vector2(30, -5), 8.0, Color(1.0, 1.0, 1.0, 0.85))
-	draw_circle(sign_p + Vector2(27, -6), 1.5, Color(0.2, 0.2, 0.3))
-	draw_circle(sign_p + Vector2(33, -6), 1.5, Color(0.2, 0.2, 0.3))
-	draw_line(sign_p + Vector2(22, -4), sign_p + Vector2(17, -10), Color(1.0, 1.0, 1.0, 0.85), 2.0)
-	draw_line(sign_p + Vector2(38, -4), sign_p + Vector2(43, -10), Color(1.0, 1.0, 1.0, 0.85), 2.0)
+	# 2. Отрисовка погодных частиц и визуальных эффектов (Этап 7)
+	_draw_weather_overlay()
 	
-	# 7. Пугало и подсолнухи в левом нижнем углу 🌻
-	var scarecrow_p = Vector2(180, 640)
-	# Поле ярких подсолнухов
-	var sunflower_offsets = [
-		Vector2(-40, 15), Vector2(-25, 25), Vector2(-10, 30), Vector2(10, 28),
-		Vector2(25, 20), Vector2(-35, 40), Vector2(-15, 45), Vector2(15, 42),
-		Vector2(35, 35), Vector2(-45, 28), Vector2(5, 50)
-	]
-	for s_off in sunflower_offsets:
-		var sp = scarecrow_p + s_off
-		# Зеленый стебель
-		draw_line(sp + Vector2(0, 10), sp, Color(0.2, 0.5, 0.15), 2.5)
-		# Желтые лепестки
-		draw_circle(sp, 8.0, Color(1.0, 0.85, 0.1))
-		# Темная серединка
-		draw_circle(sp, 4.0, Color(0.28, 0.16, 0.08))
-		
-	# Пугало (Scarecrow)
-	draw_line(scarecrow_p + Vector2(0, 20), scarecrow_p + Vector2(0, -25), Color(0.45, 0.3, 0.15), 3.5) # Шест
-	draw_line(scarecrow_p + Vector2(-24, -10), scarecrow_p + Vector2(24, -10), Color(0.45, 0.3, 0.15), 3.0) # Поперечина
-	# Синяя рубаха
-	draw_polygon(
-		PackedVector2Array([scarecrow_p + Vector2(-18, -10), scarecrow_p + Vector2(18, -10), scarecrow_p + Vector2(12, 10), scarecrow_p + Vector2(-12, 10)]),
-		PackedColorArray([Color(0.25, 0.45, 0.75), Color(0.35, 0.55, 0.85), Color(0.2, 0.4, 0.7), Color(0.2, 0.4, 0.7)])
-	)
-	# Голова из мешковины
-	draw_circle(scarecrow_p + Vector2(0, -22), 7.5, Color(0.9, 0.8, 0.65))
-	# Шляпа
-	draw_circle(scarecrow_p + Vector2(0, -26), 12.0, Color(0.85, 0.65, 0.25))
-	draw_rect(Rect2(scarecrow_p.x - 7, scarecrow_p.y - 34, 14, 8), Color(0.85, 0.65, 0.25))
-	draw_line(scarecrow_p + Vector2(-7, -26), scarecrow_p + Vector2(7, -26), Color(0.8, 0.2, 0.2), 2.0)
-	
-	# 8. Сказочная деревушка справа внизу (с черепичными домиками, заборчиком и мостиком)
-	var village_origin = Vector2(980, 620)
-	# Каменная площадка деревни
-	draw_circle(village_origin + Vector2(80, 50), 90.0, Color(0.78, 0.74, 0.65))
-	draw_arc(village_origin + Vector2(80, 50), 90.0, 0, TAU, 32, Color(0.55, 0.48, 0.38), 2.5)
-	
-	# Деревянный заборчик (плетень)
-	for f_i in range(9):
-		var fx = village_origin.x - 10 + f_i * 14
-		var fy = village_origin.y + 45 - f_i * 4
-		draw_line(Vector2(fx, fy), Vector2(fx, fy + 16), Color(0.48, 0.32, 0.18), 3.0)
-	draw_line(Vector2(village_origin.x - 10, village_origin.y + 50), Vector2(village_origin.x + 110, village_origin.y + 20), Color(0.55, 0.4, 0.22), 2.0)
-	
-	# Маленький мостик перед деревней
-	var v_bridge = village_origin + Vector2(-40, 40)
-	draw_rect(Rect2(v_bridge.x - 20, v_bridge.y - 12, 40, 24), Color(0.62, 0.45, 0.28))
-	draw_circle(v_bridge + Vector2(0, 15), 14.0, pond_water)
-	
-	# Домик 1 (Оранжевая черепица)
-	var h1 = village_origin + Vector2(25, -20)
-	draw_rect(Rect2(h1.x, h1.y, 48, 42), Color(0.88, 0.82, 0.72))
-	draw_rect(Rect2(h1.x + 6, h1.y + 10, 12, 12), Color(1.0, 0.9, 0.4))
-	draw_polygon(
-		PackedVector2Array([h1 + Vector2(-6, 0), h1 + Vector2(24, -24), h1 + Vector2(54, 0)]),
-		PackedColorArray([Color(0.85, 0.35, 0.2), Color(0.95, 0.45, 0.25), Color(0.75, 0.25, 0.15)])
-	)
-	
-	# Домик 2 (Коричневая мансарда)
-	var h2 = village_origin + Vector2(80, 15)
-	draw_rect(Rect2(h2.x, h2.y, 42, 38), Color(0.82, 0.76, 0.68))
-	draw_rect(Rect2(h2.x + 22, h2.y + 8, 11, 11), Color(1.0, 0.9, 0.4))
-	draw_polygon(
-		PackedVector2Array([h2 + Vector2(-5, 0), h2 + Vector2(21, -20), h2 + Vector2(47, 0)]),
-		PackedColorArray([Color(0.65, 0.32, 0.2), Color(0.75, 0.42, 0.25), Color(0.55, 0.22, 0.15)])
-	)
-	
-	# 9. Интерактивная подсветка радиуса атаки выбранной башни / площадки
+	# 3. Интерактивная подсветка радиуса атаки выбранной башни
 	if is_instance_valid(game_manager) and is_instance_valid(game_manager.selected_spot):
 		var spot: BuildSpot = game_manager.selected_spot as BuildSpot
 		if is_instance_valid(spot):
@@ -535,3 +500,156 @@ func _draw() -> void:
 				r = spot.current_tower.get_effective_range()
 			draw_circle(spot.position, r, Color(0.3, 0.8, 1.0, 0.10 + sin(scene_anim_time * 4.0) * 0.03))
 			draw_arc(spot.position, r, 0, TAU, 48, Color(0.4, 0.9, 1.0, 0.75), 2.5)
+
+func _draw_valley_biome() -> void:
+	# Изумрудная долина
+	draw_rect(Rect2(0, 0, 1280, 720), Color(0.30, 0.62, 0.23))
+	var hill_col1 = Color(0.36, 0.70, 0.28)
+	var hill_col2 = Color(0.25, 0.55, 0.20)
+	draw_circle(Vector2(160, 140), 190, hill_col1)
+	draw_circle(Vector2(520, 130), 220, hill_col1)
+	draw_circle(Vector2(920, 150), 230, hill_col1)
+	draw_circle(Vector2(140, 680), 200, hill_col2)
+	draw_circle(Vector2(550, 680), 230, hill_col2)
+	draw_circle(Vector2(1050, 680), 220, hill_col2)
+	
+	# Пруд и песчаный берег
+	var pond_water = Color(0.35, 0.72, 0.90)
+	var sand_col = Color(0.92, 0.84, 0.58)
+	draw_circle(Vector2(550, 240), 65, sand_col)
+	draw_circle(Vector2(550, 240), 50, pond_water)
+	draw_circle(Vector2(950, 210), 80, sand_col)
+	draw_circle(Vector2(960, 190), 55, pond_water)
+	
+	# Цветочные полянки
+	for flower in flower_patches:
+		draw_circle(flower["pos"], flower["size"], flower["col"])
+		
+	# Извилистая песчаная дорога
+	_draw_road(Color(0.92, 0.82, 0.56), Color(0.58, 0.52, 0.38))
+	
+	# Деревянный мостик
+	_draw_bridge(Vector2(550, 240))
+	_draw_village(Vector2(980, 620), Color(0.85, 0.35, 0.2))
+
+func _draw_swamp_biome() -> void:
+	# Грибные топи: мрачно-зеленая земля и кислотные лужи
+	draw_rect(Rect2(0, 0, 1280, 720), Color(0.16, 0.24, 0.18))
+	draw_circle(Vector2(200, 150), 220, Color(0.13, 0.20, 0.15))
+	draw_circle(Vector2(600, 180), 250, Color(0.13, 0.20, 0.15))
+	draw_circle(Vector2(1000, 200), 240, Color(0.13, 0.20, 0.15))
+	
+	# Токсичные зеленые топи
+	var slime_col = Color(0.22, 0.65, 0.30, 0.75)
+	draw_circle(Vector2(550, 240), 70, slime_col)
+	draw_circle(Vector2(950, 210), 85, slime_col)
+	
+	# Светящиеся грибы
+	for m in swamp_mushrooms:
+		draw_circle(m["pos"], m["size"], Color(0.2, 0.8, 0.4, 0.8))
+		draw_circle(m["pos"] + Vector2(0, -m["size"] * 0.3), m["size"] * 0.4, Color(0.6, 1.0, 0.6))
+		
+	# Гнилая темная тропа
+	_draw_road(Color(0.40, 0.35, 0.28), Color(0.25, 0.22, 0.18))
+	_draw_bridge(Vector2(550, 240))
+	_draw_village(Vector2(980, 620), Color(0.45, 0.35, 0.55))
+
+func _draw_caves_biome() -> void:
+	# Хрустальные пещеры: глубокий базальт и светящиеся кристаллы
+	draw_rect(Rect2(0, 0, 1280, 720), Color(0.09, 0.09, 0.13))
+	draw_circle(Vector2(250, 160), 200, Color(0.12, 0.12, 0.18))
+	draw_circle(Vector2(650, 180), 230, Color(0.12, 0.12, 0.18))
+	draw_circle(Vector2(1000, 180), 220, Color(0.12, 0.12, 0.18))
+	
+	# Кристальные друзы
+	for cr in crystals:
+		draw_circle(cr["pos"], cr["size"], cr["col"])
+		draw_circle(cr["pos"], cr["size"] * 0.4, Color(1, 1, 1, 0.9))
+		
+	# Каменная дорога с лавово-энергетическими прожилками
+	_draw_road(Color(0.28, 0.26, 0.35), Color(0.18, 0.16, 0.22))
+	_draw_village(Vector2(980, 620), Color(0.3, 0.5, 0.8))
+
+func _draw_frost_biome() -> void:
+	# Морозный пик: лед, снег и сине-белая палитра
+	draw_rect(Rect2(0, 0, 1280, 720), Color(0.82, 0.88, 0.94))
+	draw_circle(Vector2(200, 150), 210, Color(0.88, 0.93, 0.98))
+	draw_circle(Vector2(600, 170), 230, Color(0.88, 0.93, 0.98))
+	draw_circle(Vector2(1000, 190), 220, Color(0.88, 0.93, 0.98))
+	
+	# Замерзший бирюзовый ледник
+	var ice_col = Color(0.45, 0.80, 0.92, 0.85)
+	draw_circle(Vector2(550, 240), 65, ice_col)
+	draw_circle(Vector2(950, 210), 80, ice_col)
+	
+	# Заснеженная дорога
+	_draw_road(Color(0.70, 0.78, 0.86), Color(0.50, 0.58, 0.66))
+	_draw_village(Vector2(980, 620), Color(0.4, 0.6, 0.85))
+
+func _draw_citadel_biome() -> void:
+	# Осажденный город: мощеная площадь, факелы и бастионы
+	draw_rect(Rect2(0, 0, 1280, 720), Color(0.22, 0.23, 0.26))
+	draw_circle(Vector2(300, 160), 220, Color(0.27, 0.28, 0.32))
+	draw_circle(Vector2(700, 180), 240, Color(0.27, 0.28, 0.32))
+	draw_circle(Vector2(1050, 180), 230, Color(0.27, 0.28, 0.32))
+	
+	# Мощеная мостовая
+	_draw_road(Color(0.38, 0.39, 0.42), Color(0.18, 0.19, 0.21))
+	_draw_village(Vector2(980, 620), Color(0.8, 0.2, 0.2))
+
+func _draw_road(fill_col: Color, border_col: Color) -> void:
+	if path2d and path2d.curve:
+		var pts = path2d.curve.get_baked_points()
+		if pts.size() > 1:
+			draw_polyline(pts, Color(0.0, 0.0, 0.0, 0.25), 72.0)
+			draw_polyline(pts, border_col, 62.0)
+			draw_polyline(pts, fill_col, 48.0)
+			draw_polyline(pts, fill_col.darkened(0.1), 22.0)
+
+func _draw_bridge(b_pos: Vector2) -> void:
+	draw_rect(Rect2(b_pos.x - 45, b_pos.y - 20, 90, 40), Color(0.55, 0.38, 0.22))
+	for b_i in range(8):
+		var px = b_pos.x - 40 + b_i * 11
+		draw_rect(Rect2(px, b_pos.y - 22, 9, 44), Color(0.68, 0.48, 0.28))
+
+func _draw_village(v_pos: Vector2, roof_col: Color) -> void:
+	draw_circle(v_pos + Vector2(80, 50), 90.0, Color(0.65, 0.62, 0.58))
+	var h1 = v_pos + Vector2(25, -20)
+	draw_rect(Rect2(h1.x, h1.y, 48, 42), Color(0.85, 0.80, 0.72))
+	draw_polygon(PackedVector2Array([h1 + Vector2(-6, 0), h1 + Vector2(24, -24), h1 + Vector2(54, 0)]), PackedColorArray([roof_col, roof_col, roof_col]))
+	
+	var h2 = v_pos + Vector2(80, 15)
+	draw_rect(Rect2(h2.x, h2.y, 42, 38), Color(0.80, 0.75, 0.68))
+	draw_polygon(PackedVector2Array([h2 + Vector2(-5, 0), h2 + Vector2(21, -20), h2 + Vector2(47, 0)]), PackedColorArray([roof_col.darkened(0.15), roof_col.darkened(0.15), roof_col.darkened(0.15)]))
+
+func _draw_weather_overlay() -> void:
+	if not is_instance_valid(weather_system):
+		return
+		
+	match weather_system.current_weather:
+		"rain":
+			# Анимированные капли дождя
+			for i in range(70):
+				var rx = fposmod(i * 47.0 + scene_anim_time * 500.0, 1280.0)
+				var ry = fposmod(i * 31.0 + scene_anim_time * 800.0, 720.0)
+				draw_line(Vector2(rx, ry), Vector2(rx - 6, ry + 16), Color(0.7, 0.85, 1.0, 0.45), 1.5)
+		"snow":
+			# Падающие снежинки
+			for i in range(80):
+				var sx = fposmod(i * 39.0 + sin(scene_anim_time + i) * 30.0, 1280.0)
+				var sy = fposmod(i * 29.0 + scene_anim_time * 90.0, 720.0)
+				draw_circle(Vector2(sx, sy), 2.5, Color(1.0, 1.0, 1.0, 0.75))
+		"fog":
+			# Туманная пелена
+			draw_rect(Rect2(0, 0, 1280, 720), Color(0.85, 0.88, 0.92, 0.22 + sin(scene_anim_time * 1.5) * 0.05))
+		"thunderstorm":
+			# Ливень и вспышки молний
+			for i in range(100):
+				var tx = fposmod(i * 43.0 + scene_anim_time * 700.0, 1280.0)
+				var ty = fposmod(i * 27.0 + scene_anim_time * 1000.0, 720.0)
+				draw_line(Vector2(tx, ty), Vector2(tx - 10, ty + 24), Color(0.8, 0.9, 1.0, 0.6), 2.0)
+			if lightning_flash_timer > 0.0:
+				draw_rect(Rect2(0, 0, 1280, 720), Color(1.0, 1.0, 1.0, 0.35))
+		"eclipse":
+			# Затмение: фиолетово-темная виньетка
+			draw_rect(Rect2(0, 0, 1280, 720), Color(0.12, 0.05, 0.20, 0.35))

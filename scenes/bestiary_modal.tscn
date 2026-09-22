@@ -1,0 +1,102 @@
+[gd_scene format=3 uid="uid://dmqm7u3xeq62k"]
+
+[ext_resource type="Script" path="res://scripts/bestiary_modal.gd" id="1_best"]
+
+[node name="BestiaryModal" type="PanelContainer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -440.0
+offset_top = -280.0
+offset_right = 440.0
+offset_bottom = 280.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_best")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 20
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="LeftColumn" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(240, 0)
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="ListHeader" type="Label" parent="MarginContainer/HBoxContainer/LeftColumn"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.85, 0.3, 1)
+theme_override_font_sizes/font_size = 18
+text = "📖 БЕСТИАРИЙ ВРАГОВ"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/HBoxContainer/LeftColumn"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="EnemyList" type="VBoxContainer" parent="MarginContainer/HBoxContainer/LeftColumn/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 6
+
+[node name="VSeparator" type="VSeparator" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="RightColumn" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/RightColumn"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 12
+
+[node name="NameLabel" type="Label" parent="MarginContainer/HBoxContainer/RightColumn/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.88, 0.3, 1)
+theme_override_font_sizes/font_size = 24
+text = "Рядовой орк"
+
+[node name="DescLabel" type="Label" parent="MarginContainer/HBoxContainer/RightColumn/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 15
+text = "Описание врага..."
+autowrap_mode = 2
+
+[node name="StatsLabel" type="Label" parent="MarginContainer/HBoxContainer/RightColumn/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.9, 0.9, 1)
+theme_override_font_sizes/font_size = 15
+text = "❤️ Здоровье: 80  ⚡ Скорость: 85  🛡️ Броня: 0  🪙 Награда: 10"
+
+[node name="WeaknessesLabel" type="Label" parent="MarginContainer/HBoxContainer/RightColumn/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.5, 0.5, 1)
+theme_override_font_sizes/font_size = 14
+text = "Особенности и уязвимости:"
+autowrap_mode = 2
+
+[node name="KillsLabel" type="Label" parent="MarginContainer/HBoxContainer/RightColumn/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.6, 0.8, 1, 1)
+theme_override_font_sizes/font_size = 13
+text = "⚔️ Убито: 0"
+
+[node name="Spacer" type="Control" parent="MarginContainer/HBoxContainer/RightColumn/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="CloseButton" type="Button" parent="MarginContainer/HBoxContainer/RightColumn/VBoxContainer"]
+custom_minimum_size = Vector2(140, 38)
+layout_mode = 2
+size_flags_horizontal = 8
+text = "✖️ Закрыть"

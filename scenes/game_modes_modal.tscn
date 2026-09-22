@@ -1,0 +1,134 @@
+[gd_scene format=3 uid="uid://dmqm7u3xeq64k"]
+
+[ext_resource type="Script" path="res://scripts/game_modes_modal.gd" id="1_modes"]
+
+[node name="GameModesModal" type="PanelContainer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -460.0
+offset_top = -290.0
+offset_right = 460.0
+offset_bottom = 290.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_modes")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="HeaderLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.85, 0.3, 1)
+theme_override_font_sizes/font_size = 22
+text = "⚔️ ОСОБЫЕ РЕЖИМЫ И ИСПЫТАНИЯ"
+
+[node name="ModesContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="NightmareCard" type="PanelContainer" parent="MarginContainer/VBoxContainer/ModesContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Margin" type="MarginContainer" parent="MarginContainer/VBoxContainer/ModesContainer/NightmareCard"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBox" type="VBoxContainer" parent="MarginContainer/VBoxContainer/ModesContainer/NightmareCard/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Title" type="Label" parent="MarginContainer/VBoxContainer/ModesContainer/NightmareCard/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.3, 0.3, 1)
+theme_override_font_sizes/font_size = 18
+text = "💀 Режим Кошмара"
+
+[node name="Desc" type="Label" parent="MarginContainer/VBoxContainer/ModesContainer/NightmareCard/Margin/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 13
+text = "Хардкор: 1 жизнь, 50% золота, враги на +30% быстрее. Награда: секретный реликвий."
+autowrap_mode = 2
+
+[node name="StartNightmareBtn" type="Button" parent="MarginContainer/VBoxContainer/ModesContainer/NightmareCard/Margin/VBox"]
+custom_minimum_size = Vector2(0, 36)
+layout_mode = 2
+text = "⚔️ Вступить в Кошмар"
+
+[node name="EndlessCard" type="PanelContainer" parent="MarginContainer/VBoxContainer/ModesContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Margin" type="MarginContainer" parent="MarginContainer/VBoxContainer/ModesContainer/EndlessCard"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBox" type="VBoxContainer" parent="MarginContainer/VBoxContainer/ModesContainer/EndlessCard/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Title" type="Label" parent="MarginContainer/VBoxContainer/ModesContainer/EndlessCard/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.4, 0.8, 1, 1)
+theme_override_font_sizes/font_size = 18
+text = "♾️ Бесконечный Режим"
+
+[node name="Desc" type="Label" parent="MarginContainer/VBoxContainer/ModesContainer/EndlessCard/Margin/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 13
+text = "Бесконечные волны с процедурным ростом HP, брони и золота. Испытайте предел защиты!"
+autowrap_mode = 2
+
+[node name="StartEndlessBtn" type="Button" parent="MarginContainer/VBoxContainer/ModesContainer/EndlessCard/Margin/VBox"]
+custom_minimum_size = Vector2(0, 36)
+layout_mode = 2
+text = "♾️ Начать выживание"
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="ChallengesSection" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 6
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ChallengesSection"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.85, 0.3, 1)
+theme_override_font_sizes/font_size = 16
+text = "🎯 20 Тактических Испытаний (кликните для старта):"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer/ChallengesSection"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ChallengesList" type="VBoxContainer" parent="MarginContainer/VBoxContainer/ChallengesSection/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 4
+
+[node name="BottomRow" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+alignment = 2
+
+[node name="CloseButton" type="Button" parent="MarginContainer/VBoxContainer/BottomRow"]
+custom_minimum_size = Vector2(120, 38)
+layout_mode = 2
+text = "✖️ Закрыть"

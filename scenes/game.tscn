@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://c2kdw8qyjx7vm"]
+[gd_scene load_steps=14 format=3 uid="uid://c2kdw8qyjx7vm"]
 
 [ext_resource type="Script" path="res://scripts/game.gd" id="1_game"]
 [ext_resource type="Script" path="res://scripts/game_manager.gd" id="2_gmanager"]
@@ -11,6 +11,8 @@
 [ext_resource type="Script" path="res://scripts/wave_clock.gd" id="9_clock"]
 [ext_resource type="Script" path="res://scripts/wave_controller.gd" id="10_wave"]
 [ext_resource type="PackedScene" path="res://scenes/evolution_preview_modal.tscn" id="11_evo_modal"]
+[ext_resource type="PackedScene" path="res://scenes/bestiary_modal.tscn" id="12_best_modal"]
+[ext_resource type="PackedScene" path="res://scenes/artifacts_modal.tscn" id="13_art_modal"]
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_game")
@@ -23,7 +25,6 @@ script = ExtResource("10_wave")
 
 [node name="MetaManager" type="Node" parent="."]
 script = ExtResource("3_meta")
-
 
 [node name="TechTreeManager" type="Node" parent="."]
 script = ExtResource("4_tech")
@@ -62,63 +63,69 @@ grow_horizontal = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/HUD/TopBar"]
 layout_mode = 2
-theme_override_constants/margin_left = 16
+theme_override_constants/margin_left = 12
 theme_override_constants/margin_top = 8
-theme_override_constants/margin_right = 16
+theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 8
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/HUD/TopBar/MarginContainer"]
 layout_mode = 2
-theme_override_constants/separation = 14
+theme_override_constants/separation = 10
 
 [node name="GoldLabel" type="Label" parent="CanvasLayer/HUD/TopBar/MarginContainer/HBoxContainer"]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.88, 0.3, 1)
-theme_override_font_sizes/font_size = 17
+theme_override_font_sizes/font_size = 16
 text = "🪙 200"
 
 [node name="ManaLabel" type="Label" parent="CanvasLayer/HUD/TopBar/MarginContainer/HBoxContainer"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.4, 0.8, 1, 1)
-theme_override_font_sizes/font_size = 17
+theme_override_font_sizes/font_size = 16
 text = "🧪 60/100"
 
 [node name="GirlsLabel" type="Label" parent="CanvasLayer/HUD/TopBar/MarginContainer/HBoxContainer"]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.45, 0.7, 1)
-theme_override_font_sizes/font_size = 17
+theme_override_font_sizes/font_size = 16
 text = "👧 ❤️❤️❤️❤️❤️ (5)"
 
 [node name="WaveLabel" type="Label" parent="CanvasLayer/HUD/TopBar/MarginContainer/HBoxContainer"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.9, 0.9, 0.9, 1)
-theme_override_font_sizes/font_size = 16
+theme_override_font_sizes/font_size = 15
 text = "🌊 Волна 0/10"
+
+[node name="WeatherLabel" type="Label" parent="CanvasLayer/HUD/TopBar/MarginContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.9, 1, 1)
+theme_override_font_sizes/font_size = 14
+text = "🌤️ Ясно"
 
 [node name="SpeedBox" type="HBoxContainer" parent="CanvasLayer/HUD/TopBar/MarginContainer/HBoxContainer"]
 layout_mode = 2
-theme_override_constants/separation = 4
+theme_override_constants/separation = 3
 
 [node name="PauseBtn" type="Button" parent="CanvasLayer/HUD/TopBar/MarginContainer/HBoxContainer/SpeedBox"]
-custom_minimum_size = Vector2(36, 36)
+custom_minimum_size = Vector2(32, 34)
 layout_mode = 2
-tooltip_text = "Пауза [Q / Space]"
+tooltip_text = "Пауза [Q]"
 text = "⏸️"
 
 [node name="Speed1Btn" type="Button" parent="CanvasLayer/HUD/TopBar/MarginContainer/HBoxContainer/SpeedBox"]
-custom_minimum_size = Vector2(36, 36)
+custom_minimum_size = Vector2(32, 34)
 layout_mode = 2
 tooltip_text = "Обычная скорость 1x [W]"
 text = "▶️"
 
 [node name="Speed2Btn" type="Button" parent="CanvasLayer/HUD/TopBar/MarginContainer/HBoxContainer/SpeedBox"]
-custom_minimum_size = Vector2(36, 36)
+custom_minimum_size = Vector2(32, 34)
 layout_mode = 2
 tooltip_text = "Ускорение 2x [E]"
 text = "⏩"
 
 [node name="WaveClock" type="Control" parent="CanvasLayer/HUD/TopBar/MarginContainer/HBoxContainer"]
-custom_minimum_size = Vector2(56, 56)
+custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
 tooltip_text = "Часы-таймер волны. Нажмите для досрочного старта (+10% золота)!"
 script = ExtResource("9_clock")
@@ -127,26 +134,38 @@ script = ExtResource("9_clock")
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(1, 0.9, 0.6, 1)
-theme_override_font_sizes/font_size = 14
+theme_override_font_sizes/font_size = 13
 text = "⏱️ 30s (+10%)"
 horizontal_alignment = 1
 
-[node name="HelpButton" type="Button" parent="CanvasLayer/HUD/TopBar/MarginContainer/HBoxContainer"]
-custom_minimum_size = Vector2(38, 38)
-layout_mode = 2
-tooltip_text = "Справка и руководство по игре"
-text = "❓"
-
 [node name="TechTreeButton" type="Button" parent="CanvasLayer/HUD/TopBar/MarginContainer/HBoxContainer"]
-custom_minimum_size = Vector2(130, 38)
+custom_minimum_size = Vector2(100, 36)
 layout_mode = 2
-theme_override_font_sizes/font_size = 14
+theme_override_font_sizes/font_size = 13
 text = "📜 Древо (0)"
 
-[node name="StartWaveButton" type="Button" parent="CanvasLayer/HUD/TopBar/MarginContainer/HBoxContainer"]
-custom_minimum_size = Vector2(140, 38)
+[node name="BestiaryButton" type="Button" parent="CanvasLayer/HUD/TopBar/MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(90, 36)
 layout_mode = 2
-theme_override_font_sizes/font_size = 15
+theme_override_font_sizes/font_size = 13
+text = "📖 Враги"
+
+[node name="ArtifactsButton" type="Button" parent="CanvasLayer/HUD/TopBar/MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(95, 36)
+layout_mode = 2
+theme_override_font_sizes/font_size = 13
+text = "💎 Реликвии"
+
+[node name="HelpButton" type="Button" parent="CanvasLayer/HUD/TopBar/MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(34, 36)
+layout_mode = 2
+tooltip_text = "Справка по игре [H]"
+text = "❓"
+
+[node name="StartWaveButton" type="Button" parent="CanvasLayer/HUD/TopBar/MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(120, 36)
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
 text = "⚔️ В бой! [Space]"
 
 [node name="SpellBar" type="PanelContainer" parent="CanvasLayer/HUD"]
@@ -154,47 +173,226 @@ layout_mode = 1
 anchors_preset = 4
 anchor_top = 0.5
 anchor_bottom = 0.5
-offset_left = 18.0
-offset_top = -140.0
-offset_right = 100.0
-offset_bottom = 150.0
+offset_left = 12.0
+offset_top = -220.0
+offset_right = 88.0
+offset_bottom = 220.0
 grow_vertical = 2
 
 [node name="Margin" type="MarginContainer" parent="CanvasLayer/HUD/SpellBar"]
 layout_mode = 2
-theme_override_constants/margin_left = 8
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 8
-theme_override_constants/margin_bottom = 10
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 8
 
 [node name="HBox" type="VBoxContainer" parent="CanvasLayer/HUD/SpellBar/Margin"]
 layout_mode = 2
-theme_override_constants/separation = 10
+theme_override_constants/separation = 6
 alignment = 1
 
 [node name="MeteorBtn" type="Button" parent="CanvasLayer/HUD/SpellBar/Margin/HBox"]
-custom_minimum_size = Vector2(64, 52)
+custom_minimum_size = Vector2(62, 46)
 layout_mode = 2
-theme_override_font_sizes/font_size = 14
+theme_override_font_sizes/font_size = 12
 text = "☄️ [1]"
 
 [node name="FreezeBtn" type="Button" parent="CanvasLayer/HUD/SpellBar/Margin/HBox"]
-custom_minimum_size = Vector2(64, 52)
+custom_minimum_size = Vector2(62, 46)
 layout_mode = 2
-theme_override_font_sizes/font_size = 14
+theme_override_font_sizes/font_size = 12
 text = "❄️ [2]"
 
 [node name="GoldRainBtn" type="Button" parent="CanvasLayer/HUD/SpellBar/Margin/HBox"]
-custom_minimum_size = Vector2(64, 52)
+custom_minimum_size = Vector2(62, 46)
 layout_mode = 2
-theme_override_font_sizes/font_size = 14
+theme_override_font_sizes/font_size = 12
 text = "💰 [3]"
 
 [node name="LightningBtn" type="Button" parent="CanvasLayer/HUD/SpellBar/Margin/HBox"]
-custom_minimum_size = Vector2(64, 52)
+custom_minimum_size = Vector2(62, 46)
 layout_mode = 2
-theme_override_font_sizes/font_size = 14
+theme_override_font_sizes/font_size = 12
 text = "⚡ [4]"
+
+[node name="VortexBtn" type="Button" parent="CanvasLayer/HUD/SpellBar/Margin/HBox"]
+custom_minimum_size = Vector2(62, 46)
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "🌪️ [5]"
+
+[node name="RootsBtn" type="Button" parent="CanvasLayer/HUD/SpellBar/Margin/HBox"]
+custom_minimum_size = Vector2(62, 46)
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "🌿 [6]"
+
+[node name="ChronoBtn" type="Button" parent="CanvasLayer/HUD/SpellBar/Margin/HBox"]
+custom_minimum_size = Vector2(62, 46)
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "⏳ [7]"
+
+[node name="WallBtn" type="Button" parent="CanvasLayer/HUD/SpellBar/Margin/HBox"]
+custom_minimum_size = Vector2(62, 46)
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "🧱 [8]"
+
+[node name="ComboPanel" type="PanelContainer" parent="CanvasLayer/HUD"]
+visible = false
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -210.0
+offset_top = 70.0
+offset_right = -20.0
+offset_bottom = 135.0
+grow_horizontal = 0
+mouse_filter = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/HUD/ComboPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 6
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/HUD/ComboPanel/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 2
+
+[node name="StreakLabel" type="Label" parent="CanvasLayer/HUD/ComboPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.4, 0.2, 1)
+theme_override_font_sizes/font_size = 15
+text = "🔥 СЕРИЯ: 0"
+horizontal_alignment = 1
+
+[node name="MultLabel" type="Label" parent="CanvasLayer/HUD/ComboPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.9, 0.3, 1)
+theme_override_font_sizes/font_size = 13
+text = "x1.0 ЗОЛОТО"
+horizontal_alignment = 1
+
+[node name="TimerBar" type="ProgressBar" parent="CanvasLayer/HUD/ComboPanel/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 6)
+layout_mode = 2
+max_value = 2.5
+value = 2.5
+show_percentage = false
+
+[node name="BossPanel" type="PanelContainer" parent="CanvasLayer/HUD"]
+visible = false
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -250.0
+offset_top = 70.0
+offset_right = 250.0
+offset_bottom = 135.0
+grow_horizontal = 2
+mouse_filter = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/HUD/BossPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 6
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/HUD/BossPanel/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="BossNameLabel" type="Label" parent="CanvasLayer/HUD/BossPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.3, 0.3, 1)
+theme_override_font_sizes/font_size = 15
+text = "👑 Вождь Грок [Босс]"
+horizontal_alignment = 1
+
+[node name="BossHPBar" type="ProgressBar" parent="CanvasLayer/HUD/BossPanel/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 14)
+layout_mode = 2
+max_value = 1000.0
+value = 1000.0
+
+[node name="BossPhaseLabel" type="Label" parent="CanvasLayer/HUD/BossPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.85, 0.4, 1)
+theme_override_font_sizes/font_size = 12
+text = "Фаза 1: Ярость орков"
+horizontal_alignment = 1
+
+[node name="WavePreviewPanel" type="PanelContainer" parent="CanvasLayer/HUD"]
+visible = false
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -220.0
+offset_top = 66.0
+offset_right = 220.0
+offset_bottom = 100.0
+grow_horizontal = 2
+mouse_filter = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/HUD/WavePreviewPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 4
+
+[node name="WavePreviewLabel" type="Label" parent="CanvasLayer/HUD/WavePreviewPanel/MarginContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.9, 0.7, 1)
+theme_override_font_sizes/font_size = 13
+text = "🌊 След. волна: 8x Рядовой, 3x Бронированный"
+horizontal_alignment = 1
+
+[node name="DialoguePanel" type="PanelContainer" parent="CanvasLayer/HUD"]
+visible = false
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -340.0
+offset_top = -170.0
+offset_right = 340.0
+offset_bottom = -90.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/HUD/DialoguePanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 8
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/HUD/DialoguePanel/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="SpeakerLabel" type="Label" parent="CanvasLayer/HUD/DialoguePanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.85, 0.3, 1)
+theme_override_font_sizes/font_size = 14
+text = "🛡️ Командир Гарольд"
+
+[node name="TextLabel" type="Label" parent="CanvasLayer/HUD/DialoguePanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 13
+text = "Орки приближаются! Держите строй!"
+autowrap_mode = 2
 
 [node name="ActionPanel" type="PanelContainer" parent="CanvasLayer/HUD"]
 visible = false
@@ -293,6 +491,14 @@ visible = false
 layout_mode = 1
 
 [node name="EvolutionPreviewModal" parent="CanvasLayer/HUD" instance=ExtResource("11_evo_modal")]
+visible = false
+layout_mode = 1
+
+[node name="BestiaryModal" parent="CanvasLayer/HUD" instance=ExtResource("12_best_modal")]
+visible = false
+layout_mode = 1
+
+[node name="ArtifactsModal" parent="CanvasLayer/HUD" instance=ExtResource("13_art_modal")]
 visible = false
 layout_mode = 1
 
