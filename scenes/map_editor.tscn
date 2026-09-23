@@ -1,0 +1,88 @@
+[gd_scene load_steps=2 format=3 uid="uid://dfmapeditor001"]
+
+[ext_resource type="Script" path="res://scripts/map_editor.gd" id="1"]
+
+[node name="MapEditor" type="Node2D"]
+script = ExtResource("1")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Panel" type="Panel" parent="CanvasLayer"]
+offset_right = 200.0
+offset_bottom = 720.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/Panel/VBoxContainer"]
+layout_mode = 2
+text = "Map Editor"
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="CanvasLayer/Panel/VBoxContainer"]
+layout_mode = 2
+
+[node name="ModeLabel" type="Label" parent="CanvasLayer/Panel/VBoxContainer"]
+layout_mode = 2
+text = "Tools"
+
+[node name="BtnPath" type="Button" parent="CanvasLayer/Panel/VBoxContainer"]
+layout_mode = 2
+text = "Draw Path"
+
+[node name="BtnBuild" type="Button" parent="CanvasLayer/Panel/VBoxContainer"]
+layout_mode = 2
+text = "Build Spots"
+
+[node name="BtnDeco" type="Button" parent="CanvasLayer/Panel/VBoxContainer"]
+layout_mode = 2
+text = "Decorations"
+
+[node name="BtnErase" type="Button" parent="CanvasLayer/Panel/VBoxContainer"]
+layout_mode = 2
+text = "Erase"
+
+[node name="HSeparator2" type="HSeparator" parent="CanvasLayer/Panel/VBoxContainer"]
+layout_mode = 2
+
+[node name="BiomeLabel" type="Label" parent="CanvasLayer/Panel/VBoxContainer"]
+layout_mode = 2
+text = "Biome"
+
+[node name="OptionBiome" type="OptionButton" parent="CanvasLayer/Panel/VBoxContainer"]
+layout_mode = 2
+item_count = 5
+popup/item_0/text = "valley"
+popup/item_0/id = 0
+popup/item_1/text = "swamp"
+popup/item_1/id = 1
+popup/item_2/text = "frost_peak"
+popup/item_2/id = 2
+popup/item_3/text = "caves"
+popup/item_3/id = 3
+popup/item_4/text = "city"
+popup/item_4/id = 4
+
+[node name="HSeparator3" type="HSeparator" parent="CanvasLayer/Panel/VBoxContainer"]
+layout_mode = 2
+
+[node name="BtnGen" type="Button" parent="CanvasLayer/Panel/VBoxContainer"]
+layout_mode = 2
+text = "Generate Map"
+
+[node name="BtnSave" type="Button" parent="CanvasLayer/Panel/VBoxContainer"]
+layout_mode = 2
+text = "Save Map"
+
+[node name="BtnLoad" type="Button" parent="CanvasLayer/Panel/VBoxContainer"]
+layout_mode = 2
+text = "Load Map"
+
+[node name="StatusLabel" type="Label" parent="CanvasLayer/Panel/VBoxContainer"]
+layout_mode = 2
+autowrap_mode = 2
