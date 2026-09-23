@@ -86,11 +86,6 @@ func _setup_expansion_systems() -> void:
 	
 	artifact_manager = ArtifactManager.new()
 	add_child(artifact_manager)
-	var biome_ren = MapBiomeRenderer.new()
-	add_child(biome_ren)
-	move_child(biome_ren, 0)
-	var chosen_b = GlobalState.selected_map if GlobalState.selected_map != "" else "valley"
-	biome_ren.set_biome(chosen_b)
 	
 	var hero_manager = HeroManager.new()
 
@@ -493,9 +488,18 @@ func _unhandled_input(event: InputEvent) -> void:
 						queue_redraw()
 
 func _draw() -> void:
-	_draw_road(Color(0.82, 0.72, 0.52), Color(0.38, 0.30, 0.20))
-	_draw_village(Vector2(980, 620), Color(0.85, 0.35, 0.2))
-
+	var biome = GlobalState.selected_map
+	
+	# 1. Отрисовка стабильного и четкого ландшафта выбранного биома
+	match biome:
+		"swamp": _draw_swamp_biome()
+		"caves": _draw_caves_biome()
+		"frost_peak": _draw_frost_biome()
+		"besieged_citadel": _draw_citadel_biome()
+		_: _draw_valley_biome()
+		
+	# 2. Отрисовка погодных осадков
+	_draw_weather_overlay()
 	
 	# 3. Интерактивная подсветка радиуса атаки выбранной башни
 	if is_instance_valid(game_manager) and is_instance_valid(game_manager.selected_spot):
@@ -504,8 +508,8 @@ func _draw() -> void:
 			var r = 190.0
 			if spot.has_tower():
 				r = spot.current_tower.get_effective_range()
-			draw_circle(spot.position, r, Color(0.3, 0.8, 1.0, 0.10 + sin(scene_anim_time * 4.0) * 0.03))
-			draw_arc(spot.position, r, 0, TAU, 48, Color(0.4, 0.9, 1.0, 0.75), 2.5)
+			draw_circle(spot.position, r, Color(0.3, 0.8, 1.0, 0.08))
+			draw_arc(spot.position, r, 0, TAU, 48, Color(0.4, 0.9, 1.0, 0.6), 2.0)
 
 func _draw_valley_biome() -> void:
 	# Изумрудная долина
@@ -530,6 +534,9 @@ func _draw_valley_biome() -> void:
 	# Цветочные полянки
 	for flower in flower_patches:
 		draw_circle(flower["pos"], flower["size"], flower["col"])
+		
+	# Деревья
+	_draw_trees()
 		
 	# Извилистая песчаная дорога
 	_draw_road(Color(0.92, 0.82, 0.56), Color(0.58, 0.52, 0.38))
@@ -617,6 +624,14 @@ func _draw_bridge(b_pos: Vector2) -> void:
 	for b_i in range(8):
 		var px = b_pos.x - 40 + b_i * 11
 		draw_rect(Rect2(px, b_pos.y - 22, 9, 44), Color(0.68, 0.48, 0.28))
+
+func _draw_trees() -> void:
+	for t in trees:
+		var p = t["pos"]
+		var s = t["scale"]
+		draw_rect(Rect2(p.x - 4 * s, p.y, 8 * s, 14 * s), Color(0.45, 0.28, 0.15))
+		draw_circle(p + Vector2(0, -4 * s), 16 * s, Color(0.18, 0.45, 0.18))
+		draw_circle(p + Vector2(0, -12 * s), 12 * s, Color(0.24, 0.54, 0.22))
 
 func _draw_village(v_pos: Vector2, roof_col: Color) -> void:
 	draw_circle(v_pos + Vector2(80, 50), 90.0, Color(0.65, 0.62, 0.58))
