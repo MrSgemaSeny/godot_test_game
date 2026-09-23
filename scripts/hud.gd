@@ -541,3 +541,21 @@ func _on_tech_tree_clicked() -> void:
 func _on_help_clicked() -> void:
 	if is_instance_valid(help_modal):
 		help_modal.visible = not help_modal.visible
+# ---------------------------------------------------------
+# HERO UI INTEGRATION (PHASE 5)
+# ---------------------------------------------------------
+func setup_hero_ui(hero_class: String) -> void:
+	print("Hero UI initialized for: ", hero_class)
+	# In a real setup, we would instance a HeroPanel.tscn here and add to HUD.
+
+func update_hero_health(current: float, max_val: float) -> void:
+	pass
+
+func update_hero_mana(current: float, max_val: float) -> void:
+	pass
+
+func update_hero_xp(level: int, current_xp: int, next_xp: int) -> void:
+	pass
+
+func update_hero_ability_cooldown(slot: int, current_cd: float, max_cd: float) -> void:
+	pass

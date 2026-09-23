@@ -86,6 +86,10 @@ func _setup_expansion_systems() -> void:
 	
 	artifact_manager = ArtifactManager.new()
 	add_child(artifact_manager)
+	var hero_manager = HeroManager.new()
+	add_child(hero_manager)
+	var spawn_pt = Vector2(400, 400)
+	hero_manager.spawn_hero('commander', spawn_pt, self)
 	
 	# Установка начальной погоды в зависимости от карты
 	match GlobalState.selected_map:
@@ -443,6 +447,10 @@ func _spawn_floating_text(text: String, color: Color, pos: Vector2, font_size: i
 
 
 func _unhandled_input(event: InputEvent) -> void:
+	var h_mgrs = get_tree().get_nodes_in_group("hero_manager")
+	if h_mgrs.size() > 0 and h_mgrs[0].handle_input(event, get_global_mouse_position()):
+		get_viewport().set_input_as_handled()
+		return
 	if event is InputEventKey and event.pressed and not event.echo:
 		match event.keycode:
 			KEY_SPACE:
