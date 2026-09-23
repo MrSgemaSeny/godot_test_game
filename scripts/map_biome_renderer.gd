@@ -1,4 +1,4 @@
-﻿class_name MapBiomeRenderer
+class_name MapBiomeRenderer
 extends Node2D
 
 ## Handles the visual rendering of the map background, weather overlays,
@@ -107,7 +107,7 @@ func _draw() -> void:
 	_draw_ambient_particles()
 
 # -----------------------------------------------------------------------------
-# 1. VALLEY (Кудрявая Долина)
+# 1. VALLEY (�������� ������)
 # -----------------------------------------------------------------------------
 func _draw_valley() -> void:
 	# Base emerald grass
@@ -156,7 +156,7 @@ func _draw_shrine(pos: Vector2) -> void:
 	draw_circle(pos + Vector2(0, -25), 15 + sin(animation_time * 2.0)*5.0, Color(1.0, 0.8, 0.2, 0.3))
 
 # -----------------------------------------------------------------------------
-# 2. SWAMP (Грибные Топи)
+# 2. SWAMP (������� ����)
 # -----------------------------------------------------------------------------
 func _draw_swamp() -> void:
 	# Murky peat
@@ -198,7 +198,7 @@ func _draw_swamp() -> void:
 		]), PackedColorArray([Color(0.05, 0.08, 0.05)]))
 
 # -----------------------------------------------------------------------------
-# 3. GREENWOOD (Зелёный Бор)
+# 3. GREENWOOD (������ ���)
 # -----------------------------------------------------------------------------
 func _draw_greenwood() -> void:
 	# Forest floor
@@ -249,7 +249,7 @@ func _draw_god_rays() -> void:
 		draw_polygon(pts, cols)
 
 # -----------------------------------------------------------------------------
-# 4. STONE SUBURBS (Каменные Предместья)
+# 4. STONE SUBURBS (�������� ����������)
 # -----------------------------------------------------------------------------
 func _draw_stone_suburbs() -> void:
 	# Cobblestone ground
@@ -295,7 +295,7 @@ func _draw_stone_suburbs() -> void:
 		draw_circle(Vector2(fx, fy-10), 60, Color(1, 0.5, 0, 0.15 + sin(animation_time * 8 + i)*0.05))
 
 # -----------------------------------------------------------------------------
-# 5. ROYAL HIGHWAY (Королевский тракт)
+# 5. ROYAL HIGHWAY (����������� �����)
 # -----------------------------------------------------------------------------
 func _draw_royal_highway() -> void:
 	# Plains base
@@ -344,7 +344,7 @@ func _draw_tent(pos: Vector2, color: Color) -> void:
 	]), PackedColorArray([Color(0.1, 0.1, 0.1)])) # Entrance
 
 # -----------------------------------------------------------------------------
-# 6. CRYSTAL CAVES (Хрустальные Пещеры)
+# 6. CRYSTAL CAVES (����������� ������)
 # -----------------------------------------------------------------------------
 func _draw_crystal_caves() -> void:
 	# Obsidian cavern floor
@@ -361,7 +361,7 @@ func _draw_crystal_caves() -> void:
 		draw_polygon(PackedVector2Array([Vector2(sx, 0), Vector2(sx+60, 0), Vector2(sx+30, len)]), PackedColorArray([Color(0.15, 0.1, 0.2)]))
 		
 	# Enormous crystalline geodes
-	var geode_colors = [Color.REBECCA_PURPLE, Color.EMERALD_GREEN, Color.CORNFLOWER_BLUE]
+	var geode_colors = [Color.REBECCA_PURPLE, Color.SPRING_GREEN, Color.CORNFLOWER_BLUE]
 	for i in range(props_cache["crystal_geodes"].size()):
 		var pos = props_cache["crystal_geodes"][i]
 		var base_c = geode_colors[i % 3]
@@ -387,7 +387,7 @@ func _draw_crystal(pos: Vector2, color: Color, scale_mod: float) -> void:
 	draw_circle(pos + Vector2(0, -50 * scale_mod), 60 * scale_mod, Color(color.r, color.g, color.b, 0.2 + sin(animation_time*3)*0.1))
 
 # -----------------------------------------------------------------------------
-# 7. FROST PEAK (Морозный Пик)
+# 7. FROST PEAK (�������� ���)
 # -----------------------------------------------------------------------------
 func _draw_frost_peak() -> void:
 	# Glacial ice pack
@@ -424,7 +424,7 @@ func _draw_aurora() -> void:
 		draw_polygon(p, PackedColorArray([Color.TRANSPARENT, Color.TRANSPARENT, c, c]))
 
 # -----------------------------------------------------------------------------
-# 8. ASH WASTES (Пепельные Земли)
+# 8. ASH WASTES (��������� �����)
 # -----------------------------------------------------------------------------
 func _draw_ash_wastes() -> void:
 	# Charred badlands
@@ -452,7 +452,7 @@ func _draw_colossal_ribcage(pos: Vector2) -> void:
 		draw_arc(Vector2(rx, pos.y), 60, PI, TAU, 16, Color(0.7, 0.65, 0.6), 12.0)
 
 # -----------------------------------------------------------------------------
-# 9. FIRE CHASMS (Огненные Разломы)
+# 9. FIRE CHASMS (�������� �������)
 # -----------------------------------------------------------------------------
 func _draw_fire_chasms() -> void:
 	# Basalt ground
@@ -499,7 +499,7 @@ func _draw_geyser(pos: Vector2, index: int) -> void:
 		]), PackedColorArray([Color(1,0.5,0), Color(1,0.5,0), Color(1,1,0,0), Color(1,1,0,0)]))
 
 # -----------------------------------------------------------------------------
-# 10. SUNKEN KINGDOM (Затонувшее Королевство)
+# 10. SUNKEN KINGDOM (���������� �����������)
 # -----------------------------------------------------------------------------
 func _draw_sunken_kingdom() -> void:
 	# Ocean floor
@@ -532,7 +532,7 @@ func _draw_sunken_kingdom() -> void:
 		draw_line(Vector2(rx+20, ry-40), Vector2(rx+20+sway, ry-70), Color(0.2, 1.0, 0.8), 4.0)
 
 # -----------------------------------------------------------------------------
-# 11. ASTRAL RUINS (Астральные Руины)
+# 11. ASTRAL RUINS (���������� �����)
 # -----------------------------------------------------------------------------
 func _draw_astral_ruins() -> void:
 	# Deep void
@@ -567,7 +567,7 @@ func _draw_astral_ruins() -> void:
 		draw_line(f_pos+Vector2(0,-70), f_pos+Vector2(0,-30), Color(0.8, 0.9, 1.0), 3)
 
 # -----------------------------------------------------------------------------
-# 12. ROYAL HEART (Сердце Королевства)
+# 12. ROYAL HEART (������ �����������)
 # -----------------------------------------------------------------------------
 func _draw_royal_heart() -> void:
 	# Marble courtyard

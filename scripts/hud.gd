@@ -89,7 +89,24 @@ var current_speed: float = 1.0
 var dialogue_timer: float = 0.0
 
 func _ready() -> void:
-	if is_instance_valid(action_panel): action_panel.visible = false
+	if is_instance_valid(action_panel):
+		action_panel.visible = false
+		var ap_style = StyleBoxFlat.new()
+		ap_style.bg_color = Color(0.08, 0.10, 0.15, 0.98)
+		ap_style.border_width_left = 2
+		ap_style.border_width_top = 2
+		ap_style.border_width_right = 2
+		ap_style.border_width_bottom = 2
+		ap_style.border_color = Color(0.85, 0.68, 0.22, 1.0)
+		ap_style.set_corner_radius_all(10)
+		ap_style.shadow_color = Color(0, 0, 0, 0.85)
+		ap_style.shadow_size = 20
+		ap_style.content_margin_left = 20
+		ap_style.content_margin_right = 20
+		ap_style.content_margin_top = 10
+		ap_style.content_margin_bottom = 10
+		action_panel.add_theme_stylebox_override("panel", ap_style)
+		
 	if is_instance_valid(end_screen): end_screen.visible = false
 	if is_instance_valid(tech_tree_modal): tech_tree_modal.visible = false
 	if is_instance_valid(help_modal): help_modal.visible = false
@@ -98,6 +115,7 @@ func _ready() -> void:
 	if is_instance_valid(dialogue_panel): dialogue_panel.visible = false
 	if is_instance_valid(bestiary_modal): bestiary_modal.visible = false
 	if is_instance_valid(artifacts_modal): artifacts_modal.visible = false
+
 	
 	if is_instance_valid(start_wave_btn): start_wave_btn.pressed.connect(_on_start_wave_clicked)
 	if is_instance_valid(wave_clock): wave_clock.clicked.connect(_on_start_wave_clicked)
@@ -443,12 +461,34 @@ func _rebuild_tower_buttons(current_gold: int) -> void:
 		
 		var btn = Button.new()
 		btn.text = "%s\n%d 🪙" % [t_name, cost]
-		btn.custom_minimum_size = Vector2(130, 48)
+		btn.custom_minimum_size = Vector2(150, 52)
 		btn.disabled = current_gold < cost
+		
+		var b_norm = StyleBoxFlat.new()
+		b_norm.bg_color = Color(0.12, 0.16, 0.22, 0.95)
+		b_norm.border_width_left = 2
+		b_norm.border_width_top = 1
+		b_norm.border_width_right = 2
+		b_norm.border_width_bottom = 2
+		b_norm.border_color = Color(0.70, 0.55, 0.20, 0.8)
+		b_norm.set_corner_radius_all(8)
+		btn.add_theme_stylebox_override("normal", b_norm)
+		
+		var b_hov = StyleBoxFlat.new()
+		b_hov.bg_color = Color(0.20, 0.28, 0.40, 1.0)
+		b_hov.border_width_left = 3
+		b_hov.border_width_top = 2
+		b_hov.border_width_right = 3
+		b_hov.border_width_bottom = 3
+		b_hov.border_color = Color(1.0, 0.85, 0.25, 1.0)
+		b_hov.set_corner_radius_all(8)
+		btn.add_theme_stylebox_override("hover", b_hov)
+
 		btn.pressed.connect(func(): _on_build_tower_clicked(t_type))
 		btn.mouse_entered.connect(func(): _on_tower_btn_hover(t_type, true))
 		btn.mouse_exited.connect(func(): _on_tower_btn_hover(t_type, false))
 		build_buttons_box.add_child(btn)
+
 
 func _on_tower_btn_hover(tower_type: String, is_hover: bool) -> void:
 	if is_hover:

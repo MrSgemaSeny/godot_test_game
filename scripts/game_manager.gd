@@ -166,8 +166,11 @@ func select_spot(spot: Node) -> void:
 
 func get_available_towers() -> Array:
 	if paths_data.has(selected_path):
-		return paths_data[selected_path].get("available_towers", ["archer"])
-	return ["archer"]
+		var list = paths_data[selected_path].get("available_towers", [])
+		if not list.is_empty():
+			return list
+	return ["archer", "crossbowman", "siege_cannon", "ice_mage"]
+
 
 func get_tower_cost(tower_type: String) -> int:
 	if not tower_data.has(tower_type):

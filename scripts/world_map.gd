@@ -87,6 +87,8 @@ func _ready() -> void:
 	meta_manager = MetaManager.new()
 	add_child(meta_manager)
 	
+	_style_panels()
+	
 	if is_instance_valid(start_battle_btn):
 		start_battle_btn.pressed.connect(_on_start_battle_pressed)
 	if is_instance_valid(back_btn):
@@ -95,6 +97,64 @@ func _ready() -> void:
 	if is_instance_valid(map_buttons_container):
 		_populate_map_buttons()
 		_update_map_details(current_selected_map)
+
+func _style_panels() -> void:
+	var right_p = get_node_or_null("MarginContainer/HBoxContainer/RightPanel") as PanelContainer
+	if is_instance_valid(right_p):
+		var r_style = StyleBoxFlat.new()
+		r_style.bg_color = Color(0.09, 0.11, 0.16, 0.98)
+		r_style.border_width_left = 2
+		r_style.border_width_top = 2
+		r_style.border_width_right = 2
+		r_style.border_width_bottom = 2
+		r_style.border_color = Color(0.85, 0.68, 0.22, 1.0)
+		r_style.set_corner_radius_all(12)
+		r_style.shadow_color = Color(0, 0, 0, 0.85)
+		r_style.shadow_size = 24
+		r_style.content_margin_left = 28
+		r_style.content_margin_right = 28
+		r_style.content_margin_top = 24
+		r_style.content_margin_bottom = 24
+		right_p.add_theme_stylebox_override("panel", r_style)
+		
+	if is_instance_valid(start_battle_btn):
+		var sb_style = StyleBoxFlat.new()
+		sb_style.bg_color = Color(0.75, 0.55, 0.12, 1.0)
+		sb_style.border_width_left = 2
+		sb_style.border_width_top = 2
+		sb_style.border_width_right = 2
+		sb_style.border_width_bottom = 2
+		sb_style.border_color = Color(1.0, 0.9, 0.4, 1.0)
+		sb_style.set_corner_radius_all(8)
+		sb_style.content_margin_top = 12
+		sb_style.content_margin_bottom = 12
+		start_battle_btn.add_theme_stylebox_override("normal", sb_style)
+		
+		var sb_hover = StyleBoxFlat.new()
+		sb_hover.bg_color = Color(0.95, 0.72, 0.18, 1.0)
+		sb_hover.border_width_left = 3
+		sb_hover.border_width_top = 3
+		sb_hover.border_width_right = 3
+		sb_hover.border_width_bottom = 3
+		sb_hover.border_color = Color(1, 1, 1, 1.0)
+		sb_hover.set_corner_radius_all(8)
+		sb_hover.content_margin_top = 12
+		sb_hover.content_margin_bottom = 12
+		sb_hover.shadow_color = Color(1.0, 0.8, 0.2, 0.4)
+		sb_hover.shadow_size = 14
+		start_battle_btn.add_theme_stylebox_override("hover", sb_hover)
+		
+	if is_instance_valid(back_btn):
+		var bb_style = StyleBoxFlat.new()
+		bb_style.bg_color = Color(0.12, 0.15, 0.20, 0.95)
+		bb_style.border_width_left = 1
+		bb_style.border_width_top = 1
+		bb_style.border_width_right = 1
+		bb_style.border_width_bottom = 1
+		bb_style.border_color = Color(0.4, 0.5, 0.6)
+		bb_style.set_corner_radius_all(6)
+		back_btn.add_theme_stylebox_override("normal", bb_style)
+
 
 func is_map_unlocked(map_id: String, meta: MetaManager = null) -> bool:
 	if not MAP_CONFIGS.has(map_id):
@@ -179,6 +239,28 @@ func _populate_map_buttons() -> void:
 		for s in range(3):
 			star_str += "⭐" if s < stars else "☆"
 			
+		var btn_style = StyleBoxFlat.new()
+		btn_style.bg_color = Color(0.12, 0.15, 0.22, 0.95) if unlocked else Color(0.08, 0.09, 0.11, 0.8)
+		btn_style.border_width_left = 4 if unlocked else 1
+		btn_style.border_color = conf.theme_color if unlocked else Color(0.3, 0.3, 0.3)
+		btn_style.set_corner_radius_all(8)
+		btn_style.content_margin_left = 14
+		btn_style.content_margin_right = 14
+		btn_style.content_margin_top = 8
+		btn_style.content_margin_bottom = 8
+		btn.add_theme_stylebox_override("normal", btn_style)
+		
+		var hover_style = StyleBoxFlat.new()
+		hover_style.bg_color = Color(0.20, 0.26, 0.36, 1.0)
+		hover_style.border_width_left = 5
+		hover_style.border_color = Color(1.0, 0.85, 0.3)
+		hover_style.set_corner_radius_all(8)
+		hover_style.content_margin_left = 14
+		hover_style.content_margin_right = 14
+		hover_style.content_margin_top = 8
+		hover_style.content_margin_bottom = 8
+		btn.add_theme_stylebox_override("hover", hover_style)
+
 		if unlocked:
 			btn.text = " %s %s\n  %s | Волн: %d" % [conf.icon, conf.name, star_str, conf.max_waves]
 			btn.add_theme_color_override("font_color", Color(1, 1, 1))
@@ -189,6 +271,7 @@ func _populate_map_buttons() -> void:
 			btn.disabled = true
 			
 		map_buttons_container.add_child(btn)
+
 		
 	if is_instance_valid(total_stars_label):
 		total_stars_label.text = "⭐ Всего звезд кампании: %d / 15" % sum_stars

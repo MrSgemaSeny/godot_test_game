@@ -86,7 +86,14 @@ func _setup_expansion_systems() -> void:
 	
 	artifact_manager = ArtifactManager.new()
 	add_child(artifact_manager)
+	var biome_ren = MapBiomeRenderer.new()
+	add_child(biome_ren)
+	move_child(biome_ren, 0)
+	var chosen_b = GlobalState.selected_map if GlobalState.selected_map != "" else "valley"
+	biome_ren.set_biome(chosen_b)
+	
 	var hero_manager = HeroManager.new()
+
 	add_child(hero_manager)
 	var spawn_pt = Vector2(400, 400)
 	hero_manager.spawn_hero('commander', spawn_pt, self)
@@ -486,18 +493,9 @@ func _unhandled_input(event: InputEvent) -> void:
 						queue_redraw()
 
 func _draw() -> void:
-	var biome = GlobalState.selected_map
-	
-	# 1. Отрисовка ландшафта в зависимости от выбранного биома
-	match biome:
-		"swamp": _draw_swamp_biome()
-		"caves": _draw_caves_biome()
-		"frost_peak": _draw_frost_biome()
-		"besieged_citadel": _draw_citadel_biome()
-		_: _draw_valley_biome()
-		
-	# 2. Отрисовка погодных частиц и визуальных эффектов (Этап 7)
-	_draw_weather_overlay()
+	_draw_road(Color(0.82, 0.72, 0.52), Color(0.38, 0.30, 0.20))
+	_draw_village(Vector2(980, 620), Color(0.85, 0.35, 0.2))
+
 	
 	# 3. Интерактивная подсветка радиуса атаки выбранной башни
 	if is_instance_valid(game_manager) and is_instance_valid(game_manager.selected_spot):

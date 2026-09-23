@@ -128,12 +128,19 @@ func upgrade_tower() -> bool:
 	queue_redraw()
 	return true
 
+func get_sell_value() -> int:
+	if not has_tower() or not is_instance_valid(current_tower):
+		return 0
+	if current_tower.has_method("get_sell_value"):
+		return current_tower.get_sell_value()
+	return 50
+
 func sell_tower() -> int:
 	if not has_tower():
 		return 0
 		
 	var game_manager = _get_game_manager()
-	var sell_val = current_tower.get_sell_value()
+	var sell_val = get_sell_value()
 	
 	if game_manager:
 		game_manager.add_gold(sell_val)
@@ -142,6 +149,7 @@ func sell_tower() -> int:
 	current_tower = null
 	queue_redraw()
 	return sell_val
+
 
 # === Evolution System (Stage 3) ===
 func can_evolve_tower() -> bool:
