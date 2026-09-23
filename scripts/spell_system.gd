@@ -43,46 +43,58 @@ func add_mana(amount: int) -> void:
 	current_mana = min(max_mana, current_mana + amount)
 	mana_changed.emit(current_mana, max_mana)
 
+var _default_spell_costs: Dictionary = {
+	"meteor": 40, "freeze": 30, "gold_rain": 50, "lightning": 25,
+	"vortex": 35, "roots": 25, "chronoshift": 45, "stone_wall": 20
+}
+var _default_spell_cooldowns: Dictionary = {
+	"meteor": 18.0, "freeze": 20.0, "gold_rain": 25.0, "lightning": 10.0,
+	"vortex": 15.0, "roots": 15.0, "chronoshift": 20.0, "stone_wall": 12.0
+}
+
+func _get_spell_data(spell_id: String) -> Dictionary:
+	if spells_data.has(spell_id):
+		return spells_data[spell_id]
+	return {}
+
 func can_cast(spell_id: String) -> bool:
-	if not spells_data.has(spell_id):
-		return false
-	var sdata = spells_data[spell_id]
-	var cost = sdata.get("mana_cost", 20)
+	var cost = int(_get_spell_data(spell_id).get("mana_cost", _default_spell_costs.get(spell_id, 30)))
 	var cd = cooldowns.get(spell_id, 0.0)
 	return current_mana >= cost and cd <= 0.0
 
 func cast_spell(spell_id: String, target_pos: Vector2 = Vector2.ZERO) -> bool:
 	if not can_cast(spell_id):
 		return false
-		
-	var sdata = spells_data[spell_id]
-	var cost = sdata.get("mana_cost", 20)
-	var cd = sdata.get("cooldown", 15.0)
-	
+
+	var sdata = _get_spell_data(spell_id)
+	var cost = int(sdata.get("mana_cost", _default_spell_costs.get(spell_id, 30)))
+	var cd = float(sdata.get("cooldown", _default_spell_cooldowns.get(spell_id, 15.0)))
+
 	current_mana -= cost
 	cooldowns[spell_id] = cd
 	mana_changed.emit(current_mana, max_mana)
-	
+
 	match spell_id:
 		"meteor":
-			_cast_meteor(target_pos, sdata.get("damage", 350), sdata.get("radius", 130), sdata.get("damage_type", "fire"))
+			_cast_meteor(target_pos, float(sdata.get("damage", 350)), float(sdata.get("radius", 130)), str(sdata.get("damage_type", "fire")))
 		"freeze":
-			_cast_freeze(sdata.get("duration", 5.0))
+			_cast_freeze(float(sdata.get("duration", 5.0)))
 		"gold_rain":
-			_cast_gold_rain(sdata.get("gold_amount", 120))
+			_cast_gold_rain(int(sdata.get("gold_amount", 120)))
 		"lightning":
-			_cast_lightning(target_pos, sdata.get("damage", 220), sdata.get("damage_type", "lightning"))
+			_cast_lightning(target_pos, float(sdata.get("damage", 220)), str(sdata.get("damage_type", "lightning")))
 		"vortex":
-			_cast_vortex(target_pos, sdata.get("radius", 200.0), sdata.get("duration", 4.0))
+			_cast_vortex(target_pos, float(sdata.get("radius", 200.0)), float(sdata.get("duration", 4.0)))
 		"roots":
-			_cast_roots(target_pos, sdata.get("radius", 150.0), sdata.get("duration", 6.0))
+			_cast_roots(target_pos, float(sdata.get("radius", 150.0)), float(sdata.get("duration", 6.0)))
 		"chronoshift":
-			_cast_chronoshift(sdata.get("duration", 5.0), sdata.get("power", 3.0))
+			_cast_chronoshift(float(sdata.get("duration", 5.0)), float(sdata.get("power", 3.0)))
 		"stone_wall":
-			_cast_stone_wall(target_pos, sdata.get("duration", 8.0))
-			
+			_cast_stone_wall(target_pos, float(sdata.get("duration", 8.0)))
+
 	spell_cast_success.emit(spell_id)
 	return true
+
 
 func _cast_meteor(target_pos: Vector2, dmg: float, radius: float, dmg_type: String = "fire") -> void:
 	if not is_inside_tree() or get_tree() == null:
@@ -118,15 +130,15 @@ func _cast_lightning(target_pos: Vector2, dmg: float, dmg_type: String = "lightn
 	var min_dist: float = 999999.0
 	for enemy in enemies:
 		if is_instance_valid(enemy) and not enemy.get("is_dead"):
+			# Search closest to target_pos, but with full-map fallback radius
 			var dist = target_pos.distance_to(enemy.global_position)
 			if dist < min_dist:
 				min_dist = dist
 				closest_enemy = enemy
-				
-	if is_instance_valid(closest_enemy) and min_dist <= 180.0:
+	if is_instance_valid(closest_enemy):
 		closest_enemy.take_damage(dmg, dmg_type)
 
-func _cast_vortex(target_pos: Vector2, radius: float, _duration: float) -> void:
+func _cast_vortex(target_pos: Vector2, radius: float, duration: float) -> void:
 	if not is_inside_tree() or get_tree() == null:
 		return
 	var enemies = get_tree().get_nodes_in_group("enemies")
@@ -134,9 +146,12 @@ func _cast_vortex(target_pos: Vector2, radius: float, _duration: float) -> void:
 		if is_instance_valid(enemy) and not enemy.get("is_dead"):
 			var dist = target_pos.distance_to(enemy.global_position)
 			if dist <= radius:
-				var dir = (target_pos - enemy.global_position).normalized()
-				var pull_strength = (1.0 - (dist / radius)) * 40.0
-				enemy.global_position += dir * pull_strength
+				# Use apply_slow since PathFollow2D enemies use progress, not raw position
+				if enemy.has_method("apply_slow"):
+					enemy.apply_slow(0.9, duration)
+				elif enemy.has_method("apply_status_effect"):
+					enemy.apply_status_effect(StatusEffect.Type.SLOW, duration, 0.9)
+
 
 func _cast_roots(target_pos: Vector2, radius: float, duration: float) -> void:
 	if not is_inside_tree() or get_tree() == null:

@@ -226,8 +226,13 @@ func _cast_player_spell(spell_id: String) -> void:
 	var spell_sys = get_tree().get_first_node_in_group("spell_system") as SpellSystem
 	if not spell_sys:
 		return
-	var mouse_pos = get_viewport().get_mouse_position()
-	spell_sys.cast_spell(spell_id, mouse_pos)
+	# Convert screen mouse position to world/canvas coordinates
+	var vp = get_viewport()
+	var screen_pos = vp.get_mouse_position()
+	# Use the canvas transform to convert to world space
+	var world_pos = (vp.get_canvas_transform().affine_inverse() * screen_pos)
+	spell_sys.cast_spell(spell_id, world_pos)
+
 
 func set_countdown(seconds: float) -> void:
 	wave_countdown = seconds
@@ -380,25 +385,25 @@ func _refresh_action_panel() -> void:
 	else:
 		var tower = current_spot.current_tower
 		var t_name = tower.tower_name if "tower_name" in tower else "Башня"
-		var t_lvl = tower.level if "level" in tower else 1
+		var t_lvl = tower.current_level if "current_level" in tower else 1
 		var t_dmg = tower.get_effective_damage() if tower.has_method("get_effective_damage") else 0.0
 		var t_rng = tower.get_effective_range() if tower.has_method("get_effective_range") else 0.0
 		var t_spd = tower.get_effective_attack_speed() if tower.has_method("get_effective_attack_speed") else 0.0
-		
+
 		if is_instance_valid(spot_title):
 			spot_title.text = "🏰 %s (Ур. %d)" % [t_name, t_lvl]
 		if is_instance_valid(spot_desc):
 			spot_desc.text = "⚔️ Урон: %.1f | 🎯 Дальность: %.0f | ⚡ Скорость: %.2f/с" % [t_dmg, t_rng, t_spd]
-			
+
 		build_buttons_box.visible = false
 		tower_action_box.visible = true
-		
+
 		var can_evo = current_spot.can_evolve_tower()
 		if can_evo:
 			upgrade_btn.visible = false
 			evo_a_btn.visible = true
 			evo_b_btn.visible = true
-			
+
 			var a_data = tower.get_evolution_info("evolution_a")
 			var b_data = tower.get_evolution_info("evolution_b")
 			evo_a_btn.text = "🌿 %s (%d🪙)" % [a_data.get("name", "Ветка A"), int(a_data.get("cost", 100))]
@@ -409,30 +414,32 @@ func _refresh_action_panel() -> void:
 			evo_a_btn.visible = false
 			evo_b_btn.visible = false
 			upgrade_btn.visible = true
-			
-			if current_spot.can_upgrade_tower():
-				var up_cost = current_spot.get_upgrade_cost()
+
+			if tower.has_method("can_upgrade") and tower.can_upgrade():
+				var up_cost = int(tower.upgrade_cost) if "upgrade_cost" in tower else 0
 				upgrade_btn.text = "⬆️ Улучшить (%d 🪙)" % up_cost
 				upgrade_btn.disabled = current_gold < up_cost
 			else:
 				upgrade_btn.text = "⭐ Макс. уровень"
 				upgrade_btn.disabled = true
-			
+
 		var sell_val = current_spot.get_sell_value()
 		sell_btn.text = "💰 Продать (+%d 🪙)" % sell_val
+
 
 func _rebuild_tower_buttons(current_gold: int) -> void:
 	for child in build_buttons_box.get_children():
 		child.queue_free()
-		
+	
 	var game_manager = get_tree().get_first_node_in_group("game_manager") as GameManager
 	if not game_manager:
 		return
-		
+	
 	var avail = game_manager.get_available_towers()
 	for t_type in avail:
-		var cost = game_manager.get_tower_cost(t_type)
-		var t_name = game_manager.get_tower_name(t_type)
+		var tdata = game_manager.tower_data.get(t_type, {})
+		var cost = int(tdata.get("cost", 100))
+		var t_name = str(tdata.get("name", t_type))
 		
 		var btn = Button.new()
 		btn.text = "%s\n%d 🪙" % [t_name, cost]
@@ -447,38 +454,32 @@ func _on_tower_btn_hover(tower_type: String, is_hover: bool) -> void:
 	if is_hover:
 		var game_manager = get_tree().get_first_node_in_group("game_manager") as GameManager
 		if game_manager:
-			var stats = game_manager.get_tower_stats(tower_type)
-			if not stats.is_empty():
-				var desc = game_manager.get_tower_desc(tower_type)
+			var tdata = game_manager.tower_data.get(tower_type, {})
+			var levels = tdata.get("levels", [])
+			if not levels.is_empty():
+				var l1 = levels[0]
+				var desc = str(tdata.get("description", "Защитное сооружение."))
 				spot_desc.text = "%s\n[⚔️ Урон: %d | 🎯 Дальность: %d | ⚡ Скор: %.1f/с]" % [
-					desc, stats.get("damage", 0), stats.get("range", 0), stats.get("attack_speed", 1.0)
+					desc, int(l1.get("damage", 0)), int(l1.get("range", 0)), float(l1.get("attack_speed", 1.0))
 				]
 	else:
 		spot_desc.text = "Выберите защитное сооружение для постройки:"
 
+
 func _on_build_tower_clicked(tower_type: String) -> void:
 	if not is_instance_valid(current_spot):
 		return
-	var game_manager = get_tree().get_first_node_in_group("game_manager") as GameManager
-	if not game_manager:
-		return
-		
-	var cost = game_manager.get_tower_cost(tower_type)
-	if game_manager.spend_gold(cost):
-		current_spot.build_tower(tower_type)
+	# build_tower() handles gold spending internally
+	if current_spot.build_tower(tower_type):
 		_refresh_action_panel()
 
 func _on_upgrade_clicked() -> void:
 	if not is_instance_valid(current_spot) or not current_spot.has_tower():
 		return
-	var game_manager = get_tree().get_first_node_in_group("game_manager") as GameManager
-	if not game_manager:
-		return
-		
-	var cost = current_spot.get_upgrade_cost()
-	if current_spot.can_upgrade_tower() and game_manager.spend_gold(cost):
-		current_spot.upgrade_tower()
+	# upgrade_tower() handles gold spending internally
+	if current_spot.upgrade_tower():
 		_refresh_action_panel()
+
 
 func _on_evo_a_clicked() -> void:
 	_open_evolution_preview("a")
