@@ -1,0 +1,230 @@
+[
+  {
+    "id": "valley",
+    "name": "Emerald Valley",
+    "description": "A lush, green valley that serves as the starting point for your journey.",
+    "danger_level": 1,
+    "start_unlocked": true,
+    "biomes": ["plains", "forest"],
+    "special_hazards": ["wildfire"],
+    "connecting_regions": ["swamp", "greenwood"],
+    "outposts": [
+      {
+        "id": "valley_watch",
+        "name": "Valley Watchtower",
+        "resource_yield": 10,
+        "faction": "royal"
+      },
+      {
+        "id": "river_mill",
+        "name": "River Mill",
+        "resource_yield": 15,
+        "faction": "merchants"
+      }
+    ]
+  },
+  {
+    "id": "swamp",
+    "name": "Whispering Swamps",
+    "description": "Murky waters and toxic fumes make this region highly hazardous.",
+    "danger_level": 2,
+    "start_unlocked": false,
+    "biomes": ["swamp", "marsh"],
+    "special_hazards": ["flood", "poison_gas"],
+    "connecting_regions": ["valley", "stone_suburbs", "royal_highway"],
+    "outposts": [
+      {
+        "id": "bog_settlement",
+        "name": "Bog Settlement",
+        "resource_yield": 20,
+        "faction": "mercenaries"
+      }
+    ]
+  },
+  {
+    "id": "greenwood",
+    "name": "Greenwood Forest",
+    "description": "Dense ancient forests filled with elusive magic and wildlife.",
+    "danger_level": 2,
+    "start_unlocked": false,
+    "biomes": ["forest", "deep_woods"],
+    "special_hazards": ["wildfire"],
+    "connecting_regions": ["valley", "royal_highway"],
+    "outposts": [
+      {
+        "id": "hunter_camp",
+        "name": "Hunter's Camp",
+        "resource_yield": 25,
+        "faction": "mercenaries"
+      },
+      {
+        "id": "druid_circle",
+        "name": "Druid Circle",
+        "resource_yield": 15,
+        "faction": "mages_guild"
+      }
+    ]
+  },
+  {
+    "id": "stone_suburbs",
+    "name": "Stone Suburbs",
+    "description": "The rocky outskirts of the grand capital.",
+    "danger_level": 3,
+    "start_unlocked": false,
+    "biomes": ["rocky", "hills"],
+    "special_hazards": ["earthquake"],
+    "connecting_regions": ["swamp", "crystal_caves"],
+    "outposts": [
+      {
+        "id": "quarry",
+        "name": "Grand Quarry",
+        "resource_yield": 30,
+        "faction": "royal"
+      }
+    ]
+  },
+  {
+    "id": "royal_highway",
+    "name": "Royal Highway",
+    "description": "The main artery of the kingdom, frequently attacked by bandits.",
+    "danger_level": 3,
+    "start_unlocked": false,
+    "biomes": ["plains", "road"],
+    "special_hazards": [],
+    "connecting_regions": ["swamp", "greenwood", "frost_peak", "royal_heart"],
+    "outposts": [
+      {
+        "id": "toll_gate",
+        "name": "King's Toll Gate",
+        "resource_yield": 40,
+        "faction": "merchants"
+      }
+    ]
+  },
+  {
+    "id": "crystal_caves",
+    "name": "Crystal Caves",
+    "description": "Deep underground caverns illuminated by humming crystals.",
+    "danger_level": 4,
+    "start_unlocked": false,
+    "biomes": ["caves", "underground"],
+    "special_hazards": ["crystal_resonance", "cave_in"],
+    "connecting_regions": ["stone_suburbs", "ash_wastes"],
+    "outposts": [
+      {
+        "id": "mining_camp",
+        "name": "Deep Mining Camp",
+        "resource_yield": 50,
+        "faction": "merchants"
+      }
+    ]
+  },
+  {
+    "id": "frost_peak",
+    "name": "Frost Peak",
+    "description": "Freezing mountains that slow both friends and foes.",
+    "danger_level": 4,
+    "start_unlocked": false,
+    "biomes": ["snow", "mountain"],
+    "special_hazards": ["blizzard", "avalanche"],
+    "connecting_regions": ["royal_highway", "astral_ruins"],
+    "outposts": [
+      {
+        "id": "monastery",
+        "name": "High Monastery",
+        "resource_yield": 35,
+        "faction": "mages_guild"
+      }
+    ]
+  },
+  {
+    "id": "ash_wastes",
+    "name": "Ash Wastes",
+    "description": "A scorched wasteland where fire reigns supreme.",
+    "danger_level": 5,
+    "start_unlocked": false,
+    "biomes": ["wasteland", "volcanic"],
+    "special_hazards": ["lava_pool", "ash_storm"],
+    "connecting_regions": ["crystal_caves", "fire_chasms"],
+    "outposts": [
+      {
+        "id": "survivor_camp",
+        "name": "Scorched Survivor Camp",
+        "resource_yield": 20,
+        "faction": "mercenaries"
+      }
+    ]
+  },
+  {
+    "id": "fire_chasms",
+    "name": "Fire Chasms",
+    "description": "Deep rifts in the earth filled with molten magma.",
+    "danger_level": 5,
+    "start_unlocked": false,
+    "biomes": ["volcanic"],
+    "special_hazards": ["lava_pool", "geyser"],
+    "connecting_regions": ["ash_wastes", "sunken_kingdom"],
+    "outposts": [
+      {
+        "id": "obsidian_forge",
+        "name": "Obsidian Forge",
+        "resource_yield": 60,
+        "faction": "royal"
+      }
+    ]
+  },
+  {
+    "id": "sunken_kingdom",
+    "name": "Sunken Kingdom",
+    "description": "Ruins of an ancient civilization partially submerged in the sea.",
+    "danger_level": 5,
+    "start_unlocked": false,
+    "biomes": ["ruins", "water"],
+    "special_hazards": ["flood", "whirlpool"],
+    "connecting_regions": ["fire_chasms", "astral_ruins"],
+    "outposts": [
+      {
+        "id": "sunken_tower",
+        "name": "The Sunken Tower",
+        "resource_yield": 70,
+        "faction": "mages_guild"
+      }
+    ]
+  },
+  {
+    "id": "astral_ruins",
+    "name": "Astral Ruins",
+    "description": "Where the sky meets the earth, magic flows untamed.",
+    "danger_level": 5,
+    "start_unlocked": false,
+    "biomes": ["ruins", "magic"],
+    "special_hazards": ["crystal_resonance", "mana_storm"],
+    "connecting_regions": ["frost_peak", "sunken_kingdom", "royal_heart"],
+    "outposts": [
+      {
+        "id": "observatory",
+        "name": "Grand Observatory",
+        "resource_yield": 80,
+        "faction": "mages_guild"
+      }
+    ]
+  },
+  {
+    "id": "royal_heart",
+    "name": "Royal Heart",
+    "description": "The heavily fortified capital of the kingdom.",
+    "danger_level": 5,
+    "start_unlocked": false,
+    "biomes": ["city"],
+    "special_hazards": ["riot"],
+    "connecting_regions": ["royal_highway", "astral_ruins"],
+    "outposts": [
+      {
+        "id": "throne_room",
+        "name": "The Throne Room",
+        "resource_yield": 100,
+        "faction": "royal"
+      }
+    ]
+  }
+]

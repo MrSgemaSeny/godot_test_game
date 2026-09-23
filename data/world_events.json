@@ -1,0 +1,179 @@
+[
+  {
+    "id": "wandering_merchant",
+    "name": "Wandering Merchant",
+    "description": "A mysterious merchant approaches your camp offering rare wares.",
+    "trigger_conditions": ["any"],
+    "repeatable": true,
+    "choices": [
+      {
+        "text": "Buy Magic Artifact (500g)",
+        "cost": { "gold": 500 },
+        "reward": { "artifact": "random_rare" }
+      },
+      {
+        "text": "Buy Basic Supplies (100g)",
+        "cost": { "gold": 100 },
+        "reward": { "lives": 5 }
+      },
+      {
+        "text": "Ignore Him",
+        "cost": {},
+        "reward": {}
+      }
+    ]
+  },
+  {
+    "id": "goblin_ambush",
+    "name": "Goblin Ambush!",
+    "description": "A scouting party of goblins attacks your supply lines.",
+    "trigger_conditions": ["valley", "greenwood", "royal_highway"],
+    "repeatable": true,
+    "choices": [
+      {
+        "text": "Fight them off (Battle)",
+        "cost": {},
+        "reward": { "force_wave": "goblin_raid" }
+      },
+      {
+        "text": "Pay them off (200g)",
+        "cost": { "gold": 200 },
+        "reward": {}
+      },
+      {
+        "text": "Let them loot (Lose 10 lives)",
+        "cost": { "lives": 10 },
+        "reward": {}
+      }
+    ]
+  },
+  {
+    "id": "arcane_storm",
+    "name": "Arcane Storm",
+    "description": "A violent storm of pure mana rolls across the region.",
+    "trigger_conditions": ["astral_ruins", "crystal_caves", "frost_peak"],
+    "repeatable": true,
+    "choices": [
+      {
+        "text": "Harvest the mana (Risk damage)",
+        "cost": { "lives": 5 },
+        "reward": { "mana": 100 }
+      },
+      {
+        "text": "Shield the camp",
+        "cost": { "mana": 20 },
+        "reward": {}
+      },
+      {
+        "text": "Do nothing (Random effect)",
+        "cost": {},
+        "reward": { "random_event": true }
+      }
+    ]
+  },
+  {
+    "id": "plague_outbreak",
+    "name": "Plague Outbreak",
+    "description": "Sickness spreads from the murky waters.",
+    "trigger_conditions": ["swamp", "sunken_kingdom"],
+    "repeatable": false,
+    "choices": [
+      {
+        "text": "Quarantine the infected (Lose 5 lives)",
+        "cost": { "lives": 5 },
+        "reward": {}
+      },
+      {
+        "text": "Buy exotic medicine (300g)",
+        "cost": { "gold": 300 },
+        "reward": { "faction_influence": { "mages_guild": 10 } }
+      },
+      {
+        "text": "Seek the Royal Healers",
+        "cost": { "faction_influence": { "royal": -15 } },
+        "reward": { "lives": 2 }
+      }
+    ]
+  },
+  {
+    "id": "celestial_alignment",
+    "name": "Celestial Alignment",
+    "description": "The stars align, granting a moment of absolute clarity.",
+    "trigger_conditions": ["any"],
+    "repeatable": false,
+    "choices": [
+      {
+        "text": "Study the stars (Gain Research)",
+        "cost": {},
+        "reward": { "research_points": 50 }
+      },
+      {
+        "text": "Pray to the gods (Gain Lives)",
+        "cost": {},
+        "reward": { "lives": 10 }
+      }
+    ]
+  },
+  {
+    "id": "rebel_uprising",
+    "name": "Rebel Uprising",
+    "description": "Local peasants are revolting against the crown.",
+    "trigger_conditions": ["stone_suburbs", "royal_heart", "royal_highway"],
+    "repeatable": true,
+    "choices": [
+      {
+        "text": "Crush the rebellion (Royal favor)",
+        "cost": { "lives": 3 },
+        "reward": { "faction_influence": { "royal": 20 } }
+      },
+      {
+        "text": "Support the rebels (Mercenary favor)",
+        "cost": { "gold": 250 },
+        "reward": { "faction_influence": { "mercenaries": 20, "royal": -20 } }
+      },
+      {
+        "text": "Stay neutral",
+        "cost": {},
+        "reward": {}
+      }
+    ]
+  },
+  {
+    "id": "ancient_shrine",
+    "name": "Ancient Shrine Awakening",
+    "description": "An old ruin hums with forgotten power.",
+    "trigger_conditions": ["greenwood", "astral_ruins", "sunken_kingdom"],
+    "repeatable": false,
+    "choices": [
+      {
+        "text": "Offer blood (Sacrifice 10 lives)",
+        "cost": { "lives": 10 },
+        "reward": { "artifact": "legendary" }
+      },
+      {
+        "text": "Offer gold (Sacrifice 1000g)",
+        "cost": { "gold": 1000 },
+        "reward": { "artifact": "legendary" }
+      },
+      {
+        "text": "Leave it alone",
+        "cost": {},
+        "reward": {}
+      }
+    ]
+  },
+  {
+    "id": "elite_invasion_valley",
+    "name": "Valley Overrun!",
+    "description": "The threat level has reached its maximum. An elite boss invades!",
+    "trigger_conditions": ["max_threat"],
+    "repeatable": true,
+    "choices": [
+      {
+        "text": "Defend the Valley!",
+        "cost": {},
+        "reward": { "force_wave": "boss_orc_elite" }
+      }
+    ]
+  }
+]
