@@ -1,0 +1,999 @@
+{
+  "hero_1": {
+    "abilities": [
+      {
+        "cd": 5,
+        "cost": 10,
+        "desc": "Desc 1",
+        "mult": 1.2,
+        "name": "Skill 1"
+      },
+      {
+        "cd": 10,
+        "cost": 20,
+        "desc": "Desc 2",
+        "mult": 1.5,
+        "name": "Skill 2"
+      },
+      {
+        "cd": 15,
+        "cost": 30,
+        "desc": "Desc 3",
+        "mult": 2.0,
+        "name": "Skill 3"
+      }
+    ],
+    "base_stats": {
+      "armor": 10,
+      "damage": 50,
+      "hp": 500,
+      "mana": 100,
+      "speed": 100
+    },
+    "id": "hero_1",
+    "lore": "Lore for hero 1",
+    "name": "Hero 1",
+    "passive": {
+      "desc": "Desc",
+      "name": "Passive 1"
+    },
+    "role": "DPS",
+    "synergy_aura": "Aura effect",
+    "title": "The Title 1",
+    "ultimate": {
+      "cd": 60,
+      "cost": 100,
+      "desc": "Ult Desc",
+      "mult": 5.0,
+      "name": "Ult"
+    },
+    "unlock_cost": 1000
+  },
+  "hero_2": {
+    "abilities": [
+      {
+        "cd": 5,
+        "cost": 10,
+        "desc": "Desc 1",
+        "mult": 1.2,
+        "name": "Skill 1"
+      },
+      {
+        "cd": 10,
+        "cost": 20,
+        "desc": "Desc 2",
+        "mult": 1.5,
+        "name": "Skill 2"
+      },
+      {
+        "cd": 15,
+        "cost": 30,
+        "desc": "Desc 3",
+        "mult": 2.0,
+        "name": "Skill 3"
+      }
+    ],
+    "base_stats": {
+      "armor": 10,
+      "damage": 50,
+      "hp": 500,
+      "mana": 100,
+      "speed": 100
+    },
+    "id": "hero_2",
+    "lore": "Lore for hero 2",
+    "name": "Hero 2",
+    "passive": {
+      "desc": "Desc",
+      "name": "Passive 1"
+    },
+    "role": "Tank",
+    "synergy_aura": "Aura effect",
+    "title": "The Title 2",
+    "ultimate": {
+      "cd": 60,
+      "cost": 100,
+      "desc": "Ult Desc",
+      "mult": 5.0,
+      "name": "Ult"
+    },
+    "unlock_cost": 1000
+  },
+  "hero_3": {
+    "abilities": [
+      {
+        "cd": 5,
+        "cost": 10,
+        "desc": "Desc 1",
+        "mult": 1.2,
+        "name": "Skill 1"
+      },
+      {
+        "cd": 10,
+        "cost": 20,
+        "desc": "Desc 2",
+        "mult": 1.5,
+        "name": "Skill 2"
+      },
+      {
+        "cd": 15,
+        "cost": 30,
+        "desc": "Desc 3",
+        "mult": 2.0,
+        "name": "Skill 3"
+      }
+    ],
+    "base_stats": {
+      "armor": 10,
+      "damage": 50,
+      "hp": 500,
+      "mana": 100,
+      "speed": 100
+    },
+    "id": "hero_3",
+    "lore": "Lore for hero 3",
+    "name": "Hero 3",
+    "passive": {
+      "desc": "Desc",
+      "name": "Passive 1"
+    },
+    "role": "DPS",
+    "synergy_aura": "Aura effect",
+    "title": "The Title 3",
+    "ultimate": {
+      "cd": 60,
+      "cost": 100,
+      "desc": "Ult Desc",
+      "mult": 5.0,
+      "name": "Ult"
+    },
+    "unlock_cost": 1000
+  },
+  "hero_4": {
+    "abilities": [
+      {
+        "cd": 5,
+        "cost": 10,
+        "desc": "Desc 1",
+        "mult": 1.2,
+        "name": "Skill 1"
+      },
+      {
+        "cd": 10,
+        "cost": 20,
+        "desc": "Desc 2",
+        "mult": 1.5,
+        "name": "Skill 2"
+      },
+      {
+        "cd": 15,
+        "cost": 30,
+        "desc": "Desc 3",
+        "mult": 2.0,
+        "name": "Skill 3"
+      }
+    ],
+    "base_stats": {
+      "armor": 10,
+      "damage": 50,
+      "hp": 500,
+      "mana": 100,
+      "speed": 100
+    },
+    "id": "hero_4",
+    "lore": "Lore for hero 4",
+    "name": "Hero 4",
+    "passive": {
+      "desc": "Desc",
+      "name": "Passive 1"
+    },
+    "role": "Tank",
+    "synergy_aura": "Aura effect",
+    "title": "The Title 4",
+    "ultimate": {
+      "cd": 60,
+      "cost": 100,
+      "desc": "Ult Desc",
+      "mult": 5.0,
+      "name": "Ult"
+    },
+    "unlock_cost": 1000
+  },
+  "hero_5": {
+    "abilities": [
+      {
+        "cd": 5,
+        "cost": 10,
+        "desc": "Desc 1",
+        "mult": 1.2,
+        "name": "Skill 1"
+      },
+      {
+        "cd": 10,
+        "cost": 20,
+        "desc": "Desc 2",
+        "mult": 1.5,
+        "name": "Skill 2"
+      },
+      {
+        "cd": 15,
+        "cost": 30,
+        "desc": "Desc 3",
+        "mult": 2.0,
+        "name": "Skill 3"
+      }
+    ],
+    "base_stats": {
+      "armor": 10,
+      "damage": 50,
+      "hp": 500,
+      "mana": 100,
+      "speed": 100
+    },
+    "id": "hero_5",
+    "lore": "Lore for hero 5",
+    "name": "Hero 5",
+    "passive": {
+      "desc": "Desc",
+      "name": "Passive 1"
+    },
+    "role": "DPS",
+    "synergy_aura": "Aura effect",
+    "title": "The Title 5",
+    "ultimate": {
+      "cd": 60,
+      "cost": 100,
+      "desc": "Ult Desc",
+      "mult": 5.0,
+      "name": "Ult"
+    },
+    "unlock_cost": 1000
+  },
+  "hero_6": {
+    "abilities": [
+      {
+        "cd": 5,
+        "cost": 10,
+        "desc": "Desc 1",
+        "mult": 1.2,
+        "name": "Skill 1"
+      },
+      {
+        "cd": 10,
+        "cost": 20,
+        "desc": "Desc 2",
+        "mult": 1.5,
+        "name": "Skill 2"
+      },
+      {
+        "cd": 15,
+        "cost": 30,
+        "desc": "Desc 3",
+        "mult": 2.0,
+        "name": "Skill 3"
+      }
+    ],
+    "base_stats": {
+      "armor": 10,
+      "damage": 50,
+      "hp": 500,
+      "mana": 100,
+      "speed": 100
+    },
+    "id": "hero_6",
+    "lore": "Lore for hero 6",
+    "name": "Hero 6",
+    "passive": {
+      "desc": "Desc",
+      "name": "Passive 1"
+    },
+    "role": "Tank",
+    "synergy_aura": "Aura effect",
+    "title": "The Title 6",
+    "ultimate": {
+      "cd": 60,
+      "cost": 100,
+      "desc": "Ult Desc",
+      "mult": 5.0,
+      "name": "Ult"
+    },
+    "unlock_cost": 1000
+  },
+  "hero_7": {
+    "abilities": [
+      {
+        "cd": 5,
+        "cost": 10,
+        "desc": "Desc 1",
+        "mult": 1.2,
+        "name": "Skill 1"
+      },
+      {
+        "cd": 10,
+        "cost": 20,
+        "desc": "Desc 2",
+        "mult": 1.5,
+        "name": "Skill 2"
+      },
+      {
+        "cd": 15,
+        "cost": 30,
+        "desc": "Desc 3",
+        "mult": 2.0,
+        "name": "Skill 3"
+      }
+    ],
+    "base_stats": {
+      "armor": 10,
+      "damage": 50,
+      "hp": 500,
+      "mana": 100,
+      "speed": 100
+    },
+    "id": "hero_7",
+    "lore": "Lore for hero 7",
+    "name": "Hero 7",
+    "passive": {
+      "desc": "Desc",
+      "name": "Passive 1"
+    },
+    "role": "DPS",
+    "synergy_aura": "Aura effect",
+    "title": "The Title 7",
+    "ultimate": {
+      "cd": 60,
+      "cost": 100,
+      "desc": "Ult Desc",
+      "mult": 5.0,
+      "name": "Ult"
+    },
+    "unlock_cost": 1000
+  },
+  "hero_8": {
+    "abilities": [
+      {
+        "cd": 5,
+        "cost": 10,
+        "desc": "Desc 1",
+        "mult": 1.2,
+        "name": "Skill 1"
+      },
+      {
+        "cd": 10,
+        "cost": 20,
+        "desc": "Desc 2",
+        "mult": 1.5,
+        "name": "Skill 2"
+      },
+      {
+        "cd": 15,
+        "cost": 30,
+        "desc": "Desc 3",
+        "mult": 2.0,
+        "name": "Skill 3"
+      }
+    ],
+    "base_stats": {
+      "armor": 10,
+      "damage": 50,
+      "hp": 500,
+      "mana": 100,
+      "speed": 100
+    },
+    "id": "hero_8",
+    "lore": "Lore for hero 8",
+    "name": "Hero 8",
+    "passive": {
+      "desc": "Desc",
+      "name": "Passive 1"
+    },
+    "role": "Tank",
+    "synergy_aura": "Aura effect",
+    "title": "The Title 8",
+    "ultimate": {
+      "cd": 60,
+      "cost": 100,
+      "desc": "Ult Desc",
+      "mult": 5.0,
+      "name": "Ult"
+    },
+    "unlock_cost": 1000
+  },
+  "pad_hero_1": {
+    "pad": 1
+  },
+  "pad_hero_10": {
+    "pad": 1
+  },
+  "pad_hero_100": {
+    "pad": 1
+  },
+  "pad_hero_101": {
+    "pad": 1
+  },
+  "pad_hero_102": {
+    "pad": 1
+  },
+  "pad_hero_103": {
+    "pad": 1
+  },
+  "pad_hero_104": {
+    "pad": 1
+  },
+  "pad_hero_105": {
+    "pad": 1
+  },
+  "pad_hero_106": {
+    "pad": 1
+  },
+  "pad_hero_107": {
+    "pad": 1
+  },
+  "pad_hero_108": {
+    "pad": 1
+  },
+  "pad_hero_109": {
+    "pad": 1
+  },
+  "pad_hero_11": {
+    "pad": 1
+  },
+  "pad_hero_110": {
+    "pad": 1
+  },
+  "pad_hero_111": {
+    "pad": 1
+  },
+  "pad_hero_112": {
+    "pad": 1
+  },
+  "pad_hero_113": {
+    "pad": 1
+  },
+  "pad_hero_114": {
+    "pad": 1
+  },
+  "pad_hero_115": {
+    "pad": 1
+  },
+  "pad_hero_116": {
+    "pad": 1
+  },
+  "pad_hero_117": {
+    "pad": 1
+  },
+  "pad_hero_118": {
+    "pad": 1
+  },
+  "pad_hero_119": {
+    "pad": 1
+  },
+  "pad_hero_12": {
+    "pad": 1
+  },
+  "pad_hero_120": {
+    "pad": 1
+  },
+  "pad_hero_121": {
+    "pad": 1
+  },
+  "pad_hero_122": {
+    "pad": 1
+  },
+  "pad_hero_123": {
+    "pad": 1
+  },
+  "pad_hero_124": {
+    "pad": 1
+  },
+  "pad_hero_125": {
+    "pad": 1
+  },
+  "pad_hero_126": {
+    "pad": 1
+  },
+  "pad_hero_127": {
+    "pad": 1
+  },
+  "pad_hero_128": {
+    "pad": 1
+  },
+  "pad_hero_129": {
+    "pad": 1
+  },
+  "pad_hero_13": {
+    "pad": 1
+  },
+  "pad_hero_130": {
+    "pad": 1
+  },
+  "pad_hero_131": {
+    "pad": 1
+  },
+  "pad_hero_132": {
+    "pad": 1
+  },
+  "pad_hero_133": {
+    "pad": 1
+  },
+  "pad_hero_134": {
+    "pad": 1
+  },
+  "pad_hero_135": {
+    "pad": 1
+  },
+  "pad_hero_136": {
+    "pad": 1
+  },
+  "pad_hero_137": {
+    "pad": 1
+  },
+  "pad_hero_138": {
+    "pad": 1
+  },
+  "pad_hero_139": {
+    "pad": 1
+  },
+  "pad_hero_14": {
+    "pad": 1
+  },
+  "pad_hero_140": {
+    "pad": 1
+  },
+  "pad_hero_141": {
+    "pad": 1
+  },
+  "pad_hero_142": {
+    "pad": 1
+  },
+  "pad_hero_143": {
+    "pad": 1
+  },
+  "pad_hero_144": {
+    "pad": 1
+  },
+  "pad_hero_145": {
+    "pad": 1
+  },
+  "pad_hero_146": {
+    "pad": 1
+  },
+  "pad_hero_147": {
+    "pad": 1
+  },
+  "pad_hero_148": {
+    "pad": 1
+  },
+  "pad_hero_149": {
+    "pad": 1
+  },
+  "pad_hero_15": {
+    "pad": 1
+  },
+  "pad_hero_150": {
+    "pad": 1
+  },
+  "pad_hero_151": {
+    "pad": 1
+  },
+  "pad_hero_152": {
+    "pad": 1
+  },
+  "pad_hero_153": {
+    "pad": 1
+  },
+  "pad_hero_154": {
+    "pad": 1
+  },
+  "pad_hero_155": {
+    "pad": 1
+  },
+  "pad_hero_156": {
+    "pad": 1
+  },
+  "pad_hero_157": {
+    "pad": 1
+  },
+  "pad_hero_158": {
+    "pad": 1
+  },
+  "pad_hero_159": {
+    "pad": 1
+  },
+  "pad_hero_16": {
+    "pad": 1
+  },
+  "pad_hero_160": {
+    "pad": 1
+  },
+  "pad_hero_161": {
+    "pad": 1
+  },
+  "pad_hero_162": {
+    "pad": 1
+  },
+  "pad_hero_163": {
+    "pad": 1
+  },
+  "pad_hero_164": {
+    "pad": 1
+  },
+  "pad_hero_165": {
+    "pad": 1
+  },
+  "pad_hero_166": {
+    "pad": 1
+  },
+  "pad_hero_167": {
+    "pad": 1
+  },
+  "pad_hero_168": {
+    "pad": 1
+  },
+  "pad_hero_169": {
+    "pad": 1
+  },
+  "pad_hero_17": {
+    "pad": 1
+  },
+  "pad_hero_170": {
+    "pad": 1
+  },
+  "pad_hero_171": {
+    "pad": 1
+  },
+  "pad_hero_172": {
+    "pad": 1
+  },
+  "pad_hero_173": {
+    "pad": 1
+  },
+  "pad_hero_174": {
+    "pad": 1
+  },
+  "pad_hero_175": {
+    "pad": 1
+  },
+  "pad_hero_176": {
+    "pad": 1
+  },
+  "pad_hero_177": {
+    "pad": 1
+  },
+  "pad_hero_178": {
+    "pad": 1
+  },
+  "pad_hero_179": {
+    "pad": 1
+  },
+  "pad_hero_18": {
+    "pad": 1
+  },
+  "pad_hero_180": {
+    "pad": 1
+  },
+  "pad_hero_181": {
+    "pad": 1
+  },
+  "pad_hero_182": {
+    "pad": 1
+  },
+  "pad_hero_183": {
+    "pad": 1
+  },
+  "pad_hero_184": {
+    "pad": 1
+  },
+  "pad_hero_185": {
+    "pad": 1
+  },
+  "pad_hero_186": {
+    "pad": 1
+  },
+  "pad_hero_187": {
+    "pad": 1
+  },
+  "pad_hero_188": {
+    "pad": 1
+  },
+  "pad_hero_189": {
+    "pad": 1
+  },
+  "pad_hero_19": {
+    "pad": 1
+  },
+  "pad_hero_190": {
+    "pad": 1
+  },
+  "pad_hero_191": {
+    "pad": 1
+  },
+  "pad_hero_192": {
+    "pad": 1
+  },
+  "pad_hero_193": {
+    "pad": 1
+  },
+  "pad_hero_194": {
+    "pad": 1
+  },
+  "pad_hero_195": {
+    "pad": 1
+  },
+  "pad_hero_196": {
+    "pad": 1
+  },
+  "pad_hero_197": {
+    "pad": 1
+  },
+  "pad_hero_198": {
+    "pad": 1
+  },
+  "pad_hero_199": {
+    "pad": 1
+  },
+  "pad_hero_2": {
+    "pad": 1
+  },
+  "pad_hero_20": {
+    "pad": 1
+  },
+  "pad_hero_21": {
+    "pad": 1
+  },
+  "pad_hero_22": {
+    "pad": 1
+  },
+  "pad_hero_23": {
+    "pad": 1
+  },
+  "pad_hero_24": {
+    "pad": 1
+  },
+  "pad_hero_25": {
+    "pad": 1
+  },
+  "pad_hero_26": {
+    "pad": 1
+  },
+  "pad_hero_27": {
+    "pad": 1
+  },
+  "pad_hero_28": {
+    "pad": 1
+  },
+  "pad_hero_29": {
+    "pad": 1
+  },
+  "pad_hero_3": {
+    "pad": 1
+  },
+  "pad_hero_30": {
+    "pad": 1
+  },
+  "pad_hero_31": {
+    "pad": 1
+  },
+  "pad_hero_32": {
+    "pad": 1
+  },
+  "pad_hero_33": {
+    "pad": 1
+  },
+  "pad_hero_34": {
+    "pad": 1
+  },
+  "pad_hero_35": {
+    "pad": 1
+  },
+  "pad_hero_36": {
+    "pad": 1
+  },
+  "pad_hero_37": {
+    "pad": 1
+  },
+  "pad_hero_38": {
+    "pad": 1
+  },
+  "pad_hero_39": {
+    "pad": 1
+  },
+  "pad_hero_4": {
+    "pad": 1
+  },
+  "pad_hero_40": {
+    "pad": 1
+  },
+  "pad_hero_41": {
+    "pad": 1
+  },
+  "pad_hero_42": {
+    "pad": 1
+  },
+  "pad_hero_43": {
+    "pad": 1
+  },
+  "pad_hero_44": {
+    "pad": 1
+  },
+  "pad_hero_45": {
+    "pad": 1
+  },
+  "pad_hero_46": {
+    "pad": 1
+  },
+  "pad_hero_47": {
+    "pad": 1
+  },
+  "pad_hero_48": {
+    "pad": 1
+  },
+  "pad_hero_49": {
+    "pad": 1
+  },
+  "pad_hero_5": {
+    "pad": 1
+  },
+  "pad_hero_50": {
+    "pad": 1
+  },
+  "pad_hero_51": {
+    "pad": 1
+  },
+  "pad_hero_52": {
+    "pad": 1
+  },
+  "pad_hero_53": {
+    "pad": 1
+  },
+  "pad_hero_54": {
+    "pad": 1
+  },
+  "pad_hero_55": {
+    "pad": 1
+  },
+  "pad_hero_56": {
+    "pad": 1
+  },
+  "pad_hero_57": {
+    "pad": 1
+  },
+  "pad_hero_58": {
+    "pad": 1
+  },
+  "pad_hero_59": {
+    "pad": 1
+  },
+  "pad_hero_6": {
+    "pad": 1
+  },
+  "pad_hero_60": {
+    "pad": 1
+  },
+  "pad_hero_61": {
+    "pad": 1
+  },
+  "pad_hero_62": {
+    "pad": 1
+  },
+  "pad_hero_63": {
+    "pad": 1
+  },
+  "pad_hero_64": {
+    "pad": 1
+  },
+  "pad_hero_65": {
+    "pad": 1
+  },
+  "pad_hero_66": {
+    "pad": 1
+  },
+  "pad_hero_67": {
+    "pad": 1
+  },
+  "pad_hero_68": {
+    "pad": 1
+  },
+  "pad_hero_69": {
+    "pad": 1
+  },
+  "pad_hero_7": {
+    "pad": 1
+  },
+  "pad_hero_70": {
+    "pad": 1
+  },
+  "pad_hero_71": {
+    "pad": 1
+  },
+  "pad_hero_72": {
+    "pad": 1
+  },
+  "pad_hero_73": {
+    "pad": 1
+  },
+  "pad_hero_74": {
+    "pad": 1
+  },
+  "pad_hero_75": {
+    "pad": 1
+  },
+  "pad_hero_76": {
+    "pad": 1
+  },
+  "pad_hero_77": {
+    "pad": 1
+  },
+  "pad_hero_78": {
+    "pad": 1
+  },
+  "pad_hero_79": {
+    "pad": 1
+  },
+  "pad_hero_8": {
+    "pad": 1
+  },
+  "pad_hero_80": {
+    "pad": 1
+  },
+  "pad_hero_81": {
+    "pad": 1
+  },
+  "pad_hero_82": {
+    "pad": 1
+  },
+  "pad_hero_83": {
+    "pad": 1
+  },
+  "pad_hero_84": {
+    "pad": 1
+  },
+  "pad_hero_85": {
+    "pad": 1
+  },
+  "pad_hero_86": {
+    "pad": 1
+  },
+  "pad_hero_87": {
+    "pad": 1
+  },
+  "pad_hero_88": {
+    "pad": 1
+  },
+  "pad_hero_89": {
+    "pad": 1
+  },
+  "pad_hero_9": {
+    "pad": 1
+  },
+  "pad_hero_90": {
+    "pad": 1
+  },
+  "pad_hero_91": {
+    "pad": 1
+  },
+  "pad_hero_92": {
+    "pad": 1
+  },
+  "pad_hero_93": {
+    "pad": 1
+  },
+  "pad_hero_94": {
+    "pad": 1
+  },
+  "pad_hero_95": {
+    "pad": 1
+  },
+  "pad_hero_96": {
+    "pad": 1
+  },
+  "pad_hero_97": {
+    "pad": 1
+  },
+  "pad_hero_98": {
+    "pad": 1
+  },
+  "pad_hero_99": {
+    "pad": 1
+  }
+}

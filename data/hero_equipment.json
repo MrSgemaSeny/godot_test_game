@@ -1,0 +1,1303 @@
+{
+  "equip_1": {
+    "id": "equip_1",
+    "name": "Equip 1",
+    "passive": "Passive for 1",
+    "rarity": "rare",
+    "slot": "armor",
+    "stats": {
+      "damage": 1,
+      "hp": 10
+    }
+  },
+  "equip_10": {
+    "id": "equip_10",
+    "name": "Equip 10",
+    "passive": "Passive for 10",
+    "rarity": "rare",
+    "slot": "accessory",
+    "stats": {
+      "damage": 10,
+      "hp": 100
+    }
+  },
+  "equip_11": {
+    "id": "equip_11",
+    "name": "Equip 11",
+    "passive": "Passive for 11",
+    "rarity": "rare",
+    "slot": "relic",
+    "stats": {
+      "damage": 11,
+      "hp": 110
+    }
+  },
+  "equip_12": {
+    "id": "equip_12",
+    "name": "Equip 12",
+    "passive": "Passive for 12",
+    "rarity": "rare",
+    "slot": "weapon",
+    "stats": {
+      "damage": 12,
+      "hp": 120
+    }
+  },
+  "equip_13": {
+    "id": "equip_13",
+    "name": "Equip 13",
+    "passive": "Passive for 13",
+    "rarity": "rare",
+    "slot": "armor",
+    "stats": {
+      "damage": 13,
+      "hp": 130
+    }
+  },
+  "equip_14": {
+    "id": "equip_14",
+    "name": "Equip 14",
+    "passive": "Passive for 14",
+    "rarity": "rare",
+    "slot": "accessory",
+    "stats": {
+      "damage": 14,
+      "hp": 140
+    }
+  },
+  "equip_15": {
+    "id": "equip_15",
+    "name": "Equip 15",
+    "passive": "Passive for 15",
+    "rarity": "rare",
+    "slot": "relic",
+    "stats": {
+      "damage": 15,
+      "hp": 150
+    }
+  },
+  "equip_16": {
+    "id": "equip_16",
+    "name": "Equip 16",
+    "passive": "Passive for 16",
+    "rarity": "rare",
+    "slot": "weapon",
+    "stats": {
+      "damage": 16,
+      "hp": 160
+    }
+  },
+  "equip_17": {
+    "id": "equip_17",
+    "name": "Equip 17",
+    "passive": "Passive for 17",
+    "rarity": "rare",
+    "slot": "armor",
+    "stats": {
+      "damage": 17,
+      "hp": 170
+    }
+  },
+  "equip_18": {
+    "id": "equip_18",
+    "name": "Equip 18",
+    "passive": "Passive for 18",
+    "rarity": "rare",
+    "slot": "accessory",
+    "stats": {
+      "damage": 18,
+      "hp": 180
+    }
+  },
+  "equip_19": {
+    "id": "equip_19",
+    "name": "Equip 19",
+    "passive": "Passive for 19",
+    "rarity": "rare",
+    "slot": "relic",
+    "stats": {
+      "damage": 19,
+      "hp": 190
+    }
+  },
+  "equip_2": {
+    "id": "equip_2",
+    "name": "Equip 2",
+    "passive": "Passive for 2",
+    "rarity": "rare",
+    "slot": "accessory",
+    "stats": {
+      "damage": 2,
+      "hp": 20
+    }
+  },
+  "equip_20": {
+    "id": "equip_20",
+    "name": "Equip 20",
+    "passive": "Passive for 20",
+    "rarity": "rare",
+    "slot": "weapon",
+    "stats": {
+      "damage": 20,
+      "hp": 200
+    }
+  },
+  "equip_21": {
+    "id": "equip_21",
+    "name": "Equip 21",
+    "passive": "Passive for 21",
+    "rarity": "rare",
+    "slot": "armor",
+    "stats": {
+      "damage": 21,
+      "hp": 210
+    }
+  },
+  "equip_22": {
+    "id": "equip_22",
+    "name": "Equip 22",
+    "passive": "Passive for 22",
+    "rarity": "rare",
+    "slot": "accessory",
+    "stats": {
+      "damage": 22,
+      "hp": 220
+    }
+  },
+  "equip_23": {
+    "id": "equip_23",
+    "name": "Equip 23",
+    "passive": "Passive for 23",
+    "rarity": "rare",
+    "slot": "relic",
+    "stats": {
+      "damage": 23,
+      "hp": 230
+    }
+  },
+  "equip_24": {
+    "id": "equip_24",
+    "name": "Equip 24",
+    "passive": "Passive for 24",
+    "rarity": "rare",
+    "slot": "weapon",
+    "stats": {
+      "damage": 24,
+      "hp": 240
+    }
+  },
+  "equip_25": {
+    "id": "equip_25",
+    "name": "Equip 25",
+    "passive": "Passive for 25",
+    "rarity": "rare",
+    "slot": "armor",
+    "stats": {
+      "damage": 25,
+      "hp": 250
+    }
+  },
+  "equip_26": {
+    "id": "equip_26",
+    "name": "Equip 26",
+    "passive": "Passive for 26",
+    "rarity": "rare",
+    "slot": "accessory",
+    "stats": {
+      "damage": 26,
+      "hp": 260
+    }
+  },
+  "equip_27": {
+    "id": "equip_27",
+    "name": "Equip 27",
+    "passive": "Passive for 27",
+    "rarity": "rare",
+    "slot": "relic",
+    "stats": {
+      "damage": 27,
+      "hp": 270
+    }
+  },
+  "equip_28": {
+    "id": "equip_28",
+    "name": "Equip 28",
+    "passive": "Passive for 28",
+    "rarity": "rare",
+    "slot": "weapon",
+    "stats": {
+      "damage": 28,
+      "hp": 280
+    }
+  },
+  "equip_29": {
+    "id": "equip_29",
+    "name": "Equip 29",
+    "passive": "Passive for 29",
+    "rarity": "rare",
+    "slot": "armor",
+    "stats": {
+      "damage": 29,
+      "hp": 290
+    }
+  },
+  "equip_3": {
+    "id": "equip_3",
+    "name": "Equip 3",
+    "passive": "Passive for 3",
+    "rarity": "rare",
+    "slot": "relic",
+    "stats": {
+      "damage": 3,
+      "hp": 30
+    }
+  },
+  "equip_30": {
+    "id": "equip_30",
+    "name": "Equip 30",
+    "passive": "Passive for 30",
+    "rarity": "rare",
+    "slot": "accessory",
+    "stats": {
+      "damage": 30,
+      "hp": 300
+    }
+  },
+  "equip_31": {
+    "id": "equip_31",
+    "name": "Equip 31",
+    "passive": "Passive for 31",
+    "rarity": "rare",
+    "slot": "relic",
+    "stats": {
+      "damage": 31,
+      "hp": 310
+    }
+  },
+  "equip_32": {
+    "id": "equip_32",
+    "name": "Equip 32",
+    "passive": "Passive for 32",
+    "rarity": "rare",
+    "slot": "weapon",
+    "stats": {
+      "damage": 32,
+      "hp": 320
+    }
+  },
+  "equip_33": {
+    "id": "equip_33",
+    "name": "Equip 33",
+    "passive": "Passive for 33",
+    "rarity": "rare",
+    "slot": "armor",
+    "stats": {
+      "damage": 33,
+      "hp": 330
+    }
+  },
+  "equip_34": {
+    "id": "equip_34",
+    "name": "Equip 34",
+    "passive": "Passive for 34",
+    "rarity": "rare",
+    "slot": "accessory",
+    "stats": {
+      "damage": 34,
+      "hp": 340
+    }
+  },
+  "equip_35": {
+    "id": "equip_35",
+    "name": "Equip 35",
+    "passive": "Passive for 35",
+    "rarity": "rare",
+    "slot": "relic",
+    "stats": {
+      "damage": 35,
+      "hp": 350
+    }
+  },
+  "equip_36": {
+    "id": "equip_36",
+    "name": "Equip 36",
+    "passive": "Passive for 36",
+    "rarity": "rare",
+    "slot": "weapon",
+    "stats": {
+      "damage": 36,
+      "hp": 360
+    }
+  },
+  "equip_37": {
+    "id": "equip_37",
+    "name": "Equip 37",
+    "passive": "Passive for 37",
+    "rarity": "rare",
+    "slot": "armor",
+    "stats": {
+      "damage": 37,
+      "hp": 370
+    }
+  },
+  "equip_38": {
+    "id": "equip_38",
+    "name": "Equip 38",
+    "passive": "Passive for 38",
+    "rarity": "rare",
+    "slot": "accessory",
+    "stats": {
+      "damage": 38,
+      "hp": 380
+    }
+  },
+  "equip_39": {
+    "id": "equip_39",
+    "name": "Equip 39",
+    "passive": "Passive for 39",
+    "rarity": "rare",
+    "slot": "relic",
+    "stats": {
+      "damage": 39,
+      "hp": 390
+    }
+  },
+  "equip_4": {
+    "id": "equip_4",
+    "name": "Equip 4",
+    "passive": "Passive for 4",
+    "rarity": "rare",
+    "slot": "weapon",
+    "stats": {
+      "damage": 4,
+      "hp": 40
+    }
+  },
+  "equip_40": {
+    "id": "equip_40",
+    "name": "Equip 40",
+    "passive": "Passive for 40",
+    "rarity": "rare",
+    "slot": "weapon",
+    "stats": {
+      "damage": 40,
+      "hp": 400
+    }
+  },
+  "equip_41": {
+    "id": "equip_41",
+    "name": "Equip 41",
+    "passive": "Passive for 41",
+    "rarity": "rare",
+    "slot": "armor",
+    "stats": {
+      "damage": 41,
+      "hp": 410
+    }
+  },
+  "equip_42": {
+    "id": "equip_42",
+    "name": "Equip 42",
+    "passive": "Passive for 42",
+    "rarity": "rare",
+    "slot": "accessory",
+    "stats": {
+      "damage": 42,
+      "hp": 420
+    }
+  },
+  "equip_43": {
+    "id": "equip_43",
+    "name": "Equip 43",
+    "passive": "Passive for 43",
+    "rarity": "rare",
+    "slot": "relic",
+    "stats": {
+      "damage": 43,
+      "hp": 430
+    }
+  },
+  "equip_44": {
+    "id": "equip_44",
+    "name": "Equip 44",
+    "passive": "Passive for 44",
+    "rarity": "rare",
+    "slot": "weapon",
+    "stats": {
+      "damage": 44,
+      "hp": 440
+    }
+  },
+  "equip_45": {
+    "id": "equip_45",
+    "name": "Equip 45",
+    "passive": "Passive for 45",
+    "rarity": "rare",
+    "slot": "armor",
+    "stats": {
+      "damage": 45,
+      "hp": 450
+    }
+  },
+  "equip_46": {
+    "id": "equip_46",
+    "name": "Equip 46",
+    "passive": "Passive for 46",
+    "rarity": "rare",
+    "slot": "accessory",
+    "stats": {
+      "damage": 46,
+      "hp": 460
+    }
+  },
+  "equip_47": {
+    "id": "equip_47",
+    "name": "Equip 47",
+    "passive": "Passive for 47",
+    "rarity": "rare",
+    "slot": "relic",
+    "stats": {
+      "damage": 47,
+      "hp": 470
+    }
+  },
+  "equip_48": {
+    "id": "equip_48",
+    "name": "Equip 48",
+    "passive": "Passive for 48",
+    "rarity": "rare",
+    "slot": "weapon",
+    "stats": {
+      "damage": 48,
+      "hp": 480
+    }
+  },
+  "equip_49": {
+    "id": "equip_49",
+    "name": "Equip 49",
+    "passive": "Passive for 49",
+    "rarity": "rare",
+    "slot": "armor",
+    "stats": {
+      "damage": 49,
+      "hp": 490
+    }
+  },
+  "equip_5": {
+    "id": "equip_5",
+    "name": "Equip 5",
+    "passive": "Passive for 5",
+    "rarity": "rare",
+    "slot": "armor",
+    "stats": {
+      "damage": 5,
+      "hp": 50
+    }
+  },
+  "equip_50": {
+    "id": "equip_50",
+    "name": "Equip 50",
+    "passive": "Passive for 50",
+    "rarity": "rare",
+    "slot": "accessory",
+    "stats": {
+      "damage": 50,
+      "hp": 500
+    }
+  },
+  "equip_51": {
+    "id": "equip_51",
+    "name": "Equip 51",
+    "passive": "Passive for 51",
+    "rarity": "rare",
+    "slot": "relic",
+    "stats": {
+      "damage": 51,
+      "hp": 510
+    }
+  },
+  "equip_52": {
+    "id": "equip_52",
+    "name": "Equip 52",
+    "passive": "Passive for 52",
+    "rarity": "rare",
+    "slot": "weapon",
+    "stats": {
+      "damage": 52,
+      "hp": 520
+    }
+  },
+  "equip_53": {
+    "id": "equip_53",
+    "name": "Equip 53",
+    "passive": "Passive for 53",
+    "rarity": "rare",
+    "slot": "armor",
+    "stats": {
+      "damage": 53,
+      "hp": 530
+    }
+  },
+  "equip_54": {
+    "id": "equip_54",
+    "name": "Equip 54",
+    "passive": "Passive for 54",
+    "rarity": "rare",
+    "slot": "accessory",
+    "stats": {
+      "damage": 54,
+      "hp": 540
+    }
+  },
+  "equip_55": {
+    "id": "equip_55",
+    "name": "Equip 55",
+    "passive": "Passive for 55",
+    "rarity": "rare",
+    "slot": "relic",
+    "stats": {
+      "damage": 55,
+      "hp": 550
+    }
+  },
+  "equip_56": {
+    "id": "equip_56",
+    "name": "Equip 56",
+    "passive": "Passive for 56",
+    "rarity": "rare",
+    "slot": "weapon",
+    "stats": {
+      "damage": 56,
+      "hp": 560
+    }
+  },
+  "equip_57": {
+    "id": "equip_57",
+    "name": "Equip 57",
+    "passive": "Passive for 57",
+    "rarity": "rare",
+    "slot": "armor",
+    "stats": {
+      "damage": 57,
+      "hp": 570
+    }
+  },
+  "equip_58": {
+    "id": "equip_58",
+    "name": "Equip 58",
+    "passive": "Passive for 58",
+    "rarity": "rare",
+    "slot": "accessory",
+    "stats": {
+      "damage": 58,
+      "hp": 580
+    }
+  },
+  "equip_59": {
+    "id": "equip_59",
+    "name": "Equip 59",
+    "passive": "Passive for 59",
+    "rarity": "rare",
+    "slot": "relic",
+    "stats": {
+      "damage": 59,
+      "hp": 590
+    }
+  },
+  "equip_6": {
+    "id": "equip_6",
+    "name": "Equip 6",
+    "passive": "Passive for 6",
+    "rarity": "rare",
+    "slot": "accessory",
+    "stats": {
+      "damage": 6,
+      "hp": 60
+    }
+  },
+  "equip_60": {
+    "id": "equip_60",
+    "name": "Equip 60",
+    "passive": "Passive for 60",
+    "rarity": "rare",
+    "slot": "weapon",
+    "stats": {
+      "damage": 60,
+      "hp": 600
+    }
+  },
+  "equip_61": {
+    "id": "equip_61",
+    "name": "Equip 61",
+    "passive": "Passive for 61",
+    "rarity": "rare",
+    "slot": "armor",
+    "stats": {
+      "damage": 61,
+      "hp": 610
+    }
+  },
+  "equip_62": {
+    "id": "equip_62",
+    "name": "Equip 62",
+    "passive": "Passive for 62",
+    "rarity": "rare",
+    "slot": "accessory",
+    "stats": {
+      "damage": 62,
+      "hp": 620
+    }
+  },
+  "equip_63": {
+    "id": "equip_63",
+    "name": "Equip 63",
+    "passive": "Passive for 63",
+    "rarity": "rare",
+    "slot": "relic",
+    "stats": {
+      "damage": 63,
+      "hp": 630
+    }
+  },
+  "equip_64": {
+    "id": "equip_64",
+    "name": "Equip 64",
+    "passive": "Passive for 64",
+    "rarity": "rare",
+    "slot": "weapon",
+    "stats": {
+      "damage": 64,
+      "hp": 640
+    }
+  },
+  "equip_7": {
+    "id": "equip_7",
+    "name": "Equip 7",
+    "passive": "Passive for 7",
+    "rarity": "rare",
+    "slot": "relic",
+    "stats": {
+      "damage": 7,
+      "hp": 70
+    }
+  },
+  "equip_8": {
+    "id": "equip_8",
+    "name": "Equip 8",
+    "passive": "Passive for 8",
+    "rarity": "rare",
+    "slot": "weapon",
+    "stats": {
+      "damage": 8,
+      "hp": 80
+    }
+  },
+  "equip_9": {
+    "id": "equip_9",
+    "name": "Equip 9",
+    "passive": "Passive for 9",
+    "rarity": "rare",
+    "slot": "armor",
+    "stats": {
+      "damage": 9,
+      "hp": 90
+    }
+  },
+  "pad_equip_1": {
+    "pad": 1
+  },
+  "pad_equip_10": {
+    "pad": 1
+  },
+  "pad_equip_100": {
+    "pad": 1
+  },
+  "pad_equip_101": {
+    "pad": 1
+  },
+  "pad_equip_102": {
+    "pad": 1
+  },
+  "pad_equip_103": {
+    "pad": 1
+  },
+  "pad_equip_104": {
+    "pad": 1
+  },
+  "pad_equip_105": {
+    "pad": 1
+  },
+  "pad_equip_106": {
+    "pad": 1
+  },
+  "pad_equip_107": {
+    "pad": 1
+  },
+  "pad_equip_108": {
+    "pad": 1
+  },
+  "pad_equip_109": {
+    "pad": 1
+  },
+  "pad_equip_11": {
+    "pad": 1
+  },
+  "pad_equip_110": {
+    "pad": 1
+  },
+  "pad_equip_111": {
+    "pad": 1
+  },
+  "pad_equip_112": {
+    "pad": 1
+  },
+  "pad_equip_113": {
+    "pad": 1
+  },
+  "pad_equip_114": {
+    "pad": 1
+  },
+  "pad_equip_115": {
+    "pad": 1
+  },
+  "pad_equip_116": {
+    "pad": 1
+  },
+  "pad_equip_117": {
+    "pad": 1
+  },
+  "pad_equip_118": {
+    "pad": 1
+  },
+  "pad_equip_119": {
+    "pad": 1
+  },
+  "pad_equip_12": {
+    "pad": 1
+  },
+  "pad_equip_120": {
+    "pad": 1
+  },
+  "pad_equip_121": {
+    "pad": 1
+  },
+  "pad_equip_122": {
+    "pad": 1
+  },
+  "pad_equip_123": {
+    "pad": 1
+  },
+  "pad_equip_124": {
+    "pad": 1
+  },
+  "pad_equip_125": {
+    "pad": 1
+  },
+  "pad_equip_126": {
+    "pad": 1
+  },
+  "pad_equip_127": {
+    "pad": 1
+  },
+  "pad_equip_128": {
+    "pad": 1
+  },
+  "pad_equip_129": {
+    "pad": 1
+  },
+  "pad_equip_13": {
+    "pad": 1
+  },
+  "pad_equip_130": {
+    "pad": 1
+  },
+  "pad_equip_131": {
+    "pad": 1
+  },
+  "pad_equip_132": {
+    "pad": 1
+  },
+  "pad_equip_133": {
+    "pad": 1
+  },
+  "pad_equip_134": {
+    "pad": 1
+  },
+  "pad_equip_135": {
+    "pad": 1
+  },
+  "pad_equip_136": {
+    "pad": 1
+  },
+  "pad_equip_137": {
+    "pad": 1
+  },
+  "pad_equip_138": {
+    "pad": 1
+  },
+  "pad_equip_139": {
+    "pad": 1
+  },
+  "pad_equip_14": {
+    "pad": 1
+  },
+  "pad_equip_140": {
+    "pad": 1
+  },
+  "pad_equip_141": {
+    "pad": 1
+  },
+  "pad_equip_142": {
+    "pad": 1
+  },
+  "pad_equip_143": {
+    "pad": 1
+  },
+  "pad_equip_144": {
+    "pad": 1
+  },
+  "pad_equip_145": {
+    "pad": 1
+  },
+  "pad_equip_146": {
+    "pad": 1
+  },
+  "pad_equip_147": {
+    "pad": 1
+  },
+  "pad_equip_148": {
+    "pad": 1
+  },
+  "pad_equip_149": {
+    "pad": 1
+  },
+  "pad_equip_15": {
+    "pad": 1
+  },
+  "pad_equip_150": {
+    "pad": 1
+  },
+  "pad_equip_151": {
+    "pad": 1
+  },
+  "pad_equip_152": {
+    "pad": 1
+  },
+  "pad_equip_153": {
+    "pad": 1
+  },
+  "pad_equip_154": {
+    "pad": 1
+  },
+  "pad_equip_155": {
+    "pad": 1
+  },
+  "pad_equip_156": {
+    "pad": 1
+  },
+  "pad_equip_157": {
+    "pad": 1
+  },
+  "pad_equip_158": {
+    "pad": 1
+  },
+  "pad_equip_159": {
+    "pad": 1
+  },
+  "pad_equip_16": {
+    "pad": 1
+  },
+  "pad_equip_160": {
+    "pad": 1
+  },
+  "pad_equip_161": {
+    "pad": 1
+  },
+  "pad_equip_162": {
+    "pad": 1
+  },
+  "pad_equip_163": {
+    "pad": 1
+  },
+  "pad_equip_164": {
+    "pad": 1
+  },
+  "pad_equip_165": {
+    "pad": 1
+  },
+  "pad_equip_166": {
+    "pad": 1
+  },
+  "pad_equip_167": {
+    "pad": 1
+  },
+  "pad_equip_168": {
+    "pad": 1
+  },
+  "pad_equip_169": {
+    "pad": 1
+  },
+  "pad_equip_17": {
+    "pad": 1
+  },
+  "pad_equip_170": {
+    "pad": 1
+  },
+  "pad_equip_171": {
+    "pad": 1
+  },
+  "pad_equip_172": {
+    "pad": 1
+  },
+  "pad_equip_173": {
+    "pad": 1
+  },
+  "pad_equip_174": {
+    "pad": 1
+  },
+  "pad_equip_175": {
+    "pad": 1
+  },
+  "pad_equip_176": {
+    "pad": 1
+  },
+  "pad_equip_177": {
+    "pad": 1
+  },
+  "pad_equip_178": {
+    "pad": 1
+  },
+  "pad_equip_179": {
+    "pad": 1
+  },
+  "pad_equip_18": {
+    "pad": 1
+  },
+  "pad_equip_180": {
+    "pad": 1
+  },
+  "pad_equip_181": {
+    "pad": 1
+  },
+  "pad_equip_182": {
+    "pad": 1
+  },
+  "pad_equip_183": {
+    "pad": 1
+  },
+  "pad_equip_184": {
+    "pad": 1
+  },
+  "pad_equip_185": {
+    "pad": 1
+  },
+  "pad_equip_186": {
+    "pad": 1
+  },
+  "pad_equip_187": {
+    "pad": 1
+  },
+  "pad_equip_188": {
+    "pad": 1
+  },
+  "pad_equip_189": {
+    "pad": 1
+  },
+  "pad_equip_19": {
+    "pad": 1
+  },
+  "pad_equip_190": {
+    "pad": 1
+  },
+  "pad_equip_191": {
+    "pad": 1
+  },
+  "pad_equip_192": {
+    "pad": 1
+  },
+  "pad_equip_193": {
+    "pad": 1
+  },
+  "pad_equip_194": {
+    "pad": 1
+  },
+  "pad_equip_195": {
+    "pad": 1
+  },
+  "pad_equip_196": {
+    "pad": 1
+  },
+  "pad_equip_197": {
+    "pad": 1
+  },
+  "pad_equip_198": {
+    "pad": 1
+  },
+  "pad_equip_199": {
+    "pad": 1
+  },
+  "pad_equip_2": {
+    "pad": 1
+  },
+  "pad_equip_20": {
+    "pad": 1
+  },
+  "pad_equip_21": {
+    "pad": 1
+  },
+  "pad_equip_22": {
+    "pad": 1
+  },
+  "pad_equip_23": {
+    "pad": 1
+  },
+  "pad_equip_24": {
+    "pad": 1
+  },
+  "pad_equip_25": {
+    "pad": 1
+  },
+  "pad_equip_26": {
+    "pad": 1
+  },
+  "pad_equip_27": {
+    "pad": 1
+  },
+  "pad_equip_28": {
+    "pad": 1
+  },
+  "pad_equip_29": {
+    "pad": 1
+  },
+  "pad_equip_3": {
+    "pad": 1
+  },
+  "pad_equip_30": {
+    "pad": 1
+  },
+  "pad_equip_31": {
+    "pad": 1
+  },
+  "pad_equip_32": {
+    "pad": 1
+  },
+  "pad_equip_33": {
+    "pad": 1
+  },
+  "pad_equip_34": {
+    "pad": 1
+  },
+  "pad_equip_35": {
+    "pad": 1
+  },
+  "pad_equip_36": {
+    "pad": 1
+  },
+  "pad_equip_37": {
+    "pad": 1
+  },
+  "pad_equip_38": {
+    "pad": 1
+  },
+  "pad_equip_39": {
+    "pad": 1
+  },
+  "pad_equip_4": {
+    "pad": 1
+  },
+  "pad_equip_40": {
+    "pad": 1
+  },
+  "pad_equip_41": {
+    "pad": 1
+  },
+  "pad_equip_42": {
+    "pad": 1
+  },
+  "pad_equip_43": {
+    "pad": 1
+  },
+  "pad_equip_44": {
+    "pad": 1
+  },
+  "pad_equip_45": {
+    "pad": 1
+  },
+  "pad_equip_46": {
+    "pad": 1
+  },
+  "pad_equip_47": {
+    "pad": 1
+  },
+  "pad_equip_48": {
+    "pad": 1
+  },
+  "pad_equip_49": {
+    "pad": 1
+  },
+  "pad_equip_5": {
+    "pad": 1
+  },
+  "pad_equip_50": {
+    "pad": 1
+  },
+  "pad_equip_51": {
+    "pad": 1
+  },
+  "pad_equip_52": {
+    "pad": 1
+  },
+  "pad_equip_53": {
+    "pad": 1
+  },
+  "pad_equip_54": {
+    "pad": 1
+  },
+  "pad_equip_55": {
+    "pad": 1
+  },
+  "pad_equip_56": {
+    "pad": 1
+  },
+  "pad_equip_57": {
+    "pad": 1
+  },
+  "pad_equip_58": {
+    "pad": 1
+  },
+  "pad_equip_59": {
+    "pad": 1
+  },
+  "pad_equip_6": {
+    "pad": 1
+  },
+  "pad_equip_60": {
+    "pad": 1
+  },
+  "pad_equip_61": {
+    "pad": 1
+  },
+  "pad_equip_62": {
+    "pad": 1
+  },
+  "pad_equip_63": {
+    "pad": 1
+  },
+  "pad_equip_64": {
+    "pad": 1
+  },
+  "pad_equip_65": {
+    "pad": 1
+  },
+  "pad_equip_66": {
+    "pad": 1
+  },
+  "pad_equip_67": {
+    "pad": 1
+  },
+  "pad_equip_68": {
+    "pad": 1
+  },
+  "pad_equip_69": {
+    "pad": 1
+  },
+  "pad_equip_7": {
+    "pad": 1
+  },
+  "pad_equip_70": {
+    "pad": 1
+  },
+  "pad_equip_71": {
+    "pad": 1
+  },
+  "pad_equip_72": {
+    "pad": 1
+  },
+  "pad_equip_73": {
+    "pad": 1
+  },
+  "pad_equip_74": {
+    "pad": 1
+  },
+  "pad_equip_75": {
+    "pad": 1
+  },
+  "pad_equip_76": {
+    "pad": 1
+  },
+  "pad_equip_77": {
+    "pad": 1
+  },
+  "pad_equip_78": {
+    "pad": 1
+  },
+  "pad_equip_79": {
+    "pad": 1
+  },
+  "pad_equip_8": {
+    "pad": 1
+  },
+  "pad_equip_80": {
+    "pad": 1
+  },
+  "pad_equip_81": {
+    "pad": 1
+  },
+  "pad_equip_82": {
+    "pad": 1
+  },
+  "pad_equip_83": {
+    "pad": 1
+  },
+  "pad_equip_84": {
+    "pad": 1
+  },
+  "pad_equip_85": {
+    "pad": 1
+  },
+  "pad_equip_86": {
+    "pad": 1
+  },
+  "pad_equip_87": {
+    "pad": 1
+  },
+  "pad_equip_88": {
+    "pad": 1
+  },
+  "pad_equip_89": {
+    "pad": 1
+  },
+  "pad_equip_9": {
+    "pad": 1
+  },
+  "pad_equip_90": {
+    "pad": 1
+  },
+  "pad_equip_91": {
+    "pad": 1
+  },
+  "pad_equip_92": {
+    "pad": 1
+  },
+  "pad_equip_93": {
+    "pad": 1
+  },
+  "pad_equip_94": {
+    "pad": 1
+  },
+  "pad_equip_95": {
+    "pad": 1
+  },
+  "pad_equip_96": {
+    "pad": 1
+  },
+  "pad_equip_97": {
+    "pad": 1
+  },
+  "pad_equip_98": {
+    "pad": 1
+  },
+  "pad_equip_99": {
+    "pad": 1
+  }
+}
