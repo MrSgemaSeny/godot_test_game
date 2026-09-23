@@ -1,0 +1,339 @@
+[
+  {
+    "id": "royal_crown",
+    "name": "Royal Crown",
+    "description": "Order, discipline, and absolute authority. The Royal Crown commands the realm's armies.",
+    "leader": "Commander Harold",
+    "rivals": ["outcasts", "shadow_syndicate"],
+    "perks": {
+      "Friendly": "royal_defense_1",
+      "Honored": "royal_income_1",
+      "Exalted": "royal_champion_summon"
+    }
+  },
+  {
+    "id": "silver_order",
+    "name": "Silver Order",
+    "description": "Holy knights and clerics dedicated to purging the undead and demonic corruption.",
+    "leader": "High Priestess Althea",
+    "rivals": ["ash_coven", "shadow_syndicate"],
+    "perks": {
+      "Friendly": "silver_smite_1",
+      "Honored": "silver_healing_1",
+      "Exalted": "silver_resurrection"
+    }
+  },
+  {
+    "id": "druid_circle",
+    "name": "Druid Circle",
+    "description": "Protectors of the Greenwood. Masters of nature, poisons, and slowing vines.",
+    "leader": "Archdruid Sylas",
+    "rivals": ["gear_mechanics", "ash_coven"],
+    "perks": {
+      "Friendly": "druid_toxin_1",
+      "Honored": "druid_roots_1",
+      "Exalted": "druid_treant_summon"
+    }
+  },
+  {
+    "id": "merchant_league",
+    "name": "Merchant League",
+    "description": "Wealth is power. The League provides gold bonuses and discounts.",
+    "leader": "Lady Moira",
+    "rivals": [],
+    "perks": {
+      "Friendly": "merchant_discount_1",
+      "Honored": "merchant_bounty_1",
+      "Exalted": "merchant_mercenary_army"
+    }
+  },
+  {
+    "id": "shadow_syndicate",
+    "name": "Shadow Syndicate",
+    "description": "Assassins, smugglers, and thieves. Masters of critical strikes.",
+    "leader": "Shadowbroker Vex",
+    "rivals": ["royal_crown", "silver_order"],
+    "perks": {
+      "Friendly": "shadow_crit_1",
+      "Honored": "shadow_black_market",
+      "Exalted": "shadow_assassination"
+    }
+  },
+  {
+    "id": "ash_coven",
+    "name": "Ash Coven",
+    "description": "Warlocks and witches harnessing dark fire and curses.",
+    "leader": "Archmage Elirian",
+    "rivals": ["silver_order", "druid_circle"],
+    "perks": {
+      "Friendly": "coven_curse_1",
+      "Honored": "coven_hellfire_1",
+      "Exalted": "coven_meteor_strike"
+    }
+  },
+  {
+    "id": "gear_mechanics",
+    "name": "Gear Mechanics",
+    "description": "Inventors and engineers specializing in ballistics and explosive tech.",
+    "leader": "Master Artificer Thorne",
+    "rivals": ["druid_circle"],
+    "perks": {
+      "Friendly": "gear_range_1",
+      "Honored": "gear_shrapnel_1",
+      "Exalted": "gear_orbital_cannon"
+    }
+  },
+  {
+    "id": "outcasts",
+    "name": "Outcasts",
+    "description": "Mutants, allied orcs, and rebels looking for a place in the world.",
+    "leader": "Warlord Grok",
+    "rivals": ["royal_crown"],
+    "perks": {
+      "Friendly": "outcast_mercs_1",
+      "Honored": "outcast_scavenge_1",
+      "Exalted": "outcast_rebellion"
+    }
+  }
+
+  ,{
+    "id": "minor_faction_1",
+    "name": "Minor Guild 1",
+    "description": "A minor guild in the realm.",
+    "leader": "Guildmaster 1",
+    "rivals": [],
+    "perks": {}
+  }
+  ,{
+    "id": "minor_faction_2",
+    "name": "Minor Guild 2",
+    "description": "A minor guild in the realm.",
+    "leader": "Guildmaster 2",
+    "rivals": [],
+    "perks": {}
+  }
+  ,{
+    "id": "minor_faction_3",
+    "name": "Minor Guild 3",
+    "description": "A minor guild in the realm.",
+    "leader": "Guildmaster 3",
+    "rivals": [],
+    "perks": {}
+  }
+  ,{
+    "id": "minor_faction_4",
+    "name": "Minor Guild 4",
+    "description": "A minor guild in the realm.",
+    "leader": "Guildmaster 4",
+    "rivals": [],
+    "perks": {}
+  }
+  ,{
+    "id": "minor_faction_5",
+    "name": "Minor Guild 5",
+    "description": "A minor guild in the realm.",
+    "leader": "Guildmaster 5",
+    "rivals": [],
+    "perks": {}
+  }
+  ,{
+    "id": "minor_faction_6",
+    "name": "Minor Guild 6",
+    "description": "A minor guild in the realm.",
+    "leader": "Guildmaster 6",
+    "rivals": [],
+    "perks": {}
+  }
+  ,{
+    "id": "minor_faction_7",
+    "name": "Minor Guild 7",
+    "description": "A minor guild in the realm.",
+    "leader": "Guildmaster 7",
+    "rivals": [],
+    "perks": {}
+  }
+  ,{
+    "id": "minor_faction_8",
+    "name": "Minor Guild 8",
+    "description": "A minor guild in the realm.",
+    "leader": "Guildmaster 8",
+    "rivals": [],
+    "perks": {}
+  }
+  ,{
+    "id": "minor_faction_9",
+    "name": "Minor Guild 9",
+    "description": "A minor guild in the realm.",
+    "leader": "Guildmaster 9",
+    "rivals": [],
+    "perks": {}
+  }
+  ,{
+    "id": "minor_faction_10",
+    "name": "Minor Guild 10",
+    "description": "A minor guild in the realm.",
+    "leader": "Guildmaster 10",
+    "rivals": [],
+    "perks": {}
+  }
+  ,{
+    "id": "minor_faction_11",
+    "name": "Minor Guild 11",
+    "description": "A minor guild in the realm.",
+    "leader": "Guildmaster 11",
+    "rivals": [],
+    "perks": {}
+  }
+  ,{
+    "id": "minor_faction_12",
+    "name": "Minor Guild 12",
+    "description": "A minor guild in the realm.",
+    "leader": "Guildmaster 12",
+    "rivals": [],
+    "perks": {}
+  }
+  ,{
+    "id": "minor_faction_13",
+    "name": "Minor Guild 13",
+    "description": "A minor guild in the realm.",
+    "leader": "Guildmaster 13",
+    "rivals": [],
+    "perks": {}
+  }
+  ,{
+    "id": "minor_faction_14",
+    "name": "Minor Guild 14",
+    "description": "A minor guild in the realm.",
+    "leader": "Guildmaster 14",
+    "rivals": [],
+    "perks": {}
+  }
+  ,{
+    "id": "minor_faction_15",
+    "name": "Minor Guild 15",
+    "description": "A minor guild in the realm.",
+    "leader": "Guildmaster 15",
+    "rivals": [],
+    "perks": {}
+  }
+  ,{
+    "id": "minor_faction_16",
+    "name": "Minor Guild 16",
+    "description": "A minor guild in the realm.",
+    "leader": "Guildmaster 16",
+    "rivals": [],
+    "perks": {}
+  }
+  ,{
+    "id": "minor_faction_17",
+    "name": "Minor Guild 17",
+    "description": "A minor guild in the realm.",
+    "leader": "Guildmaster 17",
+    "rivals": [],
+    "perks": {}
+  }
+  ,{
+    "id": "minor_faction_18",
+    "name": "Minor Guild 18",
+    "description": "A minor guild in the realm.",
+    "leader": "Guildmaster 18",
+    "rivals": [],
+    "perks": {}
+  }
+  ,{
+    "id": "minor_faction_19",
+    "name": "Minor Guild 19",
+    "description": "A minor guild in the realm.",
+    "leader": "Guildmaster 19",
+    "rivals": [],
+    "perks": {}
+  }
+  ,{
+    "id": "minor_faction_20",
+    "name": "Minor Guild 20",
+    "description": "A minor guild in the realm.",
+    "leader": "Guildmaster 20",
+    "rivals": [],
+    "perks": {}
+  }
+  ,{
+    "id": "minor_faction_21",
+    "name": "Minor Guild 21",
+    "description": "A minor guild in the realm.",
+    "leader": "Guildmaster 21",
+    "rivals": [],
+    "perks": {}
+  }
+  ,{
+    "id": "minor_faction_22",
+    "name": "Minor Guild 22",
+    "description": "A minor guild in the realm.",
+    "leader": "Guildmaster 22",
+    "rivals": [],
+    "perks": {}
+  }
+  ,{
+    "id": "minor_faction_23",
+    "name": "Minor Guild 23",
+    "description": "A minor guild in the realm.",
+    "leader": "Guildmaster 23",
+    "rivals": [],
+    "perks": {}
+  }
+  ,{
+    "id": "minor_faction_24",
+    "name": "Minor Guild 24",
+    "description": "A minor guild in the realm.",
+    "leader": "Guildmaster 24",
+    "rivals": [],
+    "perks": {}
+  }
+  ,{
+    "id": "minor_faction_25",
+    "name": "Minor Guild 25",
+    "description": "A minor guild in the realm.",
+    "leader": "Guildmaster 25",
+    "rivals": [],
+    "perks": {}
+  }
+  ,{
+    "id": "minor_faction_26",
+    "name": "Minor Guild 26",
+    "description": "A minor guild in the realm.",
+    "leader": "Guildmaster 26",
+    "rivals": [],
+    "perks": {}
+  }
+  ,{
+    "id": "minor_faction_27",
+    "name": "Minor Guild 27",
+    "description": "A minor guild in the realm.",
+    "leader": "Guildmaster 27",
+    "rivals": [],
+    "perks": {}
+  }
+  ,{
+    "id": "minor_faction_28",
+    "name": "Minor Guild 28",
+    "description": "A minor guild in the realm.",
+    "leader": "Guildmaster 28",
+    "rivals": [],
+    "perks": {}
+  }
+  ,{
+    "id": "minor_faction_29",
+    "name": "Minor Guild 29",
+    "description": "A minor guild in the realm.",
+    "leader": "Guildmaster 29",
+    "rivals": [],
+    "perks": {}
+  }
+  ,{
+    "id": "minor_faction_30",
+    "name": "Minor Guild 30",
+    "description": "A minor guild in the realm.",
+    "leader": "Guildmaster 30",
+    "rivals": [],
+    "perks": {}
+  }
+]

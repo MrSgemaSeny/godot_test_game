@@ -1,0 +1,361 @@
+[
+  {
+    "id": "act1_main",
+    "title": "The Gathering Threat",
+    "description": "Clear the Valley and reach the Royal Highway.",
+    "type": "explore",
+    "target_regions": ["valley", "royal_highway"],
+    "act": 1,
+    "amount": 2
+  },
+  {
+    "id": "act1_boss",
+    "title": "Warchief's Fall",
+    "description": "Defeat the Orc Warchief at the gates.",
+    "type": "kill",
+    "target_enemy": "warchief_boss",
+    "amount": 1,
+    "act": 1
+  },
+  {
+    "id": "act2_main",
+    "title": "War of the Factions",
+    "description": "Secure the Crystal Caves and the Greenwood.",
+    "type": "explore",
+    "target_regions": ["crystal_caves", "greenwood"],
+    "act": 2,
+    "amount": 2
+  },
+  {
+    "id": "act2_boss",
+    "title": "The Archmage's Folly",
+    "description": "Slay the rogue Archmage.",
+    "type": "kill",
+    "target_enemy": "archmage_boss",
+    "amount": 1,
+    "act": 2
+  },
+  {
+    "id": "act3_main",
+    "title": "Frozen Shadows & Ash",
+    "description": "Survive the Frost Peak and explore the Ash Wastes.",
+    "type": "explore",
+    "target_regions": ["frost_peak", "ash_wastes"],
+    "act": 3,
+    "amount": 2
+  },
+  {
+    "id": "act4_main",
+    "title": "The Convergence",
+    "description": "Reach the Royal Heart.",
+    "type": "explore",
+    "target_regions": ["royal_heart"],
+    "act": 4,
+    "amount": 1
+  },
+  {
+    "id": "side_culling",
+    "title": "Cull the Herd",
+    "description": "Kill 50 grunts.",
+    "type": "kill",
+    "target_enemy": "grunt",
+    "amount": 50,
+    "act": 1
+  },
+  {
+    "id": "side_troll_hunter",
+    "title": "Troll Hunter",
+    "description": "Kill 10 trolls.",
+    "type": "kill",
+    "target_enemy": "troll",
+    "amount": 10,
+    "act": 2
+  },
+  {
+    "id": "side_royal_favor",
+    "title": "For the Crown",
+    "description": "Complete 3 contracts for the Royal Crown.",
+    "type": "generic",
+    "amount": 3,
+    "act": 1
+  },
+  {
+    "id": "side_druid_favor",
+    "title": "Nature's Balance",
+    "description": "Complete 3 contracts for the Druid Circle.",
+    "type": "generic",
+    "amount": 3,
+    "act": 2
+  }
+
+  ,{
+    "id": "filler_quest_1",
+    "title": "Filler Quest 1",
+    "description": "A minor task for the realm... 1",
+    "type": "generic",
+    "target_enemy": "",
+    "amount": 1,
+    "act": 1
+  }
+  ,{
+    "id": "filler_quest_2",
+    "title": "Filler Quest 2",
+    "description": "A minor task for the realm... 2",
+    "type": "generic",
+    "target_enemy": "",
+    "amount": 1,
+    "act": 1
+  }
+  ,{
+    "id": "filler_quest_3",
+    "title": "Filler Quest 3",
+    "description": "A minor task for the realm... 3",
+    "type": "generic",
+    "target_enemy": "",
+    "amount": 1,
+    "act": 1
+  }
+  ,{
+    "id": "filler_quest_4",
+    "title": "Filler Quest 4",
+    "description": "A minor task for the realm... 4",
+    "type": "generic",
+    "target_enemy": "",
+    "amount": 1,
+    "act": 1
+  }
+  ,{
+    "id": "filler_quest_5",
+    "title": "Filler Quest 5",
+    "description": "A minor task for the realm... 5",
+    "type": "generic",
+    "target_enemy": "",
+    "amount": 1,
+    "act": 1
+  }
+  ,{
+    "id": "filler_quest_6",
+    "title": "Filler Quest 6",
+    "description": "A minor task for the realm... 6",
+    "type": "generic",
+    "target_enemy": "",
+    "amount": 1,
+    "act": 1
+  }
+  ,{
+    "id": "filler_quest_7",
+    "title": "Filler Quest 7",
+    "description": "A minor task for the realm... 7",
+    "type": "generic",
+    "target_enemy": "",
+    "amount": 1,
+    "act": 1
+  }
+  ,{
+    "id": "filler_quest_8",
+    "title": "Filler Quest 8",
+    "description": "A minor task for the realm... 8",
+    "type": "generic",
+    "target_enemy": "",
+    "amount": 1,
+    "act": 1
+  }
+  ,{
+    "id": "filler_quest_9",
+    "title": "Filler Quest 9",
+    "description": "A minor task for the realm... 9",
+    "type": "generic",
+    "target_enemy": "",
+    "amount": 1,
+    "act": 1
+  }
+  ,{
+    "id": "filler_quest_10",
+    "title": "Filler Quest 10",
+    "description": "A minor task for the realm... 10",
+    "type": "generic",
+    "target_enemy": "",
+    "amount": 1,
+    "act": 1
+  }
+  ,{
+    "id": "filler_quest_11",
+    "title": "Filler Quest 11",
+    "description": "A minor task for the realm... 11",
+    "type": "generic",
+    "target_enemy": "",
+    "amount": 1,
+    "act": 1
+  }
+  ,{
+    "id": "filler_quest_12",
+    "title": "Filler Quest 12",
+    "description": "A minor task for the realm... 12",
+    "type": "generic",
+    "target_enemy": "",
+    "amount": 1,
+    "act": 1
+  }
+  ,{
+    "id": "filler_quest_13",
+    "title": "Filler Quest 13",
+    "description": "A minor task for the realm... 13",
+    "type": "generic",
+    "target_enemy": "",
+    "amount": 1,
+    "act": 1
+  }
+  ,{
+    "id": "filler_quest_14",
+    "title": "Filler Quest 14",
+    "description": "A minor task for the realm... 14",
+    "type": "generic",
+    "target_enemy": "",
+    "amount": 1,
+    "act": 1
+  }
+  ,{
+    "id": "filler_quest_15",
+    "title": "Filler Quest 15",
+    "description": "A minor task for the realm... 15",
+    "type": "generic",
+    "target_enemy": "",
+    "amount": 1,
+    "act": 1
+  }
+  ,{
+    "id": "filler_quest_16",
+    "title": "Filler Quest 16",
+    "description": "A minor task for the realm... 16",
+    "type": "generic",
+    "target_enemy": "",
+    "amount": 1,
+    "act": 1
+  }
+  ,{
+    "id": "filler_quest_17",
+    "title": "Filler Quest 17",
+    "description": "A minor task for the realm... 17",
+    "type": "generic",
+    "target_enemy": "",
+    "amount": 1,
+    "act": 1
+  }
+  ,{
+    "id": "filler_quest_18",
+    "title": "Filler Quest 18",
+    "description": "A minor task for the realm... 18",
+    "type": "generic",
+    "target_enemy": "",
+    "amount": 1,
+    "act": 1
+  }
+  ,{
+    "id": "filler_quest_19",
+    "title": "Filler Quest 19",
+    "description": "A minor task for the realm... 19",
+    "type": "generic",
+    "target_enemy": "",
+    "amount": 1,
+    "act": 1
+  }
+  ,{
+    "id": "filler_quest_20",
+    "title": "Filler Quest 20",
+    "description": "A minor task for the realm... 20",
+    "type": "generic",
+    "target_enemy": "",
+    "amount": 1,
+    "act": 1
+  }
+  ,{
+    "id": "filler_quest_21",
+    "title": "Filler Quest 21",
+    "description": "A minor task for the realm... 21",
+    "type": "generic",
+    "target_enemy": "",
+    "amount": 1,
+    "act": 1
+  }
+  ,{
+    "id": "filler_quest_22",
+    "title": "Filler Quest 22",
+    "description": "A minor task for the realm... 22",
+    "type": "generic",
+    "target_enemy": "",
+    "amount": 1,
+    "act": 1
+  }
+  ,{
+    "id": "filler_quest_23",
+    "title": "Filler Quest 23",
+    "description": "A minor task for the realm... 23",
+    "type": "generic",
+    "target_enemy": "",
+    "amount": 1,
+    "act": 1
+  }
+  ,{
+    "id": "filler_quest_24",
+    "title": "Filler Quest 24",
+    "description": "A minor task for the realm... 24",
+    "type": "generic",
+    "target_enemy": "",
+    "amount": 1,
+    "act": 1
+  }
+  ,{
+    "id": "filler_quest_25",
+    "title": "Filler Quest 25",
+    "description": "A minor task for the realm... 25",
+    "type": "generic",
+    "target_enemy": "",
+    "amount": 1,
+    "act": 1
+  }
+  ,{
+    "id": "filler_quest_26",
+    "title": "Filler Quest 26",
+    "description": "A minor task for the realm... 26",
+    "type": "generic",
+    "target_enemy": "",
+    "amount": 1,
+    "act": 1
+  }
+  ,{
+    "id": "filler_quest_27",
+    "title": "Filler Quest 27",
+    "description": "A minor task for the realm... 27",
+    "type": "generic",
+    "target_enemy": "",
+    "amount": 1,
+    "act": 1
+  }
+  ,{
+    "id": "filler_quest_28",
+    "title": "Filler Quest 28",
+    "description": "A minor task for the realm... 28",
+    "type": "generic",
+    "target_enemy": "",
+    "amount": 1,
+    "act": 1
+  }
+  ,{
+    "id": "filler_quest_29",
+    "title": "Filler Quest 29",
+    "description": "A minor task for the realm... 29",
+    "type": "generic",
+    "target_enemy": "",
+    "amount": 1,
+    "act": 1
+  }
+  ,{
+    "id": "filler_quest_30",
+    "title": "Filler Quest 30",
+    "description": "A minor task for the realm... 30",
+    "type": "generic",
+    "target_enemy": "",
+    "amount": 1,
+    "act": 1
+  }
+]

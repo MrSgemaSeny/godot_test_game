@@ -1,0 +1,908 @@
+﻿{
+    "harold":  {
+                   "name":  "Commander Harold",
+                   "faction":  "royal_crown",
+                   "nodes":  {
+                                 "root":  {
+                                              "text":  "Greetings, tactician. The Crown requires your aid.",
+                                              "mood":  "serious",
+                                              "choices":  [
+                                                              {
+                                                                  "text":  "What do you need?",
+                                                                  "next":  "mission_brief",
+                                                                  "conditions":  {
+
+                                                                                 }
+                                                              },
+                                                              {
+                                                                  "text":  "I\u0027m busy.",
+                                                                  "next":  "end",
+                                                                  "conditions":  {
+
+                                                                                 }
+                                                              }
+                                                          ]
+                                          },
+                                 "mission_brief":  {
+                                                       "text":  "The Valley is overrun. We need defenses built immediately.",
+                                                       "mood":  "determined",
+                                                       "choices":  [
+                                                                       {
+                                                                           "text":  "Consider it done.",
+                                                                           "next":  "end",
+                                                                           "action":  "start_quest_act1"
+                                                                       }
+                                                                   ]
+                                                   }
+                             }
+               },
+    "vex":  {
+                "name":  "Shadowbroker Vex",
+                "faction":  "shadow_syndicate",
+                "nodes":  {
+                              "root":  {
+                                           "text":  "I have secrets to sell, if you have the coin.",
+                                           "mood":  "sly",
+                                           "choices":  [
+                                                           {
+                                                               "text":  "Buy secret (100g)",
+                                                               "next":  "secret_sold",
+                                                               "conditions":  {
+                                                                                  "min_gold":  100
+                                                                              }
+                                                           },
+                                                           {
+                                                               "text":  "Not interested.",
+                                                               "next":  "end",
+                                                               "conditions":  {
+
+                                                                              }
+                                                           }
+                                                       ]
+                                       },
+                              "secret_sold":  {
+                                                  "text":  "The Outcasts are planning an ambush in the swamps. Be ready.",
+                                                  "mood":  "neutral",
+                                                  "choices":  [
+                                                                  {
+                                                                      "text":  "Thanks.",
+                                                                      "next":  "end",
+                                                                      "action":  "deduct_100g"
+                                                                  }
+                                                              ]
+                                              }
+                          }
+            },
+    "althea":  {
+                   "name":  "High Priestess Althea",
+                   "faction":  "silver_order",
+                   "nodes":  {
+                                 "root":  {
+                                              "text":  "The Light reveals corruption everywhere. Will you help us cleanse it?",
+                                              "mood":  "holy",
+                                              "choices":  [
+                                                              {
+                                                                  "text":  "I stand with the Light.",
+                                                                  "next":  "blessing",
+                                                                  "conditions":  {
+
+                                                                                 }
+                                                              },
+                                                              {
+                                                                  "text":  "Another time.",
+                                                                  "next":  "end",
+                                                                  "conditions":  {
+
+                                                                                 }
+                                                              }
+                                                          ]
+                                          },
+                                 "blessing":  {
+                                                  "text":  "May the Light protect your towers.",
+                                                  "mood":  "happy",
+                                                  "choices":  [
+                                                                  {
+                                                                      "text":  "Farewell.",
+                                                                      "next":  "end",
+                                                                      "action":  "grant_blessing"
+                                                                  }
+                                                              ]
+                                              }
+                             }
+               },
+    "grok":  {
+                 "name":  "Warlord Grok",
+                 "faction":  "outcasts",
+                 "nodes":  {
+                               "root":  {
+                                            "text":  "Crown men hunt us like dogs. But we bite back. You help us?",
+                                            "mood":  "angry",
+                                            "choices":  [
+                                                            {
+                                                                "text":  "I\u0027ll help you.",
+                                                                "next":  "alliance",
+                                                                "conditions":  {
+
+                                                                               }
+                                                            },
+                                                            {
+                                                                "text":  "Die, monster!",
+                                                                "next":  "end",
+                                                                "action":  "start_combat"
+                                                            }
+                                                        ]
+                                        },
+                               "alliance":  {
+                                                "text":  "Good. We fight together now.",
+                                                "mood":  "happy",
+                                                "choices":  [
+                                                                {
+                                                                    "text":  "Let\u0027s go.",
+                                                                    "next":  "end",
+                                                                    "action":  "add_outcast_rep"
+                                                                }
+                                                            ]
+                                            }
+                           }
+             },
+    "npc_guard_1":  {
+                        "faction":  "royal_crown",
+                        "name":  "Guard 1",
+                        "nodes":  {
+                                      "root":  {
+                                                   "choices":  [
+                                                                   {
+                                                                       "conditions":  {
+
+                                                                                      },
+                                                                       "next":  "end",
+                                                                       "text":  "Yes sir."
+                                                                   }
+                                                               ],
+                                                   "mood":  "neutral",
+                                                   "text":  "Move along, citizen."
+                                               }
+                                  }
+                    },
+    "npc_guard_2":  {
+                        "faction":  "royal_crown",
+                        "name":  "Guard 2",
+                        "nodes":  {
+                                      "root":  {
+                                                   "choices":  [
+                                                                   {
+                                                                       "conditions":  {
+
+                                                                                      },
+                                                                       "next":  "end",
+                                                                       "text":  "Yes sir."
+                                                                   }
+                                                               ],
+                                                   "mood":  "neutral",
+                                                   "text":  "Move along, citizen."
+                                               }
+                                  }
+                    },
+    "npc_guard_3":  {
+                        "faction":  "royal_crown",
+                        "name":  "Guard 3",
+                        "nodes":  {
+                                      "root":  {
+                                                   "choices":  [
+                                                                   {
+                                                                       "conditions":  {
+
+                                                                                      },
+                                                                       "next":  "end",
+                                                                       "text":  "Yes sir."
+                                                                   }
+                                                               ],
+                                                   "mood":  "neutral",
+                                                   "text":  "Move along, citizen."
+                                               }
+                                  }
+                    },
+    "npc_guard_4":  {
+                        "faction":  "royal_crown",
+                        "name":  "Guard 4",
+                        "nodes":  {
+                                      "root":  {
+                                                   "choices":  [
+                                                                   {
+                                                                       "conditions":  {
+
+                                                                                      },
+                                                                       "next":  "end",
+                                                                       "text":  "Yes sir."
+                                                                   }
+                                                               ],
+                                                   "mood":  "neutral",
+                                                   "text":  "Move along, citizen."
+                                               }
+                                  }
+                    },
+    "npc_guard_5":  {
+                        "faction":  "royal_crown",
+                        "name":  "Guard 5",
+                        "nodes":  {
+                                      "root":  {
+                                                   "choices":  [
+                                                                   {
+                                                                       "conditions":  {
+
+                                                                                      },
+                                                                       "next":  "end",
+                                                                       "text":  "Yes sir."
+                                                                   }
+                                                               ],
+                                                   "mood":  "neutral",
+                                                   "text":  "Move along, citizen."
+                                               }
+                                  }
+                    },
+    "npc_guard_6":  {
+                        "faction":  "royal_crown",
+                        "name":  "Guard 6",
+                        "nodes":  {
+                                      "root":  {
+                                                   "choices":  [
+                                                                   {
+                                                                       "conditions":  {
+
+                                                                                      },
+                                                                       "next":  "end",
+                                                                       "text":  "Yes sir."
+                                                                   }
+                                                               ],
+                                                   "mood":  "neutral",
+                                                   "text":  "Move along, citizen."
+                                               }
+                                  }
+                    },
+    "npc_guard_7":  {
+                        "faction":  "royal_crown",
+                        "name":  "Guard 7",
+                        "nodes":  {
+                                      "root":  {
+                                                   "choices":  [
+                                                                   {
+                                                                       "conditions":  {
+
+                                                                                      },
+                                                                       "next":  "end",
+                                                                       "text":  "Yes sir."
+                                                                   }
+                                                               ],
+                                                   "mood":  "neutral",
+                                                   "text":  "Move along, citizen."
+                                               }
+                                  }
+                    },
+    "npc_guard_8":  {
+                        "faction":  "royal_crown",
+                        "name":  "Guard 8",
+                        "nodes":  {
+                                      "root":  {
+                                                   "choices":  [
+                                                                   {
+                                                                       "conditions":  {
+
+                                                                                      },
+                                                                       "next":  "end",
+                                                                       "text":  "Yes sir."
+                                                                   }
+                                                               ],
+                                                   "mood":  "neutral",
+                                                   "text":  "Move along, citizen."
+                                               }
+                                  }
+                    },
+    "npc_guard_9":  {
+                        "faction":  "royal_crown",
+                        "name":  "Guard 9",
+                        "nodes":  {
+                                      "root":  {
+                                                   "choices":  [
+                                                                   {
+                                                                       "conditions":  {
+
+                                                                                      },
+                                                                       "next":  "end",
+                                                                       "text":  "Yes sir."
+                                                                   }
+                                                               ],
+                                                   "mood":  "neutral",
+                                                   "text":  "Move along, citizen."
+                                               }
+                                  }
+                    },
+    "npc_guard_10":  {
+                         "faction":  "royal_crown",
+                         "name":  "Guard 10",
+                         "nodes":  {
+                                       "root":  {
+                                                    "choices":  [
+                                                                    {
+                                                                        "conditions":  {
+
+                                                                                       },
+                                                                        "next":  "end",
+                                                                        "text":  "Yes sir."
+                                                                    }
+                                                                ],
+                                                    "mood":  "neutral",
+                                                    "text":  "Move along, citizen."
+                                                }
+                                   }
+                     },
+    "npc_guard_11":  {
+                         "faction":  "royal_crown",
+                         "name":  "Guard 11",
+                         "nodes":  {
+                                       "root":  {
+                                                    "choices":  [
+                                                                    {
+                                                                        "conditions":  {
+
+                                                                                       },
+                                                                        "next":  "end",
+                                                                        "text":  "Yes sir."
+                                                                    }
+                                                                ],
+                                                    "mood":  "neutral",
+                                                    "text":  "Move along, citizen."
+                                                }
+                                   }
+                     },
+    "npc_guard_12":  {
+                         "faction":  "royal_crown",
+                         "name":  "Guard 12",
+                         "nodes":  {
+                                       "root":  {
+                                                    "choices":  [
+                                                                    {
+                                                                        "conditions":  {
+
+                                                                                       },
+                                                                        "next":  "end",
+                                                                        "text":  "Yes sir."
+                                                                    }
+                                                                ],
+                                                    "mood":  "neutral",
+                                                    "text":  "Move along, citizen."
+                                                }
+                                   }
+                     },
+    "npc_guard_13":  {
+                         "faction":  "royal_crown",
+                         "name":  "Guard 13",
+                         "nodes":  {
+                                       "root":  {
+                                                    "choices":  [
+                                                                    {
+                                                                        "conditions":  {
+
+                                                                                       },
+                                                                        "next":  "end",
+                                                                        "text":  "Yes sir."
+                                                                    }
+                                                                ],
+                                                    "mood":  "neutral",
+                                                    "text":  "Move along, citizen."
+                                                }
+                                   }
+                     },
+    "npc_guard_14":  {
+                         "faction":  "royal_crown",
+                         "name":  "Guard 14",
+                         "nodes":  {
+                                       "root":  {
+                                                    "choices":  [
+                                                                    {
+                                                                        "conditions":  {
+
+                                                                                       },
+                                                                        "next":  "end",
+                                                                        "text":  "Yes sir."
+                                                                    }
+                                                                ],
+                                                    "mood":  "neutral",
+                                                    "text":  "Move along, citizen."
+                                                }
+                                   }
+                     },
+    "npc_guard_15":  {
+                         "faction":  "royal_crown",
+                         "name":  "Guard 15",
+                         "nodes":  {
+                                       "root":  {
+                                                    "choices":  [
+                                                                    {
+                                                                        "conditions":  {
+
+                                                                                       },
+                                                                        "next":  "end",
+                                                                        "text":  "Yes sir."
+                                                                    }
+                                                                ],
+                                                    "mood":  "neutral",
+                                                    "text":  "Move along, citizen."
+                                                }
+                                   }
+                     },
+    "npc_guard_16":  {
+                         "faction":  "royal_crown",
+                         "name":  "Guard 16",
+                         "nodes":  {
+                                       "root":  {
+                                                    "choices":  [
+                                                                    {
+                                                                        "conditions":  {
+
+                                                                                       },
+                                                                        "next":  "end",
+                                                                        "text":  "Yes sir."
+                                                                    }
+                                                                ],
+                                                    "mood":  "neutral",
+                                                    "text":  "Move along, citizen."
+                                                }
+                                   }
+                     },
+    "npc_guard_17":  {
+                         "faction":  "royal_crown",
+                         "name":  "Guard 17",
+                         "nodes":  {
+                                       "root":  {
+                                                    "choices":  [
+                                                                    {
+                                                                        "conditions":  {
+
+                                                                                       },
+                                                                        "next":  "end",
+                                                                        "text":  "Yes sir."
+                                                                    }
+                                                                ],
+                                                    "mood":  "neutral",
+                                                    "text":  "Move along, citizen."
+                                                }
+                                   }
+                     },
+    "npc_guard_18":  {
+                         "faction":  "royal_crown",
+                         "name":  "Guard 18",
+                         "nodes":  {
+                                       "root":  {
+                                                    "choices":  [
+                                                                    {
+                                                                        "conditions":  {
+
+                                                                                       },
+                                                                        "next":  "end",
+                                                                        "text":  "Yes sir."
+                                                                    }
+                                                                ],
+                                                    "mood":  "neutral",
+                                                    "text":  "Move along, citizen."
+                                                }
+                                   }
+                     },
+    "npc_guard_19":  {
+                         "faction":  "royal_crown",
+                         "name":  "Guard 19",
+                         "nodes":  {
+                                       "root":  {
+                                                    "choices":  [
+                                                                    {
+                                                                        "conditions":  {
+
+                                                                                       },
+                                                                        "next":  "end",
+                                                                        "text":  "Yes sir."
+                                                                    }
+                                                                ],
+                                                    "mood":  "neutral",
+                                                    "text":  "Move along, citizen."
+                                                }
+                                   }
+                     },
+    "npc_guard_20":  {
+                         "faction":  "royal_crown",
+                         "name":  "Guard 20",
+                         "nodes":  {
+                                       "root":  {
+                                                    "choices":  [
+                                                                    {
+                                                                        "conditions":  {
+
+                                                                                       },
+                                                                        "next":  "end",
+                                                                        "text":  "Yes sir."
+                                                                    }
+                                                                ],
+                                                    "mood":  "neutral",
+                                                    "text":  "Move along, citizen."
+                                                }
+                                   }
+                     },
+    "npc_guard_21":  {
+                         "faction":  "royal_crown",
+                         "name":  "Guard 21",
+                         "nodes":  {
+                                       "root":  {
+                                                    "choices":  [
+                                                                    {
+                                                                        "conditions":  {
+
+                                                                                       },
+                                                                        "next":  "end",
+                                                                        "text":  "Yes sir."
+                                                                    }
+                                                                ],
+                                                    "mood":  "neutral",
+                                                    "text":  "Move along, citizen."
+                                                }
+                                   }
+                     },
+    "npc_guard_22":  {
+                         "faction":  "royal_crown",
+                         "name":  "Guard 22",
+                         "nodes":  {
+                                       "root":  {
+                                                    "choices":  [
+                                                                    {
+                                                                        "conditions":  {
+
+                                                                                       },
+                                                                        "next":  "end",
+                                                                        "text":  "Yes sir."
+                                                                    }
+                                                                ],
+                                                    "mood":  "neutral",
+                                                    "text":  "Move along, citizen."
+                                                }
+                                   }
+                     },
+    "npc_guard_23":  {
+                         "faction":  "royal_crown",
+                         "name":  "Guard 23",
+                         "nodes":  {
+                                       "root":  {
+                                                    "choices":  [
+                                                                    {
+                                                                        "conditions":  {
+
+                                                                                       },
+                                                                        "next":  "end",
+                                                                        "text":  "Yes sir."
+                                                                    }
+                                                                ],
+                                                    "mood":  "neutral",
+                                                    "text":  "Move along, citizen."
+                                                }
+                                   }
+                     },
+    "npc_guard_24":  {
+                         "faction":  "royal_crown",
+                         "name":  "Guard 24",
+                         "nodes":  {
+                                       "root":  {
+                                                    "choices":  [
+                                                                    {
+                                                                        "conditions":  {
+
+                                                                                       },
+                                                                        "next":  "end",
+                                                                        "text":  "Yes sir."
+                                                                    }
+                                                                ],
+                                                    "mood":  "neutral",
+                                                    "text":  "Move along, citizen."
+                                                }
+                                   }
+                     },
+    "npc_guard_25":  {
+                         "faction":  "royal_crown",
+                         "name":  "Guard 25",
+                         "nodes":  {
+                                       "root":  {
+                                                    "choices":  [
+                                                                    {
+                                                                        "conditions":  {
+
+                                                                                       },
+                                                                        "next":  "end",
+                                                                        "text":  "Yes sir."
+                                                                    }
+                                                                ],
+                                                    "mood":  "neutral",
+                                                    "text":  "Move along, citizen."
+                                                }
+                                   }
+                     },
+    "npc_guard_26":  {
+                         "faction":  "royal_crown",
+                         "name":  "Guard 26",
+                         "nodes":  {
+                                       "root":  {
+                                                    "choices":  [
+                                                                    {
+                                                                        "conditions":  {
+
+                                                                                       },
+                                                                        "next":  "end",
+                                                                        "text":  "Yes sir."
+                                                                    }
+                                                                ],
+                                                    "mood":  "neutral",
+                                                    "text":  "Move along, citizen."
+                                                }
+                                   }
+                     },
+    "npc_guard_27":  {
+                         "faction":  "royal_crown",
+                         "name":  "Guard 27",
+                         "nodes":  {
+                                       "root":  {
+                                                    "choices":  [
+                                                                    {
+                                                                        "conditions":  {
+
+                                                                                       },
+                                                                        "next":  "end",
+                                                                        "text":  "Yes sir."
+                                                                    }
+                                                                ],
+                                                    "mood":  "neutral",
+                                                    "text":  "Move along, citizen."
+                                                }
+                                   }
+                     },
+    "npc_guard_28":  {
+                         "faction":  "royal_crown",
+                         "name":  "Guard 28",
+                         "nodes":  {
+                                       "root":  {
+                                                    "choices":  [
+                                                                    {
+                                                                        "conditions":  {
+
+                                                                                       },
+                                                                        "next":  "end",
+                                                                        "text":  "Yes sir."
+                                                                    }
+                                                                ],
+                                                    "mood":  "neutral",
+                                                    "text":  "Move along, citizen."
+                                                }
+                                   }
+                     },
+    "npc_guard_29":  {
+                         "faction":  "royal_crown",
+                         "name":  "Guard 29",
+                         "nodes":  {
+                                       "root":  {
+                                                    "choices":  [
+                                                                    {
+                                                                        "conditions":  {
+
+                                                                                       },
+                                                                        "next":  "end",
+                                                                        "text":  "Yes sir."
+                                                                    }
+                                                                ],
+                                                    "mood":  "neutral",
+                                                    "text":  "Move along, citizen."
+                                                }
+                                   }
+                     },
+    "npc_guard_30":  {
+                         "faction":  "royal_crown",
+                         "name":  "Guard 30",
+                         "nodes":  {
+                                       "root":  {
+                                                    "choices":  [
+                                                                    {
+                                                                        "conditions":  {
+
+                                                                                       },
+                                                                        "next":  "end",
+                                                                        "text":  "Yes sir."
+                                                                    }
+                                                                ],
+                                                    "mood":  "neutral",
+                                                    "text":  "Move along, citizen."
+                                                }
+                                   }
+                     },
+    "npc_guard_31":  {
+                         "faction":  "royal_crown",
+                         "name":  "Guard 31",
+                         "nodes":  {
+                                       "root":  {
+                                                    "choices":  [
+                                                                    {
+                                                                        "conditions":  {
+
+                                                                                       },
+                                                                        "next":  "end",
+                                                                        "text":  "Yes sir."
+                                                                    }
+                                                                ],
+                                                    "mood":  "neutral",
+                                                    "text":  "Move along, citizen."
+                                                }
+                                   }
+                     },
+    "npc_guard_32":  {
+                         "faction":  "royal_crown",
+                         "name":  "Guard 32",
+                         "nodes":  {
+                                       "root":  {
+                                                    "choices":  [
+                                                                    {
+                                                                        "conditions":  {
+
+                                                                                       },
+                                                                        "next":  "end",
+                                                                        "text":  "Yes sir."
+                                                                    }
+                                                                ],
+                                                    "mood":  "neutral",
+                                                    "text":  "Move along, citizen."
+                                                }
+                                   }
+                     },
+    "npc_guard_33":  {
+                         "faction":  "royal_crown",
+                         "name":  "Guard 33",
+                         "nodes":  {
+                                       "root":  {
+                                                    "choices":  [
+                                                                    {
+                                                                        "conditions":  {
+
+                                                                                       },
+                                                                        "next":  "end",
+                                                                        "text":  "Yes sir."
+                                                                    }
+                                                                ],
+                                                    "mood":  "neutral",
+                                                    "text":  "Move along, citizen."
+                                                }
+                                   }
+                     },
+    "npc_guard_34":  {
+                         "faction":  "royal_crown",
+                         "name":  "Guard 34",
+                         "nodes":  {
+                                       "root":  {
+                                                    "choices":  [
+                                                                    {
+                                                                        "conditions":  {
+
+                                                                                       },
+                                                                        "next":  "end",
+                                                                        "text":  "Yes sir."
+                                                                    }
+                                                                ],
+                                                    "mood":  "neutral",
+                                                    "text":  "Move along, citizen."
+                                                }
+                                   }
+                     },
+    "npc_guard_35":  {
+                         "faction":  "royal_crown",
+                         "name":  "Guard 35",
+                         "nodes":  {
+                                       "root":  {
+                                                    "choices":  [
+                                                                    {
+                                                                        "conditions":  {
+
+                                                                                       },
+                                                                        "next":  "end",
+                                                                        "text":  "Yes sir."
+                                                                    }
+                                                                ],
+                                                    "mood":  "neutral",
+                                                    "text":  "Move along, citizen."
+                                                }
+                                   }
+                     },
+    "npc_guard_36":  {
+                         "faction":  "royal_crown",
+                         "name":  "Guard 36",
+                         "nodes":  {
+                                       "root":  {
+                                                    "choices":  [
+                                                                    {
+                                                                        "conditions":  {
+
+                                                                                       },
+                                                                        "next":  "end",
+                                                                        "text":  "Yes sir."
+                                                                    }
+                                                                ],
+                                                    "mood":  "neutral",
+                                                    "text":  "Move along, citizen."
+                                                }
+                                   }
+                     },
+    "npc_guard_37":  {
+                         "faction":  "royal_crown",
+                         "name":  "Guard 37",
+                         "nodes":  {
+                                       "root":  {
+                                                    "choices":  [
+                                                                    {
+                                                                        "conditions":  {
+
+                                                                                       },
+                                                                        "next":  "end",
+                                                                        "text":  "Yes sir."
+                                                                    }
+                                                                ],
+                                                    "mood":  "neutral",
+                                                    "text":  "Move along, citizen."
+                                                }
+                                   }
+                     },
+    "npc_guard_38":  {
+                         "faction":  "royal_crown",
+                         "name":  "Guard 38",
+                         "nodes":  {
+                                       "root":  {
+                                                    "choices":  [
+                                                                    {
+                                                                        "conditions":  {
+
+                                                                                       },
+                                                                        "next":  "end",
+                                                                        "text":  "Yes sir."
+                                                                    }
+                                                                ],
+                                                    "mood":  "neutral",
+                                                    "text":  "Move along, citizen."
+                                                }
+                                   }
+                     },
+    "npc_guard_39":  {
+                         "faction":  "royal_crown",
+                         "name":  "Guard 39",
+                         "nodes":  {
+                                       "root":  {
+                                                    "choices":  [
+                                                                    {
+                                                                        "conditions":  {
+
+                                                                                       },
+                                                                        "next":  "end",
+                                                                        "text":  "Yes sir."
+                                                                    }
+                                                                ],
+                                                    "mood":  "neutral",
+                                                    "text":  "Move along, citizen."
+                                                }
+                                   }
+                     },
+    "npc_guard_40":  {
+                         "faction":  "royal_crown",
+                         "name":  "Guard 40",
+                         "nodes":  {
+                                       "root":  {
+                                                    "choices":  [
+                                                                    {
+                                                                        "conditions":  {
+
+                                                                                       },
+                                                                        "next":  "end",
+                                                                        "text":  "Yes sir."
+                                                                    }
+                                                                ],
+                                                    "mood":  "neutral",
+                                                    "text":  "Move along, citizen."
+                                                }
+                                   }
+                     }
+}

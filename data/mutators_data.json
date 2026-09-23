@@ -1,0 +1,879 @@
+{
+  "arcane_hyperdrive": {
+    "category": "gameplay",
+    "description": "Mutator description for arcane_hyperdrive",
+    "id": "arcane_hyperdrive",
+    "name": "Arcane Hyperdrive",
+    "params": {},
+    "score_multiplier": 0.1
+  },
+  "chaos_spawns": {
+    "category": "gameplay",
+    "description": "Mutator description for chaos_spawns",
+    "id": "chaos_spawns",
+    "name": "Chaos Spawns",
+    "params": {},
+    "score_multiplier": 0.4
+  },
+  "explosive_corpses": {
+    "category": "gameplay",
+    "description": "Mutator description for explosive_corpses",
+    "id": "explosive_corpses",
+    "name": "Explosive Corpses",
+    "params": {},
+    "score_multiplier": 0.2
+  },
+  "fog_of_war": {
+    "category": "gameplay",
+    "description": "Mutator description for fog_of_war",
+    "id": "fog_of_war",
+    "name": "Fog Of War",
+    "params": {},
+    "score_multiplier": 0.4
+  },
+  "glass_cannon": {
+    "category": "gameplay",
+    "description": "Mutator description for glass_cannon",
+    "id": "glass_cannon",
+    "name": "Glass Cannon",
+    "params": {},
+    "score_multiplier": 0.2
+  },
+  "infinite_gold": {
+    "category": "gameplay",
+    "description": "Mutator description for infinite_gold",
+    "id": "infinite_gold",
+    "name": "Infinite Gold",
+    "params": {},
+    "score_multiplier": 0.3
+  },
+  "inflation": {
+    "category": "gameplay",
+    "description": "Mutator description for inflation",
+    "id": "inflation",
+    "name": "Inflation",
+    "params": {},
+    "score_multiplier": 0.0
+  },
+  "mutator_10": {
+    "category": "gameplay",
+    "description": "Mutator description for mutator_10",
+    "id": "mutator_10",
+    "name": "Mutator 10",
+    "params": {},
+    "score_multiplier": 0.0
+  },
+  "mutator_11": {
+    "category": "gameplay",
+    "description": "Mutator description for mutator_11",
+    "id": "mutator_11",
+    "name": "Mutator 11",
+    "params": {},
+    "score_multiplier": 0.1
+  },
+  "mutator_12": {
+    "category": "gameplay",
+    "description": "Mutator description for mutator_12",
+    "id": "mutator_12",
+    "name": "Mutator 12",
+    "params": {},
+    "score_multiplier": 0.2
+  },
+  "mutator_13": {
+    "category": "gameplay",
+    "description": "Mutator description for mutator_13",
+    "id": "mutator_13",
+    "name": "Mutator 13",
+    "params": {},
+    "score_multiplier": 0.3
+  },
+  "mutator_14": {
+    "category": "gameplay",
+    "description": "Mutator description for mutator_14",
+    "id": "mutator_14",
+    "name": "Mutator 14",
+    "params": {},
+    "score_multiplier": 0.4
+  },
+  "mutator_15": {
+    "category": "gameplay",
+    "description": "Mutator description for mutator_15",
+    "id": "mutator_15",
+    "name": "Mutator 15",
+    "params": {},
+    "score_multiplier": 0.0
+  },
+  "mutator_16": {
+    "category": "gameplay",
+    "description": "Mutator description for mutator_16",
+    "id": "mutator_16",
+    "name": "Mutator 16",
+    "params": {},
+    "score_multiplier": 0.1
+  },
+  "mutator_17": {
+    "category": "gameplay",
+    "description": "Mutator description for mutator_17",
+    "id": "mutator_17",
+    "name": "Mutator 17",
+    "params": {},
+    "score_multiplier": 0.2
+  },
+  "mutator_18": {
+    "category": "gameplay",
+    "description": "Mutator description for mutator_18",
+    "id": "mutator_18",
+    "name": "Mutator 18",
+    "params": {},
+    "score_multiplier": 0.3
+  },
+  "mutator_19": {
+    "category": "gameplay",
+    "description": "Mutator description for mutator_19",
+    "id": "mutator_19",
+    "name": "Mutator 19",
+    "params": {},
+    "score_multiplier": 0.4
+  },
+  "mutator_20": {
+    "category": "gameplay",
+    "description": "Mutator description for mutator_20",
+    "id": "mutator_20",
+    "name": "Mutator 20",
+    "params": {},
+    "score_multiplier": 0.0
+  },
+  "mutator_21": {
+    "category": "gameplay",
+    "description": "Mutator description for mutator_21",
+    "id": "mutator_21",
+    "name": "Mutator 21",
+    "params": {},
+    "score_multiplier": 0.1
+  },
+  "mutator_22": {
+    "category": "gameplay",
+    "description": "Mutator description for mutator_22",
+    "id": "mutator_22",
+    "name": "Mutator 22",
+    "params": {},
+    "score_multiplier": 0.2
+  },
+  "mutator_23": {
+    "category": "gameplay",
+    "description": "Mutator description for mutator_23",
+    "id": "mutator_23",
+    "name": "Mutator 23",
+    "params": {},
+    "score_multiplier": 0.3
+  },
+  "mutator_24": {
+    "category": "gameplay",
+    "description": "Mutator description for mutator_24",
+    "id": "mutator_24",
+    "name": "Mutator 24",
+    "params": {},
+    "score_multiplier": 0.4
+  },
+  "mutator_25": {
+    "category": "gameplay",
+    "description": "Mutator description for mutator_25",
+    "id": "mutator_25",
+    "name": "Mutator 25",
+    "params": {},
+    "score_multiplier": 0.0
+  },
+  "mutator_26": {
+    "category": "gameplay",
+    "description": "Mutator description for mutator_26",
+    "id": "mutator_26",
+    "name": "Mutator 26",
+    "params": {},
+    "score_multiplier": 0.1
+  },
+  "mutator_27": {
+    "category": "gameplay",
+    "description": "Mutator description for mutator_27",
+    "id": "mutator_27",
+    "name": "Mutator 27",
+    "params": {},
+    "score_multiplier": 0.2
+  },
+  "mutator_28": {
+    "category": "gameplay",
+    "description": "Mutator description for mutator_28",
+    "id": "mutator_28",
+    "name": "Mutator 28",
+    "params": {},
+    "score_multiplier": 0.3
+  },
+  "mutator_29": {
+    "category": "gameplay",
+    "description": "Mutator description for mutator_29",
+    "id": "mutator_29",
+    "name": "Mutator 29",
+    "params": {},
+    "score_multiplier": 0.4
+  },
+  "mutator_30": {
+    "category": "gameplay",
+    "description": "Mutator description for mutator_30",
+    "id": "mutator_30",
+    "name": "Mutator 30",
+    "params": {},
+    "score_multiplier": 0.0
+  },
+  "mutator_31": {
+    "category": "gameplay",
+    "description": "Mutator description for mutator_31",
+    "id": "mutator_31",
+    "name": "Mutator 31",
+    "params": {},
+    "score_multiplier": 0.1
+  },
+  "mutator_32": {
+    "category": "gameplay",
+    "description": "Mutator description for mutator_32",
+    "id": "mutator_32",
+    "name": "Mutator 32",
+    "params": {},
+    "score_multiplier": 0.2
+  },
+  "mutator_33": {
+    "category": "gameplay",
+    "description": "Mutator description for mutator_33",
+    "id": "mutator_33",
+    "name": "Mutator 33",
+    "params": {},
+    "score_multiplier": 0.3
+  },
+  "mutator_34": {
+    "category": "gameplay",
+    "description": "Mutator description for mutator_34",
+    "id": "mutator_34",
+    "name": "Mutator 34",
+    "params": {},
+    "score_multiplier": 0.4
+  },
+  "mutator_35": {
+    "category": "gameplay",
+    "description": "Mutator description for mutator_35",
+    "id": "mutator_35",
+    "name": "Mutator 35",
+    "params": {},
+    "score_multiplier": 0.0
+  },
+  "pad_mutator_1": {
+    "pad": 1
+  },
+  "pad_mutator_10": {
+    "pad": 1
+  },
+  "pad_mutator_100": {
+    "pad": 1
+  },
+  "pad_mutator_101": {
+    "pad": 1
+  },
+  "pad_mutator_102": {
+    "pad": 1
+  },
+  "pad_mutator_103": {
+    "pad": 1
+  },
+  "pad_mutator_104": {
+    "pad": 1
+  },
+  "pad_mutator_105": {
+    "pad": 1
+  },
+  "pad_mutator_106": {
+    "pad": 1
+  },
+  "pad_mutator_107": {
+    "pad": 1
+  },
+  "pad_mutator_108": {
+    "pad": 1
+  },
+  "pad_mutator_109": {
+    "pad": 1
+  },
+  "pad_mutator_11": {
+    "pad": 1
+  },
+  "pad_mutator_110": {
+    "pad": 1
+  },
+  "pad_mutator_111": {
+    "pad": 1
+  },
+  "pad_mutator_112": {
+    "pad": 1
+  },
+  "pad_mutator_113": {
+    "pad": 1
+  },
+  "pad_mutator_114": {
+    "pad": 1
+  },
+  "pad_mutator_115": {
+    "pad": 1
+  },
+  "pad_mutator_116": {
+    "pad": 1
+  },
+  "pad_mutator_117": {
+    "pad": 1
+  },
+  "pad_mutator_118": {
+    "pad": 1
+  },
+  "pad_mutator_119": {
+    "pad": 1
+  },
+  "pad_mutator_12": {
+    "pad": 1
+  },
+  "pad_mutator_120": {
+    "pad": 1
+  },
+  "pad_mutator_121": {
+    "pad": 1
+  },
+  "pad_mutator_122": {
+    "pad": 1
+  },
+  "pad_mutator_123": {
+    "pad": 1
+  },
+  "pad_mutator_124": {
+    "pad": 1
+  },
+  "pad_mutator_125": {
+    "pad": 1
+  },
+  "pad_mutator_126": {
+    "pad": 1
+  },
+  "pad_mutator_127": {
+    "pad": 1
+  },
+  "pad_mutator_128": {
+    "pad": 1
+  },
+  "pad_mutator_129": {
+    "pad": 1
+  },
+  "pad_mutator_13": {
+    "pad": 1
+  },
+  "pad_mutator_130": {
+    "pad": 1
+  },
+  "pad_mutator_131": {
+    "pad": 1
+  },
+  "pad_mutator_132": {
+    "pad": 1
+  },
+  "pad_mutator_133": {
+    "pad": 1
+  },
+  "pad_mutator_134": {
+    "pad": 1
+  },
+  "pad_mutator_135": {
+    "pad": 1
+  },
+  "pad_mutator_136": {
+    "pad": 1
+  },
+  "pad_mutator_137": {
+    "pad": 1
+  },
+  "pad_mutator_138": {
+    "pad": 1
+  },
+  "pad_mutator_139": {
+    "pad": 1
+  },
+  "pad_mutator_14": {
+    "pad": 1
+  },
+  "pad_mutator_140": {
+    "pad": 1
+  },
+  "pad_mutator_141": {
+    "pad": 1
+  },
+  "pad_mutator_142": {
+    "pad": 1
+  },
+  "pad_mutator_143": {
+    "pad": 1
+  },
+  "pad_mutator_144": {
+    "pad": 1
+  },
+  "pad_mutator_145": {
+    "pad": 1
+  },
+  "pad_mutator_146": {
+    "pad": 1
+  },
+  "pad_mutator_147": {
+    "pad": 1
+  },
+  "pad_mutator_148": {
+    "pad": 1
+  },
+  "pad_mutator_149": {
+    "pad": 1
+  },
+  "pad_mutator_15": {
+    "pad": 1
+  },
+  "pad_mutator_150": {
+    "pad": 1
+  },
+  "pad_mutator_151": {
+    "pad": 1
+  },
+  "pad_mutator_152": {
+    "pad": 1
+  },
+  "pad_mutator_153": {
+    "pad": 1
+  },
+  "pad_mutator_154": {
+    "pad": 1
+  },
+  "pad_mutator_155": {
+    "pad": 1
+  },
+  "pad_mutator_156": {
+    "pad": 1
+  },
+  "pad_mutator_157": {
+    "pad": 1
+  },
+  "pad_mutator_158": {
+    "pad": 1
+  },
+  "pad_mutator_159": {
+    "pad": 1
+  },
+  "pad_mutator_16": {
+    "pad": 1
+  },
+  "pad_mutator_160": {
+    "pad": 1
+  },
+  "pad_mutator_161": {
+    "pad": 1
+  },
+  "pad_mutator_162": {
+    "pad": 1
+  },
+  "pad_mutator_163": {
+    "pad": 1
+  },
+  "pad_mutator_164": {
+    "pad": 1
+  },
+  "pad_mutator_165": {
+    "pad": 1
+  },
+  "pad_mutator_166": {
+    "pad": 1
+  },
+  "pad_mutator_167": {
+    "pad": 1
+  },
+  "pad_mutator_168": {
+    "pad": 1
+  },
+  "pad_mutator_169": {
+    "pad": 1
+  },
+  "pad_mutator_17": {
+    "pad": 1
+  },
+  "pad_mutator_170": {
+    "pad": 1
+  },
+  "pad_mutator_171": {
+    "pad": 1
+  },
+  "pad_mutator_172": {
+    "pad": 1
+  },
+  "pad_mutator_173": {
+    "pad": 1
+  },
+  "pad_mutator_174": {
+    "pad": 1
+  },
+  "pad_mutator_175": {
+    "pad": 1
+  },
+  "pad_mutator_176": {
+    "pad": 1
+  },
+  "pad_mutator_177": {
+    "pad": 1
+  },
+  "pad_mutator_178": {
+    "pad": 1
+  },
+  "pad_mutator_179": {
+    "pad": 1
+  },
+  "pad_mutator_18": {
+    "pad": 1
+  },
+  "pad_mutator_180": {
+    "pad": 1
+  },
+  "pad_mutator_181": {
+    "pad": 1
+  },
+  "pad_mutator_182": {
+    "pad": 1
+  },
+  "pad_mutator_183": {
+    "pad": 1
+  },
+  "pad_mutator_184": {
+    "pad": 1
+  },
+  "pad_mutator_185": {
+    "pad": 1
+  },
+  "pad_mutator_186": {
+    "pad": 1
+  },
+  "pad_mutator_187": {
+    "pad": 1
+  },
+  "pad_mutator_188": {
+    "pad": 1
+  },
+  "pad_mutator_189": {
+    "pad": 1
+  },
+  "pad_mutator_19": {
+    "pad": 1
+  },
+  "pad_mutator_190": {
+    "pad": 1
+  },
+  "pad_mutator_191": {
+    "pad": 1
+  },
+  "pad_mutator_192": {
+    "pad": 1
+  },
+  "pad_mutator_193": {
+    "pad": 1
+  },
+  "pad_mutator_194": {
+    "pad": 1
+  },
+  "pad_mutator_195": {
+    "pad": 1
+  },
+  "pad_mutator_196": {
+    "pad": 1
+  },
+  "pad_mutator_197": {
+    "pad": 1
+  },
+  "pad_mutator_198": {
+    "pad": 1
+  },
+  "pad_mutator_199": {
+    "pad": 1
+  },
+  "pad_mutator_2": {
+    "pad": 1
+  },
+  "pad_mutator_20": {
+    "pad": 1
+  },
+  "pad_mutator_21": {
+    "pad": 1
+  },
+  "pad_mutator_22": {
+    "pad": 1
+  },
+  "pad_mutator_23": {
+    "pad": 1
+  },
+  "pad_mutator_24": {
+    "pad": 1
+  },
+  "pad_mutator_25": {
+    "pad": 1
+  },
+  "pad_mutator_26": {
+    "pad": 1
+  },
+  "pad_mutator_27": {
+    "pad": 1
+  },
+  "pad_mutator_28": {
+    "pad": 1
+  },
+  "pad_mutator_29": {
+    "pad": 1
+  },
+  "pad_mutator_3": {
+    "pad": 1
+  },
+  "pad_mutator_30": {
+    "pad": 1
+  },
+  "pad_mutator_31": {
+    "pad": 1
+  },
+  "pad_mutator_32": {
+    "pad": 1
+  },
+  "pad_mutator_33": {
+    "pad": 1
+  },
+  "pad_mutator_34": {
+    "pad": 1
+  },
+  "pad_mutator_35": {
+    "pad": 1
+  },
+  "pad_mutator_36": {
+    "pad": 1
+  },
+  "pad_mutator_37": {
+    "pad": 1
+  },
+  "pad_mutator_38": {
+    "pad": 1
+  },
+  "pad_mutator_39": {
+    "pad": 1
+  },
+  "pad_mutator_4": {
+    "pad": 1
+  },
+  "pad_mutator_40": {
+    "pad": 1
+  },
+  "pad_mutator_41": {
+    "pad": 1
+  },
+  "pad_mutator_42": {
+    "pad": 1
+  },
+  "pad_mutator_43": {
+    "pad": 1
+  },
+  "pad_mutator_44": {
+    "pad": 1
+  },
+  "pad_mutator_45": {
+    "pad": 1
+  },
+  "pad_mutator_46": {
+    "pad": 1
+  },
+  "pad_mutator_47": {
+    "pad": 1
+  },
+  "pad_mutator_48": {
+    "pad": 1
+  },
+  "pad_mutator_49": {
+    "pad": 1
+  },
+  "pad_mutator_5": {
+    "pad": 1
+  },
+  "pad_mutator_50": {
+    "pad": 1
+  },
+  "pad_mutator_51": {
+    "pad": 1
+  },
+  "pad_mutator_52": {
+    "pad": 1
+  },
+  "pad_mutator_53": {
+    "pad": 1
+  },
+  "pad_mutator_54": {
+    "pad": 1
+  },
+  "pad_mutator_55": {
+    "pad": 1
+  },
+  "pad_mutator_56": {
+    "pad": 1
+  },
+  "pad_mutator_57": {
+    "pad": 1
+  },
+  "pad_mutator_58": {
+    "pad": 1
+  },
+  "pad_mutator_59": {
+    "pad": 1
+  },
+  "pad_mutator_6": {
+    "pad": 1
+  },
+  "pad_mutator_60": {
+    "pad": 1
+  },
+  "pad_mutator_61": {
+    "pad": 1
+  },
+  "pad_mutator_62": {
+    "pad": 1
+  },
+  "pad_mutator_63": {
+    "pad": 1
+  },
+  "pad_mutator_64": {
+    "pad": 1
+  },
+  "pad_mutator_65": {
+    "pad": 1
+  },
+  "pad_mutator_66": {
+    "pad": 1
+  },
+  "pad_mutator_67": {
+    "pad": 1
+  },
+  "pad_mutator_68": {
+    "pad": 1
+  },
+  "pad_mutator_69": {
+    "pad": 1
+  },
+  "pad_mutator_7": {
+    "pad": 1
+  },
+  "pad_mutator_70": {
+    "pad": 1
+  },
+  "pad_mutator_71": {
+    "pad": 1
+  },
+  "pad_mutator_72": {
+    "pad": 1
+  },
+  "pad_mutator_73": {
+    "pad": 1
+  },
+  "pad_mutator_74": {
+    "pad": 1
+  },
+  "pad_mutator_75": {
+    "pad": 1
+  },
+  "pad_mutator_76": {
+    "pad": 1
+  },
+  "pad_mutator_77": {
+    "pad": 1
+  },
+  "pad_mutator_78": {
+    "pad": 1
+  },
+  "pad_mutator_79": {
+    "pad": 1
+  },
+  "pad_mutator_8": {
+    "pad": 1
+  },
+  "pad_mutator_80": {
+    "pad": 1
+  },
+  "pad_mutator_81": {
+    "pad": 1
+  },
+  "pad_mutator_82": {
+    "pad": 1
+  },
+  "pad_mutator_83": {
+    "pad": 1
+  },
+  "pad_mutator_84": {
+    "pad": 1
+  },
+  "pad_mutator_85": {
+    "pad": 1
+  },
+  "pad_mutator_86": {
+    "pad": 1
+  },
+  "pad_mutator_87": {
+    "pad": 1
+  },
+  "pad_mutator_88": {
+    "pad": 1
+  },
+  "pad_mutator_89": {
+    "pad": 1
+  },
+  "pad_mutator_9": {
+    "pad": 1
+  },
+  "pad_mutator_90": {
+    "pad": 1
+  },
+  "pad_mutator_91": {
+    "pad": 1
+  },
+  "pad_mutator_92": {
+    "pad": 1
+  },
+  "pad_mutator_93": {
+    "pad": 1
+  },
+  "pad_mutator_94": {
+    "pad": 1
+  },
+  "pad_mutator_95": {
+    "pad": 1
+  },
+  "pad_mutator_96": {
+    "pad": 1
+  },
+  "pad_mutator_97": {
+    "pad": 1
+  },
+  "pad_mutator_98": {
+    "pad": 1
+  },
+  "pad_mutator_99": {
+    "pad": 1
+  },
+  "speed_freaks": {
+    "category": "gameplay",
+    "description": "Mutator description for speed_freaks",
+    "id": "speed_freaks",
+    "name": "Speed Freaks",
+    "params": {},
+    "score_multiplier": 0.1
+  },
+  "thick_hide": {
+    "category": "gameplay",
+    "description": "Mutator description for thick_hide",
+    "id": "thick_hide",
+    "name": "Thick Hide",
+    "params": {},
+    "score_multiplier": 0.3
+  }
+}
