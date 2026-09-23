@@ -12,6 +12,21 @@ signal closed()
 @onready var close_btn: Button = $MarginContainer/VBoxContainer/BottomRow/CloseButton
 
 func _ready() -> void:
+	var style = StyleBoxFlat.new()
+	style.bg_color = Color(0.08, 0.10, 0.14, 1.0)
+	style.border_width_left = 2
+	style.border_width_top = 2
+	style.border_width_right = 2
+	style.border_width_bottom = 2
+	style.border_color = Color(0.85, 0.68, 0.22, 1.0)
+	style.corner_radius_top_left = 12
+	style.corner_radius_top_right = 12
+	style.corner_radius_bottom_left = 12
+	style.corner_radius_bottom_right = 12
+	style.shadow_color = Color(0, 0, 0, 0.9)
+	style.shadow_size = 24
+	add_theme_stylebox_override("panel", style)
+
 	if is_instance_valid(close_btn):
 		close_btn.pressed.connect(func():
 			visible = false
@@ -23,6 +38,7 @@ func _ready() -> void:
 		endless_btn.pressed.connect(_on_endless_selected)
 		
 	_populate_challenges()
+
 
 func _populate_challenges() -> void:
 	if not is_instance_valid(challenges_list):

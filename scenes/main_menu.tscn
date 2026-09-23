@@ -104,6 +104,16 @@ theme_override_colors/font_color = Color(0.9, 0.4, 0.4, 1)
 theme_override_font_sizes/font_size = 14
 text = "🗑️ Сбросить сохранение"
 
+[node name="DimBackdrop" type="ColorRect" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.8)
+
 [node name="BestiaryModal" parent="." instance=ExtResource("2_best")]
 visible = false
 layout_mode = 1
@@ -115,3 +125,4 @@ layout_mode = 1
 [node name="GameModesModal" parent="." instance=ExtResource("4_modes")]
 visible = false
 layout_mode = 1
+

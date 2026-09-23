@@ -18,14 +18,41 @@ var enemies_db: Dictionary = {}
 var selected_enemy_id: String = "grunt"
 
 func _ready() -> void:
+	# Solid dark opaque theme with golden border
+	var style = StyleBoxFlat.new()
+	style.bg_color = Color(0.08, 0.10, 0.14, 1.0)
+	style.border_width_left = 2
+	style.border_width_top = 2
+	style.border_width_right = 2
+	style.border_width_bottom = 2
+	style.border_color = Color(0.85, 0.68, 0.22, 1.0)
+	style.corner_radius_top_left = 12
+	style.corner_radius_top_right = 12
+	style.corner_radius_bottom_left = 12
+	style.corner_radius_bottom_right = 12
+	style.shadow_color = Color(0, 0, 0, 0.9)
+	style.shadow_size = 24
+	add_theme_stylebox_override("panel", style)
+
 	_load_enemies()
 	if is_instance_valid(close_btn):
+		var close_style = StyleBoxFlat.new()
+		close_style.bg_color = Color(0.65, 0.18, 0.18, 0.95)
+		close_style.set_corner_radius_all(6)
+		close_btn.add_theme_stylebox_override("normal", close_style)
+		var close_hover = StyleBoxFlat.new()
+		close_hover.bg_color = Color(0.85, 0.22, 0.22, 1.0)
+		close_hover.set_corner_radius_all(6)
+		close_btn.add_theme_stylebox_override("hover", close_hover)
+		close_btn.text = "✖ Закрыть окно"
 		close_btn.pressed.connect(func():
 			visible = false
 			closed.emit()
 		)
 	_populate_list()
 	_show_enemy(selected_enemy_id)
+
+
 
 func _load_enemies() -> void:
 	if not FileAccess.file_exists("res://data/enemies.json"):
@@ -54,10 +81,28 @@ func _populate_list() -> void:
 			icon = "👻"
 			
 		btn.text = "%s %s" % [icon, edata.get("name", e_id)]
-		btn.custom_minimum_size = Vector2(200, 36)
+		btn.custom_minimum_size = Vector2(230, 40)
 		btn.alignment = HORIZONTAL_ALIGNMENT_LEFT
+		
+		var btn_normal = StyleBoxFlat.new()
+		btn_normal.bg_color = Color(0.12, 0.15, 0.21, 0.95)
+		btn_normal.set_corner_radius_all(6)
+		btn_normal.content_margin_left = 12
+		btn_normal.content_margin_right = 12
+		btn.add_theme_stylebox_override("normal", btn_normal)
+		
+		var btn_hover = StyleBoxFlat.new()
+		btn_hover.bg_color = Color(0.22, 0.28, 0.38, 1.0)
+		btn_hover.border_width_left = 3
+		btn_hover.border_color = Color(0.90, 0.75, 0.25, 1.0)
+		btn_hover.set_corner_radius_all(6)
+		btn_hover.content_margin_left = 12
+		btn_hover.content_margin_right = 12
+		btn.add_theme_stylebox_override("hover", btn_hover)
+		
 		btn.pressed.connect(func(): _show_enemy(e_id))
 		enemy_list.add_child(btn)
+
 
 func _show_enemy(e_id: String) -> void:
 	selected_enemy_id = e_id

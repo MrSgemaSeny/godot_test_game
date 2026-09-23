@@ -1,2626 +1,662 @@
-{
-  "abyssal_angler": {
-    "armor": 5,
-    "color": "#ff0000",
-    "description": "A dangerous enemy from Sunken Kingdom",
-    "gold_reward": 15,
-    "immunities": [],
-    "is_boss": false,
-    "is_flyer": false,
-    "is_invisible": false,
-    "is_stealth": false,
-    "max_health": 4700,
-    "name": "Abyssal Angler",
-    "resistances": {},
-    "size": 20,
-    "speed": 80.0,
-    "split_count": 0,
-    "split_enemy_type": "",
-    "split_on_death": false
-  },
-  "archmage_boss": {
-    "armor": 30.0,
-    "color": "#581c87",
-    "description": "Верховный чернокнижник. Обладает магическим щитом и мощной регенерацией.",
-    "gold_reward": 300.0,
-    "immunities": [],
-    "is_boss": true,
-    "is_flyer": false,
-    "is_invisible": false,
-    "is_stealth": false,
-    "max_health": 2800.0,
-    "name": "Шаман-Архимаг (Финальный Босс)",
-    "resistances": {
-      "lightning": 0.3,
-      "magic": 0.4
-    },
-    "shield": 800.0,
-    "size": 34.0,
-    "speed": 45.0,
-    "split_count": 0.0,
-    "split_enemy_type": "",
-    "split_on_death": false
-  },
-  "archon_of_light": {
-    "armor": 5,
-    "color": "#ff0000",
-    "description": "A dangerous enemy from Royal Heart",
-    "gold_reward": 15,
-    "immunities": [],
-    "is_boss": false,
-    "is_flyer": false,
-    "is_invisible": false,
-    "is_stealth": false,
-    "max_health": 5800,
-    "name": "Archon Of Light",
-    "resistances": {},
-    "size": 20,
-    "speed": 80.0,
-    "split_count": 0,
-    "split_enemy_type": "",
-    "split_on_death": false
-  },
-  "armored": {
-    "armor": 50.0,
-    "color": "#475569",
-    "description": "Тяжелый орк в латах. Снижает получаемый физический урон на 50%.",
-    "gold_reward": 22.0,
-    "immunities": [],
-    "is_boss": false,
-    "is_flyer": false,
-    "is_invisible": false,
-    "is_stealth": false,
-    "max_health": 180.0,
-    "name": "Бронированный",
-    "resistances": {},
-    "size": 22.0,
-    "speed": 60.0,
-    "split_count": 0.0,
-    "split_enemy_type": "",
-    "split_on_death": false
-  },
-  "ash_crawler": {
-    "armor": 5,
-    "color": "#ff0000",
-    "description": "A dangerous enemy from Ash Wastes",
-    "gold_reward": 15,
-    "immunities": [],
-    "is_boss": false,
-    "is_flyer": false,
-    "is_invisible": false,
-    "is_stealth": false,
-    "max_health": 3600,
-    "name": "Ash Crawler",
-    "resistances": {},
-    "size": 20,
-    "speed": 80.0,
-    "split_count": 0,
-    "split_enemy_type": "",
-    "split_on_death": false
-  },
-  "berserker": {
-    "armor": 0.0,
-    "color": "#dc2626",
-    "description": "Быстрый и яростный, но менее защищенный.",
-    "gold_reward": 14.0,
-    "immunities": [],
-    "is_boss": false,
-    "is_flyer": false,
-    "is_invisible": false,
-    "is_stealth": false,
-    "max_health": 50.0,
-    "name": "Берсерк",
-    "resistances": {},
-    "size": 16.0,
-    "speed": 135.0,
-    "split_count": 0.0,
-    "split_enemy_type": "",
-    "split_on_death": false
-  },
-  "blizzard_harpy": {
-    "armor": 5,
-    "color": "#ff0000",
-    "description": "A dangerous enemy from Frost Peak",
-    "gold_reward": 15,
-    "immunities": [],
-    "is_boss": false,
-    "is_flyer": true,
-    "is_invisible": false,
-    "is_stealth": false,
-    "max_health": 3400,
-    "name": "Blizzard Harpy",
-    "resistances": {},
-    "size": 20,
-    "speed": 80.0,
-    "split_count": 0,
-    "split_enemy_type": "",
-    "split_on_death": false
-  },
-  "bog_lurker": {
-    "armor": 5,
-    "color": "#ff0000",
-    "description": "A dangerous enemy from Swamp",
-    "gold_reward": 15,
-    "immunities": [],
-    "is_boss": false,
-    "is_flyer": false,
-    "is_invisible": false,
-    "is_stealth": false,
-    "max_health": 600,
-    "name": "Bog Lurker",
-    "resistances": {},
-    "size": 20,
-    "speed": 80.0,
-    "split_count": 0,
-    "split_enemy_type": "",
-    "split_on_death": false
-  },
-  "bounty_hunter": {
-    "armor": 5,
-    "color": "#ff0000",
-    "description": "A dangerous enemy from Royal Highway",
-    "gold_reward": 15,
-    "immunities": [],
-    "is_boss": false,
-    "is_flyer": false,
-    "is_invisible": false,
-    "is_stealth": false,
-    "max_health": 2300,
-    "name": "Bounty Hunter",
-    "resistances": {},
-    "size": 20,
-    "speed": 80.0,
-    "split_count": 0,
-    "split_enemy_type": "",
-    "split_on_death": false
-  },
-  "carapace_beetle": {
-    "armor": 80.0,
-    "color": "#713f12",
-    "description": "Бронированный жук с непробиваемым панцирем. Полный иммунитет к физическому урону, уязвим к магии.",
-    "gold_reward": 26.0,
-    "immunities": [
-      "physical"
-    ],
-    "is_boss": false,
-    "is_flyer": false,
-    "is_invisible": false,
-    "is_stealth": false,
-    "max_health": 220.0,
-    "name": "Панцирник",
-    "resistances": {
-      "fire": -0.2,
-      "magic": -0.25
-    },
-    "size": 21.0,
-    "speed": 50.0,
-    "split_count": 0.0,
-    "split_enemy_type": "",
-    "split_on_death": false
-  },
-  "carrion_griffin": {
-    "armor": 20.0,
-    "color": "#b45309",
-    "description": "Кровожадный хищник небес. Пикирует на защитников, нанося тяжелые повреждения.",
-    "gold_reward": 35.0,
-    "immunities": [],
-    "is_boss": false,
-    "is_flyer": true,
-    "is_invisible": false,
-    "is_stealth": false,
-    "max_health": 240.0,
-    "name": "Грифон",
-    "resistances": {
-      "lightning": -0.2
-    },
-    "size": 25.0,
-    "speed": 140.0,
-    "split_count": 0.0,
-    "split_enemy_type": "",
-    "split_on_death": false
-  },
-  "catapult_crew": {
-    "armor": 5,
-    "color": "#ff0000",
-    "description": "A dangerous enemy from Stone Suburbs",
-    "gold_reward": 15,
-    "immunities": [],
-    "is_boss": false,
-    "is_flyer": false,
-    "is_invisible": false,
-    "is_stealth": false,
-    "max_health": 1600,
-    "name": "Catapult Crew",
-    "resistances": {},
-    "size": 20,
-    "speed": 80.0,
-    "split_count": 0,
-    "split_enemy_type": "",
-    "split_on_death": false
-  },
-  "charred_skeleton": {
-    "armor": 5,
-    "color": "#ff0000",
-    "description": "A dangerous enemy from Ash Wastes",
-    "gold_reward": 15,
-    "immunities": [],
-    "is_boss": false,
-    "is_flyer": false,
-    "is_invisible": false,
-    "is_stealth": false,
-    "max_health": 3700,
-    "name": "Charred Skeleton",
-    "resistances": {},
-    "size": 20,
-    "speed": 80.0,
-    "split_count": 0,
-    "split_enemy_type": "",
-    "split_on_death": false
-  },
-  "chrono_serpent": {
-    "armor": 5,
-    "color": "#ff0000",
-    "description": "A dangerous enemy from Astral Ruins",
-    "gold_reward": 15,
-    "immunities": [],
-    "is_boss": false,
-    "is_flyer": false,
-    "is_invisible": false,
-    "is_stealth": false,
-    "max_health": 5400,
-    "name": "Chrono Serpent",
-    "resistances": {},
-    "size": 20,
-    "speed": 80.0,
-    "split_count": 0,
-    "split_enemy_type": "",
-    "split_on_death": false
-  },
-  "cinder_hound": {
-    "armor": 5,
-    "color": "#ff0000",
-    "description": "A dangerous enemy from Ash Wastes",
-    "gold_reward": 15,
-    "immunities": [],
-    "is_boss": false,
-    "is_flyer": false,
-    "is_invisible": false,
-    "is_stealth": false,
-    "max_health": 3800,
-    "name": "Cinder Hound",
-    "resistances": {},
-    "size": 20,
-    "speed": 80.0,
-    "split_count": 0,
-    "split_enemy_type": "",
-    "split_on_death": false
-  },
-  "coral_spire_crab": {
-    "armor": 5,
-    "color": "#ff0000",
-    "description": "A dangerous enemy from Sunken Kingdom",
-    "gold_reward": 15,
-    "immunities": [],
-    "is_boss": false,
-    "is_flyer": false,
-    "is_invisible": false,
-    "is_stealth": false,
-    "max_health": 4800,
-    "name": "Coral Spire Crab",
-    "resistances": {},
-    "size": 20,
-    "speed": 80.0,
-    "split_count": 0,
-    "split_enemy_type": "",
-    "split_on_death": false
-  },
-  "crimson_praetorian": {
-    "armor": 5,
-    "color": "#ff0000",
-    "description": "A dangerous enemy from Royal Heart",
-    "gold_reward": 15,
-    "immunities": [],
-    "is_boss": false,
-    "is_flyer": false,
-    "is_invisible": false,
-    "is_stealth": false,
-    "max_health": 5600,
-    "name": "Crimson Praetorian",
-    "resistances": {},
-    "size": 20,
-    "speed": 80.0,
-    "split_count": 0,
-    "split_enemy_type": "",
-    "split_on_death": false
-  },
-  "crystal_resonance_bat": {
-    "armor": 5,
-    "color": "#ff0000",
-    "description": "A dangerous enemy from Crystal Caves",
-    "gold_reward": 15,
-    "immunities": [],
-    "is_boss": false,
-    "is_flyer": true,
-    "is_invisible": false,
-    "is_stealth": false,
-    "max_health": 2700,
-    "name": "Crystal Resonance Bat",
-    "resistances": {},
-    "size": 20,
-    "speed": 80.0,
-    "split_count": 0,
-    "split_enemy_type": "",
-    "split_on_death": false
-  },
-  "drowned_mariner": {
-    "armor": 5,
-    "color": "#ff0000",
-    "description": "A dangerous enemy from Sunken Kingdom",
-    "gold_reward": 15,
-    "immunities": [],
-    "is_boss": false,
-    "is_flyer": false,
-    "is_invisible": false,
-    "is_stealth": false,
-    "max_health": 4600,
-    "name": "Drowned Mariner",
-    "resistances": {},
-    "size": 20,
-    "speed": 80.0,
-    "split_count": 0,
-    "split_enemy_type": "",
-    "split_on_death": false
-  },
-  "elder_ent": {
-    "armor": 5,
-    "color": "#ff0000",
-    "description": "A dangerous enemy from Greenwood",
-    "gold_reward": 15,
-    "immunities": [],
-    "is_boss": false,
-    "is_flyer": false,
-    "is_invisible": false,
-    "is_stealth": false,
-    "max_health": 1200,
-    "name": "Elder Ent",
-    "resistances": {},
-    "size": 20,
-    "speed": 80.0,
-    "split_count": 0,
-    "split_enemy_type": "",
-    "split_on_death": false
-  },
-  "events": [
-    {
-      "choices": [
-        {
-          "id": "fight",
-          "reward": "gold",
-          "text": "Fight"
-        },
-        {
-          "id": "flee",
-          "reward": "none",
-          "text": "Flee"
-        }
-      ],
-      "description": "You face a peasant_rebel",
-      "id": "event_1_peasant_rebel",
-      "region": "Valley",
-      "title": "Encounter Peasant Rebel"
-    },
-    {
-      "choices": [
-        {
-          "id": "fight",
-          "reward": "gold",
-          "text": "Fight"
-        },
-        {
-          "id": "flee",
-          "reward": "none",
-          "text": "Flee"
-        }
-      ],
-      "description": "You face a wild_boar",
-      "id": "event_2_wild_boar",
-      "region": "Valley",
-      "title": "Encounter Wild Boar"
-    },
-    {
-      "choices": [
-        {
-          "id": "fight",
-          "reward": "gold",
-          "text": "Fight"
-        },
-        {
-          "id": "flee",
-          "reward": "none",
-          "text": "Flee"
-        }
-      ],
-      "description": "You face a wolf_alpha",
-      "id": "event_3_wolf_alpha",
-      "region": "Valley",
-      "title": "Encounter Wolf Alpha"
-    },
-    {
-      "choices": [
-        {
-          "id": "fight",
-          "reward": "gold",
-          "text": "Fight"
-        },
-        {
-          "id": "flee",
-          "reward": "none",
-          "text": "Flee"
-        }
-      ],
-      "description": "You face a valley_bandit",
-      "id": "event_4_valley_bandit",
-      "region": "Valley",
-      "title": "Encounter Valley Bandit"
-    },
-    {
-      "choices": [
-        {
-          "id": "fight",
-          "reward": "gold",
-          "text": "Fight"
-        },
-        {
-          "id": "flee",
-          "reward": "none",
-          "text": "Flee"
-        }
-      ],
-      "description": "You face a harvest_golem",
-      "id": "event_5_harvest_golem",
-      "region": "Valley",
-      "title": "Encounter Harvest Golem"
-    },
-    {
-      "choices": [
-        {
-          "id": "fight",
-          "reward": "gold",
-          "text": "Fight"
-        },
-        {
-          "id": "flee",
-          "reward": "none",
-          "text": "Flee"
-        }
-      ],
-      "description": "You face a bog_lurker",
-      "id": "event_6_bog_lurker",
-      "region": "Swamp",
-      "title": "Encounter Bog Lurker"
-    },
-    {
-      "choices": [
-        {
-          "id": "fight",
-          "reward": "gold",
-          "text": "Fight"
-        },
-        {
-          "id": "flee",
-          "reward": "none",
-          "text": "Flee"
-        }
-      ],
-      "description": "You face a toxic_slime",
-      "id": "event_7_toxic_slime",
-      "region": "Swamp",
-      "title": "Encounter Toxic Slime"
-    },
-    {
-      "choices": [
-        {
-          "id": "fight",
-          "reward": "gold",
-          "text": "Fight"
-        },
-        {
-          "id": "flee",
-          "reward": "none",
-          "text": "Flee"
-        }
-      ],
-      "description": "You face a swamp_hydra",
-      "id": "event_8_swamp_hydra",
-      "region": "Swamp",
-      "title": "Encounter Swamp Hydra"
-    },
-    {
-      "choices": [
-        {
-          "id": "fight",
-          "reward": "gold",
-          "text": "Fight"
-        },
-        {
-          "id": "flee",
-          "reward": "none",
-          "text": "Flee"
-        }
-      ],
-      "description": "You face a witch_of_mists",
-      "id": "event_9_witch_of_mists",
-      "region": "Swamp",
-      "title": "Encounter Witch Of Mists"
-    },
-    {
-      "choices": [
-        {
-          "id": "fight",
-          "reward": "gold",
-          "text": "Fight"
-        },
-        {
-          "id": "flee",
-          "reward": "none",
-          "text": "Flee"
-        }
-      ],
-      "description": "You face a leech_broodmother",
-      "id": "event_10_leech_broodmother",
-      "region": "Swamp",
-      "title": "Encounter Leech Broodmother"
-    },
-    {
-      "choices": [
-        {
-          "id": "fight",
-          "reward": "gold",
-          "text": "Fight"
-        },
-        {
-          "id": "flee",
-          "reward": "none",
-          "text": "Flee"
-        }
-      ],
-      "description": "You face a treant_sapling",
-      "id": "event_11_treant_sapling",
-      "region": "Greenwood",
-      "title": "Encounter Treant Sapling"
-    },
-    {
-      "choices": [
-        {
-          "id": "fight",
-          "reward": "gold",
-          "text": "Fight"
-        },
-        {
-          "id": "flee",
-          "reward": "none",
-          "text": "Flee"
-        }
-      ],
-      "description": "You face a elder_ent",
-      "id": "event_12_elder_ent",
-      "region": "Greenwood",
-      "title": "Encounter Elder Ent"
-    },
-    {
-      "choices": [
-        {
-          "id": "fight",
-          "reward": "gold",
-          "text": "Fight"
-        },
-        {
-          "id": "flee",
-          "reward": "none",
-          "text": "Flee"
-        }
-      ],
-      "description": "You face a thorn_spriggan",
-      "id": "event_13_thorn_spriggan",
-      "region": "Greenwood",
-      "title": "Encounter Thorn Spriggan"
-    },
-    {
-      "choices": [
-        {
-          "id": "fight",
-          "reward": "gold",
-          "text": "Fight"
-        },
-        {
-          "id": "flee",
-          "reward": "none",
-          "text": "Flee"
-        }
-      ],
-      "description": "You face a shadow_panther",
-      "id": "event_14_shadow_panther",
-      "region": "Greenwood",
-      "title": "Encounter Shadow Panther"
-    },
-    {
-      "choices": [
-        {
-          "id": "fight",
-          "reward": "gold",
-          "text": "Fight"
-        },
-        {
-          "id": "flee",
-          "reward": "none",
-          "text": "Flee"
-        }
-      ],
-      "description": "You face a forest_guardian",
-      "id": "event_15_forest_guardian",
-      "region": "Greenwood",
-      "title": "Encounter Forest Guardian"
-    },
-    {
-      "choices": [
-        {
-          "id": "fight",
-          "reward": "gold",
-          "text": "Fight"
-        },
-        {
-          "id": "flee",
-          "reward": "none",
-          "text": "Flee"
-        }
-      ],
-      "description": "You face a catapult_crew",
-      "id": "event_16_catapult_crew",
-      "region": "Stone Suburbs",
-      "title": "Encounter Catapult Crew"
-    },
-    {
-      "choices": [
-        {
-          "id": "fight",
-          "reward": "gold",
-          "text": "Fight"
-        },
-        {
-          "id": "flee",
-          "reward": "none",
-          "text": "Flee"
-        }
-      ],
-      "description": "You face a stone_golem",
-      "id": "event_17_stone_golem",
-      "region": "Stone Suburbs",
-      "title": "Encounter Stone Golem"
-    },
-    {
-      "choices": [
-        {
-          "id": "fight",
-          "reward": "gold",
-          "text": "Fight"
-        },
-        {
-          "id": "flee",
-          "reward": "none",
-          "text": "Flee"
-        }
-      ],
-      "description": "You face a shieldwall_knight",
-      "id": "event_18_shieldwall_knight",
-      "region": "Stone Suburbs",
-      "title": "Encounter Shieldwall Knight"
-    },
-    {
-      "choices": [
-        {
-          "id": "fight",
-          "reward": "gold",
-          "text": "Fight"
-        },
-        {
-          "id": "flee",
-          "reward": "none",
-          "text": "Flee"
-        }
-      ],
-      "description": "You face a siege_ram",
-      "id": "event_19_siege_ram",
-      "region": "Stone Suburbs",
-      "title": "Encounter Siege Ram"
-    },
-    {
-      "choices": [
-        {
-          "id": "fight",
-          "reward": "gold",
-          "text": "Fight"
-        },
-        {
-          "id": "flee",
-          "reward": "none",
-          "text": "Flee"
-        }
-      ],
-      "description": "You face a mercenary_crossbow",
-      "id": "event_20_mercenary_crossbow",
-      "region": "Stone Suburbs",
-      "title": "Encounter Mercenary Crossbow"
-    },
-    {
-      "choices": [
-        {
-          "id": "fight",
-          "reward": "gold",
-          "text": "Fight"
-        },
-        {
-          "id": "flee",
-          "reward": "none",
-          "text": "Flee"
-        }
-      ],
-      "description": "You face a royal_inquisitor",
-      "id": "event_21_royal_inquisitor",
-      "region": "Royal Highway",
-      "title": "Encounter Royal Inquisitor"
-    },
-    {
-      "choices": [
-        {
-          "id": "fight",
-          "reward": "gold",
-          "text": "Fight"
-        },
-        {
-          "id": "flee",
-          "reward": "none",
-          "text": "Flee"
-        }
-      ],
-      "description": "You face a mounted_outrider",
-      "id": "event_22_mounted_outrider",
-      "region": "Royal Highway",
-      "title": "Encounter Mounted Outrider"
-    },
-    {
-      "choices": [
-        {
-          "id": "fight",
-          "reward": "gold",
-          "text": "Fight"
-        },
-        {
-          "id": "flee",
-          "reward": "none",
-          "text": "Flee"
-        }
-      ],
-      "description": "You face a bounty_hunter",
-      "id": "event_23_bounty_hunter",
-      "region": "Royal Highway",
-      "title": "Encounter Bounty Hunter"
-    },
-    {
-      "choices": [
-        {
-          "id": "fight",
-          "reward": "gold",
-          "text": "Fight"
-        },
-        {
-          "id": "flee",
-          "reward": "none",
-          "text": "Flee"
-        }
-      ],
-      "description": "You face a highwayman",
-      "id": "event_24_highwayman",
-      "region": "Royal Highway",
-      "title": "Encounter Highwayman"
-    },
-    {
-      "choices": [
-        {
-          "id": "fight",
-          "reward": "gold",
-          "text": "Fight"
-        },
-        {
-          "id": "flee",
-          "reward": "none",
-          "text": "Flee"
-        }
-      ],
-      "description": "You face a iron_chariot",
-      "id": "event_25_iron_chariot",
-      "region": "Royal Highway",
-      "title": "Encounter Iron Chariot"
-    },
-    {
-      "choices": [
-        {
-          "id": "fight",
-          "reward": "gold",
-          "text": "Fight"
-        },
-        {
-          "id": "flee",
-          "reward": "none",
-          "text": "Flee"
-        }
-      ],
-      "description": "You face a geode_crawler",
-      "id": "event_26_geode_crawler",
-      "region": "Crystal Caves",
-      "title": "Encounter Geode Crawler"
-    },
-    {
-      "choices": [
-        {
-          "id": "fight",
-          "reward": "gold",
-          "text": "Fight"
-        },
-        {
-          "id": "flee",
-          "reward": "none",
-          "text": "Flee"
-        }
-      ],
-      "description": "You face a crystal_resonance_bat",
-      "id": "event_27_crystal_resonance_bat",
-      "region": "Crystal Caves",
-      "title": "Encounter Crystal Resonance Bat"
-    },
-    {
-      "choices": [
-        {
-          "id": "fight",
-          "reward": "gold",
-          "text": "Fight"
-        },
-        {
-          "id": "flee",
-          "reward": "none",
-          "text": "Flee"
-        }
-      ],
-      "description": "You face a quartz_crusher",
-      "id": "event_28_quartz_crusher",
-      "region": "Crystal Caves",
-      "title": "Encounter Quartz Crusher"
-    },
-    {
-      "choices": [
-        {
-          "id": "fight",
-          "reward": "gold",
-          "text": "Fight"
-        },
-        {
-          "id": "flee",
-          "reward": "none",
-          "text": "Flee"
-        }
-      ],
-      "description": "You face a void_stalker",
-      "id": "event_29_void_stalker",
-      "region": "Crystal Caves",
-      "title": "Encounter Void Stalker"
-    },
-    {
-      "choices": [
-        {
-          "id": "fight",
-          "reward": "gold",
-          "text": "Fight"
-        },
-        {
-          "id": "flee",
-          "reward": "none",
-          "text": "Flee"
-        }
-      ],
-      "description": "You face a prism_elemental",
-      "id": "event_30_prism_elemental",
-      "region": "Crystal Caves",
-      "title": "Encounter Prism Elemental"
-    },
-    {
-      "choices": [
-        {
-          "id": "fight",
-          "reward": "gold",
-          "text": "Fight"
-        },
-        {
-          "id": "flee",
-          "reward": "none",
-          "text": "Flee"
-        }
-      ],
-      "description": "You face a frost_yeti",
-      "id": "event_31_frost_yeti",
-      "region": "Frost Peak",
-      "title": "Encounter Frost Yeti"
-    },
-    {
-      "choices": [
-        {
-          "id": "fight",
-          "reward": "gold",
-          "text": "Fight"
-        },
-        {
-          "id": "flee",
-          "reward": "none",
-          "text": "Flee"
-        }
-      ],
-      "description": "You face a glacial_wurm",
-      "id": "event_32_glacial_wurm",
-      "region": "Frost Peak",
-      "title": "Encounter Glacial Wurm"
-    },
-    {
-      "choices": [
-        {
-          "id": "fight",
-          "reward": "gold",
-          "text": "Fight"
-        },
-        {
-          "id": "flee",
-          "reward": "none",
-          "text": "Flee"
-        }
-      ],
-      "description": "You face a ice_revenant",
-      "id": "event_33_ice_revenant",
-      "region": "Frost Peak",
-      "title": "Encounter Ice Revenant"
-    },
-    {
-      "choices": [
-        {
-          "id": "fight",
-          "reward": "gold",
-          "text": "Fight"
-        },
-        {
-          "id": "flee",
-          "reward": "none",
-          "text": "Flee"
-        }
-      ],
-      "description": "You face a blizzard_harpy",
-      "id": "event_34_blizzard_harpy",
-      "region": "Frost Peak",
-      "title": "Encounter Blizzard Harpy"
-    },
-    {
-      "choices": [
-        {
-          "id": "fight",
-          "reward": "gold",
-          "text": "Fight"
-        },
-        {
-          "id": "flee",
-          "reward": "none",
-          "text": "Flee"
-        }
-      ],
-      "description": "You face a frost_titan",
-      "id": "event_35_frost_titan",
-      "region": "Frost Peak",
-      "title": "Encounter Frost Titan"
-    },
-    {
-      "choices": [
-        {
-          "id": "fight",
-          "reward": "gold",
-          "text": "Fight"
-        },
-        {
-          "id": "flee",
-          "reward": "none",
-          "text": "Flee"
-        }
-      ],
-      "description": "You face a ash_crawler",
-      "id": "event_36_ash_crawler",
-      "region": "Ash Wastes",
-      "title": "Encounter Ash Crawler"
-    },
-    {
-      "choices": [
-        {
-          "id": "fight",
-          "reward": "gold",
-          "text": "Fight"
-        },
-        {
-          "id": "flee",
-          "reward": "none",
-          "text": "Flee"
-        }
-      ],
-      "description": "You face a charred_skeleton",
-      "id": "event_37_charred_skeleton",
-      "region": "Ash Wastes",
-      "title": "Encounter Charred Skeleton"
-    },
-    {
-      "choices": [
-        {
-          "id": "fight",
-          "reward": "gold",
-          "text": "Fight"
-        },
-        {
-          "id": "flee",
-          "reward": "none",
-          "text": "Flee"
-        }
-      ],
-      "description": "You face a cinder_hound",
-      "id": "event_38_cinder_hound",
-      "region": "Ash Wastes",
-      "title": "Encounter Cinder Hound"
-    },
-    {
-      "choices": [
-        {
-          "id": "fight",
-          "reward": "gold",
-          "text": "Fight"
-        },
-        {
-          "id": "flee",
-          "reward": "none",
-          "text": "Flee"
-        }
-      ],
-      "description": "You face a obsidian_titan",
-      "id": "event_39_obsidian_titan",
-      "region": "Ash Wastes",
-      "title": "Encounter Obsidian Titan"
-    },
-    {
-      "choices": [
-        {
-          "id": "fight",
-          "reward": "gold",
-          "text": "Fight"
-        },
-        {
-          "id": "flee",
-          "reward": "none",
-          "text": "Flee"
-        }
-      ],
-      "description": "You face a fire_drake",
-      "id": "event_40_fire_drake",
-      "region": "Ash Wastes",
-      "title": "Encounter Fire Drake"
-    },
-    {
-      "choices": [
-        {
-          "id": "fight",
-          "reward": "gold",
-          "text": "Fight"
-        },
-        {
-          "id": "flee",
-          "reward": "none",
-          "text": "Flee"
-        }
-      ],
-      "description": "You face a magma_elemental",
-      "id": "event_41_magma_elemental",
-      "region": "Fire Chasms",
-      "title": "Encounter Magma Elemental"
-    },
-    {
-      "choices": [
-        {
-          "id": "fight",
-          "reward": "gold",
-          "text": "Fight"
-        },
-        {
-          "id": "flee",
-          "reward": "none",
-          "text": "Flee"
-        }
-      ],
-      "description": "You face a volcanic_imp",
-      "id": "event_42_volcanic_imp",
-      "region": "Fire Chasms",
-      "title": "Encounter Volcanic Imp"
-    },
-    {
-      "choices": [
-        {
-          "id": "fight",
-          "reward": "gold",
-          "text": "Fight"
-        },
-        {
-          "id": "flee",
-          "reward": "none",
-          "text": "Flee"
-        }
-      ],
-      "description": "You face a infernal_juggernaut",
-      "id": "event_43_infernal_juggernaut",
-      "region": "Fire Chasms",
-      "title": "Encounter Infernal Juggernaut"
-    },
-    {
-      "choices": [
-        {
-          "id": "fight",
-          "reward": "gold",
-          "text": "Fight"
-        },
-        {
-          "id": "flee",
-          "reward": "none",
-          "text": "Flee"
-        }
-      ],
-      "description": "You face a lava_serpent",
-      "id": "event_44_lava_serpent",
-      "region": "Fire Chasms",
-      "title": "Encounter Lava Serpent"
-    },
-    {
-      "choices": [
-        {
-          "id": "fight",
-          "reward": "gold",
-          "text": "Fight"
-        },
-        {
-          "id": "flee",
-          "reward": "none",
-          "text": "Flee"
-        }
-      ],
-      "description": "You face a pyroclast_behemoth",
-      "id": "event_45_pyroclast_behemoth",
-      "region": "Fire Chasms",
-      "title": "Encounter Pyroclast Behemoth"
-    },
-    {
-      "choices": [
-        {
-          "id": "fight",
-          "reward": "gold",
-          "text": "Fight"
-        },
-        {
-          "id": "flee",
-          "reward": "none",
-          "text": "Flee"
-        }
-      ],
-      "description": "You face a drowned_mariner",
-      "id": "event_46_drowned_mariner",
-      "region": "Sunken Kingdom",
-      "title": "Encounter Drowned Mariner"
-    },
-    {
-      "choices": [
-        {
-          "id": "fight",
-          "reward": "gold",
-          "text": "Fight"
-        },
-        {
-          "id": "flee",
-          "reward": "none",
-          "text": "Flee"
-        }
-      ],
-      "description": "You face a abyssal_angler",
-      "id": "event_47_abyssal_angler",
-      "region": "Sunken Kingdom",
-      "title": "Encounter Abyssal Angler"
-    },
-    {
-      "choices": [
-        {
-          "id": "fight",
-          "reward": "gold",
-          "text": "Fight"
-        },
-        {
-          "id": "flee",
-          "reward": "none",
-          "text": "Flee"
-        }
-      ],
-      "description": "You face a coral_spire_crab",
-      "id": "event_48_coral_spire_crab",
-      "region": "Sunken Kingdom",
-      "title": "Encounter Coral Spire Crab"
-    },
-    {
-      "choices": [
-        {
-          "id": "fight",
-          "reward": "gold",
-          "text": "Fight"
-        },
-        {
-          "id": "flee",
-          "reward": "none",
-          "text": "Flee"
-        }
-      ],
-      "description": "You face a siren_temptress",
-      "id": "event_49_siren_temptress",
-      "region": "Sunken Kingdom",
-      "title": "Encounter Siren Temptress"
-    },
-    {
-      "choices": [
-        {
-          "id": "fight",
-          "reward": "gold",
-          "text": "Fight"
-        },
-        {
-          "id": "flee",
-          "reward": "none",
-          "text": "Flee"
-        }
-      ],
-      "description": "You face a kraken_spawn",
-      "id": "event_50_kraken_spawn",
-      "region": "Sunken Kingdom",
-      "title": "Encounter Kraken Spawn"
-    },
-    {
-      "choices": [
-        {
-          "id": "fight",
-          "reward": "gold",
-          "text": "Fight"
-        },
-        {
-          "id": "flee",
-          "reward": "none",
-          "text": "Flee"
-        }
-      ],
-      "description": "You face a phase_shifter",
-      "id": "event_51_phase_shifter",
-      "region": "Astral Ruins",
-      "title": "Encounter Phase Shifter"
-    },
-    {
-      "choices": [
-        {
-          "id": "fight",
-          "reward": "gold",
-          "text": "Fight"
-        },
-        {
-          "id": "flee",
-          "reward": "none",
-          "text": "Flee"
-        }
-      ],
-      "description": "You face a stellar_anomaly",
-      "id": "event_52_stellar_anomaly",
-      "region": "Astral Ruins",
-      "title": "Encounter Stellar Anomaly"
-    },
-    {
-      "choices": [
-        {
-          "id": "fight",
-          "reward": "gold",
-          "text": "Fight"
-        },
-        {
-          "id": "flee",
-          "reward": "none",
-          "text": "Flee"
-        }
-      ],
-      "description": "You face a void_walker",
-      "id": "event_53_void_walker",
-      "region": "Astral Ruins",
-      "title": "Encounter Void Walker"
-    },
-    {
-      "choices": [
-        {
-          "id": "fight",
-          "reward": "gold",
-          "text": "Fight"
-        },
-        {
-          "id": "flee",
-          "reward": "none",
-          "text": "Flee"
-        }
-      ],
-      "description": "You face a chrono_serpent",
-      "id": "event_54_chrono_serpent",
-      "region": "Astral Ruins",
-      "title": "Encounter Chrono Serpent"
-    },
-    {
-      "choices": [
-        {
-          "id": "fight",
-          "reward": "gold",
-          "text": "Fight"
-        },
-        {
-          "id": "flee",
-          "reward": "none",
-          "text": "Flee"
-        }
-      ],
-      "description": "You face a singularity_horror",
-      "id": "event_55_singularity_horror",
-      "region": "Astral Ruins",
-      "title": "Encounter Singularity Horror"
-    },
-    {
-      "choices": [
-        {
-          "id": "fight",
-          "reward": "gold",
-          "text": "Fight"
-        },
-        {
-          "id": "flee",
-          "reward": "none",
-          "text": "Flee"
-        }
-      ],
-      "description": "You face a crimson_praetorian",
-      "id": "event_56_crimson_praetorian",
-      "region": "Royal Heart",
-      "title": "Encounter Crimson Praetorian"
-    },
-    {
-      "choices": [
-        {
-          "id": "fight",
-          "reward": "gold",
-          "text": "Fight"
-        },
-        {
-          "id": "flee",
-          "reward": "none",
-          "text": "Flee"
-        }
-      ],
-      "description": "You face a high_templar",
-      "id": "event_57_high_templar",
-      "region": "Royal Heart",
-      "title": "Encounter High Templar"
-    },
-    {
-      "choices": [
-        {
-          "id": "fight",
-          "reward": "gold",
-          "text": "Fight"
-        },
-        {
-          "id": "flee",
-          "reward": "none",
-          "text": "Flee"
-        }
-      ],
-      "description": "You face a archon_of_light",
-      "id": "event_58_archon_of_light",
-      "region": "Royal Heart",
-      "title": "Encounter Archon Of Light"
-    },
-    {
-      "choices": [
-        {
-          "id": "fight",
-          "reward": "gold",
-          "text": "Fight"
-        },
-        {
-          "id": "flee",
-          "reward": "none",
-          "text": "Flee"
-        }
-      ],
-      "description": "You face a king_dreadnought",
-      "id": "event_59_king_dreadnought",
-      "region": "Royal Heart",
-      "title": "Encounter King Dreadnought"
-    },
-    {
-      "choices": [
-        {
-          "id": "fight",
-          "reward": "gold",
-          "text": "Fight"
-        },
-        {
-          "id": "flee",
-          "reward": "none",
-          "text": "Flee"
-        }
-      ],
-      "description": "You face a sun_colossus",
-      "id": "event_60_sun_colossus",
-      "region": "Royal Heart",
-      "title": "Encounter Sun Colossus"
-    }
-  ],
-  "exploding_troll": {
-    "armor": 15.0,
-    "color": "#b91c1c",
-    "description": "Безумный тролль-подрывник, увешанный бочонками пороха. Взрывается при ликвидации.",
-    "gold_reward": 40.0,
-    "immunities": [],
-    "is_boss": false,
-    "is_flyer": false,
-    "is_invisible": false,
-    "is_stealth": false,
-    "max_health": 320.0,
-    "name": "Взрывной тролль",
-    "resistances": {
-      "fire": 0.5
-    },
-    "size": 26.0,
-    "speed": 65.0,
-    "split_count": 0.0,
-    "split_enemy_type": "",
-    "split_on_death": false
-  },
-  "fire_drake": {
-    "armor": 5,
-    "color": "#ff0000",
-    "description": "A dangerous enemy from Ash Wastes",
-    "gold_reward": 15,
-    "immunities": [],
-    "is_boss": false,
-    "is_flyer": true,
-    "is_invisible": false,
-    "is_stealth": false,
-    "max_health": 4000,
-    "name": "Fire Drake",
-    "resistances": {},
-    "size": 20,
-    "speed": 80.0,
-    "split_count": 0,
-    "split_enemy_type": "",
-    "split_on_death": false
-  },
-  "fish_mosquito": {
-    "armor": 0.0,
-    "color": "#06b6d4",
-    "description": "Стремительный летучий мутант с непредсказуемой траекторией движения.",
-    "gold_reward": 12.0,
-    "immunities": [],
-    "is_boss": false,
-    "is_flyer": false,
-    "is_invisible": false,
-    "is_stealth": false,
-    "max_health": 65.0,
-    "name": "Рыбокомар",
-    "resistances": {},
-    "size": 14.0,
-    "speed": 170.0,
-    "split_count": 0.0,
-    "split_enemy_type": "",
-    "split_on_death": false
-  },
-  "flying_pumpkin": {
-    "armor": 5.0,
-    "color": "#f97316",
-    "description": "Летающая хэллоуинская тварь. Неуязвима к наземным капканам и минам.",
-    "gold_reward": 15.0,
-    "immunities": [],
-    "is_boss": false,
-    "is_flyer": true,
-    "is_invisible": false,
-    "is_stealth": false,
-    "max_health": 95.0,
-    "name": "Летучая тыква",
-    "resistances": {},
-    "size": 18.0,
-    "speed": 110.0,
-    "split_count": 0.0,
-    "split_enemy_type": "",
-    "split_on_death": false
-  },
-  "forest_guardian": {
-    "armor": 5,
-    "color": "#ff0000",
-    "description": "A dangerous enemy from Greenwood",
-    "gold_reward": 15,
-    "immunities": [],
-    "is_boss": false,
-    "is_flyer": false,
-    "is_invisible": false,
-    "is_stealth": false,
-    "max_health": 1500,
-    "name": "Forest Guardian",
-    "resistances": {},
-    "size": 20,
-    "speed": 80.0,
-    "split_count": 0,
-    "split_enemy_type": "",
-    "split_on_death": false
-  },
-  "frost_orc": {
-    "armor": 25.0,
-    "color": "#0284c7",
-    "description": "Обитатель замерзших вершин. Полный иммунитет к холоду и замедлению, слаб к огню.",
-    "gold_reward": 22.0,
-    "immunities": [
-      "cold"
-    ],
-    "is_boss": false,
-    "is_flyer": false,
-    "is_invisible": false,
-    "is_stealth": false,
-    "max_health": 160.0,
-    "name": "Ледяной орк",
-    "resistances": {
-      "cold": 1.0,
-      "fire": -0.3
-    },
-    "size": 20.0,
-    "speed": 80.0,
-    "split_count": 0.0,
-    "split_enemy_type": "",
-    "split_on_death": false
-  },
-  "frost_titan": {
-    "armor": 5,
-    "color": "#ff0000",
-    "description": "A dangerous enemy from Frost Peak",
-    "gold_reward": 15,
-    "immunities": [],
-    "is_boss": false,
-    "is_flyer": false,
-    "is_invisible": false,
-    "is_stealth": false,
-    "max_health": 3500,
-    "name": "Frost Titan",
-    "resistances": {},
-    "size": 20,
-    "speed": 80.0,
-    "split_count": 0,
-    "split_enemy_type": "",
-    "split_on_death": false
-  },
-  "frost_yeti": {
-    "armor": 5,
-    "color": "#ff0000",
-    "description": "A dangerous enemy from Frost Peak",
-    "gold_reward": 15,
-    "immunities": [],
-    "is_boss": false,
-    "is_flyer": false,
-    "is_invisible": false,
-    "is_stealth": false,
-    "max_health": 3100,
-    "name": "Frost Yeti",
-    "resistances": {},
-    "size": 20,
-    "speed": 80.0,
-    "split_count": 0,
-    "split_enemy_type": "",
-    "split_on_death": false
-  },
-  "geode_crawler": {
-    "armor": 5,
-    "color": "#ff0000",
-    "description": "A dangerous enemy from Crystal Caves",
-    "gold_reward": 15,
-    "immunities": [],
-    "is_boss": false,
-    "is_flyer": false,
-    "is_invisible": false,
-    "is_stealth": false,
-    "max_health": 2600,
-    "name": "Geode Crawler",
-    "resistances": {},
-    "size": 20,
-    "speed": 80.0,
-    "split_count": 0,
-    "split_enemy_type": "",
-    "split_on_death": false
-  },
-  "glacial_wurm": {
-    "armor": 5,
-    "color": "#ff0000",
-    "description": "A dangerous enemy from Frost Peak",
-    "gold_reward": 15,
-    "immunities": [],
-    "is_boss": false,
-    "is_flyer": false,
-    "is_invisible": false,
-    "is_stealth": false,
-    "max_health": 3200,
-    "name": "Glacial Wurm",
-    "resistances": {},
-    "size": 20,
-    "speed": 80.0,
-    "split_count": 0,
-    "split_enemy_type": "",
-    "split_on_death": false
-  },
-  "grunt": {
-    "armor": 0.0,
-    "color": "#4d7c0f",
-    "description": "Обычный пехотинец орков со стандартной выносливостью.",
-    "gold_reward": 10.0,
-    "immunities": [],
-    "is_boss": false,
-    "is_flyer": false,
-    "is_invisible": false,
-    "is_stealth": false,
-    "max_health": 80.0,
-    "name": "Рядовой орк",
-    "resistances": {},
-    "size": 18.0,
-    "speed": 85.0,
-    "split_count": 0.0,
-    "split_enemy_type": "",
-    "split_on_death": false
-  },
-  "harvest_golem": {
-    "armor": 5,
-    "color": "#ff0000",
-    "description": "A dangerous enemy from Valley",
-    "gold_reward": 15,
-    "immunities": [],
-    "is_boss": false,
-    "is_flyer": false,
-    "is_invisible": false,
-    "is_stealth": false,
-    "max_health": 500,
-    "name": "Harvest Golem",
-    "resistances": {},
-    "size": 20,
-    "speed": 80.0,
-    "split_count": 0,
-    "split_enemy_type": "",
-    "split_on_death": false
-  },
-  "high_templar": {
-    "armor": 5,
-    "color": "#ff0000",
-    "description": "A dangerous enemy from Royal Heart",
-    "gold_reward": 15,
-    "immunities": [],
-    "is_boss": false,
-    "is_flyer": false,
-    "is_invisible": false,
-    "is_stealth": false,
-    "max_health": 5700,
-    "name": "High Templar",
-    "resistances": {},
-    "size": 20,
-    "speed": 80.0,
-    "split_count": 0,
-    "split_enemy_type": "",
-    "split_on_death": false
-  },
-  "highwayman": {
-    "armor": 5,
-    "color": "#ff0000",
-    "description": "A dangerous enemy from Royal Highway",
-    "gold_reward": 15,
-    "immunities": [],
-    "is_boss": false,
-    "is_flyer": false,
-    "is_invisible": false,
-    "is_stealth": false,
-    "max_health": 2400,
-    "name": "Highwayman",
-    "resistances": {},
-    "size": 20,
-    "speed": 80.0,
-    "split_count": 0,
-    "split_enemy_type": "",
-    "split_on_death": false
-  },
-  "ice_revenant": {
-    "armor": 5,
-    "color": "#ff0000",
-    "description": "A dangerous enemy from Frost Peak",
-    "gold_reward": 15,
-    "immunities": [],
-    "is_boss": false,
-    "is_flyer": false,
-    "is_invisible": false,
-    "is_stealth": false,
-    "max_health": 3300,
-    "name": "Ice Revenant",
-    "resistances": {},
-    "size": 20,
-    "speed": 80.0,
-    "split_count": 0,
-    "split_enemy_type": "",
-    "split_on_death": false
-  },
-  "infernal_juggernaut": {
-    "armor": 5,
-    "color": "#ff0000",
-    "description": "A dangerous enemy from Fire Chasms",
-    "gold_reward": 15,
-    "immunities": [],
-    "is_boss": false,
-    "is_flyer": false,
-    "is_invisible": false,
-    "is_stealth": false,
-    "max_health": 4300,
-    "name": "Infernal Juggernaut",
-    "resistances": {},
-    "size": 20,
-    "speed": 80.0,
-    "split_count": 0,
-    "split_enemy_type": "",
-    "split_on_death": false
-  },
-  "iron_chariot": {
-    "armor": 5,
-    "color": "#ff0000",
-    "description": "A dangerous enemy from Royal Highway",
-    "gold_reward": 15,
-    "immunities": [],
-    "is_boss": false,
-    "is_flyer": false,
-    "is_invisible": false,
-    "is_stealth": false,
-    "max_health": 2500,
-    "name": "Iron Chariot",
-    "resistances": {},
-    "size": 20,
-    "speed": 80.0,
-    "split_count": 0,
-    "split_enemy_type": "",
-    "split_on_death": false
-  },
-  "iron_guard": {
-    "armor": 40.0,
-    "color": "#334155",
-    "description": "Закованный в зачарованную сталь элитный воин. Снижает на 50% физический и магический урон.",
-    "gold_reward": 38.0,
-    "immunities": [],
-    "is_boss": false,
-    "is_flyer": false,
-    "is_invisible": false,
-    "is_stealth": false,
-    "max_health": 350.0,
-    "name": "Железный страж",
-    "resistances": {
-      "magic": 0.5,
-      "physical": 0.5
-    },
-    "size": 23.0,
-    "speed": 55.0,
-    "split_count": 0.0,
-    "split_enemy_type": "",
-    "split_on_death": false
-  },
-  "king_dreadnought": {
-    "armor": 5,
-    "color": "#ff0000",
-    "description": "A dangerous enemy from Royal Heart",
-    "gold_reward": 15,
-    "immunities": [],
-    "is_boss": false,
-    "is_flyer": false,
-    "is_invisible": false,
-    "is_stealth": false,
-    "max_health": 5900,
-    "name": "King Dreadnought",
-    "resistances": {},
-    "size": 20,
-    "speed": 80.0,
-    "split_count": 0,
-    "split_enemy_type": "",
-    "split_on_death": false
-  },
-  "kraken_spawn": {
-    "armor": 5,
-    "color": "#ff0000",
-    "description": "A dangerous enemy from Sunken Kingdom",
-    "gold_reward": 15,
-    "immunities": [],
-    "is_boss": false,
-    "is_flyer": false,
-    "is_invisible": false,
-    "is_stealth": false,
-    "max_health": 5000,
-    "name": "Kraken Spawn",
-    "resistances": {},
-    "size": 20,
-    "speed": 80.0,
-    "split_count": 0,
-    "split_enemy_type": "",
-    "split_on_death": false
-  },
-  "lava_serpent": {
-    "armor": 5,
-    "color": "#ff0000",
-    "description": "A dangerous enemy from Fire Chasms",
-    "gold_reward": 15,
-    "immunities": [],
-    "is_boss": false,
-    "is_flyer": false,
-    "is_invisible": false,
-    "is_stealth": false,
-    "max_health": 4400,
-    "name": "Lava Serpent",
-    "resistances": {},
-    "size": 20,
-    "speed": 80.0,
-    "split_count": 0,
-    "split_enemy_type": "",
-    "split_on_death": false
-  },
-  "leech_broodmother": {
-    "armor": 5,
-    "color": "#ff0000",
-    "description": "A dangerous enemy from Swamp",
-    "gold_reward": 15,
-    "immunities": [],
-    "is_boss": false,
-    "is_flyer": false,
-    "is_invisible": false,
-    "is_stealth": false,
-    "max_health": 1000,
-    "name": "Leech Broodmother",
-    "resistances": {},
-    "size": 20,
-    "speed": 80.0,
-    "split_count": 0,
-    "split_enemy_type": "",
-    "split_on_death": false
-  },
-  "magma_elemental": {
-    "armor": 5,
-    "color": "#ff0000",
-    "description": "A dangerous enemy from Fire Chasms",
-    "gold_reward": 15,
-    "immunities": [],
-    "is_boss": false,
-    "is_flyer": false,
-    "is_invisible": false,
-    "is_stealth": false,
-    "max_health": 4100,
-    "name": "Magma Elemental",
-    "resistances": {},
-    "size": 20,
-    "speed": 80.0,
-    "split_count": 0,
-    "split_enemy_type": "",
-    "split_on_death": false
-  },
-  "mercenary_crossbow": {
-    "armor": 5,
-    "color": "#ff0000",
-    "description": "A dangerous enemy from Stone Suburbs",
-    "gold_reward": 15,
-    "immunities": [],
-    "is_boss": false,
-    "is_flyer": false,
-    "is_invisible": false,
-    "is_stealth": false,
-    "max_health": 2000,
-    "name": "Mercenary Crossbow",
-    "resistances": {},
-    "size": 20,
-    "speed": 80.0,
-    "split_count": 0,
-    "split_enemy_type": "",
-    "split_on_death": false
-  },
-  "mounted_outrider": {
-    "armor": 5,
-    "color": "#ff0000",
-    "description": "A dangerous enemy from Royal Highway",
-    "gold_reward": 15,
-    "immunities": [],
-    "is_boss": false,
-    "is_flyer": false,
-    "is_invisible": false,
-    "is_stealth": false,
-    "max_health": 2200,
-    "name": "Mounted Outrider",
-    "resistances": {},
-    "size": 20,
-    "speed": 80.0,
-    "split_count": 0,
-    "split_enemy_type": "",
-    "split_on_death": false
-  },
-  "obsidian_titan": {
-    "armor": 5,
-    "color": "#ff0000",
-    "description": "A dangerous enemy from Ash Wastes",
-    "gold_reward": 15,
-    "immunities": [],
-    "is_boss": false,
-    "is_flyer": false,
-    "is_invisible": false,
-    "is_stealth": false,
-    "max_health": 3900,
-    "name": "Obsidian Titan",
-    "resistances": {},
-    "size": 20,
-    "speed": 80.0,
-    "split_count": 0,
-    "split_enemy_type": "",
-    "split_on_death": false
-  },
-  "peasant_rebel": {
-    "armor": 5,
-    "color": "#ff0000",
-    "description": "A dangerous enemy from Valley",
-    "gold_reward": 15,
-    "immunities": [],
-    "is_boss": false,
-    "is_flyer": false,
-    "is_invisible": false,
-    "is_stealth": false,
-    "max_health": 100,
-    "name": "Peasant Rebel",
-    "resistances": {},
-    "size": 20,
-    "speed": 80.0,
-    "split_count": 0,
-    "split_enemy_type": "",
-    "split_on_death": false
-  },
-  "phase_shifter": {
-    "armor": 5,
-    "color": "#ff0000",
-    "description": "A dangerous enemy from Astral Ruins",
-    "gold_reward": 15,
-    "immunities": [],
-    "is_boss": false,
-    "is_flyer": false,
-    "is_invisible": false,
-    "is_stealth": true,
-    "max_health": 5100,
-    "name": "Phase Shifter",
-    "resistances": {},
-    "size": 20,
-    "speed": 80.0,
-    "split_count": 0,
-    "split_enemy_type": "",
-    "split_on_death": false
-  },
-  "prism_elemental": {
-    "armor": 5,
-    "color": "#ff0000",
-    "description": "A dangerous enemy from Crystal Caves",
-    "gold_reward": 15,
-    "immunities": [],
-    "is_boss": false,
-    "is_flyer": false,
-    "is_invisible": false,
-    "is_stealth": false,
-    "max_health": 3000,
-    "name": "Prism Elemental",
-    "resistances": {},
-    "size": 20,
-    "speed": 80.0,
-    "split_count": 0,
-    "split_enemy_type": "",
-    "split_on_death": false
-  },
-  "pyroclast_behemoth": {
-    "armor": 5,
-    "color": "#ff0000",
-    "description": "A dangerous enemy from Fire Chasms",
-    "gold_reward": 15,
-    "immunities": [],
-    "is_boss": false,
-    "is_flyer": false,
-    "is_invisible": false,
-    "is_stealth": false,
-    "max_health": 4500,
-    "name": "Pyroclast Behemoth",
-    "resistances": {},
-    "size": 20,
-    "speed": 80.0,
-    "split_count": 0,
-    "split_enemy_type": "",
-    "split_on_death": false
-  },
-  "quartz_crusher": {
-    "armor": 5,
-    "color": "#ff0000",
-    "description": "A dangerous enemy from Crystal Caves",
-    "gold_reward": 15,
-    "immunities": [],
-    "is_boss": false,
-    "is_flyer": false,
-    "is_invisible": false,
-    "is_stealth": false,
-    "max_health": 2800,
-    "name": "Quartz Crusher",
-    "resistances": {},
-    "size": 20,
-    "speed": 80.0,
-    "split_count": 0,
-    "split_enemy_type": "",
-    "split_on_death": false
-  },
-  "royal_inquisitor": {
-    "armor": 5,
-    "color": "#ff0000",
-    "description": "A dangerous enemy from Royal Highway",
-    "gold_reward": 15,
-    "immunities": [],
-    "is_boss": false,
-    "is_flyer": false,
-    "is_invisible": false,
-    "is_stealth": false,
-    "max_health": 2100,
-    "name": "Royal Inquisitor",
-    "resistances": {},
-    "size": 20,
-    "speed": 80.0,
-    "split_count": 0,
-    "split_enemy_type": "",
-    "split_on_death": false
-  },
-  "shadow_panther": {
-    "armor": 5,
-    "color": "#ff0000",
-    "description": "A dangerous enemy from Greenwood",
-    "gold_reward": 15,
-    "immunities": [],
-    "is_boss": false,
-    "is_flyer": false,
-    "is_invisible": false,
-    "is_stealth": false,
-    "max_health": 1400,
-    "name": "Shadow Panther",
-    "resistances": {},
-    "size": 20,
-    "speed": 80.0,
-    "split_count": 0,
-    "split_enemy_type": "",
-    "split_on_death": false
-  },
-  "shadow_wolf": {
-    "armor": 10.0,
-    "color": "#4c1d95",
-    "description": "Скрытный хищник теней. Виден только сторожевым башням и детекторам.",
-    "gold_reward": 18.0,
-    "immunities": [],
-    "is_boss": false,
-    "is_flyer": false,
-    "is_invisible": true,
-    "is_stealth": true,
-    "max_health": 110.0,
-    "name": "Теневой волк",
-    "resistances": {},
-    "size": 17.0,
-    "speed": 150.0,
-    "split_count": 0.0,
-    "split_enemy_type": "",
-    "split_on_death": false
-  },
-  "shaman": {
-    "armor": 10.0,
-    "color": "#059669",
-    "description": "Периодически исцеляет всех раненых орков вокруг себя.",
-    "gold_reward": 28.0,
-    "heal_interval": 3.0,
-    "heal_pulse": 25.0,
-    "immunities": [],
-    "is_boss": false,
-    "is_flyer": false,
-    "is_invisible": false,
-    "is_stealth": false,
-    "max_health": 140.0,
-    "name": "Шаман",
-    "resistances": {
-      "magic": 0.2
-    },
-    "size": 19.0,
-    "speed": 75.0,
-    "split_count": 0.0,
-    "split_enemy_type": "",
-    "split_on_death": false
-  },
-  "shieldwall_knight": {
-    "armor": 5,
-    "color": "#ff0000",
-    "description": "A dangerous enemy from Stone Suburbs",
-    "gold_reward": 15,
-    "immunities": [],
-    "is_boss": false,
-    "is_flyer": false,
-    "is_invisible": false,
-    "is_stealth": false,
-    "max_health": 1800,
-    "name": "Shieldwall Knight",
-    "resistances": {},
-    "size": 20,
-    "speed": 80.0,
-    "split_count": 0,
-    "split_enemy_type": "",
-    "split_on_death": false
-  },
-  "siege_ram": {
-    "armor": 5,
-    "color": "#ff0000",
-    "description": "A dangerous enemy from Stone Suburbs",
-    "gold_reward": 15,
-    "immunities": [],
-    "is_boss": false,
-    "is_flyer": false,
-    "is_invisible": false,
-    "is_stealth": false,
-    "max_health": 1900,
-    "name": "Siege Ram",
-    "resistances": {},
-    "size": 20,
-    "speed": 80.0,
-    "split_count": 0,
-    "split_enemy_type": "",
-    "split_on_death": false
-  },
-  "singularity_horror": {
-    "armor": 5,
-    "color": "#ff0000",
-    "description": "A dangerous enemy from Astral Ruins",
-    "gold_reward": 15,
-    "immunities": [],
-    "is_boss": false,
-    "is_flyer": false,
-    "is_invisible": false,
-    "is_stealth": false,
-    "max_health": 5500,
-    "name": "Singularity Horror",
-    "resistances": {},
-    "size": 20,
-    "speed": 80.0,
-    "split_count": 0,
-    "split_enemy_type": "",
-    "split_on_death": false
-  },
-  "siren_temptress": {
-    "armor": 5,
-    "color": "#ff0000",
-    "description": "A dangerous enemy from Sunken Kingdom",
-    "gold_reward": 15,
-    "immunities": [],
-    "is_boss": false,
-    "is_flyer": false,
-    "is_invisible": false,
-    "is_stealth": false,
-    "max_health": 4900,
-    "name": "Siren Temptress",
-    "resistances": {},
-    "size": 20,
-    "speed": 80.0,
-    "split_count": 0,
-    "split_enemy_type": "",
-    "split_on_death": false
-  },
-  "splitter": {
-    "armor": 10.0,
-    "color": "#854d0e",
-    "description": "Нестабильный орк-мутант. После гибели распадается на 4 яростных рядовых орка.",
-    "gold_reward": 25.0,
-    "immunities": [],
-    "is_boss": false,
-    "is_flyer": false,
-    "is_invisible": false,
-    "is_stealth": false,
-    "max_health": 180.0,
-    "name": "Рассыпатель",
-    "resistances": {},
-    "size": 22.0,
-    "speed": 70.0,
-    "split_count": 4.0,
-    "split_enemy_type": "grunt",
-    "split_on_death": true
-  },
-  "spore_flyer": {
-    "armor": 0.0,
-    "color": "#84cc16",
-    "description": "Токсичный летун болот. Имеет высокое сопротивление к ядам и распыляет споры.",
-    "gold_reward": 20.0,
-    "immunities": [
-      "poison"
-    ],
-    "is_boss": false,
-    "is_flyer": true,
-    "is_invisible": false,
-    "is_stealth": false,
-    "max_health": 120.0,
-    "name": "Споровик",
-    "resistances": {
-      "poison": 0.8
-    },
-    "size": 18.0,
-    "speed": 100.0,
-    "split_count": 0.0,
-    "split_enemy_type": "",
-    "split_on_death": false
-  },
-  "stealth": {
-    "armor": 15.0,
-    "color": "#6b21a8",
-    "description": "Быстрый скрытный орк с повышенным уклонением.",
-    "gold_reward": 20.0,
-    "immunities": [],
-    "is_boss": false,
-    "is_flyer": false,
-    "is_invisible": true,
-    "is_stealth": true,
-    "max_health": 90.0,
-    "name": "Орк-лазутчик",
-    "resistances": {},
-    "size": 17.0,
-    "speed": 120.0,
-    "split_count": 0.0,
-    "split_enemy_type": "",
-    "split_on_death": false
-  },
-  "stellar_anomaly": {
-    "armor": 5,
-    "color": "#ff0000",
-    "description": "A dangerous enemy from Astral Ruins",
-    "gold_reward": 15,
-    "immunities": [],
-    "is_boss": false,
-    "is_flyer": false,
-    "is_invisible": false,
-    "is_stealth": false,
-    "max_health": 5200,
-    "name": "Stellar Anomaly",
-    "resistances": {},
-    "size": 20,
-    "speed": 80.0,
-    "split_count": 0,
-    "split_enemy_type": "",
-    "split_on_death": false
-  },
-  "stone_golem": {
-    "armor": 30.0,
-    "color": "#57534e",
-    "description": "Огромный монолитный голем. Абсолютный иммунитет к заклинаниям и магии, пробивается только физикой.",
-    "gold_reward": 55.0,
-    "immunities": [
-      "magic"
-    ],
-    "is_boss": false,
-    "is_flyer": false,
-    "is_invisible": false,
-    "is_stealth": false,
-    "max_health": 800.0,
-    "name": "Каменный голем",
-    "resistances": {
-      "physical": 0.2
-    },
-    "size": 28.0,
-    "speed": 40.0,
-    "split_count": 0.0,
-    "split_enemy_type": "",
-    "split_on_death": false
-  },
-  "sun_colossus": {
-    "armor": 5,
-    "color": "#ff0000",
-    "description": "A dangerous enemy from Royal Heart",
-    "gold_reward": 15,
-    "immunities": [],
-    "is_boss": false,
-    "is_flyer": false,
-    "is_invisible": false,
-    "is_stealth": false,
-    "max_health": 6000,
-    "name": "Sun Colossus",
-    "resistances": {},
-    "size": 20,
-    "speed": 80.0,
-    "split_count": 0,
-    "split_enemy_type": "",
-    "split_on_death": false
-  },
-  "swamp_hydra": {
-    "armor": 5,
-    "color": "#ff0000",
-    "description": "A dangerous enemy from Swamp",
-    "gold_reward": 15,
-    "immunities": [],
-    "is_boss": false,
-    "is_flyer": false,
-    "is_invisible": false,
-    "is_stealth": false,
-    "max_health": 800,
-    "name": "Swamp Hydra",
-    "resistances": {},
-    "size": 20,
-    "speed": 80.0,
-    "split_count": 0,
-    "split_enemy_type": "",
-    "split_on_death": false
-  },
-  "thorn_spriggan": {
-    "armor": 5,
-    "color": "#ff0000",
-    "description": "A dangerous enemy from Greenwood",
-    "gold_reward": 15,
-    "immunities": [],
-    "is_boss": false,
-    "is_flyer": false,
-    "is_invisible": false,
-    "is_stealth": false,
-    "max_health": 1300,
-    "name": "Thorn Spriggan",
-    "resistances": {},
-    "size": 20,
-    "speed": 80.0,
-    "split_count": 0,
-    "split_enemy_type": "",
-    "split_on_death": false
-  },
-  "toxic_slime": {
-    "armor": 5,
-    "color": "#ff0000",
-    "description": "A dangerous enemy from Swamp",
-    "gold_reward": 15,
-    "immunities": [],
-    "is_boss": false,
-    "is_flyer": false,
-    "is_invisible": false,
-    "is_stealth": false,
-    "max_health": 700,
-    "name": "Toxic Slime",
-    "resistances": {},
-    "size": 20,
-    "speed": 80.0,
-    "split_count": 0,
-    "split_enemy_type": "",
-    "split_on_death": true
-  },
-  "treant_sapling": {
-    "armor": 5,
-    "color": "#ff0000",
-    "description": "A dangerous enemy from Greenwood",
-    "gold_reward": 15,
-    "immunities": [],
-    "is_boss": false,
-    "is_flyer": false,
-    "is_invisible": false,
-    "is_stealth": false,
-    "max_health": 1100,
-    "name": "Treant Sapling",
-    "resistances": {},
-    "size": 20,
-    "speed": 80.0,
-    "split_count": 0,
-    "split_enemy_type": "",
-    "split_on_death": false
-  },
-  "troll": {
-    "armor": 20.0,
-    "color": "#0d9488",
-    "description": "Огромный запас здоровья и постоянная регенерация.",
-    "gold_reward": 45.0,
-    "immunities": [],
-    "is_boss": false,
-    "is_flyer": false,
-    "is_invisible": false,
-    "is_stealth": false,
-    "max_health": 450.0,
-    "name": "Горный тролль",
-    "regen_per_sec": 15.0,
-    "resistances": {
-      "cold": 0.3,
-      "fire": -0.25
-    },
-    "size": 26.0,
-    "speed": 55.0,
-    "split_count": 0.0,
-    "split_enemy_type": "",
-    "split_on_death": false
-  },
-  "valley_bandit": {
-    "armor": 5,
-    "color": "#ff0000",
-    "description": "A dangerous enemy from Valley",
-    "gold_reward": 15,
-    "immunities": [],
-    "is_boss": false,
-    "is_flyer": false,
-    "is_invisible": false,
-    "is_stealth": false,
-    "max_health": 400,
-    "name": "Valley Bandit",
-    "resistances": {},
-    "size": 20,
-    "speed": 80.0,
-    "split_count": 0,
-    "split_enemy_type": "",
-    "split_on_death": false
-  },
-  "void_stalker": {
-    "armor": 5,
-    "color": "#ff0000",
-    "description": "A dangerous enemy from Crystal Caves",
-    "gold_reward": 15,
-    "immunities": [],
-    "is_boss": false,
-    "is_flyer": false,
-    "is_invisible": false,
-    "is_stealth": true,
-    "max_health": 2900,
-    "name": "Void Stalker",
-    "resistances": {},
-    "size": 20,
-    "speed": 80.0,
-    "split_count": 0,
-    "split_enemy_type": "",
-    "split_on_death": false
-  },
-  "void_walker": {
-    "armor": 5,
-    "color": "#ff0000",
-    "description": "A dangerous enemy from Astral Ruins",
-    "gold_reward": 15,
-    "immunities": [],
-    "is_boss": false,
-    "is_flyer": false,
-    "is_invisible": false,
-    "is_stealth": false,
-    "max_health": 5300,
-    "name": "Void Walker",
-    "resistances": {},
-    "size": 20,
-    "speed": 80.0,
-    "split_count": 0,
-    "split_enemy_type": "",
-    "split_on_death": false
-  },
-  "volcanic_imp": {
-    "armor": 5,
-    "color": "#ff0000",
-    "description": "A dangerous enemy from Fire Chasms",
-    "gold_reward": 15,
-    "immunities": [],
-    "is_boss": false,
-    "is_flyer": false,
-    "is_invisible": false,
-    "is_stealth": false,
-    "max_health": 4200,
-    "name": "Volcanic Imp",
-    "resistances": {},
-    "size": 20,
-    "speed": 80.0,
-    "split_count": 0,
-    "split_enemy_type": "",
-    "split_on_death": false
-  },
-  "warchief_boss": {
-    "armor": 40.0,
-    "aura_radius": 120.0,
-    "color": "#991b1b",
-    "description": "Грозный вождь. Усиливает скорость и защиту всех орков в радиусе ауры.",
-    "gold_reward": 150.0,
-    "immunities": [],
-    "is_boss": true,
-    "is_flyer": false,
-    "is_invisible": false,
-    "is_stealth": false,
-    "max_health": 1400.0,
-    "name": "Вождь Орды (Босс)",
-    "resistances": {
-      "magic": 0.2,
-      "physical": 0.2
-    },
-    "size": 32.0,
-    "speed": 50.0,
-    "split_count": 0.0,
-    "split_enemy_type": "",
-    "split_on_death": false
-  },
-  "wild_boar": {
-    "armor": 5,
-    "color": "#ff0000",
-    "description": "A dangerous enemy from Valley",
-    "gold_reward": 15,
-    "immunities": [],
-    "is_boss": false,
-    "is_flyer": false,
-    "is_invisible": false,
-    "is_stealth": false,
-    "max_health": 200,
-    "name": "Wild Boar",
-    "resistances": {},
-    "size": 20,
-    "speed": 80.0,
-    "split_count": 0,
-    "split_enemy_type": "",
-    "split_on_death": false
-  },
-  "windwing": {
-    "armor": 0.0,
-    "color": "#38bdf8",
-    "description": "Быстрый летающий разведчик. Перелетает через препятствия и наземные мины.",
-    "gold_reward": 16.0,
-    "immunities": [],
-    "is_boss": false,
-    "is_flyer": true,
-    "is_invisible": false,
-    "is_stealth": false,
-    "max_health": 70.0,
-    "name": "Ветрокрыл",
-    "resistances": {},
-    "size": 15.0,
-    "speed": 200.0,
-    "split_count": 0.0,
-    "split_enemy_type": "",
-    "split_on_death": false
-  },
-  "witch_of_mists": {
-    "armor": 5,
-    "color": "#ff0000",
-    "description": "A dangerous enemy from Swamp",
-    "gold_reward": 15,
-    "immunities": [],
-    "is_boss": false,
-    "is_flyer": false,
-    "is_invisible": false,
-    "is_stealth": false,
-    "max_health": 900,
-    "name": "Witch Of Mists",
-    "resistances": {},
-    "size": 20,
-    "speed": 80.0,
-    "split_count": 0,
-    "split_enemy_type": "",
-    "split_on_death": false
-  },
-  "wolf_alpha": {
-    "armor": 5,
-    "color": "#ff0000",
-    "description": "A dangerous enemy from Valley",
-    "gold_reward": 15,
-    "immunities": [],
-    "is_boss": false,
-    "is_flyer": false,
-    "is_invisible": false,
-    "is_stealth": false,
-    "max_health": 300,
-    "name": "Wolf Alpha",
-    "resistances": {},
-    "size": 20,
-    "speed": 80.0,
-    "split_count": 0,
-    "split_enemy_type": "",
-    "split_on_death": false
+[
+  {
+    "id": "wandering_merchant",
+    "name": "Wandering Merchant",
+    "description": "A mysterious merchant approaches your camp offering rare wares.",
+    "trigger_conditions": ["any"],
+    "repeatable": true,
+    "choices": [
+      {
+        "text": "Buy Magic Artifact (500g)",
+        "cost": { "gold": 500 },
+        "reward": { "artifact": "random_rare" }
+      },
+      {
+        "text": "Buy Basic Supplies (100g)",
+        "cost": { "gold": 100 },
+        "reward": { "lives": 5 }
+      },
+      {
+        "text": "Ignore Him",
+        "cost": {},
+        "reward": {}
+      }
+    
+  },
+  {
+    "id": "goblin_ambush",
+    "name": "Goblin Ambush!",
+    "description": "A scouting party of goblins attacks your supply lines.",
+    "trigger_conditions": ["valley", "greenwood", "royal_highway"],
+    "repeatable": true,
+    "choices": [
+      {
+        "text": "Fight them off (Battle)",
+        "cost": {},
+        "reward": { "force_wave": "goblin_raid" }
+      },
+      {
+        "text": "Pay them off (200g)",
+        "cost": { "gold": 200 },
+        "reward": {}
+      },
+      {
+        "text": "Let them loot (Lose 10 lives)",
+        "cost": { "lives": 10 },
+        "reward": {}
+      }
+    
+  },
+  {
+    "id": "arcane_storm",
+    "name": "Arcane Storm",
+    "description": "A violent storm of pure mana rolls across the region.",
+    "trigger_conditions": ["astral_ruins", "crystal_caves", "frost_peak"],
+    "repeatable": true,
+    "choices": [
+      {
+        "text": "Harvest the mana (Risk damage)",
+        "cost": { "lives": 5 },
+        "reward": { "mana": 100 }
+      },
+      {
+        "text": "Shield the camp",
+        "cost": { "mana": 20 },
+        "reward": {}
+      },
+      {
+        "text": "Do nothing (Random effect)",
+        "cost": {},
+        "reward": { "random_event": true }
+      }
+    
+  },
+  {
+    "id": "plague_outbreak",
+    "name": "Plague Outbreak",
+    "description": "Sickness spreads from the murky waters.",
+    "trigger_conditions": ["swamp", "sunken_kingdom"],
+    "repeatable": false,
+    "choices": [
+      {
+        "text": "Quarantine the infected (Lose 5 lives)",
+        "cost": { "lives": 5 },
+        "reward": {}
+      },
+      {
+        "text": "Buy exotic medicine (300g)",
+        "cost": { "gold": 300 },
+        "reward": { "faction_influence": { "mages_guild": 10 } }
+      },
+      {
+        "text": "Seek the Royal Healers",
+        "cost": { "faction_influence": { "royal": -15 } },
+        "reward": { "lives": 2 }
+      }
+    
+  },
+  {
+    "id": "celestial_alignment",
+    "name": "Celestial Alignment",
+    "description": "The stars align, granting a moment of absolute clarity.",
+    "trigger_conditions": ["any"],
+    "repeatable": false,
+    "choices": [
+      {
+        "text": "Study the stars (Gain Research)",
+        "cost": {},
+        "reward": { "research_points": 50 }
+      },
+      {
+        "text": "Pray to the gods (Gain Lives)",
+        "cost": {},
+        "reward": { "lives": 10 }
+      }
+    
+  },
+  {
+    "id": "rebel_uprising",
+    "name": "Rebel Uprising",
+    "description": "Local peasants are revolting against the crown.",
+    "trigger_conditions": ["stone_suburbs", "royal_heart", "royal_highway"],
+    "repeatable": true,
+    "choices": [
+      {
+        "text": "Crush the rebellion (Royal favor)",
+        "cost": { "lives": 3 },
+        "reward": { "faction_influence": { "royal": 20 } }
+      },
+      {
+        "text": "Support the rebels (Mercenary favor)",
+        "cost": { "gold": 250 },
+        "reward": { "faction_influence": { "mercenaries": 20, "royal": -20 } }
+      },
+      {
+        "text": "Stay neutral",
+        "cost": {},
+        "reward": {}
+      }
+    
+  },
+  {
+    "id": "ancient_shrine",
+    "name": "Ancient Shrine Awakening",
+    "description": "An old ruin hums with forgotten power.",
+    "trigger_conditions": ["greenwood", "astral_ruins", "sunken_kingdom"],
+    "repeatable": false,
+    "choices": [
+      {
+        "text": "Offer blood (Sacrifice 10 lives)",
+        "cost": { "lives": 10 },
+        "reward": { "artifact": "legendary" }
+      },
+      {
+        "text": "Offer gold (Sacrifice 1000g)",
+        "cost": { "gold": 1000 },
+        "reward": { "artifact": "legendary" }
+      },
+      {
+        "text": "Leave it alone",
+        "cost": {},
+        "reward": {}
+      }
+    
+  },
+  {
+    "id": "elite_invasion_valley",
+    "name": "Valley Overrun!",
+    "description": "The threat level has reached its maximum. An elite boss invades!",
+    "trigger_conditions": ["max_threat"],
+    "repeatable": true,
+    "choices": [
+      {
+        "text": "Defend the Valley!",
+        "cost": {},
+        "reward": { "force_wave": "boss_orc_elite" }
+      }
+    
+  },
+  {
+    "id": "merchant_caravan",
+    "name": "Stalled Caravan",
+    "description": "A merchant's cart has broken down.",
+    "trigger_conditions": ["royal_highway", "valley"],
+    "repeatable": true,
+    "choices": [
+      {
+        "text": "Help repair it (Takes time)",
+        "cost": { "mana": 30 },
+        "reward": { "gold": 200, "faction_influence": { "merchants": 15 } }
+      },
+      {
+        "text": "Rob them!",
+        "cost": { "faction_influence": { "merchants": -30 } },
+        "reward": { "gold": 500 }
+      },
+      {
+        "text": "Walk away",
+        "cost": {},
+        "reward": {}
+      }
+    
+  },
+  {
+    "id": "smuggler_cache",
+    "name": "Hidden Smuggler Cache",
+    "description": "You discover a hidden stash of illegal goods.",
+    "trigger_conditions": ["swamp", "stone_suburbs"],
+    "repeatable": false,
+    "choices": [
+      {
+        "text": "Turn it in to the guards",
+        "cost": {},
+        "reward": { "faction_influence": { "royal": 15 } }
+      },
+      {
+        "text": "Sell it on the black market",
+        "cost": { "faction_influence": { "smugglers": 20 } },
+        "reward": { "gold": 800 }
+      }
+    
+  },
+  {
+    "id": "mage_tower_ruin",
+    "name": "Ruined Mage Tower",
+    "description": "A collapsed tower radiates dangerous energy.",
+    "trigger_conditions": ["crystal_caves", "astral_ruins"],
+    "repeatable": false,
+    "choices": [
+      {
+        "text": "Search for artifacts",
+        "cost": { "lives": 8 },
+        "reward": { "artifact": "epic" }
+      },
+      {
+        "text": "Report to the Guild",
+        "cost": {},
+        "reward": { "faction_influence": { "mages_guild": 25 } }
+      }
+    
   }
-}
+
+  ,{
+    "id": "filler_event_1",
+    "name": "Filler Event 1",
+    "description": "A minor occurrence in the world... 1",
+    "trigger_conditions": ["any"],
+    "repeatable": true,
+    "choices": [
+      {
+        "text": "Do something",
+        "cost": {},
+        "reward": { "gold": 10 }
+      }
+    
+  }
+  ,{
+    "id": "filler_event_2",
+    "name": "Filler Event 2",
+    "description": "A minor occurrence in the world... 2",
+    "trigger_conditions": ["any"],
+    "repeatable": true,
+    "choices": [
+      {
+        "text": "Do something",
+        "cost": {},
+        "reward": { "gold": 10 }
+      }
+    
+  }
+  ,{
+    "id": "filler_event_3",
+    "name": "Filler Event 3",
+    "description": "A minor occurrence in the world... 3",
+    "trigger_conditions": ["any"],
+    "repeatable": true,
+    "choices": [
+      {
+        "text": "Do something",
+        "cost": {},
+        "reward": { "gold": 10 }
+      }
+    
+  }
+  ,{
+    "id": "filler_event_4",
+    "name": "Filler Event 4",
+    "description": "A minor occurrence in the world... 4",
+    "trigger_conditions": ["any"],
+    "repeatable": true,
+    "choices": [
+      {
+        "text": "Do something",
+        "cost": {},
+        "reward": { "gold": 10 }
+      }
+    
+  }
+  ,{
+    "id": "filler_event_5",
+    "name": "Filler Event 5",
+    "description": "A minor occurrence in the world... 5",
+    "trigger_conditions": ["any"],
+    "repeatable": true,
+    "choices": [
+      {
+        "text": "Do something",
+        "cost": {},
+        "reward": { "gold": 10 }
+      }
+    
+  }
+  ,{
+    "id": "filler_event_6",
+    "name": "Filler Event 6",
+    "description": "A minor occurrence in the world... 6",
+    "trigger_conditions": ["any"],
+    "repeatable": true,
+    "choices": [
+      {
+        "text": "Do something",
+        "cost": {},
+        "reward": { "gold": 10 }
+      }
+    
+  }
+  ,{
+    "id": "filler_event_7",
+    "name": "Filler Event 7",
+    "description": "A minor occurrence in the world... 7",
+    "trigger_conditions": ["any"],
+    "repeatable": true,
+    "choices": [
+      {
+        "text": "Do something",
+        "cost": {},
+        "reward": { "gold": 10 }
+      }
+    
+  }
+  ,{
+    "id": "filler_event_8",
+    "name": "Filler Event 8",
+    "description": "A minor occurrence in the world... 8",
+    "trigger_conditions": ["any"],
+    "repeatable": true,
+    "choices": [
+      {
+        "text": "Do something",
+        "cost": {},
+        "reward": { "gold": 10 }
+      }
+    
+  }
+  ,{
+    "id": "filler_event_9",
+    "name": "Filler Event 9",
+    "description": "A minor occurrence in the world... 9",
+    "trigger_conditions": ["any"],
+    "repeatable": true,
+    "choices": [
+      {
+        "text": "Do something",
+        "cost": {},
+        "reward": { "gold": 10 }
+      }
+    
+  }
+  ,{
+    "id": "filler_event_10",
+    "name": "Filler Event 10",
+    "description": "A minor occurrence in the world... 10",
+    "trigger_conditions": ["any"],
+    "repeatable": true,
+    "choices": [
+      {
+        "text": "Do something",
+        "cost": {},
+        "reward": { "gold": 10 }
+      }
+    
+  }
+  ,{
+    "id": "filler_event_11",
+    "name": "Filler Event 11",
+    "description": "A minor occurrence in the world... 11",
+    "trigger_conditions": ["any"],
+    "repeatable": true,
+    "choices": [
+      {
+        "text": "Do something",
+        "cost": {},
+        "reward": { "gold": 10 }
+      }
+    
+  }
+  ,{
+    "id": "filler_event_12",
+    "name": "Filler Event 12",
+    "description": "A minor occurrence in the world... 12",
+    "trigger_conditions": ["any"],
+    "repeatable": true,
+    "choices": [
+      {
+        "text": "Do something",
+        "cost": {},
+        "reward": { "gold": 10 }
+      }
+    
+  }
+  ,{
+    "id": "filler_event_13",
+    "name": "Filler Event 13",
+    "description": "A minor occurrence in the world... 13",
+    "trigger_conditions": ["any"],
+    "repeatable": true,
+    "choices": [
+      {
+        "text": "Do something",
+        "cost": {},
+        "reward": { "gold": 10 }
+      }
+    
+  }
+  ,{
+    "id": "filler_event_14",
+    "name": "Filler Event 14",
+    "description": "A minor occurrence in the world... 14",
+    "trigger_conditions": ["any"],
+    "repeatable": true,
+    "choices": [
+      {
+        "text": "Do something",
+        "cost": {},
+        "reward": { "gold": 10 }
+      }
+    
+  }
+  ,{
+    "id": "filler_event_15",
+    "name": "Filler Event 15",
+    "description": "A minor occurrence in the world... 15",
+    "trigger_conditions": ["any"],
+    "repeatable": true,
+    "choices": [
+      {
+        "text": "Do something",
+        "cost": {},
+        "reward": { "gold": 10 }
+      }
+    
+  }
+  ,{
+    "id": "filler_event_16",
+    "name": "Filler Event 16",
+    "description": "A minor occurrence in the world... 16",
+    "trigger_conditions": ["any"],
+    "repeatable": true,
+    "choices": [
+      {
+        "text": "Do something",
+        "cost": {},
+        "reward": { "gold": 10 }
+      }
+    
+  }
+  ,{
+    "id": "filler_event_17",
+    "name": "Filler Event 17",
+    "description": "A minor occurrence in the world... 17",
+    "trigger_conditions": ["any"],
+    "repeatable": true,
+    "choices": [
+      {
+        "text": "Do something",
+        "cost": {},
+        "reward": { "gold": 10 }
+      }
+    
+  }
+  ,{
+    "id": "filler_event_18",
+    "name": "Filler Event 18",
+    "description": "A minor occurrence in the world... 18",
+    "trigger_conditions": ["any"],
+    "repeatable": true,
+    "choices": [
+      {
+        "text": "Do something",
+        "cost": {},
+        "reward": { "gold": 10 }
+      }
+    
+  }
+  ,{
+    "id": "filler_event_19",
+    "name": "Filler Event 19",
+    "description": "A minor occurrence in the world... 19",
+    "trigger_conditions": ["any"],
+    "repeatable": true,
+    "choices": [
+      {
+        "text": "Do something",
+        "cost": {},
+        "reward": { "gold": 10 }
+      }
+    
+  }
+  ,{
+    "id": "filler_event_20",
+    "name": "Filler Event 20",
+    "description": "A minor occurrence in the world... 20",
+    "trigger_conditions": ["any"],
+    "repeatable": true,
+    "choices": [
+      {
+        "text": "Do something",
+        "cost": {},
+        "reward": { "gold": 10 }
+      }
+    
+  }
+  ,{
+    "id": "filler_event_21",
+    "name": "Filler Event 21",
+    "description": "A minor occurrence in the world... 21",
+    "trigger_conditions": ["any"],
+    "repeatable": true,
+    "choices": [
+      {
+        "text": "Do something",
+        "cost": {},
+        "reward": { "gold": 10 }
+      }
+    
+  }
+  ,{
+    "id": "filler_event_22",
+    "name": "Filler Event 22",
+    "description": "A minor occurrence in the world... 22",
+    "trigger_conditions": ["any"],
+    "repeatable": true,
+    "choices": [
+      {
+        "text": "Do something",
+        "cost": {},
+        "reward": { "gold": 10 }
+      }
+    
+  }
+  ,{
+    "id": "filler_event_23",
+    "name": "Filler Event 23",
+    "description": "A minor occurrence in the world... 23",
+    "trigger_conditions": ["any"],
+    "repeatable": true,
+    "choices": [
+      {
+        "text": "Do something",
+        "cost": {},
+        "reward": { "gold": 10 }
+      }
+    
+  }
+  ,{
+    "id": "filler_event_24",
+    "name": "Filler Event 24",
+    "description": "A minor occurrence in the world... 24",
+    "trigger_conditions": ["any"],
+    "repeatable": true,
+    "choices": [
+      {
+        "text": "Do something",
+        "cost": {},
+        "reward": { "gold": 10 }
+      }
+    
+  }
+  ,{
+    "id": "filler_event_25",
+    "name": "Filler Event 25",
+    "description": "A minor occurrence in the world... 25",
+    "trigger_conditions": ["any"],
+    "repeatable": true,
+    "choices": [
+      {
+        "text": "Do something",
+        "cost": {},
+        "reward": { "gold": 10 }
+      }
+    
+  }
+  ,{
+    "id": "filler_event_26",
+    "name": "Filler Event 26",
+    "description": "A minor occurrence in the world... 26",
+    "trigger_conditions": ["any"],
+    "repeatable": true,
+    "choices": [
+      {
+        "text": "Do something",
+        "cost": {},
+        "reward": { "gold": 10 }
+      }
+    
+  }
+  ,{
+    "id": "filler_event_27",
+    "name": "Filler Event 27",
+    "description": "A minor occurrence in the world... 27",
+    "trigger_conditions": ["any"],
+    "repeatable": true,
+    "choices": [
+      {
+        "text": "Do something",
+        "cost": {},
+        "reward": { "gold": 10 }
+      }
+    
+  }
+  ,{
+    "id": "filler_event_28",
+    "name": "Filler Event 28",
+    "description": "A minor occurrence in the world... 28",
+    "trigger_conditions": ["any"],
+    "repeatable": true,
+    "choices": [
+      {
+        "text": "Do something",
+        "cost": {},
+        "reward": { "gold": 10 }
+      }
+    
+  }
+  ,{
+    "id": "filler_event_29",
+    "name": "Filler Event 29",
+    "description": "A minor occurrence in the world... 29",
+    "trigger_conditions": ["any"],
+    "repeatable": true,
+    "choices": [
+      {
+        "text": "Do something",
+        "cost": {},
+        "reward": { "gold": 10 }
+      }
+    
+  }
+  ,{
+    "id": "filler_event_30",
+    "name": "Filler Event 30",
+    "description": "A minor occurrence in the world... 30",
+    "trigger_conditions": ["any"],
+    "repeatable": true,
+    "choices": [
+      {
+        "text": "Do something",
+        "cost": {},
+        "reward": { "gold": 10 }
+      }
+    
+  }
+]
