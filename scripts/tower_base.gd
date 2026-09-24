@@ -59,6 +59,8 @@ func _load_stats() -> void:
 		tower_name = tdata.get("name", tower_name)
 		damage_type = tdata.get("damage_type", damage_type)
 		var levels = tdata.get("levels", [])
+		if not levels.is_empty():
+			max_level = levels.size()
 		if current_level - 1 < levels.size():
 			var ldata = levels[current_level - 1]
 			damage = ldata.get("damage", damage)
@@ -330,7 +332,29 @@ func _shoot_bastion() -> void:
 	for enemy in in_range_enemies:
 		_shoot_single(enemy)
 
+func get_chapter_max_level() -> int:
+	var chapter = 1
+	if is_inside_tree() and get_tree() != null:
+		var gm = get_tree().get_first_node_in_group("game_manager") as GameManager
+		if gm and "current_chapter" in gm and gm.current_chapter > 0:
+			chapter = gm.current_chapter
+		elif "current_chapter" in GlobalState and GlobalState.current_chapter > 0:
+			chapter = GlobalState.current_chapter
+	elif "current_chapter" in GlobalState and GlobalState.current_chapter > 0:
+		chapter = GlobalState.current_chapter
+	else:
+		return 5
+	
+	if chapter == 1:
+		return 3
+	elif chapter == 2:
+		return 4
+	else:
+		return 5
+
 func can_upgrade() -> bool:
+	if current_level >= get_chapter_max_level():
+		return false
 	return current_level < max_level and upgrade_cost > 0
 
 func upgrade() -> bool:
@@ -343,7 +367,13 @@ func upgrade() -> bool:
 	return true
 
 func can_evolve() -> bool:
-	return current_level >= max_level and evolution_chosen == "" and (not evolution_data_a.is_empty() or not evolution_data_b.is_empty())
+	if is_inside_tree() and get_tree() != null:
+		if get_chapter_max_level() < 5:
+			return false
+	var req_level = max_level
+	if current_level == 3:
+		req_level = 3
+	return current_level >= req_level and evolution_chosen == "" and (not evolution_data_a.is_empty() or not evolution_data_b.is_empty())
 
 func get_evolution_info(branch: String) -> Dictionary:
 	if branch == "evolution_a":
@@ -362,7 +392,10 @@ func apply_evolution(branch: String) -> bool:
 		return false
 		
 	evolution_chosen = branch
-	current_level = 4
+	if current_level >= 4:
+		current_level = 5
+	else:
+		current_level = 4
 	tower_name = info.get("name", tower_name)
 	damage = float(info.get("damage", damage))
 	range_radius = float(info.get("range", range_radius))
@@ -726,11 +759,173 @@ func _draw() -> void:
 			draw_rect(Rect2(5, -11, 7, 5), Color(0.55, 0.58, 0.62))
 			draw_line(Vector2(0, -6), Vector2(0, -6) + aim_dir * 14.0, Color(0.2, 0.2, 0.25), 3.5)
 
-	# 2.5D Знаки отличия (звезды уровня) на фасаде башни
-	for i in range(current_level):
-		var offset_x = (i - (current_level - 1) * 0.5) * 8.0
-		var star_pos = Vector2(offset_x, 14)
-		# Золотой щиток
-		draw_circle(star_pos, 3.2, Color(0.85, 0.68, 0.15))
-		draw_circle(star_pos, 1.8, Color(1.0, 0.95, 0.6))
+	# Отрисовка уникального внешнего вида каждого уровня (1-5) и эмблемы
+	_draw_level_augmentations(aim_dir)
+	_draw_level_emblem()
+
+func _draw_level_augmentations(aim_dir: Vector2) -> void:
+	# Уровень 2: Укреплённые стальные пластины и скобы
+	if current_level >= 2:
+		var steel_dark = Color(0.18, 0.20, 0.24)
+		var steel_light = Color(0.65, 0.70, 0.78)
+		draw_line(Vector2(-15, 6), Vector2(-15, -4), steel_light, 2.5)
+		draw_line(Vector2(15, 6), Vector2(15, -4), steel_light, 2.5)
+		draw_circle(Vector2(-15, 4), 1.6, steel_dark)
+		draw_circle(Vector2(15, 4), 1.6, steel_dark)
+		draw_line(Vector2(-14, 8), Vector2(14, 8), steel_light, 1.8)
+
+	# Уровень 3: Золоченая отделка, рунический круг силы и усиленное вооружение
+	if current_level >= 3:
+		var gold_trim = Color(1.0, 0.85, 0.25)
+		var r_angle = anim_time * 1.5
+		draw_arc(Vector2(0, 10), 16.0, 0, TAU, 16, Color(1.0, 0.85, 0.25, 0.35), 1.5)
+		for i in range(4):
+			var ra = r_angle + i * (TAU / 4.0)
+			draw_circle(Vector2(0, 10) + Vector2(cos(ra) * 16.0, sin(ra) * 8.0), 2.0, gold_trim)
+		draw_line(Vector2(-12, -8), Vector2(-8, -12), gold_trim, 2.0)
+		draw_line(Vector2(12, -8), Vector2(8, -12), gold_trim, 2.0)
+
+	# Уровень 4: Элитный рубеж — цитадельные шипастые зубцы, аркановые кристаллы и импульсы
+	if current_level >= 4:
+		var plat = Color(0.4, 0.85, 1.0)
+		for i in range(2):
+			var sa = anim_time * 2.5 + i * PI
+			var sp = Vector2(cos(sa) * 22.0, sin(sa) * 10.0 - 10.0)
+			draw_circle(sp, 3.2, plat)
+			draw_circle(sp, 1.6, Color(1, 1, 1))
+		draw_colored_polygon(PackedVector2Array([Vector2(-16, -6), Vector2(-19, -10), Vector2(-13, -10)]), Color(0.3, 0.35, 0.42))
+		draw_colored_polygon(PackedVector2Array([Vector2(16, -6), Vector2(19, -10), Vector2(13, -10)]), Color(0.3, 0.35, 0.42))
+		var barrier_alpha = 0.25 + sin(anim_time * 4.0) * 0.15
+		draw_arc(Vector2(0, 0), 24.0, 0, TAU, 24, Color(0.3, 0.8, 1.0, barrier_alpha), 2.0)
+
+	# Уровень 5: Легендарная визуальная эволюция (Выбор из 2: Ветка A vs Ветка B)
+	if current_level >= 5 and evolution_chosen != "":
+		var is_a = evolution_chosen == "evolution_a"
+		var theme_col = Color(0.2, 0.9, 0.4) if is_a else Color(1.0, 0.45, 0.1)
+		
+		var pulse = sin(anim_time * 5.0) * 3.0
+		draw_arc(Vector2(0, -12), 26.0 + pulse, 0, TAU, 28, Color(theme_col.r, theme_col.g, theme_col.b, 0.45), 2.5)
+		
+		match tower_type:
+			"archer", "crossbowman", "watchtower":
+				if is_a:
+					draw_line(Vector2(0, -16), Vector2(0, -16) + aim_dir * 85.0, Color(0.2, 1.0, 0.3, 0.65), 1.5)
+					draw_circle(Vector2(0, -16) + aim_dir * 85.0, 3.0, Color(0.2, 1.0, 0.3, 0.9))
+					draw_line(Vector2(0, -16) - aim_dir.orthogonal() * 10.0, Vector2(0, -16) + aim_dir.orthogonal() * 10.0, Color(0.1, 0.8, 0.3), 3.0)
+				else:
+					var barrel_base = Vector2(0, -16) + aim_dir * 12.0
+					for b in range(4):
+						var b_off = aim_dir.orthogonal() * (float(b) - 1.5) * 4.0
+						draw_line(barrel_base + b_off, barrel_base + b_off + aim_dir * 10.0, Color(0.85, 0.45, 0.1), 2.2)
+					draw_circle(barrel_base + aim_dir * 12.0, 4.5, Color(1.0, 0.9, 0.2, 0.8))
+
+			"cannon", "siege_cannon":
+				if is_a:
+					draw_line(Vector2(0, -4) - aim_dir.orthogonal() * 8.0, Vector2(0, -4) + aim_dir.orthogonal() * 8.0, Color(0.85, 0.7, 0.2), 4.0)
+					draw_circle(Vector2(0, -4) + aim_dir * 22.0, 6.0, Color(0.1, 0.1, 0.12))
+					draw_arc(Vector2(0, -4) + aim_dir * 22.0, 6.0, 0, TAU, 16, Color(1.0, 0.8, 0.2), 2.0)
+				else:
+					for i in [-1, 0, 1]:
+						var t_dir = aim_dir.rotated(i * 0.22)
+						draw_line(Vector2(0, -4), Vector2(0, -4) + t_dir * 16.0, Color(0.9, 0.35, 0.15), 3.0)
+						draw_circle(Vector2(0, -4) + t_dir * 16.0, 3.0, Color(1.0, 0.8, 0.2))
+
+			"ice_mage":
+				if is_a:
+					for i in range(5):
+						var ca = anim_time * 3.0 + i * (TAU / 5.0)
+						var cp = Vector2(cos(ca) * 20.0, sin(ca) * 8.0 - 15.0)
+						draw_circle(cp, 3.5, Color(0.5, 0.9, 1.0))
+						draw_circle(cp, 1.8, Color(1, 1, 1))
+				else:
+					for i in range(6):
+						var sa = i * (TAU / 6.0)
+						var sp1 = Vector2(cos(sa) * 14.0, sin(sa) * 8.0 + 8.0)
+						var sp2 = sp1 + Vector2(0, -12.0)
+						draw_line(sp1, sp2, Color(0.15, 0.45, 0.85), 3.0)
+
+			"tesla", "auto_turret":
+				if is_a:
+					var p1 = Vector2(-12, -22)
+					var p2 = Vector2(12, -22)
+					draw_circle(p1, 5.0, Color(0.3, 0.85, 1.0))
+					draw_circle(p2, 5.0, Color(0.3, 0.85, 1.0))
+					draw_line(p1, p2, Color(1.0, 1.0, 1.0, 0.9), 2.0)
+					draw_line(p1, p1 + aim_dir * 18.0, Color(0.3, 0.9, 1.0), 2.5)
+					draw_line(p2, p2 + aim_dir * 18.0, Color(0.3, 0.9, 1.0), 2.5)
+				else:
+					var emp_r = fmod(anim_time * 35.0, 32.0)
+					draw_arc(Vector2(0, -10), emp_r, 0, TAU, 20, Color(0.2, 0.6, 1.0, 1.0 - (emp_r / 32.0)), 2.5)
+					draw_line(Vector2(0, -15), Vector2(0, -15) + aim_dir * 45.0, Color(0.85, 0.95, 1.0), 3.5)
+
+			"flame_tower", "poison_tower":
+				if is_a:
+					draw_circle(Vector2(-14, 2), 5.5, Color(0.85, 0.35, 0.1))
+					draw_circle(Vector2(14, 2), 5.5, Color(0.85, 0.35, 0.1))
+					draw_arc(Vector2(0, -8), 16.0, 0, TAU, 16, Color(1.0, 0.5, 0.1, 0.6), 2.5)
+				else:
+					draw_circle(Vector2(0, -6), 9.0, Color(0.1, 0.8, 0.9, 0.8))
+					draw_circle(Vector2(0, -6), 5.0, Color(1, 1, 1, 0.9))
+
+			_:
+				draw_circle(Vector2(-14, -8), 4.0, theme_col)
+				draw_circle(Vector2(14, -8), 4.0, theme_col)
+
+func _draw_level_emblem() -> void:
+	var badge_y = -35.0
+	if tower_type in ["watchtower", "time_tower"]:
+		badge_y = -44.0
+	var pos = Vector2(0, badge_y)
+
+	match current_level:
+		1:
+			draw_circle(pos, 6.0, Color(0.16, 0.12, 0.08, 0.92))
+			draw_arc(pos, 6.0, 0, TAU, 16, Color(0.75, 0.48, 0.22), 1.8)
+			draw_line(pos + Vector2(0, -3), pos + Vector2(0, 3), Color(0.95, 0.8, 0.55), 1.8)
+		2:
+			draw_circle(pos, 7.0, Color(0.12, 0.16, 0.22, 0.92))
+			draw_arc(pos, 7.0, 0, TAU, 16, Color(0.75, 0.82, 0.92), 2.0)
+			draw_line(pos + Vector2(-2, -3.5), pos + Vector2(-2, 3.5), Color(0.9, 0.95, 1.0), 1.8)
+			draw_line(pos + Vector2(2, -3.5), pos + Vector2(2, 3.5), Color(0.9, 0.95, 1.0), 1.8)
+		3:
+			draw_circle(pos, 8.0, Color(0.22, 0.17, 0.05, 0.95))
+			draw_arc(pos, 8.0, 0, TAU, 20, Color(1.0, 0.84, 0.0), 2.2)
+			draw_line(pos + Vector2(-3, -4), pos + Vector2(-3, 4), Color(1.0, 0.95, 0.6), 1.6)
+			draw_line(pos + Vector2(0, -4), pos + Vector2(0, 4), Color(1.0, 0.95, 0.6), 1.6)
+			draw_line(pos + Vector2(3, -4), pos + Vector2(3, 4), Color(1.0, 0.95, 0.6), 1.6)
+		4:
+			draw_circle(pos, 9.5, Color(0.08, 0.15, 0.28, 0.95))
+			draw_arc(pos, 9.5, 0, TAU, 24, Color(0.4, 0.85, 1.0), 2.4)
+			draw_line(pos + Vector2(-4, -4.5), pos + Vector2(-4, 4.5), Color(0.85, 0.95, 1.0), 1.8)
+			draw_line(pos + Vector2(-1, -4.5), pos + Vector2(2, 4.5), Color(0.85, 0.95, 1.0), 1.8)
+			draw_line(pos + Vector2(2, 4.5), pos + Vector2(5, -4.5), Color(0.85, 0.95, 1.0), 1.8)
+		_:
+			var is_a = evolution_chosen == "evolution_a"
+			var crown_col = Color(1.0, 0.85, 0.2) if is_a else Color(1.0, 0.55, 0.15)
+			var gem_col = Color(0.25, 0.95, 0.45) if is_a else Color(0.95, 0.25, 0.25)
+			var badge_r = 12.0 + sin(anim_time * 4.0) * 1.5
+			draw_circle(pos, badge_r, Color(0.15, 0.08, 0.02, 0.95))
+			draw_arc(pos, badge_r, 0, TAU, 24, crown_col, 2.5)
+			var crown_pts = PackedVector2Array([
+				pos + Vector2(-7, 3),
+				pos + Vector2(-7, -4),
+				pos + Vector2(-3.5, -1),
+				pos + Vector2(0, -6),
+				pos + Vector2(3.5, -1),
+				pos + Vector2(7, -4),
+				pos + Vector2(7, 3)
+			])
+			draw_colored_polygon(crown_pts, crown_col)
+			draw_circle(pos + Vector2(0, 0), 2.2, gem_col)
+			var b_col = Color(1.0, 1.0, 1.0)
+			if is_a:
+				draw_line(pos + Vector2(-2, 7), pos + Vector2(0, 4), b_col, 1.2)
+				draw_line(pos + Vector2(2, 7), pos + Vector2(0, 4), b_col, 1.2)
+				draw_line(pos + Vector2(-1, 6), pos + Vector2(1, 6), b_col, 1.2)
+			else:
+				draw_line(pos + Vector2(-2, 4), pos + Vector2(-2, 7), b_col, 1.2)
+				draw_line(pos + Vector2(-2, 4), pos + Vector2(1, 4), b_col, 1.2)
+				draw_line(pos + Vector2(-2, 5.5), pos + Vector2(1, 5.5), b_col, 1.2)
+				draw_line(pos + Vector2(-2, 7), pos + Vector2(1, 7), b_col, 1.2)
+
 

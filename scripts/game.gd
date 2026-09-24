@@ -401,6 +401,21 @@ func _start_new_game() -> void:
 		wave_controller.start_wave_countdown(GameManager.PRE_WAVE_TIME)
 		_update_wave_preview(1)
 
+	var ch_num = GlobalState.current_chapter
+	var st_num = GlobalState.current_stage
+	var map_cfg = WorldMap.MAP_CONFIGS.get(GlobalState.selected_map, {})
+	var stages = map_cfg.get("stages", [])
+	var st_title = ""
+	var st_waves = map_cfg.get("max_waves", 10)
+	for s in stages:
+		if s.get("stage") == st_num:
+			st_title = s.get("name", "")
+			st_waves = s.get("waves", st_waves)
+			break
+	if is_instance_valid(hud):
+		var max_lvl_str = "Ур. 3" if ch_num == 1 else ("Ур. 4" if ch_num == 2 else "Ур. 5 (Эволюция)")
+		hud.set_hint("⚔️ Глава %d • Катка %d: %s | Башни: %s" % [ch_num, st_num, st_title, max_lvl_str])
+
 func _process(delta: float) -> void:
 	scene_anim_time += delta
 	if lightning_flash_timer > 0.0:
@@ -557,6 +572,14 @@ func _on_wave_completed(wave_num: int, is_last_wave: bool) -> void:
 			game_manager.add_gold(bonus_gold)
 			_spawn_floating_text("🪙 +%d Золота (Технологии)!" % bonus_gold, Color(1.0, 0.9, 0.3), Vector2(640, 270), 16)
 			
+	# Экономика: Базовая награда за волну + банковский процент (5%, до 25г)
+	if is_instance_valid(game_manager):
+		var wave_clear_reward = 35 + wave_num * 5
+		var interest = int(min(25, game_manager.gold * 0.05))
+		var total_wave_gold = wave_clear_reward + interest
+		game_manager.add_gold(total_wave_gold)
+		_spawn_floating_text("🪙 +%d Золота (Волна: +%d | Процент: +%d)!" % [total_wave_gold, wave_clear_reward, interest], Color(1.0, 0.88, 0.25), Vector2(640, 210), 17)
+
 	# Разблокировка реликвий за волны
 	if wave_num in [3, 7, 12, 16] and is_instance_valid(artifact_manager):
 		var art_id = artifact_manager.unlock_next_artifact()
@@ -591,13 +614,18 @@ func _on_all_waves_completed() -> void:
 		game_manager.set_state(GameManager.GameState.VICTORY)
 	var lives = game_manager.lives if is_instance_valid(game_manager) else 5
 	var stars = 3 if lives >= 5 else (2 if lives >= 3 else 1)
+	var ch_num = GlobalState.current_chapter
+	var st_num = GlobalState.current_stage
 	if is_instance_valid(hud):
-		hud.end_title.text = "👑 ПОБЕДА В БИОМЕ!"
+		hud.end_title.text = "👑 ПОБЕДА! КАТКА %d-%d ЗАВЕРШЕНА!" % [ch_num, st_num]
 		hud.end_subtitle.text = "Вы спасли королевство и защитили всех жителей!\nНачислено 30 Очков Славы! ⭐ x%d" % stars
 		hud.end_screen.visible = true
 	if is_instance_valid(meta_manager):
 		meta_manager.add_glory(30)
-		meta_manager.set_map_stars(GlobalState.selected_map, stars)
+		if meta_manager.has_method("record_stage_victory"):
+			meta_manager.record_stage_victory(GlobalState.selected_map, st_num, stars)
+		else:
+			meta_manager.set_map_stars(GlobalState.selected_map, stars)
 
 
 func _on_lives_changed(new_lives: int) -> void:

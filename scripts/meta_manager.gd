@@ -198,6 +198,26 @@ func set_map_stars(biome_id: String, stars: int) -> void:
 func record_map_stars(biome_id: String, stars: int) -> void:
 	set_map_stars(biome_id, stars)
 
+func get_stage_key(biome_id: String, stage_num: int) -> String:
+	return "%s_stage_%d" % [biome_id, stage_num]
+
+func get_stage_stars(biome_id: String, stage_num: int) -> int:
+	return int(map_stars.get(get_stage_key(biome_id, stage_num), 0))
+
+func get_unlocked_stage(biome_id: String, max_stages: int = 15) -> int:
+	for s in range(1, max_stages + 1):
+		if get_stage_stars(biome_id, s) == 0:
+			return s
+	return max_stages
+
+func record_stage_victory(biome_id: String, stage_num: int, stars: int) -> void:
+	var key = get_stage_key(biome_id, stage_num)
+	var prev = int(map_stars.get(key, 0))
+	if stars > prev:
+		map_stars[key] = stars
+	record_map_stars(biome_id, stars)
+	save_data()
+
 func record_victory(biome_id: String = "", stars: int = 3) -> void:
 	if statistics.has("total_victories"):
 		statistics["total_victories"] += 1

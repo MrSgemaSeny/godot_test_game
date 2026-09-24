@@ -1,1105 +1,1325 @@
 {
   "archer": {
-    "name": "Лучники",
+    "cost": 70.0,
+    "damage_type": "physical",
     "description": "Базовая башня против одиночных целей.",
-    "cost": 70,
-    "damage_type": "physical",
-    "path": "all",
-    "levels": [
-      {
-        "level": 1,
-        "damage": 12,
-        "range": 180,
-        "attack_speed": 1.4,
-        "projectile_speed": 450,
-        "projectile_type": "arrow",
-        "upgrade_cost": 60,
-        "color": "#8b5a2b"
-      },
-      {
-        "level": 2,
-        "damage": 22,
-        "range": 220,
-        "attack_speed": 1.8,
-        "projectile_speed": 520,
-        "projectile_type": "arrow",
-        "upgrade_cost": 110,
-        "color": "#b8860b"
-      },
-      {
-        "level": 3,
-        "damage": 38,
-        "range": 260,
-        "attack_speed": 2.2,
-        "projectile_speed": 600,
-        "projectile_type": "arrow",
-        "upgrade_cost": 0,
-        "color": "#ffd700"
-      }
-    ],
     "evolution_a": {
-      "name": "Снайпер",
+      "attack_speed": 1.2,
+      "color": "#22c55e",
+      "cost": 220,
+      "damage": 85.0,
       "description": "Критический урон, обнаруживает невидимок. Убийца приоритетных целей.",
-      "damage": 85,
-      "range": 350,
-      "attack_speed": 1.2,
-      "projectile_speed": 900,
+      "name": "Снайпер",
+      "projectile_speed": 900.0,
       "projectile_type": "sniper_bolt",
-      "special_ability": "crit_20_percent",
-      "color": "#22c55e"
+      "range": 350.0,
+      "special_ability": "crit_20_percent"
     },
     "evolution_b": {
-      "name": "Пулемётчик",
-      "description": "Скорострельность x3, пробивание до 5 целей. Идеален против толп.",
-      "damage": 18,
-      "range": 240,
       "attack_speed": 6.5,
-      "projectile_speed": 700,
+      "color": "#f59e0b",
+      "cost": 220,
+      "damage": 18.0,
+      "description": "Скорострельность x3, пробивание до 5 целей. Идеален против толп.",
+      "name": "Пулемётчик",
+      "pierce": 5.0,
+      "projectile_speed": 700.0,
       "projectile_type": "rapid_bolt",
-      "pierce": 5,
-      "special_ability": "pierce_5",
-      "color": "#f59e0b"
-    }
-  },
-  "crossbowman": {
-    "name": "Арбалетчик",
-    "description": "Тяжелые болты пробивают до 3 врагов насквозь.",
-    "cost": 110,
-    "damage_type": "physical",
-    "path": "military",
-    "levels": [
-      {
-        "level": 1,
-        "damage": 25,
-        "range": 200,
-        "attack_speed": 1.0,
-        "projectile_speed": 550,
-        "projectile_type": "bolt",
-        "pierce": 3,
-        "upgrade_cost": 90,
-        "color": "#991b1b"
-      },
-      {
-        "level": 2,
-        "damage": 45,
-        "range": 230,
-        "attack_speed": 1.3,
-        "projectile_speed": 600,
-        "projectile_type": "bolt",
-        "pierce": 4,
-        "upgrade_cost": 140,
-        "color": "#b91c1c"
-      },
-      {
-        "level": 3,
-        "damage": 80,
-        "range": 260,
-        "attack_speed": 1.6,
-        "projectile_speed": 650,
-        "projectile_type": "bolt",
-        "pierce": 5,
-        "upgrade_cost": 0,
-        "color": "#ef4444"
-      }
-    ],
-    "evolution_a": {
-      "name": "Баллиста",
-      "description": "Пробивает до 10 врагов в линии с нарастающим уроном.",
-      "damage": 180,
-      "range": 300,
-      "attack_speed": 0.8,
-      "projectile_speed": 700,
-      "projectile_type": "ballista_bolt",
-      "pierce": 10,
-      "special_ability": "pierce_10",
-      "color": "#7f1d1d"
+      "range": 240.0,
+      "special_ability": "pierce_5"
     },
-    "evolution_b": {
-      "name": "Охотник на чудовищ",
-      "description": "Болты с разрывным наконечником. +100% урона по боссам.",
-      "damage": 120,
-      "range": 270,
-      "attack_speed": 1.4,
-      "projectile_speed": 650,
-      "projectile_type": "explosive_bolt",
-      "pierce": 2,
-      "special_ability": "boss_slayer",
-      "color": "#b45309"
-    }
-  },
-  "siege_cannon": {
-    "name": "Осадная пушка",
-    "description": "Огромный урон осколочными ядрами по площади.",
-    "cost": 160,
-    "damage_type": "physical",
-    "path": "military",
     "levels": [
       {
-        "level": 1,
-        "damage": 75,
-        "range": 220,
-        "attack_speed": 0.45,
-        "projectile_speed": 320,
-        "projectile_type": "cannonball",
-        "splash_radius": 60,
-        "upgrade_cost": 130,
-        "color": "#374151"
-      },
-      {
-        "level": 2,
-        "damage": 140,
-        "range": 250,
-        "attack_speed": 0.55,
-        "projectile_speed": 360,
-        "projectile_type": "cannonball",
-        "splash_radius": 75,
-        "upgrade_cost": 200,
-        "color": "#1f2937"
-      },
-      {
-        "level": 3,
-        "damage": 250,
-        "range": 280,
-        "attack_speed": 0.7,
-        "projectile_speed": 400,
-        "projectile_type": "cannonball",
-        "splash_radius": 90,
-        "upgrade_cost": 0,
-        "color": "#111827"
-      }
-    ],
-    "evolution_a": {
-      "name": "Мортира опустошения",
-      "description": "Радиус взрыва 140px, оглушение на 1.5 сек.",
-      "damage": 450,
-      "range": 320,
-      "attack_speed": 0.4,
-      "projectile_speed": 350,
-      "projectile_type": "mega_cannonball",
-      "splash_radius": 140,
-      "special_ability": "aoe_stun_1_5",
-      "color": "#030712"
-    },
-    "evolution_b": {
-      "name": "Кассетная гаубица",
-      "description": "Ядро распадается на 6 мини-бомб при взрыве.",
-      "damage": 220,
-      "range": 300,
-      "attack_speed": 0.7,
-      "projectile_speed": 420,
-      "projectile_type": "cluster_bomb",
-      "splash_radius": 80,
-      "special_ability": "cluster_split_6",
-      "color": "#4b5563"
-    }
-  },
-  "bastion": {
-    "name": "Бастион",
-    "description": "Крепостной узел. Атакует всех врагов в радиусе одновременно круговой волной стрел.",
-    "cost": 140,
-    "damage_type": "physical",
-    "path": "military",
-    "levels": [
-      {
-        "level": 1,
-        "damage": 18,
-        "range": 160,
-        "attack_speed": 0.9,
-        "projectile_speed": 400,
-        "projectile_type": "radial_burst",
-        "upgrade_cost": 110,
-        "color": "#78350f"
-      },
-      {
-        "level": 2,
-        "damage": 32,
-        "range": 190,
-        "attack_speed": 1.1,
-        "projectile_speed": 450,
-        "projectile_type": "radial_burst",
-        "upgrade_cost": 160,
-        "color": "#92400e"
-      },
-      {
-        "level": 3,
-        "damage": 55,
-        "range": 220,
         "attack_speed": 1.4,
-        "projectile_speed": 500,
-        "projectile_type": "radial_burst",
-        "upgrade_cost": 0,
-        "color": "#d97706"
-      }
-    ],
-    "evolution_a": {
-      "name": "Цитадель",
-      "description": "Круговой обстрел + аура брони (+25%) соседним башням.",
-      "damage": 90,
-      "range": 250,
-      "attack_speed": 1.5,
-      "projectile_speed": 550,
-      "projectile_type": "citadel_burst",
-      "special_ability": "armor_aura_25",
-      "color": "#451a03"
-    },
-    "evolution_b": {
-      "name": "Крепость-арсенал",
-      "description": "Двойной залп: стрелы + шрапнель во все стороны.",
-      "damage": 75,
-      "range": 230,
-      "attack_speed": 2.2,
-      "projectile_speed": 600,
-      "projectile_type": "shrapnel_burst",
-      "special_ability": "double_burst",
-      "color": "#b45309"
-    }
-  },
-  "ice_mage": {
-    "name": "Маг льда",
-    "description": "Замедляет орков и наносит магический урон по площади.",
-    "cost": 100,
-    "damage_type": "magic",
-    "path": "magic",
-    "levels": [
-      {
-        "level": 1,
-        "damage": 8,
-        "range": 160,
-        "attack_speed": 1.0,
-        "projectile_speed": 360,
-        "projectile_type": "frost_bolt",
-        "slow_factor": 0.50,
-        "slow_duration": 2.2,
-        "splash_radius": 40,
-        "upgrade_cost": 90,
-        "color": "#38bdf8"
+        "color": "#8b5a2b",
+        "damage": 12.0,
+        "level": 1.0,
+        "projectile_speed": 450.0,
+        "projectile_type": "arrow",
+        "range": 180.0,
+        "upgrade_cost": 60.0
       },
       {
-        "level": 2,
-        "damage": 18,
-        "range": 190,
-        "attack_speed": 1.3,
-        "projectile_speed": 420,
-        "projectile_type": "frost_bolt",
-        "slow_factor": 0.65,
-        "slow_duration": 2.8,
-        "splash_radius": 55,
-        "upgrade_cost": 150,
-        "color": "#0284c7"
+        "attack_speed": 1.8,
+        "color": "#b8860b",
+        "damage": 22.0,
+        "level": 2.0,
+        "projectile_speed": 520.0,
+        "projectile_type": "arrow",
+        "range": 220.0,
+        "upgrade_cost": 110.0
       },
       {
-        "level": 3,
-        "damage": 35,
-        "range": 220,
-        "attack_speed": 1.6,
-        "projectile_speed": 480,
-        "projectile_type": "frost_bolt",
-        "slow_factor": 0.80,
-        "slow_duration": 3.5,
-        "splash_radius": 70,
-        "upgrade_cost": 0,
-        "color": "#0369a1"
-      }
-    ],
-    "evolution_a": {
-      "name": "Архимаг Бурана",
-      "description": "Постоянная снежная буря вокруг башни. Замедляет всех на 75%.",
-      "damage": 55,
-      "range": 260,
-      "attack_speed": 1.8,
-      "projectile_speed": 500,
-      "projectile_type": "blizzard_shard",
-      "slow_factor": 0.75,
-      "slow_duration": 4.5,
-      "splash_radius": 100,
-      "special_ability": "permanent_blizzard_aura",
-      "color": "#0284c7"
-    },
-    "evolution_b": {
-      "name": "Ледяной шпиль",
-      "description": "Каждая 4-я атака полностью замораживает цель на 2.5 сек.",
-      "damage": 75,
-      "range": 240,
-      "attack_speed": 1.5,
-      "projectile_speed": 550,
-      "projectile_type": "permafrost_spike",
-      "slow_factor": 0.85,
-      "slow_duration": 4.0,
-      "splash_radius": 65,
-      "special_ability": "permafrost_freeze",
-      "color": "#075985"
-    }
-  },
-  "necromancer": {
-    "name": "Некромант",
-    "description": "Наносит чистый темный урон и призывает призрачные клинки.",
-    "cost": 130,
-    "damage_type": "magic",
-    "path": "magic",
-    "levels": [
-      {
-        "level": 1,
-        "damage": 16,
-        "range": 180,
-        "attack_speed": 1.2,
-        "projectile_speed": 400,
-        "projectile_type": "soul_bolt",
-        "upgrade_cost": 100,
-        "color": "#7e22ce"
+        "attack_speed": 2.2,
+        "color": "#ffd700",
+        "damage": 38.0,
+        "level": 3.0,
+        "projectile_speed": 600.0,
+        "projectile_type": "arrow",
+        "range": 260.0,
+        "upgrade_cost": 140
       },
       {
-        "level": 2,
-        "damage": 30,
-        "range": 210,
-        "attack_speed": 1.5,
-        "projectile_speed": 460,
-        "projectile_type": "soul_bolt",
-        "upgrade_cost": 160,
-        "color": "#9333ea"
-      },
-      {
-        "level": 3,
+        "attack_speed": 2.5,
+        "color": "#eab308",
         "damage": 55,
-        "range": 240,
-        "attack_speed": 1.9,
-        "projectile_speed": 520,
-        "projectile_type": "soul_bolt",
-        "upgrade_cost": 0,
-        "color": "#a855f7"
+        "level": 4,
+        "projectile_speed": 660,
+        "projectile_type": "arrow",
+        "range": 290,
+        "upgrade_cost": 0
       }
     ],
-    "evolution_a": {
-      "name": "Повелитель Теней",
-      "description": "Убитые враги восстают в виде скелетов-защитников (до 5 одновременно).",
-      "damage": 80,
-      "range": 260,
-      "attack_speed": 2.0,
-      "projectile_speed": 550,
-      "projectile_type": "shadow_skull",
-      "special_ability": "raise_skeletons",
-      "color": "#581c87"
-    },
-    "evolution_b": {
-      "name": "Жнец Душ",
-      "description": "Накапливает души убитых (+2% урона за душу, до +100%). Смертельный луч.",
-      "damage": 140,
-      "range": 280,
-      "attack_speed": 1.2,
-      "projectile_speed": 700,
-      "projectile_type": "death_ray",
-      "special_ability": "soul_stack_buff",
-      "color": "#3b0764"
-    }
-  },
-  "time_tower": {
-    "name": "Башня времени",
-    "description": "Излучает хроно-волны, периодически полностью останавливая время для орков.",
-    "cost": 170,
-    "damage_type": "magic",
-    "path": "magic",
-    "levels": [
-      {
-        "level": 1,
-        "damage": 5,
-        "range": 180,
-        "attack_speed": 0.25,
-        "projectile_speed": 500,
-        "projectile_type": "time_pulse",
-        "slow_factor": 0.95,
-        "slow_duration": 2.5,
-        "upgrade_cost": 130,
-        "color": "#6366f1"
-      },
-      {
-        "level": 2,
-        "damage": 10,
-        "range": 210,
-        "attack_speed": 0.35,
-        "projectile_speed": 550,
-        "projectile_type": "time_pulse",
-        "slow_factor": 1.0,
-        "slow_duration": 3.2,
-        "upgrade_cost": 180,
-        "color": "#4f46e5"
-      },
-      {
-        "level": 3,
-        "damage": 20,
-        "range": 250,
-        "attack_speed": 0.5,
-        "projectile_speed": 600,
-        "projectile_type": "time_pulse",
-        "slow_factor": 1.0,
-        "slow_duration": 4.0,
-        "upgrade_cost": 0,
-        "color": "#4338ca"
-      }
-    ],
-    "evolution_a": {
-      "name": "Хроноклазм",
-      "description": "Полная остановка времени на 4.5 сек в радиусе 300px каждые 12 сек.",
-      "damage": 40,
-      "range": 300,
-      "attack_speed": 0.3,
-      "projectile_speed": 650,
-      "projectile_type": "time_stop_pulse",
-      "slow_factor": 1.0,
-      "slow_duration": 4.5,
-      "special_ability": "global_stasis",
-      "color": "#312e81"
-    },
-    "evolution_b": {
-      "name": "Временная петля",
-      "description": "Откатывает врагов назад по тропе на 3 секунды их движения.",
-      "damage": 30,
-      "range": 270,
-      "attack_speed": 0.45,
-      "projectile_speed": 600,
-      "projectile_type": "rewind_wave",
-      "special_ability": "rewind_path_3s",
-      "color": "#1e1b4b"
-    }
-  },
-  "trading_post": {
-    "name": "Торговый пост",
-    "description": "Приносит регулярный доход золотом каждую секунду в бою.",
-    "cost": 90,
-    "damage_type": "physical",
-    "path": "economy",
-    "levels": [
-      {
-        "level": 1,
-        "damage": 0,
-        "range": 100,
-        "attack_speed": 1.0,
-        "projectile_speed": 0,
-        "projectile_type": "gold_income",
-        "gold_per_sec": 4,
-        "upgrade_cost": 80,
-        "color": "#ca8a04"
-      },
-      {
-        "level": 2,
-        "damage": 0,
-        "range": 120,
-        "attack_speed": 1.0,
-        "projectile_speed": 0,
-        "projectile_type": "gold_income",
-        "gold_per_sec": 8,
-        "upgrade_cost": 130,
-        "color": "#eab308"
-      },
-      {
-        "level": 3,
-        "damage": 0,
-        "range": 140,
-        "attack_speed": 1.0,
-        "projectile_speed": 0,
-        "projectile_type": "gold_income",
-        "gold_per_sec": 14,
-        "upgrade_cost": 0,
-        "color": "#facc15"
-      }
-    ],
-    "evolution_a": {
-      "name": "Банк Королевства",
-      "description": "+25 золота/сек + начисляет 5% годовых от текущего золота в конце каждой волны.",
-      "damage": 0,
-      "range": 150,
-      "attack_speed": 1.0,
-      "projectile_speed": 0,
-      "projectile_type": "gold_income",
-      "gold_per_sec": 25,
-      "special_ability": "bank_interest_5_percent",
-      "color": "#a16207"
-    },
-    "evolution_b": {
-      "name": "Купеческая фактория",
-      "description": "Снижает стоимость всех улучшений соседних башен на 20%.",
-      "damage": 0,
-      "range": 180,
-      "attack_speed": 1.0,
-      "projectile_speed": 0,
-      "projectile_type": "gold_income",
-      "gold_per_sec": 18,
-      "special_ability": "discount_aura_20",
-      "color": "#854d0e"
-    }
-  },
-  "trap": {
-    "name": "Ловушка",
-    "description": "Взрывная мина с колоссальным уроном. Перезаряжается после срабатывания.",
-    "cost": 50,
-    "damage_type": "physical",
-    "path": "economy",
-    "levels": [
-      {
-        "level": 1,
-        "damage": 80,
-        "range": 80,
-        "attack_speed": 0.2,
-        "projectile_speed": 0,
-        "projectile_type": "trap_burst",
-        "splash_radius": 60,
-        "upgrade_cost": 50,
-        "color": "#ea580c"
-      },
-      {
-        "level": 2,
-        "damage": 150,
-        "range": 90,
-        "attack_speed": 0.25,
-        "projectile_speed": 0,
-        "projectile_type": "trap_burst",
-        "splash_radius": 75,
-        "upgrade_cost": 80,
-        "color": "#f97316"
-      },
-      {
-        "level": 3,
-        "damage": 260,
-        "range": 100,
-        "attack_speed": 0.35,
-        "projectile_speed": 0,
-        "projectile_type": "trap_burst",
-        "splash_radius": 90,
-        "upgrade_cost": 0,
-        "color": "#fb923c"
-      }
-    ],
-    "evolution_a": {
-      "name": "Минное поле",
-      "description": "Спавнит 3 самовосстанавливающиеся мины на тропе. Огромный урон.",
-      "damage": 400,
-      "range": 130,
-      "attack_speed": 0.4,
-      "projectile_speed": 0,
-      "projectile_type": "minefield_burst",
-      "splash_radius": 110,
-      "special_ability": "triple_mines",
-      "color": "#c2410c"
-    },
-    "evolution_b": {
-      "name": "Смоляная яма",
-      "description": "Разливает горящую смолу: замедление 80% + периодический огонь.",
-      "damage": 160,
-      "range": 120,
-      "attack_speed": 0.5,
-      "projectile_speed": 0,
-      "projectile_type": "tar_burst",
-      "splash_radius": 100,
-      "special_ability": "tar_slow_and_burn",
-      "color": "#7c2d12"
-    }
+    "name": "Лучники",
+    "path": "all"
   },
   "auto_turret": {
-    "name": "Автотурель",
+    "cost": 65.0,
+    "damage_type": "physical",
     "description": "Скорострельная механическая турель с низким уроном.",
-    "cost": 65,
-    "damage_type": "physical",
-    "path": "economy",
-    "levels": [
-      {
-        "level": 1,
-        "damage": 8,
-        "range": 170,
-        "attack_speed": 2.5,
-        "projectile_speed": 550,
-        "projectile_type": "bullet",
-        "upgrade_cost": 55,
-        "color": "#64748b"
-      },
-      {
-        "level": 2,
-        "damage": 15,
-        "range": 200,
-        "attack_speed": 3.2,
-        "projectile_speed": 600,
-        "projectile_type": "bullet",
-        "upgrade_cost": 95,
-        "color": "#475569"
-      },
-      {
-        "level": 3,
-        "damage": 26,
-        "range": 230,
-        "attack_speed": 4.0,
-        "projectile_speed": 650,
-        "projectile_type": "bullet",
-        "upgrade_cost": 0,
-        "color": "#334155"
-      }
-    ],
     "evolution_a": {
-      "name": "Гатлинг",
-      "description": "Безумная скорострельность (8+ атак/сек). Низкий урон, но нескончаемый поток пуль.",
-      "damage": 14,
-      "range": 220,
       "attack_speed": 8.5,
-      "projectile_speed": 750,
+      "color": "#1e293b",
+      "cost": 260,
+      "damage": 14.0,
+      "description": "Безумная скорострельность (8+ атак/сек). Низкий урон, но нескончаемый поток пуль.",
+      "name": "Гатлинг",
+      "projectile_speed": 750.0,
       "projectile_type": "gatling_bullet",
-      "special_ability": "gatling_fire",
-      "color": "#1e293b"
+      "range": 220.0,
+      "special_ability": "gatling_fire"
     },
     "evolution_b": {
-      "name": "Рельсотрон",
-      "description": "Лазерный луч пронзает всю линию врагов. Медленный, но смертельный.",
-      "damage": 120,
-      "range": 320,
       "attack_speed": 0.6,
-      "projectile_speed": 1200,
+      "color": "#0f172a",
+      "cost": 260,
+      "damage": 120.0,
+      "description": "Лазерный луч пронзает всю линию врагов. Медленный, но смертельный.",
+      "name": "Рельсотрон",
+      "pierce": 99.0,
+      "projectile_speed": 1200.0,
       "projectile_type": "railgun_beam",
-      "pierce": 99,
-      "special_ability": "railgun_pierce",
-      "color": "#0f172a"
-    }
-  },
-  "flame_tower": {
-    "name": "Огнемёт",
-    "description": "Конусный огненный шквал, поджигающий врагов и наносящий периодический урон.",
-    "cost": 100,
-    "damage_type": "fire",
-    "path": "all",
+      "range": 320.0,
+      "special_ability": "railgun_pierce"
+    },
     "levels": [
       {
-        "level": 1,
-        "damage": 14,
-        "range": 150,
-        "attack_speed": 2.0,
-        "projectile_speed": 380,
-        "projectile_type": "flame",
-        "splash_radius": 40,
-        "upgrade_cost": 85,
-        "color": "#ea580c"
-      },
-      {
-        "level": 2,
-        "damage": 25,
-        "range": 175,
         "attack_speed": 2.5,
-        "projectile_speed": 420,
-        "projectile_type": "flame",
-        "splash_radius": 55,
-        "upgrade_cost": 140,
-        "color": "#c2410c"
+        "color": "#64748b",
+        "damage": 8.0,
+        "level": 1.0,
+        "projectile_speed": 550.0,
+        "projectile_type": "bullet",
+        "range": 170.0,
+        "upgrade_cost": 55.0
       },
       {
-        "level": 3,
-        "damage": 42,
-        "range": 200,
         "attack_speed": 3.2,
-        "projectile_speed": 460,
-        "projectile_type": "flame",
-        "splash_radius": 70,
-        "upgrade_cost": 0,
-        "color": "#9a3412"
-      }
-    ],
-    "evolution_a": {
-      "name": "Напалмомёт",
-      "description": "Разливает напалм, создающий огненные лужи на земле на 6 секунд.",
-      "damage": 65,
-      "range": 220,
-      "attack_speed": 3.5,
-      "projectile_speed": 480,
-      "projectile_type": "napalm",
-      "splash_radius": 85,
-      "special_ability": "lingering_fire_puddle",
-      "color": "#7c2d12"
-    },
-    "evolution_b": {
-      "name": "Плазменный резак",
-      "description": "Концентрированный синий луч плазмы, плавящий 80% брони врагов.",
-      "damage": 95,
-      "range": 240,
-      "attack_speed": 2.8,
-      "projectile_speed": 600,
-      "projectile_type": "plasma_beam",
-      "splash_radius": 50,
-      "special_ability": "melt_armor_80",
-      "color": "#0284c7"
-    }
-  },
-  "tesla": {
-    "name": "Тесла",
-    "description": "Выпускает молнии, поражающие несколько целей по цепочке.",
-    "cost": 125,
-    "damage_type": "lightning",
-    "path": "magic",
-    "levels": [
-      {
-        "level": 1,
-        "damage": 22,
-        "range": 170,
-        "attack_speed": 1.0,
-        "projectile_speed": 600,
-        "projectile_type": "lightning_spark",
-        "pierce": 3,
-        "upgrade_cost": 95,
-        "color": "#06b6d4"
+        "color": "#475569",
+        "damage": 15.0,
+        "level": 2.0,
+        "projectile_speed": 600.0,
+        "projectile_type": "bullet",
+        "range": 200.0,
+        "upgrade_cost": 95.0
       },
       {
-        "level": 2,
-        "damage": 40,
-        "range": 200,
-        "attack_speed": 1.3,
-        "projectile_speed": 650,
-        "projectile_type": "lightning_spark",
-        "pierce": 4,
-        "upgrade_cost": 150,
-        "color": "#0891b2"
+        "attack_speed": 4.0,
+        "color": "#334155",
+        "damage": 26.0,
+        "level": 3.0,
+        "projectile_speed": 650.0,
+        "projectile_type": "bullet",
+        "range": 230.0,
+        "upgrade_cost": 180
       },
       {
-        "level": 3,
-        "damage": 70,
-        "range": 230,
-        "attack_speed": 1.6,
+        "attack_speed": 4.5,
+        "color": "#1e293b",
+        "damage": 34,
+        "level": 4,
         "projectile_speed": 700,
-        "projectile_type": "lightning_spark",
-        "pierce": 5,
-        "upgrade_cost": 0,
-        "color": "#0e7490"
-      }
-    ],
-    "evolution_a": {
-      "name": "Штормовой разрядник",
-      "description": "Цепная молния поражает до 8 целей, нанося полный урон каждому отскоку.",
-      "damage": 110,
-      "range": 260,
-      "attack_speed": 1.8,
-      "projectile_speed": 800,
-      "projectile_type": "storm_chain",
-      "pierce": 8,
-      "special_ability": "chain_lightning_8",
-      "color": "#22d3ee"
-    },
-    "evolution_b": {
-      "name": "ЭМИ-Излучатель",
-      "description": "Электромагнитный импульс оглушает механических и бронированных врагов.",
-      "damage": 90,
-      "range": 240,
-      "attack_speed": 1.4,
-      "projectile_speed": 750,
-      "projectile_type": "emp_blast",
-      "pierce": 6,
-      "special_ability": "emp_stun_armored",
-      "color": "#0369a1"
-    }
-  },
-  "poison_tower": {
-    "name": "Башня Яда",
-    "description": "Распыляет токсичный яд, разъедающий броню и отравляющий врагов.",
-    "cost": 95,
-    "damage_type": "poison",
-    "path": "all",
-    "levels": [
-      {
-        "level": 1,
-        "damage": 10,
-        "range": 160,
-        "attack_speed": 1.5,
-        "projectile_speed": 400,
-        "projectile_type": "poison_spit",
-        "splash_radius": 35,
-        "upgrade_cost": 75,
-        "color": "#84cc16"
-      },
-      {
-        "level": 2,
-        "damage": 20,
-        "range": 185,
-        "attack_speed": 1.9,
-        "projectile_speed": 450,
-        "projectile_type": "poison_spit",
-        "splash_radius": 50,
-        "upgrade_cost": 125,
-        "color": "#65a30d"
-      },
-      {
-        "level": 3,
-        "damage": 36,
-        "range": 210,
-        "attack_speed": 2.4,
-        "projectile_speed": 500,
-        "projectile_type": "poison_spit",
-        "splash_radius": 65,
-        "upgrade_cost": 0,
-        "color": "#4d7c0f"
-      }
-    ],
-    "evolution_a": {
-      "name": "Чумной распылитель",
-      "description": "Отравленные враги взрываются ядовитым облаком при смерти, заражая соседей.",
-      "damage": 55,
-      "range": 230,
-      "attack_speed": 2.8,
-      "projectile_speed": 550,
-      "projectile_type": "plague_cloud",
-      "splash_radius": 80,
-      "special_ability": "corpse_explosion_poison",
-      "color": "#365314"
-    },
-    "evolution_b": {
-      "name": "Кислотный гейзер",
-      "description": "Высококонцентрированная кислота полностью разрушает броню цели.",
-      "damage": 75,
-      "range": 220,
-      "attack_speed": 2.2,
-      "projectile_speed": 520,
-      "projectile_type": "acid_spray",
-      "splash_radius": 70,
-      "special_ability": "armor_strip_100",
-      "color": "#14532d"
-    }
-  },
-  "support_tower": {
-    "name": "Башня Поддержки",
-    "description": "Не атакует напрямую. Излучает ауру, усиливающую урон и дальность соседних башен.",
-    "cost": 110,
-    "damage_type": "magic",
-    "path": "all",
-    "levels": [
-      {
-        "level": 1,
-        "damage": 0,
-        "range": 160,
-        "attack_speed": 1.0,
-        "projectile_speed": 0,
-        "projectile_type": "support_aura",
-        "upgrade_cost": 90,
-        "color": "#e2e8f0"
-      },
-      {
-        "level": 2,
-        "damage": 0,
-        "range": 190,
-        "attack_speed": 1.0,
-        "projectile_speed": 0,
-        "projectile_type": "support_aura",
-        "upgrade_cost": 140,
-        "color": "#cbd5e1"
-      },
-      {
-        "level": 3,
-        "damage": 0,
-        "range": 220,
-        "attack_speed": 1.0,
-        "projectile_speed": 0,
-        "projectile_type": "support_aura",
-        "upgrade_cost": 0,
-        "color": "#94a3b8"
-      }
-    ],
-    "evolution_a": {
-      "name": "Командный бастион",
-      "description": "+40% к урону и +25% к скорости атаки всех башен в радиусе ауры.",
-      "damage": 0,
-      "range": 260,
-      "attack_speed": 1.0,
-      "projectile_speed": 0,
-      "projectile_type": "command_aura",
-      "special_ability": "damage_aura_40",
-      "color": "#f8fafc"
-    },
-    "evolution_b": {
-      "name": "Рунный обелиск",
-      "description": "Ускоряет регенерацию маны на +50% и дает бонусное золото за каждое убийство в радиусе.",
-      "damage": 0,
-      "range": 250,
-      "attack_speed": 1.0,
-      "projectile_speed": 0,
-      "projectile_type": "rune_aura",
-      "special_ability": "mana_and_gold_aura",
-      "color": "#e0e7ff"
-    }
-  },
-  "watchtower": {
-    "name": "Сторожевая вышка",
-    "description": "Дальнобойная наблюдательная вышка. Раскрывает невидимых лазутчиков и атакует с большой дистанции.",
-    "cost": 65,
-    "damage_type": "physical",
-    "path": "all",
-    "levels": [
-      {
-        "level": 1,
-        "damage": 10,
+        "projectile_type": "bullet",
         "range": 240,
-        "attack_speed": 0.7,
-        "projectile_speed": 500,
-        "projectile_type": "arrow",
-        "upgrade_cost": 55,
-        "color": "#a1a1aa"
-      },
-      {
-        "level": 2,
-        "damage": 18,
-        "range": 280,
-        "attack_speed": 0.9,
-        "projectile_speed": 550,
-        "projectile_type": "arrow",
-        "upgrade_cost": 95,
-        "color": "#71717a"
-      },
-      {
-        "level": 3,
-        "damage": 32,
-        "range": 320,
-        "attack_speed": 1.2,
-        "projectile_speed": 600,
-        "projectile_type": "arrow",
-        "upgrade_cost": 0,
-        "color": "#52525b"
+        "upgrade_cost": 0
       }
     ],
+    "name": "Автотурель",
+    "path": "economy"
+  },
+  "bastion": {
+    "cost": 140.0,
+    "damage_type": "physical",
+    "description": "Крепостной узел. Атакует всех врагов в радиусе одновременно круговой волной стрел.",
     "evolution_a": {
-      "name": "Око Истины",
-      "description": "Раскрывает всех невидимых врагов на всей карте. Метки увеличивают шанс крита на 30%.",
-      "damage": 50,
-      "range": 400,
-      "attack_speed": 1.4,
-      "projectile_speed": 700,
-      "projectile_type": "true_sight_bolt",
-      "special_ability": "global_stealth_reveal",
-      "color": "#3f3f46"
+      "attack_speed": 1.5,
+      "color": "#451a03",
+      "cost": 240,
+      "damage": 90.0,
+      "description": "Круговой обстрел + аура брони (+25%) соседним башням.",
+      "name": "Цитадель",
+      "projectile_speed": 550.0,
+      "projectile_type": "citadel_burst",
+      "range": 250.0,
+      "special_ability": "armor_aura_25"
     },
     "evolution_b": {
-      "name": "Тяжелая баллиста",
-      "description": "Сверхдальнобойный гарпун, пригвождающий врагов к земле.",
-      "damage": 95,
-      "range": 360,
-      "attack_speed": 0.8,
-      "projectile_speed": 750,
-      "projectile_type": "harpoon",
-      "pierce": 4,
-      "special_ability": "pin_ground_stun",
-      "color": "#27272a"
-    }
-  },
-  "wall": {
-    "name": "Стена-баррикада",
-    "description": "Прочная каменная преграда. Задерживает наземных врагов на дороге.",
-    "cost": 40,
-    "damage_type": "physical",
-    "path": "all",
+      "attack_speed": 2.2,
+      "color": "#b45309",
+      "cost": 240,
+      "damage": 75.0,
+      "description": "Двойной залп: стрелы + шрапнель во все стороны.",
+      "name": "Крепость-арсенал",
+      "projectile_speed": 600.0,
+      "projectile_type": "shrapnel_burst",
+      "range": 230.0,
+      "special_ability": "double_burst"
+    },
     "levels": [
       {
-        "level": 1,
-        "damage": 0,
-        "range": 60,
-        "attack_speed": 1.0,
-        "projectile_speed": 0,
-        "projectile_type": "none",
-        "upgrade_cost": 40,
-        "color": "#78716c"
+        "attack_speed": 0.9,
+        "color": "#78350f",
+        "damage": 18.0,
+        "level": 1.0,
+        "projectile_speed": 400.0,
+        "projectile_type": "radial_burst",
+        "range": 160.0,
+        "upgrade_cost": 110.0
       },
       {
-        "level": 2,
-        "damage": 0,
-        "range": 70,
-        "attack_speed": 1.0,
-        "projectile_speed": 0,
-        "projectile_type": "none",
-        "upgrade_cost": 70,
-        "color": "#57534e"
+        "attack_speed": 1.1,
+        "color": "#92400e",
+        "damage": 32.0,
+        "level": 2.0,
+        "projectile_speed": 450.0,
+        "projectile_type": "radial_burst",
+        "range": 190.0,
+        "upgrade_cost": 160.0
       },
       {
-        "level": 3,
-        "damage": 0,
-        "range": 80,
-        "attack_speed": 1.0,
-        "projectile_speed": 0,
-        "projectile_type": "none",
-        "upgrade_cost": 0,
-        "color": "#44403c"
+        "attack_speed": 1.4,
+        "color": "#d97706",
+        "damage": 55.0,
+        "level": 3.0,
+        "projectile_speed": 500.0,
+        "projectile_type": "radial_burst",
+        "range": 220.0,
+        "upgrade_cost": 160
+      },
+      {
+        "attack_speed": 1.5,
+        "color": "#2563eb",
+        "damage": 72,
+        "level": 4,
+        "pierce": 3,
+        "projectile_speed": 580,
+        "projectile_type": "javelin",
+        "range": 230,
+        "upgrade_cost": 0
       }
     ],
-    "evolution_a": {
-      "name": "Шипованный вал",
-      "description": "Возвращает 50% контактного физического урона атакующим оркам.",
-      "damage": 25,
-      "range": 90,
-      "attack_speed": 1.0,
-      "projectile_speed": 0,
-      "projectile_type": "thorns",
-      "special_ability": "reflect_damage_50",
-      "color": "#292524"
-    },
-    "evolution_b": {
-      "name": "Освященный редут",
-      "description": "Освященный бастион с регенерацией здоровья и щитом от магии.",
-      "damage": 0,
-      "range": 100,
-      "attack_speed": 1.0,
-      "projectile_speed": 0,
-      "projectile_type": "holy_ward",
-      "special_ability": "holy_shield_regen",
-      "color": "#1c1917"
-    }
+    "name": "Бастион",
+    "path": "military"
   },
   "cannon": {
-    "name": "Камнеметалка",
-    "description": "Легкая полевая камнеметалка с навесной траекторией снарядов.",
-    "cost": 85,
+    "cost": 85.0,
     "damage_type": "physical",
-    "path": "all",
-    "levels": [
-      {
-        "level": 1,
-        "damage": 35,
-        "range": 190,
-        "attack_speed": 0.5,
-        "projectile_speed": 300,
-        "projectile_type": "stone",
-        "splash_radius": 50,
-        "upgrade_cost": 70,
-        "color": "#525252"
-      },
-      {
-        "level": 2,
-        "damage": 65,
-        "range": 220,
-        "attack_speed": 0.65,
-        "projectile_speed": 340,
-        "projectile_type": "stone",
-        "splash_radius": 60,
-        "upgrade_cost": 110,
-        "color": "#404040"
-      },
-      {
-        "level": 3,
-        "damage": 115,
-        "range": 250,
-        "attack_speed": 0.8,
-        "projectile_speed": 380,
-        "projectile_type": "stone",
-        "splash_radius": 75,
-        "upgrade_cost": 0,
-        "color": "#262626"
-      }
-    ],
+    "description": "Легкая полевая камнеметалка с навесной траекторией снарядов.",
     "evolution_a": {
-      "name": "Тяжелый катапультный комплекс",
-      "description": "Запускает гигантские пылающие валуны с радиусом поражения 110px.",
-      "damage": 220,
-      "range": 280,
       "attack_speed": 0.6,
-      "projectile_speed": 350,
+      "color": "#171717",
+      "cost": 260,
+      "damage": 220.0,
+      "description": "Запускает гигантские пылающие валуны с радиусом поражения 110px.",
+      "name": "Тяжелый катапультный комплекс",
+      "projectile_speed": 350.0,
       "projectile_type": "flaming_boulder",
-      "splash_radius": 110,
+      "range": 280.0,
       "special_ability": "giant_burning_boulder",
-      "color": "#171717"
+      "splash_radius": 110.0
     },
     "evolution_b": {
-      "name": "Требушет 'Громобой'",
-      "description": "Сверхдальний требушет, стреляющий шоковыми каменными ядрами.",
-      "damage": 180,
-      "range": 320,
       "attack_speed": 0.7,
-      "projectile_speed": 400,
+      "color": "#0a0a0a",
+      "cost": 260,
+      "damage": 180.0,
+      "description": "Сверхдальний требушет, стреляющий шоковыми каменными ядрами.",
+      "name": "Требушет 'Громобой'",
+      "projectile_speed": 400.0,
       "projectile_type": "shock_stone",
-      "splash_radius": 85,
+      "range": 320.0,
       "special_ability": "concussive_impact",
-      "color": "#0a0a0a"
-    }
+      "splash_radius": 85.0
+    },
+    "levels": [
+      {
+        "attack_speed": 0.5,
+        "color": "#525252",
+        "damage": 35.0,
+        "level": 1.0,
+        "projectile_speed": 300.0,
+        "projectile_type": "stone",
+        "range": 190.0,
+        "splash_radius": 50.0,
+        "upgrade_cost": 70.0
+      },
+      {
+        "attack_speed": 0.65,
+        "color": "#404040",
+        "damage": 65.0,
+        "level": 2.0,
+        "projectile_speed": 340.0,
+        "projectile_type": "stone",
+        "range": 220.0,
+        "splash_radius": 60.0,
+        "upgrade_cost": 110.0
+      },
+      {
+        "attack_speed": 0.8,
+        "color": "#262626",
+        "damage": 115.0,
+        "level": 3.0,
+        "projectile_speed": 380.0,
+        "projectile_type": "stone",
+        "range": 250.0,
+        "splash_radius": 75.0,
+        "upgrade_cost": 180
+      },
+      {
+        "attack_speed": 0.85,
+        "color": "#171717",
+        "damage": 150,
+        "level": 4,
+        "projectile_speed": 400,
+        "projectile_type": "stone",
+        "range": 260,
+        "splash_radius": 80,
+        "upgrade_cost": 0
+      }
+    ],
+    "name": "Камнеметалка",
+    "path": "all"
+  },
+  "crossbowman": {
+    "cost": 110.0,
+    "damage_type": "physical",
+    "description": "Тяжелые болты пробивают до 3 врагов насквозь.",
+    "evolution_a": {
+      "attack_speed": 0.8,
+      "color": "#7f1d1d",
+      "cost": 250,
+      "damage": 180.0,
+      "description": "Пробивает до 10 врагов в линии с нарастающим уроном.",
+      "name": "Баллиста",
+      "pierce": 10.0,
+      "projectile_speed": 700.0,
+      "projectile_type": "ballista_bolt",
+      "range": 300.0,
+      "special_ability": "pierce_10"
+    },
+    "evolution_b": {
+      "attack_speed": 1.4,
+      "color": "#b45309",
+      "cost": 250,
+      "damage": 120.0,
+      "description": "Болты с разрывным наконечником. +100% урона по боссам.",
+      "name": "Охотник на чудовищ",
+      "pierce": 2.0,
+      "projectile_speed": 650.0,
+      "projectile_type": "explosive_bolt",
+      "range": 270.0,
+      "special_ability": "boss_slayer"
+    },
+    "levels": [
+      {
+        "attack_speed": 1.0,
+        "color": "#991b1b",
+        "damage": 25.0,
+        "level": 1.0,
+        "pierce": 3.0,
+        "projectile_speed": 550.0,
+        "projectile_type": "bolt",
+        "range": 200.0,
+        "upgrade_cost": 90.0
+      },
+      {
+        "attack_speed": 1.3,
+        "color": "#b91c1c",
+        "damage": 45.0,
+        "level": 2.0,
+        "pierce": 4.0,
+        "projectile_speed": 600.0,
+        "projectile_type": "bolt",
+        "range": 230.0,
+        "upgrade_cost": 140.0
+      },
+      {
+        "attack_speed": 1.6,
+        "color": "#ef4444",
+        "damage": 80.0,
+        "level": 3.0,
+        "pierce": 5.0,
+        "projectile_speed": 650.0,
+        "projectile_type": "bolt",
+        "range": 260.0,
+        "upgrade_cost": 170
+      },
+      {
+        "attack_speed": 1.7,
+        "color": "#dc2626",
+        "damage": 115,
+        "level": 4,
+        "pierce": 6,
+        "projectile_speed": 680,
+        "projectile_type": "bolt",
+        "range": 280,
+        "upgrade_cost": 0
+      }
+    ],
+    "name": "Арбалетчик",
+    "path": "military"
+  },
+  "flame_tower": {
+    "cost": 100.0,
+    "damage_type": "fire",
+    "description": "Конусный огненный шквал, поджигающий врагов и наносящий периодический урон.",
+    "evolution_a": {
+      "attack_speed": 3.5,
+      "color": "#7c2d12",
+      "cost": 260,
+      "damage": 65.0,
+      "description": "Разливает напалм, создающий огненные лужи на земле на 6 секунд.",
+      "name": "Напалмомёт",
+      "projectile_speed": 480.0,
+      "projectile_type": "napalm",
+      "range": 220.0,
+      "special_ability": "lingering_fire_puddle",
+      "splash_radius": 85.0
+    },
+    "evolution_b": {
+      "attack_speed": 2.8,
+      "color": "#0284c7",
+      "cost": 260,
+      "damage": 95.0,
+      "description": "Концентрированный синий луч плазмы, плавящий 80% брони врагов.",
+      "name": "Плазменный резак",
+      "projectile_speed": 600.0,
+      "projectile_type": "plasma_beam",
+      "range": 240.0,
+      "special_ability": "melt_armor_80",
+      "splash_radius": 50.0
+    },
+    "levels": [
+      {
+        "attack_speed": 2.0,
+        "color": "#ea580c",
+        "damage": 14.0,
+        "level": 1.0,
+        "projectile_speed": 380.0,
+        "projectile_type": "flame",
+        "range": 150.0,
+        "splash_radius": 40.0,
+        "upgrade_cost": 85.0
+      },
+      {
+        "attack_speed": 2.5,
+        "color": "#c2410c",
+        "damage": 25.0,
+        "level": 2.0,
+        "projectile_speed": 420.0,
+        "projectile_type": "flame",
+        "range": 175.0,
+        "splash_radius": 55.0,
+        "upgrade_cost": 140.0
+      },
+      {
+        "attack_speed": 3.2,
+        "color": "#9a3412",
+        "damage": 42.0,
+        "level": 3.0,
+        "projectile_speed": 460.0,
+        "projectile_type": "flame",
+        "range": 200.0,
+        "splash_radius": 70.0,
+        "upgrade_cost": 180
+      },
+      {
+        "attack_speed": 3.4,
+        "color": "#c2410c",
+        "damage": 54,
+        "level": 4,
+        "projectile_speed": 480,
+        "projectile_type": "flame",
+        "range": 210,
+        "splash_radius": 75,
+        "upgrade_cost": 0
+      }
+    ],
+    "name": "Огнемёт",
+    "path": "all"
+  },
+  "ice_mage": {
+    "cost": 100.0,
+    "damage_type": "magic",
+    "description": "Замедляет орков и наносит магический урон по площади.",
+    "evolution_a": {
+      "attack_speed": 1.8,
+      "color": "#0284c7",
+      "cost": 240,
+      "damage": 55.0,
+      "description": "Постоянная снежная буря вокруг башни. Замедляет всех на 75%.",
+      "name": "Архимаг Бурана",
+      "projectile_speed": 500.0,
+      "projectile_type": "blizzard_shard",
+      "range": 260.0,
+      "slow_duration": 4.5,
+      "slow_factor": 0.75,
+      "special_ability": "permanent_blizzard_aura",
+      "splash_radius": 100.0
+    },
+    "evolution_b": {
+      "attack_speed": 1.5,
+      "color": "#075985",
+      "cost": 240,
+      "damage": 75.0,
+      "description": "Каждая 4-я атака полностью замораживает цель на 2.5 сек.",
+      "name": "Ледяной шпиль",
+      "projectile_speed": 550.0,
+      "projectile_type": "permafrost_spike",
+      "range": 240.0,
+      "slow_duration": 4.0,
+      "slow_factor": 0.85,
+      "special_ability": "permafrost_freeze",
+      "splash_radius": 65.0
+    },
+    "levels": [
+      {
+        "attack_speed": 1.0,
+        "color": "#38bdf8",
+        "damage": 8.0,
+        "level": 1.0,
+        "projectile_speed": 360.0,
+        "projectile_type": "frost_bolt",
+        "range": 160.0,
+        "slow_duration": 2.2,
+        "slow_factor": 0.5,
+        "splash_radius": 40.0,
+        "upgrade_cost": 90.0
+      },
+      {
+        "attack_speed": 1.3,
+        "color": "#0284c7",
+        "damage": 18.0,
+        "level": 2.0,
+        "projectile_speed": 420.0,
+        "projectile_type": "frost_bolt",
+        "range": 190.0,
+        "slow_duration": 2.8,
+        "slow_factor": 0.65,
+        "splash_radius": 55.0,
+        "upgrade_cost": 150.0
+      },
+      {
+        "attack_speed": 1.6,
+        "color": "#0369a1",
+        "damage": 35.0,
+        "level": 3.0,
+        "projectile_speed": 480.0,
+        "projectile_type": "frost_bolt",
+        "range": 220.0,
+        "slow_duration": 3.5,
+        "slow_factor": 0.8,
+        "splash_radius": 70.0,
+        "upgrade_cost": 160
+      },
+      {
+        "attack_speed": 1.7,
+        "color": "#0284c7",
+        "damage": 46,
+        "level": 4,
+        "projectile_speed": 480,
+        "projectile_type": "ice_shard",
+        "range": 235,
+        "slow_duration": 3.5,
+        "slow_factor": 0.55,
+        "upgrade_cost": 0
+      }
+    ],
+    "name": "Маг льда",
+    "path": "magic"
+  },
+  "necromancer": {
+    "cost": 130.0,
+    "damage_type": "magic",
+    "description": "Наносит чистый темный урон и призывает призрачные клинки.",
+    "evolution_a": {
+      "attack_speed": 2.0,
+      "color": "#581c87",
+      "cost": 260,
+      "damage": 80.0,
+      "description": "Убитые враги восстают в виде скелетов-защитников (до 5 одновременно).",
+      "name": "Повелитель Теней",
+      "projectile_speed": 550.0,
+      "projectile_type": "shadow_skull",
+      "range": 260.0,
+      "special_ability": "raise_skeletons"
+    },
+    "evolution_b": {
+      "attack_speed": 1.2,
+      "color": "#3b0764",
+      "cost": 260,
+      "damage": 140.0,
+      "description": "Накапливает души убитых (+2% урона за душу, до +100%). Смертельный луч.",
+      "name": "Жнец Душ",
+      "projectile_speed": 700.0,
+      "projectile_type": "death_ray",
+      "range": 280.0,
+      "special_ability": "soul_stack_buff"
+    },
+    "levels": [
+      {
+        "attack_speed": 1.2,
+        "color": "#7e22ce",
+        "damage": 16.0,
+        "level": 1.0,
+        "projectile_speed": 400.0,
+        "projectile_type": "soul_bolt",
+        "range": 180.0,
+        "upgrade_cost": 100.0
+      },
+      {
+        "attack_speed": 1.5,
+        "color": "#9333ea",
+        "damage": 30.0,
+        "level": 2.0,
+        "projectile_speed": 460.0,
+        "projectile_type": "soul_bolt",
+        "range": 210.0,
+        "upgrade_cost": 160.0
+      },
+      {
+        "attack_speed": 1.9,
+        "color": "#a855f7",
+        "damage": 55.0,
+        "level": 3.0,
+        "projectile_speed": 520.0,
+        "projectile_type": "soul_bolt",
+        "range": 240.0,
+        "upgrade_cost": 180
+      },
+      {
+        "attack_speed": 2.0,
+        "color": "#7e22ce",
+        "damage": 75,
+        "level": 4,
+        "projectile_speed": 460,
+        "projectile_type": "soul_orb",
+        "range": 250,
+        "splash_radius": 45,
+        "upgrade_cost": 0
+      }
+    ],
+    "name": "Некромант",
+    "path": "magic"
+  },
+  "poison_tower": {
+    "cost": 95.0,
+    "damage_type": "poison",
+    "description": "Распыляет токсичный яд, разъедающий броню и отравляющий врагов.",
+    "evolution_a": {
+      "attack_speed": 2.8,
+      "color": "#365314",
+      "cost": 250,
+      "damage": 55.0,
+      "description": "Отравленные враги взрываются ядовитым облаком при смерти, заражая соседей.",
+      "name": "Чумной распылитель",
+      "projectile_speed": 550.0,
+      "projectile_type": "plague_cloud",
+      "range": 230.0,
+      "special_ability": "corpse_explosion_poison",
+      "splash_radius": 80.0
+    },
+    "evolution_b": {
+      "attack_speed": 2.2,
+      "color": "#14532d",
+      "cost": 250,
+      "damage": 75.0,
+      "description": "Высококонцентрированная кислота полностью разрушает броню цели.",
+      "name": "Кислотный гейзер",
+      "projectile_speed": 520.0,
+      "projectile_type": "acid_spray",
+      "range": 220.0,
+      "special_ability": "armor_strip_100",
+      "splash_radius": 70.0
+    },
+    "levels": [
+      {
+        "attack_speed": 1.5,
+        "color": "#84cc16",
+        "damage": 10.0,
+        "level": 1.0,
+        "projectile_speed": 400.0,
+        "projectile_type": "poison_spit",
+        "range": 160.0,
+        "splash_radius": 35.0,
+        "upgrade_cost": 75.0
+      },
+      {
+        "attack_speed": 1.9,
+        "color": "#65a30d",
+        "damage": 20.0,
+        "level": 2.0,
+        "projectile_speed": 450.0,
+        "projectile_type": "poison_spit",
+        "range": 185.0,
+        "splash_radius": 50.0,
+        "upgrade_cost": 125.0
+      },
+      {
+        "attack_speed": 2.4,
+        "color": "#4d7c0f",
+        "damage": 36.0,
+        "level": 3.0,
+        "projectile_speed": 500.0,
+        "projectile_type": "poison_spit",
+        "range": 210.0,
+        "splash_radius": 65.0,
+        "upgrade_cost": 170
+      },
+      {
+        "attack_speed": 2.6,
+        "color": "#3f6212",
+        "damage": 46,
+        "level": 4,
+        "projectile_speed": 520,
+        "projectile_type": "poison_spit",
+        "range": 220,
+        "splash_radius": 70,
+        "upgrade_cost": 0
+      }
+    ],
+    "name": "Башня Яда",
+    "path": "all"
+  },
+  "siege_cannon": {
+    "cost": 160.0,
+    "damage_type": "physical",
+    "description": "Огромный урон осколочными ядрами по площади.",
+    "evolution_a": {
+      "attack_speed": 0.4,
+      "color": "#030712",
+      "cost": 280,
+      "damage": 450.0,
+      "description": "Радиус взрыва 140px, оглушение на 1.5 сек.",
+      "name": "Мортира опустошения",
+      "projectile_speed": 350.0,
+      "projectile_type": "mega_cannonball",
+      "range": 320.0,
+      "special_ability": "aoe_stun_1_5",
+      "splash_radius": 140.0
+    },
+    "evolution_b": {
+      "attack_speed": 0.7,
+      "color": "#4b5563",
+      "cost": 280,
+      "damage": 220.0,
+      "description": "Ядро распадается на 6 мини-бомб при взрыве.",
+      "name": "Кассетная гаубица",
+      "projectile_speed": 420.0,
+      "projectile_type": "cluster_bomb",
+      "range": 300.0,
+      "special_ability": "cluster_split_6",
+      "splash_radius": 80.0
+    },
+    "levels": [
+      {
+        "attack_speed": 0.45,
+        "color": "#374151",
+        "damage": 75.0,
+        "level": 1.0,
+        "projectile_speed": 320.0,
+        "projectile_type": "cannonball",
+        "range": 220.0,
+        "splash_radius": 60.0,
+        "upgrade_cost": 130.0
+      },
+      {
+        "attack_speed": 0.55,
+        "color": "#1f2937",
+        "damage": 140.0,
+        "level": 2.0,
+        "projectile_speed": 360.0,
+        "projectile_type": "cannonball",
+        "range": 250.0,
+        "splash_radius": 75.0,
+        "upgrade_cost": 200.0
+      },
+      {
+        "attack_speed": 0.7,
+        "color": "#111827",
+        "damage": 250.0,
+        "level": 3.0,
+        "projectile_speed": 400.0,
+        "projectile_type": "cannonball",
+        "range": 280.0,
+        "splash_radius": 90.0,
+        "upgrade_cost": 220
+      },
+      {
+        "attack_speed": 0.75,
+        "color": "#1f2937",
+        "damage": 340,
+        "level": 4,
+        "projectile_speed": 380,
+        "projectile_type": "cannonball",
+        "range": 290,
+        "splash_radius": 85,
+        "upgrade_cost": 0
+      }
+    ],
+    "name": "Осадная пушка",
+    "path": "military"
+  },
+  "support_tower": {
+    "cost": 110.0,
+    "damage_type": "magic",
+    "description": "Не атакует напрямую. Излучает ауру, усиливающую урон и дальность соседних башен.",
+    "evolution_a": {
+      "attack_speed": 1.0,
+      "color": "#f8fafc",
+      "cost": 240,
+      "damage": 0.0,
+      "description": "+40% к урону и +25% к скорости атаки всех башен в радиусе ауры.",
+      "name": "Командный бастион",
+      "projectile_speed": 0.0,
+      "projectile_type": "command_aura",
+      "range": 260.0,
+      "special_ability": "damage_aura_40"
+    },
+    "evolution_b": {
+      "attack_speed": 1.0,
+      "color": "#e0e7ff",
+      "cost": 240,
+      "damage": 0.0,
+      "description": "Ускоряет регенерацию маны на +50% и дает бонусное золото за каждое убийство в радиусе.",
+      "name": "Рунный обелиск",
+      "projectile_speed": 0.0,
+      "projectile_type": "rune_aura",
+      "range": 250.0,
+      "special_ability": "mana_and_gold_aura"
+    },
+    "levels": [
+      {
+        "attack_speed": 1.0,
+        "color": "#e2e8f0",
+        "damage": 0.0,
+        "level": 1.0,
+        "projectile_speed": 0.0,
+        "projectile_type": "support_aura",
+        "range": 160.0,
+        "upgrade_cost": 90.0
+      },
+      {
+        "attack_speed": 1.0,
+        "color": "#cbd5e1",
+        "damage": 0.0,
+        "level": 2.0,
+        "projectile_speed": 0.0,
+        "projectile_type": "support_aura",
+        "range": 190.0,
+        "upgrade_cost": 140.0
+      },
+      {
+        "attack_speed": 1.0,
+        "color": "#94a3b8",
+        "damage": 0.0,
+        "level": 3.0,
+        "projectile_speed": 0.0,
+        "projectile_type": "support_aura",
+        "range": 220.0,
+        "upgrade_cost": 160
+      },
+      {
+        "attack_speed": 1.0,
+        "color": "#64748b",
+        "damage": 0,
+        "level": 4,
+        "projectile_speed": 0,
+        "projectile_type": "support_aura",
+        "range": 235,
+        "upgrade_cost": 0
+      }
+    ],
+    "name": "Башня Поддержки",
+    "path": "all"
+  },
+  "tesla": {
+    "cost": 125.0,
+    "damage_type": "lightning",
+    "description": "Выпускает молнии, поражающие несколько целей по цепочке.",
+    "evolution_a": {
+      "attack_speed": 1.8,
+      "color": "#22d3ee",
+      "cost": 270,
+      "damage": 110.0,
+      "description": "Цепная молния поражает до 8 целей, нанося полный урон каждому отскоку.",
+      "name": "Штормовой разрядник",
+      "pierce": 8.0,
+      "projectile_speed": 800.0,
+      "projectile_type": "storm_chain",
+      "range": 260.0,
+      "special_ability": "chain_lightning_8"
+    },
+    "evolution_b": {
+      "attack_speed": 1.4,
+      "color": "#0369a1",
+      "cost": 270,
+      "damage": 90.0,
+      "description": "Электромагнитный импульс оглушает механических и бронированных врагов.",
+      "name": "ЭМИ-Излучатель",
+      "pierce": 6.0,
+      "projectile_speed": 750.0,
+      "projectile_type": "emp_blast",
+      "range": 240.0,
+      "special_ability": "emp_stun_armored"
+    },
+    "levels": [
+      {
+        "attack_speed": 1.0,
+        "color": "#06b6d4",
+        "damage": 22.0,
+        "level": 1.0,
+        "pierce": 3.0,
+        "projectile_speed": 600.0,
+        "projectile_type": "lightning_spark",
+        "range": 170.0,
+        "upgrade_cost": 95.0
+      },
+      {
+        "attack_speed": 1.3,
+        "color": "#0891b2",
+        "damage": 40.0,
+        "level": 2.0,
+        "pierce": 4.0,
+        "projectile_speed": 650.0,
+        "projectile_type": "lightning_spark",
+        "range": 200.0,
+        "upgrade_cost": 150.0
+      },
+      {
+        "attack_speed": 1.6,
+        "color": "#0e7490",
+        "damage": 70.0,
+        "level": 3.0,
+        "pierce": 5.0,
+        "projectile_speed": 700.0,
+        "projectile_type": "lightning_spark",
+        "range": 230.0,
+        "upgrade_cost": 190
+      },
+      {
+        "attack_speed": 1.7,
+        "color": "#0369a1",
+        "damage": 88,
+        "level": 4,
+        "pierce": 6,
+        "projectile_speed": 750,
+        "projectile_type": "lightning_spark",
+        "range": 245,
+        "upgrade_cost": 0
+      }
+    ],
+    "name": "Тесла",
+    "path": "magic"
+  },
+  "time_tower": {
+    "cost": 170.0,
+    "damage_type": "magic",
+    "description": "Излучает хроно-волны, периодически полностью останавливая время для орков.",
+    "evolution_a": {
+      "attack_speed": 0.3,
+      "color": "#312e81",
+      "cost": 250,
+      "damage": 40.0,
+      "description": "Полная остановка времени на 4.5 сек в радиусе 300px каждые 12 сек.",
+      "name": "Хроноклазм",
+      "projectile_speed": 650.0,
+      "projectile_type": "time_stop_pulse",
+      "range": 300.0,
+      "slow_duration": 4.5,
+      "slow_factor": 1.0,
+      "special_ability": "global_stasis"
+    },
+    "evolution_b": {
+      "attack_speed": 0.45,
+      "color": "#1e1b4b",
+      "cost": 250,
+      "damage": 30.0,
+      "description": "Откатывает врагов назад по тропе на 3 секунды их движения.",
+      "name": "Временная петля",
+      "projectile_speed": 600.0,
+      "projectile_type": "rewind_wave",
+      "range": 270.0,
+      "special_ability": "rewind_path_3s"
+    },
+    "levels": [
+      {
+        "attack_speed": 0.25,
+        "color": "#6366f1",
+        "damage": 5.0,
+        "level": 1.0,
+        "projectile_speed": 500.0,
+        "projectile_type": "time_pulse",
+        "range": 180.0,
+        "slow_duration": 2.5,
+        "slow_factor": 0.95,
+        "upgrade_cost": 130.0
+      },
+      {
+        "attack_speed": 0.35,
+        "color": "#4f46e5",
+        "damage": 10.0,
+        "level": 2.0,
+        "projectile_speed": 550.0,
+        "projectile_type": "time_pulse",
+        "range": 210.0,
+        "slow_duration": 3.2,
+        "slow_factor": 1.0,
+        "upgrade_cost": 180.0
+      },
+      {
+        "attack_speed": 0.5,
+        "color": "#4338ca",
+        "damage": 20.0,
+        "level": 3.0,
+        "projectile_speed": 600.0,
+        "projectile_type": "time_pulse",
+        "range": 250.0,
+        "slow_duration": 4.0,
+        "slow_factor": 1.0,
+        "upgrade_cost": 170
+      },
+      {
+        "attack_speed": 0.55,
+        "color": "#4338ca",
+        "damage": 28,
+        "level": 4,
+        "projectile_speed": 520,
+        "projectile_type": "chrono_beam",
+        "range": 265,
+        "slow_duration": 4.0,
+        "slow_factor": 0.6,
+        "upgrade_cost": 0
+      }
+    ],
+    "name": "Башня времени",
+    "path": "magic"
+  },
+  "trading_post": {
+    "cost": 90.0,
+    "damage_type": "physical",
+    "description": "Приносит регулярный доход золотом каждую секунду в бою.",
+    "evolution_a": {
+      "attack_speed": 1.0,
+      "color": "#a16207",
+      "cost": 260,
+      "damage": 0.0,
+      "description": "+25 золота/сек + начисляет 5% годовых от текущего золота в конце каждой волны.",
+      "gold_per_sec": 25.0,
+      "name": "Банк Королевства",
+      "projectile_speed": 0.0,
+      "projectile_type": "gold_income",
+      "range": 150.0,
+      "special_ability": "bank_interest_5_percent"
+    },
+    "evolution_b": {
+      "attack_speed": 1.0,
+      "color": "#854d0e",
+      "cost": 260,
+      "damage": 0.0,
+      "description": "Снижает стоимость всех улучшений соседних башен на 20%.",
+      "gold_per_sec": 18.0,
+      "name": "Купеческая фактория",
+      "projectile_speed": 0.0,
+      "projectile_type": "gold_income",
+      "range": 180.0,
+      "special_ability": "discount_aura_20"
+    },
+    "levels": [
+      {
+        "attack_speed": 1.0,
+        "color": "#ca8a04",
+        "damage": 0.0,
+        "gold_per_sec": 4.0,
+        "level": 1.0,
+        "projectile_speed": 0.0,
+        "projectile_type": "gold_income",
+        "range": 100.0,
+        "upgrade_cost": 80.0
+      },
+      {
+        "attack_speed": 1.0,
+        "color": "#eab308",
+        "damage": 0.0,
+        "gold_per_sec": 8.0,
+        "level": 2.0,
+        "projectile_speed": 0.0,
+        "projectile_type": "gold_income",
+        "range": 120.0,
+        "upgrade_cost": 130.0
+      },
+      {
+        "attack_speed": 1.0,
+        "color": "#facc15",
+        "damage": 0.0,
+        "gold_per_sec": 14.0,
+        "level": 3.0,
+        "projectile_speed": 0.0,
+        "projectile_type": "gold_income",
+        "range": 140.0,
+        "upgrade_cost": 180
+      },
+      {
+        "attack_speed": 1.0,
+        "color": "#d97706",
+        "damage": 0,
+        "gold_per_sec": 16,
+        "level": 4,
+        "projectile_speed": 0,
+        "projectile_type": "none",
+        "range": 150,
+        "upgrade_cost": 0
+      }
+    ],
+    "name": "Торговый пост",
+    "path": "economy"
+  },
+  "trap": {
+    "cost": 50.0,
+    "damage_type": "physical",
+    "description": "Взрывная мина с колоссальным уроном. Перезаряжается после срабатывания.",
+    "evolution_a": {
+      "attack_speed": 0.4,
+      "color": "#c2410c",
+      "cost": 230,
+      "damage": 400.0,
+      "description": "Спавнит 3 самовосстанавливающиеся мины на тропе. Огромный урон.",
+      "name": "Минное поле",
+      "projectile_speed": 0.0,
+      "projectile_type": "minefield_burst",
+      "range": 130.0,
+      "special_ability": "triple_mines",
+      "splash_radius": 110.0
+    },
+    "evolution_b": {
+      "attack_speed": 0.5,
+      "color": "#7c2d12",
+      "cost": 230,
+      "damage": 160.0,
+      "description": "Разливает горящую смолу: замедление 80% + периодический огонь.",
+      "name": "Смоляная яма",
+      "projectile_speed": 0.0,
+      "projectile_type": "tar_burst",
+      "range": 120.0,
+      "special_ability": "tar_slow_and_burn",
+      "splash_radius": 100.0
+    },
+    "levels": [
+      {
+        "attack_speed": 0.2,
+        "color": "#ea580c",
+        "damage": 80.0,
+        "level": 1.0,
+        "projectile_speed": 0.0,
+        "projectile_type": "trap_burst",
+        "range": 80.0,
+        "splash_radius": 60.0,
+        "upgrade_cost": 50.0
+      },
+      {
+        "attack_speed": 0.25,
+        "color": "#f97316",
+        "damage": 150.0,
+        "level": 2.0,
+        "projectile_speed": 0.0,
+        "projectile_type": "trap_burst",
+        "range": 90.0,
+        "splash_radius": 75.0,
+        "upgrade_cost": 80.0
+      },
+      {
+        "attack_speed": 0.35,
+        "color": "#fb923c",
+        "damage": 260.0,
+        "level": 3.0,
+        "projectile_speed": 0.0,
+        "projectile_type": "trap_burst",
+        "range": 100.0,
+        "splash_radius": 90.0,
+        "upgrade_cost": 150
+      },
+      {
+        "attack_speed": 0.38,
+        "color": "#374151",
+        "damage": 330,
+        "level": 4,
+        "projectile_speed": 0,
+        "projectile_type": "ground_spikes",
+        "range": 105,
+        "slow_duration": 2.5,
+        "slow_factor": 0.65,
+        "splash_radius": 75,
+        "upgrade_cost": 0
+      }
+    ],
+    "name": "Ловушка",
+    "path": "economy"
+  },
+  "wall": {
+    "cost": 40.0,
+    "damage_type": "physical",
+    "description": "Прочная каменная преграда. Задерживает наземных врагов на дороге.",
+    "evolution_a": {
+      "attack_speed": 1.0,
+      "color": "#292524",
+      "cost": 200,
+      "damage": 25.0,
+      "description": "Возвращает 50% контактного физического урона атакующим оркам.",
+      "name": "Шипованный вал",
+      "projectile_speed": 0.0,
+      "projectile_type": "thorns",
+      "range": 90.0,
+      "special_ability": "reflect_damage_50"
+    },
+    "evolution_b": {
+      "attack_speed": 1.0,
+      "color": "#1c1917",
+      "cost": 200,
+      "damage": 0.0,
+      "description": "Освященный бастион с регенерацией здоровья и щитом от магии.",
+      "name": "Освященный редут",
+      "projectile_speed": 0.0,
+      "projectile_type": "holy_ward",
+      "range": 100.0,
+      "special_ability": "holy_shield_regen"
+    },
+    "levels": [
+      {
+        "attack_speed": 1.0,
+        "color": "#78716c",
+        "damage": 0.0,
+        "level": 1.0,
+        "projectile_speed": 0.0,
+        "projectile_type": "none",
+        "range": 60.0,
+        "upgrade_cost": 40.0
+      },
+      {
+        "attack_speed": 1.0,
+        "color": "#57534e",
+        "damage": 0.0,
+        "level": 2.0,
+        "projectile_speed": 0.0,
+        "projectile_type": "none",
+        "range": 70.0,
+        "upgrade_cost": 70.0
+      },
+      {
+        "attack_speed": 1.0,
+        "color": "#44403c",
+        "damage": 0.0,
+        "level": 3.0,
+        "projectile_speed": 0.0,
+        "projectile_type": "none",
+        "range": 80.0,
+        "upgrade_cost": 120
+      },
+      {
+        "attack_speed": 1.0,
+        "color": "#292524",
+        "damage": 0,
+        "level": 4,
+        "projectile_speed": 0,
+        "projectile_type": "none",
+        "range": 85,
+        "upgrade_cost": 0
+      }
+    ],
+    "name": "Стена-баррикада",
+    "path": "all"
+  },
+  "watchtower": {
+    "cost": 65.0,
+    "damage_type": "physical",
+    "description": "Дальнобойная наблюдательная вышка. Раскрывает невидимых лазутчиков и атакует с большой дистанции.",
+    "evolution_a": {
+      "attack_speed": 1.4,
+      "color": "#3f3f46",
+      "cost": 240,
+      "damage": 50.0,
+      "description": "Раскрывает всех невидимых врагов на всей карте. Метки увеличивают шанс крита на 30%.",
+      "name": "Око Истины",
+      "projectile_speed": 700.0,
+      "projectile_type": "true_sight_bolt",
+      "range": 400.0,
+      "special_ability": "global_stealth_reveal"
+    },
+    "evolution_b": {
+      "attack_speed": 0.8,
+      "color": "#27272a",
+      "cost": 240,
+      "damage": 95.0,
+      "description": "Сверхдальнобойный гарпун, пригвождающий врагов к земле.",
+      "name": "Тяжелая баллиста",
+      "pierce": 4.0,
+      "projectile_speed": 750.0,
+      "projectile_type": "harpoon",
+      "range": 360.0,
+      "special_ability": "pin_ground_stun"
+    },
+    "levels": [
+      {
+        "attack_speed": 0.7,
+        "color": "#a1a1aa",
+        "damage": 10.0,
+        "level": 1.0,
+        "projectile_speed": 500.0,
+        "projectile_type": "arrow",
+        "range": 240.0,
+        "upgrade_cost": 55.0
+      },
+      {
+        "attack_speed": 0.9,
+        "color": "#71717a",
+        "damage": 18.0,
+        "level": 2.0,
+        "projectile_speed": 550.0,
+        "projectile_type": "arrow",
+        "range": 280.0,
+        "upgrade_cost": 95.0
+      },
+      {
+        "attack_speed": 1.2,
+        "color": "#52525b",
+        "damage": 32.0,
+        "level": 3.0,
+        "projectile_speed": 600.0,
+        "projectile_type": "arrow",
+        "range": 320.0,
+        "upgrade_cost": 160
+      },
+      {
+        "attack_speed": 1.3,
+        "color": "#3f3f46",
+        "damage": 42,
+        "level": 4,
+        "projectile_speed": 650,
+        "projectile_type": "arrow",
+        "range": 350,
+        "upgrade_cost": 0
+      }
+    ],
+    "name": "Сторожевая вышка",
+    "path": "all"
   }
 }

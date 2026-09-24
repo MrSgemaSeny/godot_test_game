@@ -429,10 +429,12 @@ func _refresh_action_panel() -> void:
 
 			var a_data = tower.get_evolution_info("evolution_a")
 			var b_data = tower.get_evolution_info("evolution_b")
-			evo_a_btn.text = "🌿 %s (%d🪙)" % [a_data.get("name", "Ветка A"), int(a_data.get("cost", 100))]
-			evo_b_btn.text = "⚡ %s (%d🪙)" % [b_data.get("name", "Ветка B"), int(b_data.get("cost", 100))]
-			evo_a_btn.disabled = current_gold < int(a_data.get("cost", 100))
-			evo_b_btn.disabled = current_gold < int(b_data.get("cost", 100))
+			var a_cost = int(a_data.get("cost", 240))
+			var b_cost = int(b_data.get("cost", 240))
+			evo_a_btn.text = "👑 %s (%d🪙)" % [a_data.get("name", "Ветка A"), a_cost]
+			evo_b_btn.text = "👑 %s (%d🪙)" % [b_data.get("name", "Ветка B"), b_cost]
+			evo_a_btn.disabled = current_gold < a_cost
+			evo_b_btn.disabled = current_gold < b_cost
 		else:
 			evo_a_btn.visible = false
 			evo_b_btn.visible = false
@@ -443,7 +445,15 @@ func _refresh_action_panel() -> void:
 				upgrade_btn.text = "⬆️ Улучшить (%d 🪙)" % up_cost
 				upgrade_btn.disabled = current_gold < up_cost
 			else:
-				upgrade_btn.text = "⭐ Макс. уровень"
+				var ch_max = tower.get_chapter_max_level() if tower.has_method("get_chapter_max_level") else 5
+				if t_lvl == 3 and ch_max == 3:
+					upgrade_btn.text = "🔒 Ур. 4 доступен с Главы 2"
+				elif t_lvl == 4 and ch_max == 4:
+					upgrade_btn.text = "🔒 Эволюция (Ур. 5) с Главы 3"
+				elif t_lvl >= 5:
+					upgrade_btn.text = "👑 Легендарный уровень (Макс)"
+				else:
+					upgrade_btn.text = "⭐ Макс. уровень"
 				upgrade_btn.disabled = true
 
 		var sell_val = current_spot.get_sell_value()
