@@ -83,13 +83,20 @@ signal spell_targeting_requested(spell_id: String)
 @onready var restart_btn: Button = $EndScreen/VBoxContainer/RestartButton
 @onready var menu_btn: Button = $EndScreen/VBoxContainer/MenuButton
 
+const EconomyHUDWidgetScript = preload("res://scripts/economy_hud_widget.gd")
+
 var current_spot: BuildSpot = null
 var wave_countdown: float = 0.0
 var counting_down: bool = false
 var current_speed: float = 1.0
 var dialogue_timer: float = 0.0
+var economy_widget = null
 
 func _ready() -> void:
+	economy_widget = EconomyHUDWidgetScript.new()
+	economy_widget.name = "EconomyHUDWidget"
+	add_child(economy_widget)
+	
 	if is_instance_valid(action_panel):
 		action_panel.visible = false
 		var ap_style = StyleBoxFlat.new()
@@ -617,3 +624,23 @@ func update_hero_xp(level: int, current_xp: int, next_xp: int) -> void:
 
 func update_hero_ability_cooldown(slot: int, current_cd: float, max_cd: float) -> void:
 	pass
+
+# ---------------------------------------------------------
+# ECONOMY WIDGET INTEGRATION
+# ---------------------------------------------------------
+func setup_economy(econ) -> void:
+	if is_instance_valid(economy_widget):
+		economy_widget.setup(econ)
+
+func show_contracts(contracts: Array[Dictionary]) -> void:
+	if is_instance_valid(economy_widget):
+		economy_widget.show_contracts(contracts)
+
+func show_wave_breakdown(breakdown: Dictionary) -> void:
+	if is_instance_valid(economy_widget):
+		economy_widget.show_wave_breakdown(breakdown)
+
+func toggle_tx_log() -> void:
+	if is_instance_valid(economy_widget):
+		economy_widget.toggle_tx_log()
+

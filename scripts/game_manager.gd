@@ -137,11 +137,24 @@ func trigger_path_ability() -> bool:
 		
 	return false
 
-func add_gold(amount: int) -> void:
+func add_gold(amount: int, source: String = "general", detail: String = "") -> void:
+	if is_inside_tree() and get_tree():
+		var econ = get_tree().get_first_node_in_group("economy_manager") as EconomyManager
+		if econ:
+			econ.add_gold(amount, source, detail)
+			gold = econ.current_gold
+			return
 	gold += amount
 	gold_changed.emit(gold)
 
-func spend_gold(amount: int) -> bool:
+func spend_gold(amount: int, category: String = "spend", detail: String = "") -> bool:
+	if is_inside_tree() and get_tree():
+		var econ = get_tree().get_first_node_in_group("economy_manager") as EconomyManager
+		if econ:
+			var success = econ.spend_gold(amount, category, detail)
+			if success:
+				gold = econ.current_gold
+			return success
 	if gold >= amount:
 		gold -= amount
 		gold_changed.emit(gold)

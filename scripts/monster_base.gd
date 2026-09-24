@@ -31,6 +31,8 @@ var base_speed: float = 85.0
 var speed: float = 85.0
 var armor: float = 0.0
 var gold_reward: int = 10
+var economic_role: String = "standard"
+var banker_accumulated_gold: int = 0
 var is_boss: bool = false
 var is_flyer: bool = false
 var is_stealth: bool = false
@@ -107,6 +109,7 @@ func _load_enemy_data() -> void:
 		speed = base_speed
 		armor = float(data.get("armor", 0.0))
 		gold_reward = int(data.get("gold_reward", 10))
+		economic_role = str(data.get("economic_role", "boss" if bool(data.get("is_boss", false)) else "standard"))
 		is_boss = bool(data.get("is_boss", false))
 		is_flyer = bool(data.get("is_flyer", false))
 		is_stealth = bool(data.get("is_stealth", false))
@@ -306,8 +309,8 @@ func _finish_enemy(outcome: EnemyOutcome) -> void:
 				if spell_sys and spell_sys.has_method("add_mana"):
 					spell_sys.add_mana(6 if is_boss else 2)
 					
-			# Research bonus gold multiplier (econ_1: +20% gold)
-			var final_gold = gold_reward
+			# Research bonus gold multiplier (econ_1: +20% gold) + Banker accumulated gold
+			var final_gold = gold_reward + banker_accumulated_gold
 			if is_inside_tree() and get_tree():
 				var tech = get_tree().get_first_node_in_group("tech_tree_manager") as TechTreeManager
 				if tech and tech.has_method("get_gold_reward_mult"):
@@ -318,6 +321,21 @@ func _finish_enemy(outcome: EnemyOutcome) -> void:
 				var meta = get_tree().get_first_node_in_group("meta_manager") as MetaManager
 				if meta and meta.has_method("add_glory"):
 					meta.add_glory(10)
+					
+			# Экономические роли врагов
+			if is_inside_tree() and get_tree():
+				# 1. Накопление золота банком-союзником поблизости (+25% за павшего рядом союзника)
+				var enemies = get_tree().get_nodes_in_group("enemies")
+				for other in enemies:
+					if is_instance_valid(other) and other != self and other is MonsterBase and not other.is_dead:
+						if other.economic_role == "banker" and global_position.distance_to(other.global_position) <= 220.0:
+							other.banker_accumulated_gold += int(max(1, final_gold * 0.25))
+							
+				# 2. EconomyManager интеграция для сборщика податей (tax collector)
+				var econ = get_tree().get_first_node_in_group("economy_manager") as EconomyManager
+				if econ:
+					if economic_role == "tax_collector":
+						econ.refund_stolen_gold(final_gold)
 					
 			if split_on_death and split_enemy_type != "" and split_count > 0:
 				_spawn_split_children()
@@ -334,6 +352,12 @@ func _finish_enemy(outcome: EnemyOutcome) -> void:
 				var gm = get_tree().get_first_node_in_group("game_manager") as GameManager
 				if gm:
 					gm.reduce_lives(3 if is_boss else 1)
+				var econ = get_tree().get_first_node_in_group("economy_manager") as EconomyManager
+				if econ:
+					if economic_role == "thief":
+						econ.register_gold_stolen(0.04)
+					if gm:
+						econ.register_life_lost(gm.lives)
 			escaped_with_girl.emit()
 			finished.emit(EnemyOutcome.ESCAPED_WITH_GIRL, 0)
 			
@@ -345,6 +369,12 @@ func _finish_enemy(outcome: EnemyOutcome) -> void:
 				var gm = get_tree().get_first_node_in_group("game_manager") as GameManager
 				if gm:
 					gm.reduce_lives(3 if is_boss else 1)
+				var econ = get_tree().get_first_node_in_group("economy_manager") as EconomyManager
+				if econ:
+					if economic_role == "thief":
+						econ.register_gold_stolen(0.04)
+					if gm:
+						econ.register_life_lost(gm.lives)
 			escaped_with_girl.emit()
 			finished.emit(EnemyOutcome.REACHED_BASE, 0)
 			
@@ -1104,5 +1134,22 @@ func _draw_hp_bar(bs: float, bounce: float) -> void:
 	if shield > 0.0 and max_shield > 0.0:
 		var shld_ratio = clamp(shield / max_shield, 0.0, 1.0)
 		draw_rect(Rect2(-bar_w / 2.0, bar_y - bar_h - 1.5, bar_w * shld_ratio, bar_h - 1.0), Color(0.35, 0.75, 1.0, 0.9))
+
+	# Экономический бейдж роли (вор, банкир, сборщик, скупщик)
+	if economic_role != "standard" and economic_role != "boss":
+		var badge_x = bar_w / 2.0 + 4.0
+		var badge_y = bar_y + bar_h / 2.0
+		match economic_role:
+			"thief":
+				draw_circle(Vector2(badge_x, badge_y), 3.5, Color(0.8, 0.2, 0.8))
+				draw_arc(Vector2(badge_x, badge_y), 3.5, 0, TAU, 10, Color(1.0, 0.8, 0.2), 1.0)
+			"banker":
+				draw_circle(Vector2(badge_x, badge_y), 4.0, Color(1.0, 0.85, 0.2))
+				draw_arc(Vector2(badge_x, badge_y), 4.0, 0, TAU, 12, Color(0.5, 0.35, 0.05), 1.2)
+			"tax_collector":
+				draw_circle(Vector2(badge_x, badge_y), 4.0, Color(0.1, 0.8, 0.5))
+				draw_line(Vector2(badge_x - 2, badge_y), Vector2(badge_x + 2, badge_y), Color.WHITE, 1.2)
+			"miser":
+				draw_circle(Vector2(badge_x, badge_y), 3.5, Color(0.2, 0.6, 0.9))
 
 

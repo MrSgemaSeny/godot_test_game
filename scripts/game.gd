@@ -117,10 +117,18 @@ var tip_timer: float = 0.0
 var tip_index: int = 0
 
 # Системы расширения (Этапы 5, 6, 7, 9)
+const EconomyManagerScript = preload("res://scripts/economy_manager.gd")
+const CampaignManagerScript = preload("res://scripts/campaign_manager.gd")
+
 var combo_tracker: ComboTracker = null
 var weather_system: WeatherSystem = null
 var lore_system: LoreSystem = null
 var artifact_manager: ArtifactManager = null
+var economy_manager = null
+var campaign_manager = null
+var lives_at_wave_start: int = 20
+var girls_at_wave_start: int = 3
+var contracts_offered_for_wave: int = 0
 
 var active_boss: MonsterBase = null
 var lightning_flash_timer: float = 0.0
@@ -183,6 +191,21 @@ func _setup_expansion_systems() -> void:
 	artifact_manager.grant_starter_artifacts()
 	if is_instance_valid(hud) and is_instance_valid(hud.artifacts_modal):
 		hud.artifacts_modal.set_artifact_manager(artifact_manager)
+		
+	campaign_manager = CampaignManagerScript.new()
+	add_child(campaign_manager)
+	
+	economy_manager = EconomyManagerScript.new()
+	add_child(economy_manager)
+	var cur_ch = GlobalState.current_chapter if GlobalState.current_chapter > 0 else 1
+	economy_manager.initialize(game_manager.gold if is_instance_valid(game_manager) else 350, cur_ch)
+	economy_manager.gold_changed.connect(func(new_gold, _delta, _cat):
+		if is_instance_valid(game_manager) and game_manager.gold != new_gold:
+			game_manager.gold = new_gold
+			game_manager.gold_changed.emit(new_gold)
+	)
+	if is_instance_valid(hud):
+		hud.setup_economy(economy_manager)
 	
 	var hero_manager = HeroManager.new()
 
@@ -472,16 +495,28 @@ func _on_wave_countdown_tick(time_left: float, total_time: float, is_boss: bool)
 		hud.set_countdown(time_left)
 		if is_instance_valid(hud.wave_clock):
 			hud.wave_clock.set_countdown(time_left, total_time, is_boss)
+			
+	# Предложение предволновых контрактов (Фаза 0)
+	if is_instance_valid(economy_manager) and economy_manager.contracts_enabled:
+		var cur_w_idx = wave_controller.current_wave_index if is_instance_valid(wave_controller) else 0
+		if contracts_offered_for_wave != cur_w_idx + 1:
+			contracts_offered_for_wave = cur_w_idx + 1
+			var contracts = economy_manager.get_available_contracts(2)
+			if not contracts.is_empty() and is_instance_valid(hud):
+				hud.show_contracts(contracts)
 
 func _on_start_wave_pressed() -> void:
 	if is_instance_valid(wave_controller) and wave_controller.is_counting_down:
 		var bonus = int(game_manager.gold * 0.10) if is_instance_valid(game_manager) else 0
 		if bonus > 0 and is_instance_valid(game_manager):
-			game_manager.add_gold(bonus)
+			game_manager.add_gold(bonus, "early_start", "Досрочный запуск волны (+10%)")
 			_spawn_floating_text("+%d🪙 Ранний старт!" % bonus, Color(1.0, 0.88, 0.2), Vector2(640, 200), 16)
 		wave_controller.start_current_wave(true)
 
 func _on_wave_started(wave_num: int, total_waves: int, is_boss: bool) -> void:
+	lives_at_wave_start = game_manager.lives if is_instance_valid(game_manager) else 20
+	girls_at_wave_start = get_tree().get_nodes_in_group("girls").size()
+	
 	if is_instance_valid(game_manager):
 		game_manager.current_wave = wave_num
 		game_manager.wave_changed.emit(wave_num, total_waves)
@@ -544,7 +579,13 @@ func _on_monster_died(reward: int, pos: Vector2, monster: Node2D = null) -> void
 		mult = combo_tracker.register_kill()
 		
 	var final_reward = int(ceil(reward * mult))
-	if is_instance_valid(game_manager):
+	var role_name = "standard"
+	if is_instance_valid(monster) and monster is MonsterBase:
+		role_name = monster.economic_role
+		
+	if is_instance_valid(economy_manager):
+		economy_manager.register_enemy_kill(reward, role_name, mult, monster.monster_name if is_instance_valid(monster) else "")
+	elif is_instance_valid(game_manager):
 		game_manager.add_gold(final_reward)
 		
 	var txt = "+%d🪙" % final_reward
@@ -569,12 +610,48 @@ func _on_wave_completed(wave_num: int, is_last_wave: bool) -> void:
 	if is_instance_valid(tech_tree_manager) and is_instance_valid(game_manager):
 		var bonus_gold = tech_tree_manager.get_end_wave_bonus_gold()
 		if bonus_gold > 0:
-			game_manager.add_gold(bonus_gold)
+			game_manager.add_gold(bonus_gold, "tech", "Древо технологий")
 			_spawn_floating_text("🪙 +%d Золота (Технологии)!" % bonus_gold, Color(1.0, 0.9, 0.3), Vector2(640, 270), 16)
 			
-	# Экономика: Базовая награда за волну + банковский процент (5%, до 25г)
-	if is_instance_valid(game_manager):
-		var wave_clear_reward = 35 + wave_num * 5
+	# Экономическая система (Разделы 2-4 спецификации)
+	var wave_clear_reward = 0
+	var interest_earned = 0
+	var perfect_bonus = 0
+	var contract_bonus = 0
+	var cur_chapter = GlobalState.current_chapter if GlobalState.current_chapter > 0 else 1
+	
+	if is_instance_valid(economy_manager):
+		# 1. Базовая награда за волну
+		wave_clear_reward = economy_manager.apply_wave_reward(wave_num, cur_chapter)
+		
+		# 2. Проценты на депозит (активны с 3 главы)
+		interest_earned = economy_manager.apply_interest()
+		
+		# 3. Бонус за идеальную волну (0 потерь жизней и девочек)
+		var lives_lost = max(0, lives_at_wave_start - (game_manager.lives if is_instance_valid(game_manager) else 20))
+		var cur_girls = get_tree().get_nodes_in_group("girls").size()
+		var girls_lost = max(0, girls_at_wave_start - cur_girls)
+		perfect_bonus = economy_manager.evaluate_perfect_wave(wave_num, lives_lost, girls_lost)
+		
+		# 4. Резолюция контракта
+		if not economy_manager.active_contract.is_empty():
+			var contract_success = lives_lost == 0
+			contract_bonus = economy_manager.resolve_contract(contract_success)
+			
+		var total_wave_gold = wave_clear_reward + interest_earned + perfect_bonus + contract_bonus
+		_spawn_floating_text("🪙 +%d Золота (Волна: +%d | Процент: +%d)!" % [total_wave_gold, wave_clear_reward, interest_earned], Color(1.0, 0.88, 0.25), Vector2(640, 210), 17)
+		
+		if is_instance_valid(hud):
+			hud.show_wave_breakdown({
+				"wave_num": wave_num,
+				"wave_reward": wave_clear_reward,
+				"bounty_gold": 0,
+				"interest_gold": interest_earned,
+				"perfect_wave_bonus": perfect_bonus,
+				"contract_reward": contract_bonus
+			})
+	elif is_instance_valid(game_manager):
+		wave_clear_reward = 35 + wave_num * 5
 		var interest = int(min(25, game_manager.gold * 0.05))
 		var total_wave_gold = wave_clear_reward + interest
 		game_manager.add_gold(total_wave_gold)

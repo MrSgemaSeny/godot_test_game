@@ -1,0 +1,130 @@
+{
+  "total_chapters": 5,
+  "total_stages": 59,
+  "chapters": [
+    {
+      "id": "chapter_1",
+      "chapter_num": 1,
+      "name": "Кудрявая Долина",
+      "biome": "plains",
+      "icon": "🌾",
+      "max_tower_level": 3,
+      "theme_color": "#59bf4d",
+      "mechanic_intro": "Обучение базовой экономике и обороне. Доступны башни 1-3 уровней.",
+      "unlock_req": { "type": "default" },
+      "maps": [
+        { "id": "c1_01", "stage": 1, "name": "Первый Рубеж", "desc": "Базовое строительство на узкой тропе.", "waves": 5, "start_gold": 350, "economy_profile": "standard", "bonus_gold": 50, "star_conditions": ["Победа", "Жизни >= 10", "Не продавать башни"] },
+        { "id": "c1_02", "stage": 2, "name": "Два Маршрута", "desc": "Выбор позиции между двумя сходящимися тропами.", "waves": 6, "start_gold": 340, "economy_profile": "standard", "bonus_gold": 60, "star_conditions": ["Победа", "Жизни >= 12", "Построить 3+ башни"] },
+        { "id": "c1_03", "stage": 3, "name": "Дорогая Дорога", "desc": "Ограниченное число строительных площадок.", "waves": 7, "start_gold": 320, "economy_profile": "poor", "bonus_gold": 70, "star_conditions": ["Победа", "Не потерять жизни", "Использовать лучников"] },
+        { "id": "c1_04", "stage": 4, "name": "Быстрые Монстры", "desc": "Натиск гончих и волков: важность плотного DPS.", "waves": 8, "start_gold": 360, "economy_profile": "standard", "bonus_gold": 80, "star_conditions": ["Победа", "Жизни >= 15", "Построить бастион"] },
+        { "id": "c1_05", "stage": 5, "name": "Бронированный Авангард", "desc": "Тяжелые латы: необходимость пробивающего урона.", "waves": 8, "start_gold": 350, "economy_profile": "siege", "bonus_gold": 90, "star_conditions": ["Победа", "Уничтожить всех бронированных", "Улучшить башню до Ур. 3"] },
+        { "id": "c1_06", "stage": 6, "name": "Длинная Оборона", "desc": "10 затяжных волн: учимся копить золото.", "waves": 9, "start_gold": 330, "economy_profile": "economic", "bonus_gold": 100, "star_conditions": ["Победа", "Сохранить >= 200 золота", "Жизни >= 10"] },
+        { "id": "c1_07", "stage": 7, "name": "Развилка Реки", "desc": "Враги атакуют попеременно с севера и юга.", "waves": 9, "start_gold": 350, "economy_profile": "standard", "bonus_gold": 110, "star_conditions": ["Победа", "Оборонять оба фланга", "Жизни >= 14"] },
+        { "id": "c1_08", "stage": 8, "name": "Первый Элитный Враг", "desc": "Орочий воевода ведет штурмовую сотню.", "waves": 10, "start_gold": 380, "economy_profile": "standard", "bonus_gold": 120, "star_conditions": ["Победа", "Убить воеводу до моста", "Не потерять жизни"] },
+        { "id": "c1_09", "stage": 9, "name": "Предфинальный Штурм", "desc": "Смешанные угрозы всех типов войск долины.", "waves": 10, "start_gold": 400, "economy_profile": "rich", "bonus_gold": 130, "star_conditions": ["Победа", "Жизни >= 18", "Построить 5 башен Ур. 3"] },
+        { "id": "c1_10", "stage": 10, "name": "Вождь Граш'нак (Босс)", "desc": "Кульминация главы: колоссальный орочий вождь!", "waves": 10, "start_gold": 450, "economy_profile": "boss", "bonus_gold": 200, "star_conditions": ["Победа над Вождем", "Жизни >= 10", "Не потерять ни одной девочки"] }
+      ]
+    },
+    {
+      "id": "chapter_2",
+      "chapter_num": 2,
+      "name": "Грибные Топи",
+      "biome": "swamp",
+      "icon": "🍄",
+      "max_tower_level": 3,
+      "theme_color": "#73a640",
+      "mechanic_intro": "Введение Контрактов: добровольный риск ради повышенного золота. Башни ограничены 3 уровнем.",
+      "unlock_req": { "type": "stars", "map": "valley", "count": 2 },
+      "maps": [
+        { "id": "c2_01", "stage": 1, "name": "Гнилые Топи", "desc": "Первое знакомство с контрактами и ядом.", "waves": 8, "start_gold": 360, "economy_profile": "standard", "bonus_gold": 70, "star_conditions": ["Победа", "Выполнить 1 контракт", "Жизни >= 10"] },
+        { "id": "c2_02", "stage": 2, "name": "Зыбучие Мхи", "desc": "Ядовитый воздух замедляет механизмы на 15%.", "waves": 9, "start_gold": 370, "economy_profile": "standard", "bonus_gold": 80, "star_conditions": ["Победа", "Выполнить контракт 'Железная Орда'", "Жизни >= 12"] },
+        { "id": "c2_03", "stage": 3, "name": "Обитель Пиявок", "desc": "Регенерирующие болотные твари.", "waves": 9, "start_gold": 380, "economy_profile": "economic", "bonus_gold": 90, "star_conditions": ["Победа", "Не потерять жизни", "Использовать огонь"] },
+        { "id": "c2_04", "stage": 4, "name": "Старая Гать", "desc": "Враги идут тремя извилистыми тропами через трясину.", "waves": 10, "start_gold": 400, "economy_profile": "standard", "bonus_gold": 100, "star_conditions": ["Победа", "Выполнить 2 контракта", "Жизни >= 14"] },
+        { "id": "c2_05", "stage": 5, "name": "Остров Спор", "desc": "Споровики взрываются облаком слизи.", "waves": 10, "start_gold": 400, "economy_profile": "rich", "bonus_gold": 110, "star_conditions": ["Победа", "Идеальная волна 5", "Жизни >= 15"] },
+        { "id": "c2_06", "stage": 6, "name": "Туманный Брод", "desc": "Скрытные лазутчики в ночном тумане.", "waves": 11, "start_gold": 420, "economy_profile": "standard", "bonus_gold": 120, "star_conditions": ["Победа", "Выявить всех лазутчиков", "Жизни >= 10"] },
+        { "id": "c2_07", "stage": 7, "name": "Чёрный Ил", "desc": "Тяжелые болотные тролли с каменной кожей.", "waves": 12, "start_gold": 430, "economy_profile": "siege", "bonus_gold": 130, "star_conditions": ["Победа", "Выполнить контракт 'Броневой Конвой'", "Жизни >= 12"] },
+        { "id": "c2_08", "stage": 8, "name": "Трясина Духов", "desc": "Эфирные тени, уязвимые только к магии.", "waves": 12, "start_gold": 440, "economy_profile": "standard", "bonus_gold": 140, "star_conditions": ["Победа", "3 магические башни Ур. 3", "Не потерять жизни"] },
+        { "id": "c2_09", "stage": 9, "name": "Алтарь Чумного Шамана", "desc": "Элитные шаманы скверны готовят темный ритуал.", "waves": 13, "start_gold": 460, "economy_profile": "rich", "bonus_gold": 160, "star_conditions": ["Победа", "Выполнить 3 контракта", "Жизни >= 15"] },
+        { "id": "c2_10", "stage": 10, "name": "Болотная Матка (Босс)", "desc": "Битва в сердце болот: гигантская ядовитая праматерь!", "waves": 15, "start_gold": 500, "economy_profile": "boss", "bonus_gold": 250, "star_conditions": ["Победа над Маткой", "Спасти всех девочек", "Выполнить контракт босса"] }
+      ]
+    },
+    {
+      "id": "chapter_3",
+      "chapter_num": 3,
+      "name": "Предместья Цитадели",
+      "biome": "suburbs",
+      "icon": "🛡️",
+      "max_tower_level": 4,
+      "theme_color": "#4a7bb0",
+      "mechanic_intro": "Открыт 4-й уровень башен (Master-tier)! Введены проценты на депозит (Interest) и тяжелая броня врагов.",
+      "unlock_req": { "type": "completed_maps", "count": 2 },
+      "maps": [
+        { "id": "c3_01", "stage": 1, "name": "Западная Застава", "desc": "Первые башни 4-го уровня против бронированного авангарда.", "waves": 10, "start_gold": 450, "economy_profile": "standard", "bonus_gold": 100, "star_conditions": ["Победа", "Улучшить башню до Ур. 4", "Жизни >= 12"] },
+        { "id": "c3_02", "stage": 2, "name": "Каменные Карьеры", "desc": "Тяжелая техника орков и катапульты.", "waves": 10, "start_gold": 460, "economy_profile": "siege", "bonus_gold": 110, "star_conditions": ["Победа", "Заработать >= 40 золота с процентов", "Жизни >= 10"] },
+        { "id": "c3_03", "stage": 3, "name": "Торговый Тракт", "desc": "Много врагов-воришек, посягающих на банковское золото.", "waves": 11, "start_gold": 480, "economy_profile": "rich", "bonus_gold": 120, "star_conditions": ["Победа", "Не допустить кражи золота", "Жизни >= 14"] },
+        { "id": "c3_04", "stage": 4, "name": "Сгоревшие Мельницы", "desc": "Огненные бесы и поджигатели запасов зерна.", "waves": 11, "start_gold": 480, "economy_profile": "standard", "bonus_gold": 130, "star_conditions": ["Победа", "2 башни Ур. 4", "Не потерять жизни"] },
+        { "id": "c3_05", "stage": 5, "name": "Укрепрайон Редутов", "desc": "Защита стационарных орудийных позиций.", "waves": 12, "start_gold": 500, "economy_profile": "standard", "bonus_gold": 140, "star_conditions": ["Победа", "Выполнить 2 контракта", "Жизни >= 15"] },
+        { "id": "c3_06", "stage": 6, "name": "Мост Через Ров", "desc": "Узкое бутылочное горлышко: идеальная позиция мортир Ур. 4.", "waves": 12, "start_gold": 500, "economy_profile": "economic", "bonus_gold": 150, "star_conditions": ["Победа", "Осадная пушка Ур. 4", "Жизни >= 16"] },
+        { "id": "c3_07", "stage": 7, "name": "Оружейный Склад", "desc": "Диверсанты пытаются взорвать пороховой склад.", "waves": 13, "start_gold": 520, "economy_profile": "standard", "bonus_gold": 160, "star_conditions": ["Победа", "Спасти арсенал", "Жизни >= 12"] },
+        { "id": "c3_08", "stage": 8, "name": "Казармы Гвардии", "desc": "Штурм казарм королевских стрелков.", "waves": 13, "start_gold": 540, "economy_profile": "rich", "bonus_gold": 170, "star_conditions": ["Победа", "Лучник Ур. 4", "Не потерять жизни"] },
+        { "id": "c3_09", "stage": 9, "name": "Площадь Триумфа", "desc": "Атака с 3 городских улиц одновременно.", "waves": 14, "start_gold": 560, "economy_profile": "standard", "bonus_gold": 180, "star_conditions": ["Победа", "3 башни Ур. 4", "Жизни >= 14"] },
+        { "id": "c3_10", "stage": 10, "name": "Внешняя Стена", "desc": "Осадные тараны сокрушают внешнюю линию защиты.", "waves": 14, "start_gold": 580, "economy_profile": "siege", "bonus_gold": 190, "star_conditions": ["Победа", "Выполнить контракт 'Стремительный Натиск'", "Жизни >= 10"] },
+        { "id": "c3_11", "stage": 11, "name": "Королевские Ворота", "desc": "Ожесточенная битва у главных ворот перед цитаделью.", "waves": 15, "start_gold": 600, "economy_profile": "rich", "bonus_gold": 210, "star_conditions": ["Победа", "Сохранить >= 300 золота", "Жизни >= 16"] },
+        { "id": "c3_12", "stage": 12, "name": "Осадный Дредноут (Босс)", "desc": "Колоссальный бронированный осадный дредноут!", "waves": 15, "start_gold": 650, "economy_profile": "boss", "bonus_gold": 300, "star_conditions": ["Уничтожить Дредноут", "Жизни >= 10", "Спасти всех жителей"] }
+      ]
+    },
+    {
+      "id": "chapter_4",
+      "chapter_num": 4,
+      "name": "Хрустальные Пещеры",
+      "biome": "crystal_cave",
+      "icon": "💎",
+      "max_tower_level": 4,
+      "theme_color": "#4da6d9",
+      "mechanic_intro": "Глубокие подземелья: отражение снарядов, кристаллическая энергия и синергии башен. Макс. ур. башен 4.",
+      "unlock_req": { "type": "both_maps", "maps": ["swamp", "caves"] },
+      "maps": [
+        { "id": "c4_01", "stage": 1, "name": "Вход в Грот", "desc": "Вечная тьма снижает радиус обзора башен на 30%.", "waves": 11, "start_gold": 500, "economy_profile": "standard", "bonus_gold": 130, "star_conditions": ["Победа", "Построить смотровую вышку", "Жизни >= 12"] },
+        { "id": "c4_02", "stage": 2, "name": "Эхо Глубин", "desc": "Подземные толчки и летающие нетопыри над пропастью.", "waves": 11, "start_gold": 520, "economy_profile": "standard", "bonus_gold": 140, "star_conditions": ["Победа", "Не потерять жизни от летунов", "Жизни >= 14"] },
+        { "id": "c4_03", "stage": 3, "name": "Сапфировая Жила", "desc": "Кристаллы отражают свет и ускоряют магов на +25%.", "waves": 12, "start_gold": 540, "economy_profile": "rich", "bonus_gold": 150, "star_conditions": ["Победа", "Маг льда Ур. 4", "Жизни >= 15"] },
+        { "id": "c4_04", "stage": 4, "name": "Обвал Штольни", "desc": "Узкий карниз: враги скапливаются в плотные колонны.", "waves": 12, "start_gold": 530, "economy_profile": "economic", "bonus_gold": 160, "star_conditions": ["Победа", "Заработать >= 60 на процентах", "Жизни >= 10"] },
+        { "id": "c4_05", "stage": 5, "name": "Подземный Водопад", "desc": "Водяные элементали и скользкие каменные уступы.", "waves": 13, "start_gold": 550, "economy_profile": "standard", "bonus_gold": 170, "star_conditions": ["Победа", "Выполнить 2 контракта", "Жизни >= 12"] },
+        { "id": "c4_06", "stage": 6, "name": "Кристальный Мост", "desc": "Две тропы сходятся над бездной.", "waves": 13, "start_gold": 570, "economy_profile": "standard", "bonus_gold": 180, "star_conditions": ["Победа", "2 башни Ур. 4", "Не потерять жизни"] },
+        { "id": "c4_07", "stage": 7, "name": "Базальтовый Разлом", "desc": "Магматические разломы: лавовые бесы атакуют с тыла.", "waves": 14, "start_gold": 580, "economy_profile": "siege", "bonus_gold": 190, "star_conditions": ["Победа", "Не допустить прорыва лавы", "Жизни >= 14"] },
+        { "id": "c4_08", "stage": 8, "name": "Залы Сталагмитов", "desc": "Лабиринт природных колонн: идеален для ловушек.", "waves": 14, "start_gold": 600, "economy_profile": "standard", "bonus_gold": 200, "star_conditions": ["Победа", "Ловушка Ур. 4", "Жизни >= 15"] },
+        { "id": "c4_09", "stage": 9, "name": "Бездна Тьмы", "desc": "Элитные невидимые тени скользят во мраке.", "waves": 15, "start_gold": 620, "economy_profile": "rich", "bonus_gold": 220, "star_conditions": ["Победа", "Выполнить контракт 'Теневое Проникновение'", "Жизни >= 10"] },
+        { "id": "c4_10", "stage": 10, "name": "Серное Логово", "desc": "Токсичные испарения и детонирующие ползуны.", "waves": 15, "start_gold": 640, "economy_profile": "poor", "bonus_gold": 230, "star_conditions": ["Победа", "Не потерять жизни", "3 башни Ур. 4"] },
+        { "id": "c4_11", "stage": 11, "name": "Палата Древних Кристаллов", "desc": "Сердце хрустального резонанса: колоссальная магическая мощь.", "waves": 16, "start_gold": 670, "economy_profile": "rich", "bonus_gold": 250, "star_conditions": ["Победа", "4 башни Ур. 4", "Жизни >= 18"] },
+        { "id": "c4_12", "stage": 12, "name": "Кристальный Голем (Босс)", "desc": "Пробуждение древнего Титана Хрустальных Глубин!", "waves": 18, "start_gold": 720, "economy_profile": "boss", "bonus_gold": 350, "star_conditions": ["Победа над Големом", "Жизни >= 10", "Спасти всех пленниц"] }
+      ]
+    },
+    {
+      "id": "chapter_5",
+      "chapter_num": 5,
+      "name": "Сердце Королевства",
+      "biome": "citadel",
+      "icon": "👑",
+      "max_tower_level": 5,
+      "theme_color": "#e6734d",
+      "mechanic_intro": "ФИНАЛЬНАЯ ГЛАВА! Открыт 5-й уровень башен (Эволюция с выбором из 2 специализаций). 15 эпических каток!",
+      "unlock_req": { "type": "map_completed", "map": "frost_peak" },
+      "maps": [
+        { "id": "c5_01", "stage": 1, "name": "Внешний Ров Столицы", "desc": "Первая возможность эволюционировать башни в легендарную форму Ур. 5!", "waves": 12, "start_gold": 600, "economy_profile": "standard", "bonus_gold": 160, "star_conditions": ["Победа", "Эволюционировать башню до Ур. 5", "Жизни >= 12"] },
+        { "id": "c5_02", "stage": 2, "name": "Разрушенный Мост", "desc": "Осаждающие наводят понтоны через глубокий ров.", "waves": 13, "start_gold": 620, "economy_profile": "standard", "bonus_gold": 170, "star_conditions": ["Победа", "Башня Ур. 5 (Ветка A)", "Жизни >= 14"] },
+        { "id": "c5_03", "stage": 3, "name": "Предместья Столицы", "desc": "Бои на горящих улицах кварталов ремесленников.", "waves": 13, "start_gold": 630, "economy_profile": "rich", "bonus_gold": 180, "star_conditions": ["Победа", "Башня Ур. 5 (Ветка B)", "Не потерять жизни"] },
+        { "id": "c5_04", "stage": 4, "name": "Баррикады Торговых Рядов", "desc": "Враг рвется к складам зерна и королевской казне.", "waves": 14, "start_gold": 650, "economy_profile": "economic", "bonus_gold": 190, "star_conditions": ["Победа", "Сохранить >= 400 золота", "Жизни >= 10"] },
+        { "id": "c5_05", "stage": 5, "name": "Западный Барбакан", "desc": "Осадные башни и бронированные тараны сокрушают бастионы.", "waves": 14, "start_gold": 660, "economy_profile": "siege", "bonus_gold": 200, "star_conditions": ["Победа", "Выполнить 2 контракта", "Жизни >= 12"] },
+        { "id": "c5_06", "stage": 6, "name": "Площадь Четырех Фонтанов", "desc": "Атака сразу с 4 фронтов одновременно!", "waves": 15, "start_gold": 680, "economy_profile": "standard", "bonus_gold": 220, "star_conditions": ["Победа", "2 башни Ур. 5", "Жизни >= 15"] },
+        { "id": "c5_07", "stage": 7, "name": "Прорыв Южных Ворот", "desc": "Огромный таран проламывает ворота цитадели.", "waves": 16, "start_gold": 700, "economy_profile": "standard", "bonus_gold": 230, "star_conditions": ["Победа", "Уничтожить таран за 60 секунд", "Жизни >= 10"] },
+        { "id": "c5_08", "stage": 8, "name": "Верхний Город", "desc": "Оборона жилых кварталов дворян и собора.", "waves": 16, "start_gold": 720, "economy_profile": "rich", "bonus_gold": 240, "star_conditions": ["Победа", "Не потерять жизни", "Выполнить контракт"] },
+        { "id": "c5_09", "stage": 9, "name": "Бастион Королевской Стражи", "desc": "Элитная гвардия сходится в смертельном бою с демонами.", "waves": 17, "start_gold": 740, "economy_profile": "standard", "bonus_gold": 260, "star_conditions": ["Победа", "3 башни Ур. 5", "Жизни >= 14"] },
+        { "id": "c5_10", "stage": 10, "name": "Арсенал Цитадели", "desc": "Диверсанты пытаются взорвать запасы арканового пороха.", "waves": 18, "start_gold": 760, "economy_profile": "poor", "bonus_gold": 280, "star_conditions": ["Победа", "Защитить все бочки арсенала", "Жизни >= 12"] },
+        { "id": "c5_11", "stage": 11, "name": "Мост Королевского Триумфа", "desc": "Парадный мост: нескончаемый штурм орд скверны.", "waves": 19, "start_gold": 800, "economy_profile": "rich", "bonus_gold": 300, "star_conditions": ["Победа", "4 башни Ур. 5", "Жизни >= 16"] },
+        { "id": "c5_12", "stage": 12, "name": "Дворцовые Сады", "desc": "Бои на террасах королевского дворца среди цветущих роз.", "waves": 20, "start_gold": 820, "economy_profile": "standard", "bonus_gold": 320, "star_conditions": ["Победа", "Не потерять жизни", "Выполнить 3 контракта"] },
+        { "id": "c5_13", "stage": 13, "name": "Тронная Площадь", "desc": "Полчища демонов окружают тронный зал.", "waves": 21, "start_gold": 850, "economy_profile": "rich", "bonus_gold": 350, "star_conditions": ["Победа", "5 башен Ур. 5", "Жизни >= 15"] },
+        { "id": "c5_14", "stage": 14, "name": "Последний Рубеж Короля", "desc": "Последняя линия обороны короля и древних реликвий.", "waves": 23, "start_gold": 900, "economy_profile": "siege", "bonus_gold": 400, "star_conditions": ["Победа", "Спасти короля и всех девочек", "Жизни >= 18"] },
+        { "id": "c5_15", "stage": 15, "name": "Битва за Сердце Королевства (Мега-Босс)", "desc": "ФИНАЛЬНОЕ СРАЖЕНИЕ: Владыка Тьмы и 25 волн апокалипсиса!", "waves": 25, "start_gold": 1000, "economy_profile": "boss", "bonus_gold": 500, "star_conditions": ["Победа над Владыкой Тьмы", "Спасти ВСЕХ жителей", "Пройти на 3 звезды"] }
+      ]
+    }
+  ]
+}
