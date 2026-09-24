@@ -5,6 +5,7 @@ signal start_wave_pressed()
 signal restart_pressed()
 signal tech_tree_pressed()
 signal speed_changed(multiplier: float)
+signal spell_targeting_requested(spell_id: String)
 
 # Top Bar
 @onready var gold_label: Label = $TopBar/MarginContainer/HBoxContainer/GoldLabel
@@ -138,6 +139,8 @@ func _ready() -> void:
 				if art_mgr and artifacts_modal.has_method("set_artifact_manager"):
 					artifacts_modal.set_artifact_manager(art_mgr)
 				artifacts_modal.visible = not artifacts_modal.visible
+				if artifacts_modal.visible and artifacts_modal.has_method("refresh_ui"):
+					artifacts_modal.refresh_ui()
 		)
 	
 	# Evolution buttons
@@ -244,12 +247,12 @@ func _cast_player_spell(spell_id: String) -> void:
 	var spell_sys = get_tree().get_first_node_in_group("spell_system") as SpellSystem
 	if not spell_sys:
 		return
-	# Convert screen mouse position to world/canvas coordinates
-	var vp = get_viewport()
-	var screen_pos = vp.get_mouse_position()
-	# Use the canvas transform to convert to world space
-	var world_pos = (vp.get_canvas_transform().affine_inverse() * screen_pos)
-	spell_sys.cast_spell(spell_id, world_pos)
+	if not spell_sys.can_cast(spell_id):
+		return
+	if spell_id in ["freeze", "gold_rain", "chronoshift"]:
+		spell_sys.cast_spell(spell_id)
+	else:
+		spell_targeting_requested.emit(spell_id)
 
 
 func set_countdown(seconds: float) -> void:
@@ -364,6 +367,8 @@ func update_research_points(amount: int) -> void:
 	if is_instance_valid(tech_btn):
 		tech_btn.text = "📜 Древо (%d)" % amount
 		tech_btn.modulate = Color(1.2, 1.1, 0.3) if amount > 0 else Color(1, 1, 1)
+	if is_instance_valid(tech_tree_modal) and tech_tree_modal.visible:
+		tech_tree_modal._update_ui(amount)
 
 func set_wave_button_enabled(enabled: bool) -> void:
 	if is_instance_valid(start_wave_btn):
@@ -575,7 +580,10 @@ func _on_menu_clicked() -> void:
 
 func _on_tech_tree_clicked() -> void:
 	if is_instance_valid(tech_tree_modal):
-		tech_tree_modal.visible = not tech_tree_modal.visible
+		if not tech_tree_modal.visible:
+			tech_tree_modal.open_modal()
+		else:
+			tech_tree_modal.visible = false
 		tech_tree_pressed.emit()
 
 func _on_help_clicked() -> void:

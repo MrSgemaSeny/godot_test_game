@@ -161,6 +161,9 @@ func get_effective_damage() -> float:
 	var tech = get_tree().get_first_node_in_group("tech_tree_manager") as TechTreeManager
 	if tech:
 		dmg *= (1.0 + tech.get_damage_bonus())
+	var art_mgr = get_tree().get_first_node_in_group("artifact_manager") as ArtifactManager
+	if art_mgr and art_mgr.has_active_effect("damage_mult"):
+		dmg *= (1.0 + art_mgr.get_effect_value("damage_mult"))
 	var gm = get_tree().get_first_node_in_group("game_manager") as GameManager
 	if gm and gm.selected_path == "magic" and damage_type == "magic":
 		dmg *= 1.15
@@ -173,6 +176,9 @@ func get_effective_range() -> float:
 	var tech = get_tree().get_first_node_in_group("tech_tree_manager") as TechTreeManager
 	if tech:
 		r *= (1.0 + tech.get_range_bonus())
+	var art_mgr = get_tree().get_first_node_in_group("artifact_manager") as ArtifactManager
+	if art_mgr and art_mgr.has_active_effect("range_mult"):
+		r *= (1.0 + art_mgr.get_effect_value("range_mult"))
 	return r
 
 func get_effective_attack_speed() -> float:
@@ -182,6 +188,15 @@ func get_effective_attack_speed() -> float:
 	var gm = get_tree().get_first_node_in_group("game_manager") as GameManager
 	if gm and gm.ability_active and gm.selected_path == "military":
 		spd *= 2.0
+	var tech = get_tree().get_first_node_in_group("tech_tree_manager") as TechTreeManager
+	if tech and tech.is_berserk_unlocked():
+		spd *= 2.0
+	var art_mgr = get_tree().get_first_node_in_group("artifact_manager") as ArtifactManager
+	if art_mgr:
+		if art_mgr.has_active_effect("attack_speed_mult"):
+			spd *= (1.0 + art_mgr.get_effect_value("attack_speed_mult"))
+		if art_mgr.has_active_effect("kill_speed_surge"):
+			spd *= (1.0 + art_mgr.get_effect_value("kill_speed_surge"))
 	return spd
 
 func _process(delta: float) -> void:

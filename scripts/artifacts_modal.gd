@@ -17,6 +17,10 @@ var artifact_manager: ArtifactManager = null
 var selected_artifact_id: String = ""
 
 func _ready() -> void:
+	if not artifact_manager and is_inside_tree() and get_tree():
+		var mgr = get_tree().get_first_node_in_group("artifact_manager") as ArtifactManager
+		if mgr:
+			set_artifact_manager(mgr)
 	if is_instance_valid(close_btn):
 		close_btn.pressed.connect(func():
 			visible = false
@@ -27,6 +31,16 @@ func _ready() -> void:
 
 func set_artifact_manager(mgr: ArtifactManager) -> void:
 	artifact_manager = mgr
+	if artifact_manager:
+		if not artifact_manager.artifact_equipped.is_connected(_on_artifact_changed_any):
+			artifact_manager.artifact_equipped.connect(_on_artifact_changed_any)
+		if not artifact_manager.artifact_unequipped.is_connected(_on_artifact_changed_any):
+			artifact_manager.artifact_unequipped.connect(_on_artifact_changed_any)
+		if not artifact_manager.artifact_unlocked.is_connected(_on_artifact_changed_any):
+			artifact_manager.artifact_unlocked.connect(_on_artifact_changed_any)
+	refresh_ui()
+
+func _on_artifact_changed_any(_a = null, _b = null) -> void:
 	refresh_ui()
 
 func refresh_ui() -> void:
@@ -42,13 +56,23 @@ func _update_slots() -> void:
 		return
 	var buttons = slots_container.get_children()
 	for i in range(min(buttons.size(), artifact_manager.equipped_slots.size())):
-		var btn = buttons[i]
+		var btn: Button = buttons[i]
 		var art_id = artifact_manager.equipped_slots[i]
+		for conn in btn.pressed.get_connections():
+			btn.pressed.disconnect(conn.callable)
+		var slot_idx = i
+		btn.pressed.connect(func():
+			if is_instance_valid(artifact_manager) and artifact_manager.equipped_slots[slot_idx] != "":
+				artifact_manager.unequip_slot(slot_idx)
+				refresh_ui()
+		)
 		if art_id != "" and artifact_manager.artifacts_db.has(art_id):
 			var data = artifact_manager.artifacts_db[art_id]
 			btn.text = "Слот %d: 💎 %s\n(Клик для снятия)" % [i + 1, data.get("name", art_id)]
+			btn.modulate = Color(1.0, 1.0, 1.0)
 		else:
-			btn.text = "Слот %d: [Пусто]\n(Экипируйте ниже)" % [i + 1]
+			btn.text = "Слот %d: [Пусто]\n(Выберите реликвию)" % [i + 1]
+			btn.modulate = Color(0.7, 0.7, 0.7)
 
 func _populate_artifact_list() -> void:
 	if not is_instance_valid(artifact_list) or not is_instance_valid(artifact_manager):

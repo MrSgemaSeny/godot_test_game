@@ -3,6 +3,7 @@ extends Node
 
 signal mana_changed(current: int, maximum: int)
 signal spell_cast_success(spell_id: String)
+signal spell_cast_at(spell_id: String, target_pos: Vector2)
 
 var max_mana: int = 100
 var current_mana: int = 60
@@ -26,8 +27,14 @@ func _load_spells_data() -> void:
 		spells_data = json.data
 
 func _process(delta: float) -> void:
+	var regen = mana_regen_rate
+	if is_inside_tree() and get_tree() != null:
+		var tech = get_tree().get_first_node_in_group("tech_tree_manager") as TechTreeManager
+		if tech:
+			regen *= (1.0 + tech.get_mana_regen_bonus())
+			
 	if current_mana < max_mana:
-		_mana_accum += mana_regen_rate * delta
+		_mana_accum += regen * delta
 		if _mana_accum >= 1.0:
 			var add = int(_mana_accum)
 			_mana_accum -= add
@@ -57,8 +64,29 @@ func _get_spell_data(spell_id: String) -> Dictionary:
 		return spells_data[spell_id]
 	return {}
 
+func get_spell_cost(spell_id: String) -> int:
+	var base_cost = int(_get_spell_data(spell_id).get("mana_cost", _default_spell_costs.get(spell_id, 30)))
+	if is_inside_tree() and get_tree() != null:
+		var tech = get_tree().get_first_node_in_group("tech_tree_manager") as TechTreeManager
+		if tech:
+			base_cost = int(ceil(base_cost * (1.0 - tech.get_cost_discount())))
+	return max(1, base_cost)
+
+func get_spell_cooldown(spell_id: String) -> float:
+	var base_cd = float(_get_spell_data(spell_id).get("cooldown", _default_spell_cooldowns.get(spell_id, 15.0)))
+	if is_inside_tree() and get_tree() != null:
+		var tech = get_tree().get_first_node_in_group("tech_tree_manager") as TechTreeManager
+		if tech:
+			base_cd *= (1.0 - tech.get_ability_cooldown_mult())
+		var art_mgr = get_tree().get_first_node_in_group("artifact_manager") as ArtifactManager
+		if art_mgr and art_mgr.has_active_effect("cooldown_reduction"):
+			var art_data = art_mgr.get_artifact_data("time_crystal")
+			if art_data.get("spell") == spell_id:
+				base_cd *= (1.0 - float(art_data.get("value", 0.5)))
+	return max(0.5, base_cd)
+
 func can_cast(spell_id: String) -> bool:
-	var cost = int(_get_spell_data(spell_id).get("mana_cost", _default_spell_costs.get(spell_id, 30)))
+	var cost = get_spell_cost(spell_id)
 	var cd = cooldowns.get(spell_id, 0.0)
 	return current_mana >= cost and cd <= 0.0
 
@@ -67,8 +95,8 @@ func cast_spell(spell_id: String, target_pos: Vector2 = Vector2.ZERO) -> bool:
 		return false
 
 	var sdata = _get_spell_data(spell_id)
-	var cost = int(sdata.get("mana_cost", _default_spell_costs.get(spell_id, 30)))
-	var cd = float(sdata.get("cooldown", _default_spell_cooldowns.get(spell_id, 15.0)))
+	var cost = get_spell_cost(spell_id)
+	var cd = get_spell_cooldown(spell_id)
 
 	current_mana -= cost
 	cooldowns[spell_id] = cd
@@ -93,6 +121,7 @@ func cast_spell(spell_id: String, target_pos: Vector2 = Vector2.ZERO) -> bool:
 			_cast_stone_wall(target_pos, float(sdata.get("duration", 8.0)))
 
 	spell_cast_success.emit(spell_id)
+	spell_cast_at.emit(spell_id, target_pos)
 	return true
 
 

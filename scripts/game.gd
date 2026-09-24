@@ -124,6 +124,8 @@ var artifact_manager: ArtifactManager = null
 
 var active_boss: MonsterBase = null
 var lightning_flash_timer: float = 0.0
+var active_targeting_spell: String = ""
+var active_spell_vfx: Array = []
 
 var tips: Array = [
 	"💡 Совет: Ледяные маги замедляют монстров, давая пушкам время сделать мощный залп!",
@@ -178,6 +180,9 @@ func _setup_expansion_systems() -> void:
 	
 	artifact_manager = ArtifactManager.new()
 	add_child(artifact_manager)
+	artifact_manager.grant_starter_artifacts()
+	if is_instance_valid(hud) and is_instance_valid(hud.artifacts_modal):
+		hud.artifacts_modal.set_artifact_manager(artifact_manager)
 	
 	var hero_manager = HeroManager.new()
 
@@ -278,7 +283,9 @@ func _setup_signals() -> void:
 	game_manager.tower_selection_changed.connect(hud.show_spot_panel)
 	
 	spell_system.mana_changed.connect(hud.update_mana)
+	spell_system.spell_cast_at.connect(_on_spell_cast_at)
 	tech_tree_manager.research_points_changed.connect(hud.update_research_points)
+	hud.spell_targeting_requested.connect(_on_spell_targeting_requested)
 	
 	hud.start_wave_pressed.connect(_on_start_wave_pressed)
 	hud.restart_pressed.connect(_start_new_game)
@@ -375,11 +382,19 @@ func _start_new_game() -> void:
 		combo_tracker.reset_combo()
 	if is_instance_valid(lore_system):
 		lore_system.reset_session()
+		
+	if is_instance_valid(tech_tree_manager):
+		tech_tree_manager.reset_tree(2)
+	if is_instance_valid(artifact_manager):
+		artifact_manager.grant_starter_artifacts()
+		if is_instance_valid(hud) and is_instance_valid(hud.artifacts_modal):
+			hud.artifacts_modal.set_artifact_manager(artifact_manager)
 	
 	if is_instance_valid(hud):
 		hud.end_screen.visible = false
 		hud.set_wave_button_enabled(true)
 		hud.hide_boss_bar()
+		hud.update_research_points(tech_tree_manager.research_points if tech_tree_manager else 0)
 		
 	if is_instance_valid(wave_controller):
 		wave_controller.reset_waves()
@@ -390,6 +405,19 @@ func _process(delta: float) -> void:
 	scene_anim_time += delta
 	if lightning_flash_timer > 0.0:
 		lightning_flash_timer -= delta
+		
+	# Process active spell effects
+	if not active_spell_vfx.is_empty():
+		var i = active_spell_vfx.size() - 1
+		while i >= 0:
+			var vfx = active_spell_vfx[i]
+			vfx["t"] = float(vfx.get("t", 0.0)) + delta
+			if vfx.get("type") == "gold_rain" and vfx.has("coins"):
+				for c in vfx["coins"]:
+					c["pos"].y += float(c.get("speed", 300.0)) * delta
+			if vfx["t"] >= float(vfx.get("duration", 1.0)):
+				active_spell_vfx.remove_at(i)
+			i -= 1
 		
 	queue_redraw()
 	
@@ -516,6 +544,36 @@ func _on_wave_completed(wave_num: int, is_last_wave: bool) -> void:
 		hud.set_wave_button_enabled(true)
 		hud.hide_boss_bar()
 		
+	# Начисление очков исследований
+	var rp = 2 if wave_num % 5 == 0 else 1
+	if is_instance_valid(tech_tree_manager):
+		tech_tree_manager.add_points(rp)
+	_spawn_floating_text("📜 +%d Очка Исследований!" % rp, Color(0.4, 0.85, 1.0), Vector2(640, 240), 18)
+	
+	# Пассивный доход древа технологий
+	if is_instance_valid(tech_tree_manager) and is_instance_valid(game_manager):
+		var bonus_gold = tech_tree_manager.get_end_wave_bonus_gold()
+		if bonus_gold > 0:
+			game_manager.add_gold(bonus_gold)
+			_spawn_floating_text("🪙 +%d Золота (Технологии)!" % bonus_gold, Color(1.0, 0.9, 0.3), Vector2(640, 270), 16)
+			
+	# Разблокировка реликвий за волны
+	if wave_num in [3, 7, 12, 16] and is_instance_valid(artifact_manager):
+		var art_id = artifact_manager.unlock_next_artifact()
+		if art_id != "":
+			var art_data = artifact_manager.get_artifact_data(art_id)
+			var aname = art_data.get("name", art_id)
+			_spawn_floating_text("💎 Найдена реликвия: %s!" % aname, Color(1.0, 0.85, 0.2), Vector2(640, 180), 22)
+			
+	# Реликвия "Рог Изобилия" (horn_of_plenty): бесплатный метеор на четных волнах
+	if wave_num % 2 == 0 and is_instance_valid(artifact_manager) and artifact_manager.has_active_effect("free_meteor_even_waves"):
+		var enemies = get_tree().get_nodes_in_group("enemies")
+		var meteor_pos = Vector2(500, 350)
+		if enemies.size() > 0 and is_instance_valid(enemies[0]):
+			meteor_pos = enemies[0].global_position
+		spell_system.cast_spell("meteor", meteor_pos)
+		_spawn_floating_text("📯 Рог Изобилия: Бесплатный Метеор!", Color(1.0, 0.6, 0.2), meteor_pos, 18)
+		
 	if is_instance_valid(wave_controller) and not is_last_wave:
 		_update_wave_preview(wave_num + 1)
 		wave_controller.start_wave_countdown(GameManager.PRE_WAVE_TIME)
@@ -574,6 +632,30 @@ func _spawn_floating_text(text: String, color: Color, pos: Vector2, font_size: i
 
 
 func _unhandled_input(event: InputEvent) -> void:
+	if active_targeting_spell != "":
+		if event is InputEventMouseMotion:
+			queue_redraw()
+		elif event is InputEventMouseButton and event.pressed:
+			if event.button_index == MOUSE_BUTTON_LEFT:
+				var cast_pos = get_global_mouse_position()
+				var s_id = active_targeting_spell
+				active_targeting_spell = ""
+				spell_system.cast_spell(s_id, cast_pos)
+				queue_redraw()
+				get_viewport().set_input_as_handled()
+				return
+			elif event.button_index == MOUSE_BUTTON_RIGHT:
+				active_targeting_spell = ""
+				_spawn_floating_text("❌ Применение отменено", Color(0.8, 0.8, 0.8), get_global_mouse_position(), 14)
+				queue_redraw()
+				get_viewport().set_input_as_handled()
+				return
+		elif event is InputEventKey and event.pressed and event.keycode == KEY_ESCAPE:
+			active_targeting_spell = ""
+			queue_redraw()
+			get_viewport().set_input_as_handled()
+			return
+
 	var h_mgrs = get_tree().get_nodes_in_group("hero_manager")
 	if h_mgrs.size() > 0 and h_mgrs[0].handle_input(event, get_global_mouse_position()):
 		get_viewport().set_input_as_handled()
@@ -635,6 +717,13 @@ func _draw() -> void:
 				r = spot.current_tower.get_effective_range()
 			draw_circle(spot.position, r, Color(0.3, 0.8, 1.0, 0.08))
 			draw_arc(spot.position, r, 0, TAU, 48, Color(0.4, 0.9, 1.0, 0.6), 2.0)
+			
+	# 4. Визуальные эффекты заклинаний
+	_draw_spell_effects()
+	
+	# 5. Интерактивный прицел заклинания
+	if active_targeting_spell != "":
+		_draw_spell_targeting_reticle()
 
 func _draw_valley_biome() -> void:
 	var layout = _get_current_layout()
@@ -958,3 +1047,213 @@ func _draw_weather_overlay() -> void:
 		"eclipse":
 			# Затмение: фиолетово-темная виньетка
 			draw_rect(Rect2(0, 0, 1280, 720), Color(0.12, 0.05, 0.20, 0.35))
+
+func _on_spell_targeting_requested(spell_id: String) -> void:
+	active_targeting_spell = spell_id
+	queue_redraw()
+	_spawn_floating_text("🎯 Выберите область [ЛКМ]", Color(1.0, 0.85, 0.3), get_global_mouse_position(), 15)
+
+func _on_spell_cast_at(spell_id: String, target_pos: Vector2) -> void:
+	match spell_id:
+		"meteor":
+			active_spell_vfx.append({
+				"type": "meteor",
+				"start": target_pos + Vector2(-140, -440),
+				"target": target_pos,
+				"t": 0.0,
+				"duration": 0.35,
+				"radius": 130.0
+			})
+			_spawn_floating_text("☄️ МЕТЕОР! 350 УРОНА", Color(1.0, 0.45, 0.1), target_pos, 18)
+		"lightning":
+			active_spell_vfx.append({
+				"type": "lightning",
+				"target": target_pos,
+				"t": 0.0,
+				"duration": 0.35
+			})
+			_spawn_floating_text("⚡ УДАР МОЛНИИ!", Color(0.4, 0.85, 1.0), target_pos, 18)
+		"freeze":
+			active_spell_vfx.append({
+				"type": "freeze_screen",
+				"t": 0.0,
+				"duration": 1.0
+			})
+			_spawn_floating_text("❄️ ВСЯ ОРДА ЗАМОРОЖЕНА (5с)!", Color(0.35, 0.9, 1.0), Vector2(640, 200), 22)
+		"gold_rain":
+			active_spell_vfx.append({
+				"type": "gold_rain",
+				"t": 0.0,
+				"duration": 1.5,
+				"coins": _generate_gold_rain_coins()
+			})
+			_spawn_floating_text("💰 ЗОЛОТОЙ ДОЖДЬ! +120🪙", Color(1.0, 0.9, 0.2), Vector2(640, 200), 22)
+		"vortex":
+			active_spell_vfx.append({
+				"type": "vortex",
+				"pos": target_pos,
+				"radius": 200.0,
+				"t": 0.0,
+				"duration": 3.0
+			})
+			_spawn_floating_text("🌪️ ВИХРЬ!", Color(0.3, 0.9, 1.0), target_pos, 18)
+		"roots":
+			active_spell_vfx.append({
+				"type": "roots",
+				"pos": target_pos,
+				"radius": 150.0,
+				"t": 0.0,
+				"duration": 4.0
+			})
+			_spawn_floating_text("🌿 КОРНИ ЗЕМЛИ!", Color(0.3, 0.95, 0.3), target_pos, 18)
+		"chronoshift":
+			active_spell_vfx.append({
+				"type": "chronoshift",
+				"t": 0.0,
+				"duration": 1.2
+			})
+			_spawn_floating_text("⏳ ВРЕМЯ ЗАМЕДЛЕНО!", Color(0.9, 0.7, 1.0), Vector2(640, 200), 22)
+		"stone_wall":
+			active_spell_vfx.append({
+				"type": "stone_wall",
+				"pos": target_pos,
+				"t": 0.0,
+				"duration": 6.0
+			})
+			_spawn_floating_text("🧱 КАМЕННЫЙ БАРЬЕР!", Color(0.85, 0.8, 0.75), target_pos, 18)
+	queue_redraw()
+
+func _generate_gold_rain_coins() -> Array:
+	var coins: Array = []
+	for i in range(25):
+		coins.append({
+			"pos": Vector2(randf_range(80, 1200), randf_range(-60, 100)),
+			"speed": randf_range(350, 600),
+			"size": randf_range(5.0, 8.0)
+		})
+	return coins
+
+func _draw_spell_effects() -> void:
+	for vfx in active_spell_vfx:
+		var vtype = vfx.get("type", "")
+		var t = float(vfx.get("t", 0.0))
+		var dur = float(vfx.get("duration", 1.0))
+		var progress = clampf(t / max(0.01, dur), 0.0, 1.0)
+		var alpha = 1.0 - progress
+		
+		match vtype:
+			"meteor":
+				var start_pos: Vector2 = vfx.get("start", Vector2.ZERO)
+				var target_pos: Vector2 = vfx.get("target", Vector2.ZERO)
+				var fly_dur = dur * 0.65
+				if t < fly_dur:
+					var p = t / fly_dur
+					var cur_pos = start_pos.lerp(target_pos, p)
+					# Fiery tail
+					var tail_start = cur_pos + (start_pos - target_pos).normalized() * 60.0
+					draw_line(tail_start, cur_pos, Color(1.0, 0.35, 0.0, 0.8), 8.0)
+					draw_line(cur_pos + (start_pos - target_pos).normalized() * 30.0, cur_pos, Color(1.0, 0.85, 0.2, 0.95), 4.0)
+					# Flaming core
+					draw_circle(cur_pos, 16.0, Color(0.9, 0.2, 0.0))
+					draw_circle(cur_pos, 10.0, Color(1.0, 0.6, 0.1))
+					draw_circle(cur_pos, 5.0, Color(1.0, 1.0, 0.7))
+				else:
+					var exp_p = (t - fly_dur) / max(0.01, (dur - fly_dur))
+					var exp_alpha = 1.0 - exp_p
+					var cur_r = 130.0 * sin(exp_p * PI * 0.5)
+					# Explosion blast
+					draw_circle(target_pos, cur_r, Color(1.0, 0.3, 0.05, 0.3 * exp_alpha))
+					draw_arc(target_pos, cur_r, 0, TAU, 36, Color(1.0, 0.8, 0.2, exp_alpha), 4.0)
+					draw_arc(target_pos, cur_r * 0.6, 0, TAU, 28, Color(1.0, 0.2, 0.0, exp_alpha), 3.0)
+					
+			"lightning":
+				var target_pos: Vector2 = vfx.get("target", Vector2.ZERO)
+				var segments = 7
+				var prev = Vector2(target_pos.x + randf_range(-30, 30), 0)
+				for s in range(segments):
+					var p_next = prev.lerp(target_pos, float(s + 1) / float(segments))
+					if s < segments - 1:
+						p_next.x += randf_range(-35, 35)
+					draw_line(prev, p_next, Color(0.2, 0.8, 1.0, 0.4 * alpha), 8.0)
+					draw_line(prev, p_next, Color(0.5, 0.9, 1.0, 0.8 * alpha), 4.0)
+					draw_line(prev, p_next, Color(1.0, 1.0, 1.0, alpha), 2.0)
+					prev = p_next
+				draw_circle(target_pos, 40.0 * (1.0 - progress), Color(0.4, 0.9, 1.0, 0.5 * alpha))
+				
+			"freeze_screen":
+				draw_rect(Rect2(0, 0, 1280, 720), Color(0.25, 0.65, 1.0, 0.20 * alpha))
+				# Icy border
+				draw_rect(Rect2(0, 0, 1280, 720), Color(0.6, 0.9, 1.0, 0.35 * alpha), false, 12.0)
+				
+			"gold_rain":
+				if vfx.has("coins"):
+					for c in vfx["coins"]:
+						var cp: Vector2 = c["pos"]
+						var cs = float(c.get("size", 6.0))
+						draw_circle(cp, cs, Color(1.0, 0.85, 0.1, alpha))
+						draw_circle(cp, cs * 0.65, Color(1.0, 1.0, 0.6, alpha))
+						draw_arc(cp, cs, 0, TAU, 12, Color(0.85, 0.6, 0.0, alpha), 1.5)
+						
+			"vortex":
+				var vpos = vfx.get("pos", Vector2.ZERO)
+				var vr = float(vfx.get("radius", 200.0))
+				var angle = t * 7.0
+				draw_circle(vpos, vr, Color(0.1, 0.7, 0.9, 0.08 * alpha))
+				draw_arc(vpos, vr, angle, angle + PI * 1.2, 32, Color(0.3, 0.85, 1.0, 0.7 * alpha), 3.0)
+				draw_arc(vpos, vr * 0.65, -angle * 1.3, -angle * 1.3 + PI * 1.2, 24, Color(0.5, 0.95, 1.0, 0.8 * alpha), 2.5)
+				draw_arc(vpos, vr * 0.3, angle * 2.0, angle * 2.0 + PI * 1.2, 16, Color(0.8, 1.0, 1.0, alpha), 2.0)
+				
+			"roots":
+				var rpos = vfx.get("pos", Vector2.ZERO)
+				var rr = float(vfx.get("radius", 150.0))
+				draw_circle(rpos, rr, Color(0.15, 0.45, 0.15, 0.15 * alpha))
+				draw_arc(rpos, rr, 0, TAU, 32, Color(0.25, 0.75, 0.25, 0.8 * alpha), 3.0)
+				for k in range(8):
+					var a = (k * PI / 4.0) + sin(t * 2.0 + k) * 0.2
+					var branch_end = rpos + Vector2(cos(a), sin(a)) * rr * 0.85
+					draw_line(rpos, branch_end, Color(0.35, 0.25, 0.15, alpha), 3.0)
+					draw_circle(branch_end, 5.0, Color(0.2, 0.8, 0.2, alpha))
+					
+			"chronoshift":
+				var cr = 600.0 * progress
+				draw_circle(Vector2(640, 360), cr, Color(0.7, 0.4, 1.0, 0.12 * alpha))
+				draw_arc(Vector2(640, 360), cr, 0, TAU, 48, Color(0.9, 0.7, 1.0, 0.7 * alpha), 3.0)
+				
+			"stone_wall":
+				var wpos = vfx.get("pos", Vector2.ZERO)
+				draw_rect(Rect2(wpos.x - 30, wpos.y - 15, 60, 30), Color(0.4, 0.42, 0.45, alpha))
+				draw_rect(Rect2(wpos.x - 30, wpos.y - 15, 60, 30), Color(0.75, 0.75, 0.8, alpha), false, 2.5)
+				draw_line(Vector2(wpos.x - 30, wpos.y), Vector2(wpos.x + 30, wpos.y), Color(0.25, 0.25, 0.3, alpha), 2.0)
+
+func _draw_spell_targeting_reticle() -> void:
+	var mpos = get_global_mouse_position()
+	var r = 130.0
+	var col = Color(1.0, 0.5, 0.1)
+	match active_targeting_spell:
+		"meteor":
+			r = 130.0
+			col = Color(1.0, 0.45, 0.1)
+		"lightning":
+			r = 70.0
+			col = Color(0.3, 0.85, 1.0)
+		"vortex":
+			r = 200.0
+			col = Color(0.2, 0.85, 1.0)
+		"roots":
+			r = 150.0
+			col = Color(0.25, 0.9, 0.3)
+		"stone_wall":
+			r = 55.0
+			col = Color(0.8, 0.8, 0.85)
+			
+	var pulse = 1.0 + sin(scene_anim_time * 6.0) * 0.05
+	var eff_r = r * pulse
+	
+	# Radius area
+	draw_circle(mpos, eff_r, Color(col.r, col.g, col.b, 0.18))
+	draw_arc(mpos, eff_r, 0, TAU, 48, Color(col.r, col.g, col.b, 0.9), 2.5)
+	
+	# Crosshairs
+	draw_line(mpos - Vector2(eff_r * 0.25, 0), mpos + Vector2(eff_r * 0.25, 0), Color(1.0, 1.0, 1.0, 0.9), 2.0)
+	draw_line(mpos - Vector2(0, eff_r * 0.25), mpos + Vector2(0, eff_r * 0.25), Color(1.0, 1.0, 1.0, 0.9), 2.0)
+	draw_circle(mpos, 4.0, Color(1.0, 1.0, 1.0, 0.95))

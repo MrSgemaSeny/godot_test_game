@@ -12,10 +12,41 @@ var artifacts_db: Dictionary = {}
 var unlocked_artifacts: Array[String] = []
 var equipped_slots: Array = ["", "", ""] # 3 слота экипировки
 var max_slots: int = 3
+var hit_counter: int = 0
+
+func _enter_tree() -> void:
+	add_to_group("artifact_manager")
 
 func _ready() -> void:
 	add_to_group("artifact_manager")
 	_load_artifacts_db()
+
+func grant_starter_artifacts() -> void:
+	_load_artifacts_db()
+	unlock_artifact("boots_of_speed")
+	unlock_artifact("alchemist_ring")
+	unlock_artifact("frozen_heart")
+	unlock_artifact("thief_curse")
+	equip_artifact("boots_of_speed", 0)
+	equip_artifact("alchemist_ring", 1)
+
+func unlock_next_artifact() -> String:
+	for art_id in artifacts_db.keys():
+		if not is_unlocked(art_id):
+			unlock_artifact(art_id)
+			return art_id
+	return ""
+
+func register_tower_hit() -> void:
+	if not has_active_effect("hit_gold"):
+		return
+	hit_counter += 1
+	if hit_counter >= 10:
+		hit_counter = 0
+		if is_inside_tree() and get_tree() != null:
+			var gm = get_tree().get_first_node_in_group("game_manager")
+			if gm and gm.has_method("add_gold"):
+				gm.add_gold(5)
 
 func _load_artifacts_db() -> void:
 	if not FileAccess.file_exists("res://data/artifacts.json"):

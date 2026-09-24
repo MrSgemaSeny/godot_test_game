@@ -126,6 +126,19 @@ func _apply_hit_effect(enemy = null, mult: float = 1.0) -> void:
 	if _is_target_alive(enemy):
 		if slow_factor > 0.0 and enemy.has_method("apply_slow"):
 			enemy.apply_slow(slow_factor, slow_duration)
+			
+	if is_inside_tree() and get_tree() != null:
+		var art_mgr = get_tree().get_first_node_in_group("artifact_manager") as ArtifactManager
+		if art_mgr:
+			if art_mgr.has_active_effect("chance_freeze") and randf() < 0.10:
+				if _is_target_alive(enemy) and enemy.has_method("apply_freeze"):
+					enemy.apply_freeze(1.5)
+			if art_mgr.has_active_effect("hit_gold"):
+				art_mgr.register_tower_hit()
+		var tech = get_tree().get_first_node_in_group("tech_tree_manager") as TechTreeManager
+		if tech and tech.get_stun_chance() > 0.0 and randf() < tech.get_stun_chance():
+			if _is_target_alive(enemy) and enemy.has_method("apply_status_effect"):
+				enemy.apply_status_effect(StatusEffect.Type.STUN, 1.5, 1.0)
 
 func _draw() -> void:
 	match projectile_type:

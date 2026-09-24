@@ -13,6 +13,8 @@ var tech_tree: TechTreeManager = null
 
 func _ready() -> void:
 	close_btn.pressed.connect(_on_close_pressed)
+	if not tech_tree and is_inside_tree() and get_tree():
+		tech_tree = get_tree().get_first_node_in_group("tech_tree_manager") as TechTreeManager
 
 func open_modal() -> void:
 	if not tech_tree and is_inside_tree() and get_tree():
@@ -100,7 +102,10 @@ func _create_node_card(node_data: Dictionary, container: VBoxContainer) -> void:
 	elif tech_tree.can_unlock(node_id):
 		btn.text = "Изучить (%d очк.)" % cost
 		btn.disabled = false
-		btn.pressed.connect(func(): tech_tree.unlock_node(node_id))
+		btn.pressed.connect(func():
+			if tech_tree.unlock_node(node_id):
+				_update_ui(tech_tree.research_points)
+		)
 		title.modulate = Color(1.0, 0.85, 0.2)
 	else:
 		btn.text = "🔒 Требуются условия"
