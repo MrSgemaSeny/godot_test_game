@@ -245,6 +245,10 @@ func calculate_interest(bank_amount: int = -1) -> int:
 			rate = float(tier.get("rate", 0.0))
 			break
 			
+	var int_p = float(active_relic_effects.get("interest_rate_penalty", active_relic_effects.get("interest_penalty_pct", 0.0)))
+	if int_p != 0.0:
+		rate = max(0.0, rate + int_p)
+		
 	var interest_gold = int(floor(check_gold * rate))
 	return int(clamp(interest_gold, 0, max_bonus))
 
@@ -253,12 +257,17 @@ func get_current_interest_rate() -> float:
 		return 0.0
 	var interest_cfg = economy_data.get("interest", {})
 	var tiers = interest_cfg.get("tiers", [])
+	var rate: float = 0.0
 	for tier in tiers:
 		var min_g = int(tier.get("min_gold", 0))
 		var max_g = int(tier.get("max_gold", 99999))
 		if current_gold >= min_g and current_gold <= max_g:
-			return float(tier.get("rate", 0.0))
-	return 0.0
+			rate = float(tier.get("rate", 0.0))
+			break
+	var int_p = float(active_relic_effects.get("interest_rate_penalty", active_relic_effects.get("interest_penalty_pct", 0.0)))
+	if int_p != 0.0:
+		rate = max(0.0, rate + int_p)
+	return rate
 
 func apply_interest() -> int:
 	if not interest_enabled:
@@ -286,6 +295,9 @@ func calculate_wave_reward(wave_num: int, chapter_num: int = 1) -> int:
 		ch_mult = float(mults[c_idx])
 		
 	var reward = int(ceil((base_r + wave_num * growth) * ch_mult))
+	var wr_b = float(active_relic_effects.get("wave_reward_bonus", active_relic_effects.get("wave_reward_bonus_pct", 0.0)))
+	if wr_b != 0.0:
+		reward = int(ceil(float(reward) * (1.0 + wr_b)))
 	return reward
 
 func apply_wave_reward(wave_num: int, chapter_num: int = 1) -> int:
@@ -312,6 +324,27 @@ func evaluate_perfect_wave(wave_num: int, lives_lost_this_wave: int, girls_lost:
 # Контракты (Contracts System — Раздел 3 & 10 спецификации)
 # ==============================================================================
 
+var active_relic_effects: Dictionary = {}
+signal boss_reward_chosen(reward_type: String)
+
+func apply_relic_trade_offs(relic_ids: Array) -> void:
+	active_relic_effects.clear()
+	var trade_offs = economy_data.get("relic_trade_offs", {})
+	for r_id in relic_ids:
+		var r_str = str(r_id)
+		if trade_offs.has(r_str):
+			var t_cfg = trade_offs[r_str]
+			for k in t_cfg:
+				active_relic_effects[k] = float(t_cfg[k])
+				
+	# Немедленный бонус / штраф к стартовому золоту
+	if active_relic_effects.has("starting_gold_penalty"):
+		starting_gold = max(50, starting_gold + int(active_relic_effects["starting_gold_penalty"]))
+		current_gold = starting_gold
+	if active_relic_effects.has("starting_gold_bonus"):
+		starting_gold += int(active_relic_effects["starting_gold_bonus"])
+		current_gold = starting_gold
+
 func get_available_contracts(count: int = 2) -> Array[Dictionary]:
 	if not contracts_enabled:
 		return []
@@ -323,26 +356,65 @@ func get_available_contracts(count: int = 2) -> Array[Dictionary]:
 	var pool_copy = pool.duplicate(true)
 	pool_copy.shuffle()
 	
+	# Underdog контракт при низком балансе или критических жизнях (Раздел 24)
+	var underdog_threshold = int(economy_data.get("catch_up_mechanics", {}).get("underdog_threshold_gold", 150))
+	if current_gold < underdog_threshold:
+		var underdog = {
+			"id": "underdog_subsidy",
+			"name": "🛡️ Субсидия Короны (Камбэк)",
+			"description": "Помощь от короля для терпящего бедствие рубежа: враги не усилены.",
+			"reward_text": "+50% золота за волну",
+			"hp_mult": 1.0,
+			"speed_mult": 1.0,
+			"reward_mult": 1.50,
+			"risk_level": "easy"
+		}
+		available.append(underdog)
+	
 	var take_count = min(count, pool_copy.size())
 	for i in range(take_count):
-		available.append(pool_copy[i])
+		if available.size() >= count:
+			break
+		var item = pool_copy[i]
+		var already_has = false
+		for av in available:
+			if av.get("id") == item.get("id"):
+				already_has = true
+				break
+		if not already_has:
+			available.append(item)
+			
 	return available
 
 func accept_contract(contract_id: String) -> bool:
 	if not contracts_enabled:
 		return false
 	var pool: Array = economy_data.get("contracts", [])
+	var candidate: Dictionary = {}
 	for c in pool:
 		if c.get("id", "") == contract_id:
-			active_contract = c.duplicate(true)
-			contract_accepted.emit(active_contract)
-			_log_transaction("CONTRACT_ACCEPT", 0, "Принят контракт: %s" % active_contract.get("name", ""))
-			
-			# Если есть немедленное золото или цена жизни
-			if active_contract.has("immediate_gold"):
-				var imm_gold = int(active_contract["immediate_gold"])
-				add_gold(imm_gold, "contract", "Аванс по контракту '%s'" % active_contract.get("name", ""))
-			return true
+			candidate = c
+			break
+	if candidate.is_empty() and contract_id == "underdog_subsidy":
+		candidate = {
+			"id": "underdog_subsidy",
+			"name": "🛡️ Субсидия Короны (Камбэк)",
+			"description": "Помощь от короля для терпящего бедствие рубежа: враги не усилены.",
+			"reward_text": "+50% золота за волну",
+			"hp_mult": 1.0,
+			"speed_mult": 1.0,
+			"reward_mult": 1.50,
+			"risk_level": "easy"
+		}
+		
+	if not candidate.is_empty():
+		active_contract = candidate.duplicate(true)
+		contract_accepted.emit(active_contract)
+		_log_transaction("CONTRACT_ACCEPT", 0, "Принят контракт: %s" % active_contract.get("name", ""))
+		if active_contract.has("immediate_gold"):
+			var imm_gold = int(active_contract["immediate_gold"])
+			add_gold(imm_gold, "contract", "Аванс по контракту '%s'" % active_contract.get("name", ""))
+		return true
 	return false
 
 func resolve_contract(success: bool) -> int:
@@ -391,7 +463,15 @@ func calculate_kill_bounty(base_reward: int, role: String = "standard", combo_mu
 	if not active_contract.is_empty():
 		contract_bounty_mult = float(active_contract.get("kill_bounty_mult", 1.0))
 		
-	var final_bounty = int(ceil(base_reward * role_mult * combo_mult * contract_bounty_mult))
+	var relic_bounty_mult = 1.0
+	if role in ["elite", "boss"]:
+		var eb = float(active_relic_effects.get("elite_bounty_bonus", active_relic_effects.get("elite_bounty_bonus_pct", 0.0)))
+		relic_bounty_mult += eb
+	elif role == "standard":
+		var sp = float(active_relic_effects.get("standard_bounty_penalty", active_relic_effects.get("standard_bounty_penalty_pct", 0.0)))
+		relic_bounty_mult += sp
+		
+	var final_bounty = int(ceil(base_reward * role_mult * combo_mult * contract_bounty_mult * max(0.1, relic_bounty_mult)))
 	return max(1, final_bounty)
 
 func register_enemy_kill(base_reward: int, role: String = "standard", combo_mult: float = 1.0, enemy_name: String = "") -> int:
@@ -520,3 +600,34 @@ func get_economic_summary() -> Dictionary:
 		"contracts_completed": contract_history.filter(func(c): return c["status"] == "success").size(),
 		"contracts_failed": contract_history.filter(func(c): return c["status"] == "failed").size()
 	}
+
+# ==============================================================================
+# Boss Economy (Раздел 26 — Выбор награды босса: A vs B)
+# ==============================================================================
+
+func grant_boss_reward(choice_id: String) -> Dictionary:
+	var result: Dictionary = {}
+	if choice_id == "treasury":
+		result = {
+			"id": "treasury",
+			"name": "Королевская Казна",
+			"glory": 150,
+			"next_stage_gold_bonus": 100,
+			"damage_buff": 0.0,
+			"description": "+150 Очков Славы и +100 золота в следующей катке"
+		}
+		_log_transaction("BOSS_REWARD", 150, "Награда за босса: Королевская Казна (+150 Славы)")
+	else:
+		result = {
+			"id": "master_seal",
+			"name": "Печать Мастера",
+			"glory": 100,
+			"next_stage_gold_bonus": 0,
+			"damage_buff": 0.10,
+			"description": "+100 Очков Славы и постоянный бонус +10% к урону всех башен"
+		}
+		_log_transaction("BOSS_REWARD", 100, "Награда за босса: Печать Мастера (+100 Славы, +10% урон)")
+		
+	boss_reward_chosen.emit(choice_id)
+	return result
+

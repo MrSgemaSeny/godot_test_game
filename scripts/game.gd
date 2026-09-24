@@ -204,8 +204,23 @@ func _setup_expansion_systems() -> void:
 			game_manager.gold = new_gold
 			game_manager.gold_changed.emit(new_gold)
 	)
+	
+	# Применение торговых условий экипированных реликвий (Раздел 19)
+	var active_relics: Array = []
+	if is_instance_valid(artifact_manager) and artifact_manager.has_method("get_equipped_artifacts"):
+		active_relics = artifact_manager.get_equipped_artifacts()
+	elif is_instance_valid(meta_manager) and meta_manager.has_method("get_equipped_artifacts"):
+		active_relics = meta_manager.get_equipped_artifacts()
+	if not active_relics.is_empty():
+		economy_manager.apply_relic_trade_offs(active_relics)
+		
 	if is_instance_valid(hud):
 		hud.setup_economy(economy_manager)
+		hud.briefing_requested.connect(_show_current_stage_briefing)
+		hud.next_stage_pressed.connect(_on_next_stage_pressed)
+		if hud.economy_widget and hud.economy_widget.has_signal("boss_reward_selected"):
+			hud.economy_widget.boss_reward_selected.connect(_on_boss_reward_chosen)
+		_show_current_stage_briefing()
 	
 	var hero_manager = HeroManager.new()
 
@@ -686,24 +701,84 @@ func _update_wave_preview(next_wave: int) -> void:
 		text = "⚠️ ВНИМАНИЕ! Волна %d: ПРИБЛИЖАЕТСЯ БОСС ОРДЫ! 👑" % next_wave
 	hud.show_wave_preview(text)
 
+func _show_current_stage_briefing() -> void:
+	if not is_instance_valid(hud):
+		return
+	var ch_num = GlobalState.current_chapter if GlobalState.current_chapter > 0 else 1
+	var st_num = GlobalState.current_stage if GlobalState.current_stage > 0 else 1
+	var st_info: Dictionary = {}
+	if is_instance_valid(campaign_manager):
+		st_info = campaign_manager.get_stage_by_coords(ch_num, st_num)
+	if st_info.is_empty():
+		var ch_conf = campaign_manager.get_chapter_by_index(ch_num) if is_instance_valid(campaign_manager) else {}
+		st_info = {
+			"chapter_num": ch_num,
+			"stage_num": st_num,
+			"name": "Рубеж %d" % st_num,
+			"biome": ch_conf.get("biome", GlobalState.selected_map),
+			"max_tower_level": ch_conf.get("max_tower_level", 3),
+			"start_gold": 350,
+			"economy_profile": "standard",
+			"wave_count": wave_controller.get_total_waves() if is_instance_valid(wave_controller) else 10
+		}
+	hud.show_stage_briefing(st_info)
+
 func _on_all_waves_completed() -> void:
 	if is_instance_valid(game_manager):
 		game_manager.set_state(GameManager.GameState.VICTORY)
+	var st_num = GlobalState.current_stage if GlobalState.current_stage > 0 else 1
+	var is_boss = (st_num == 10 or st_num == 12 or st_num == 15 or (is_instance_valid(wave_controller) and wave_controller.is_next_wave_boss()))
+	
+	if is_boss and is_instance_valid(hud):
+		hud.show_boss_choice()
+	else:
+		_finish_victory()
+
+func _on_boss_reward_chosen(reward_type: String) -> void:
+	var bonus_glory = 150 if reward_type == "treasury" else 100
+	_finish_victory(bonus_glory)
+
+func _finish_victory(boss_glory_bonus: int = 0) -> void:
 	var lives = game_manager.lives if is_instance_valid(game_manager) else 5
-	var stars = 3 if lives >= 5 else (2 if lives >= 3 else 1)
-	var ch_num = GlobalState.current_chapter
-	var st_num = GlobalState.current_stage
-	if is_instance_valid(hud):
-		hud.end_title.text = "👑 ПОБЕДА! КАТКА %d-%d ЗАВЕРШЕНА!" % [ch_num, st_num]
-		hud.end_subtitle.text = "Вы спасли королевство и защитили всех жителей!\nНачислено 30 Очков Славы! ⭐ x%d" % stars
-		hud.end_screen.visible = true
+	var ch_num = GlobalState.current_chapter if GlobalState.current_chapter > 0 else 1
+	var st_num = GlobalState.current_stage if GlobalState.current_stage > 0 else 1
+	
+	var s1 = true
+	var s2 = lives >= 3
+	var econ_sum = economy_manager.get_economic_summary() if is_instance_valid(economy_manager) else {}
+	var s3 = (int(econ_sum.get("contract_profit", 0)) > 0 or int(econ_sum.get("current_gold", 0)) >= 200 or lives >= 5)
+	
+	var stars = (1 if s1 else 0) + (1 if s2 else 0) + (1 if s3 else 0)
+	var glory = 30 + (15 if stars >= 3 else 0) + boss_glory_bonus
+	
 	if is_instance_valid(meta_manager):
-		meta_manager.add_glory(30)
+		meta_manager.add_glory(glory)
 		if meta_manager.has_method("record_stage_victory"):
 			meta_manager.record_stage_victory(GlobalState.selected_map, st_num, stars)
 		else:
 			meta_manager.set_map_stars(GlobalState.selected_map, stars)
+			
+	if is_instance_valid(campaign_manager):
+		campaign_manager.record_stage_result(ch_num, st_num, stars, meta_manager)
+		
+	if is_instance_valid(hud):
+		hud.show_end_screen(true, ch_num, st_num, stars, econ_sum, glory)
 
+func _on_next_stage_pressed() -> void:
+	var ch_num = GlobalState.current_chapter if GlobalState.current_chapter > 0 else 1
+	var st_num = GlobalState.current_stage if GlobalState.current_stage > 0 else 1
+	
+	if is_instance_valid(campaign_manager):
+		var next_info = campaign_manager.get_next_stage_coords(ch_num, st_num)
+		if not bool(next_info.get("is_final", false)):
+			GlobalState.current_chapter = int(next_info.get("chapter_num", 1))
+			GlobalState.current_stage = int(next_info.get("stage_num", 1))
+			var ch = campaign_manager.get_chapter_by_index(GlobalState.current_chapter)
+			GlobalState.selected_map = str(ch.get("biome", GlobalState.selected_map))
+			get_tree().reload_current_scene()
+			return
+			
+	get_tree().change_scene_to_file("res://scenes/world_map.tscn")
 
 func _on_lives_changed(new_lives: int) -> void:
 	if is_instance_valid(hud):
@@ -713,10 +788,11 @@ func _on_lives_changed(new_lives: int) -> void:
 
 func _on_game_state_changed(new_state: GameManager.GameState) -> void:
 	if new_state == GameManager.GameState.GAME_OVER:
+		var ch_num = GlobalState.current_chapter if GlobalState.current_chapter > 0 else 1
+		var st_num = GlobalState.current_stage if GlobalState.current_stage > 0 else 1
+		var econ_sum = economy_manager.get_economic_summary() if is_instance_valid(economy_manager) else {}
 		if is_instance_valid(hud):
-			hud.end_title.text = "💀 ПОРАЖЕНИЕ..."
-			hud.end_subtitle.text = "Оркам удалось пленить всех девочек королевства.\nПопробуйте другую тактику!"
-			hud.end_screen.visible = true
+			hud.show_end_screen(false, ch_num, st_num, 0, econ_sum, 0)
 
 func _on_girl_rescued(girl_pos: Vector2) -> void:
 	_spawn_floating_text("💖 Девочка спасена!", Color(1.0, 0.4, 0.8), girl_pos, 16)

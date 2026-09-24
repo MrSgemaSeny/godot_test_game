@@ -225,6 +225,17 @@ func record_stage_result(chapter_num: int, stage_num: int, stars: int, meta: Met
 	var st_id = str(st.get("id", "%s_%d" % [ch_biome, stage_num]))
 	stage_completed.emit(st_id, stars)
 
+func get_next_stage_coords(chapter_num: int, stage_num: int) -> Dictionary:
+	var ch = get_chapter_by_index(chapter_num)
+	var stages: Array = ch.get("maps", ch.get("stages", []))
+	if stage_num < stages.size():
+		return { "chapter_num": chapter_num, "stage_num": stage_num + 1, "is_final": false }
+	elif chapter_num < get_total_chapters():
+		return { "chapter_num": chapter_num + 1, "stage_num": 1, "is_final": false }
+	else:
+		return { "chapter_num": chapter_num, "stage_num": stage_num, "is_final": true }
+
+
 func get_stage_layout(arg1, arg2: int = 1) -> Dictionary:
 	var biome = "valley"
 	var stage_num = 1

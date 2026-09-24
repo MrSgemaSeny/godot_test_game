@@ -345,9 +345,9 @@ func get_chapter_max_level() -> int:
 	else:
 		return 5
 	
-	if chapter == 1:
+	if chapter <= 2:
 		return 3
-	elif chapter == 2:
+	elif chapter <= 4:
 		return 4
 	else:
 		return 5
@@ -866,6 +866,85 @@ func _draw_level_augmentations(aim_dir: Vector2) -> void:
 				else:
 					draw_circle(Vector2(0, -6), 9.0, Color(0.1, 0.8, 0.9, 0.8))
 					draw_circle(Vector2(0, -6), 5.0, Color(1, 1, 1, 0.9))
+
+			"rock_catapult":
+				if is_a:
+					draw_line(Vector2(-10, 4), Vector2(-16, -20), Color(0.4, 0.25, 0.12), 4.0)
+					draw_circle(Vector2(-16, -20), 8.0, Color(0.2, 0.2, 0.22))
+					draw_line(Vector2(0, -6), Vector2(0, -6) + aim_dir * 30.0, Color(0.6, 0.4, 0.2), 3.0)
+				else:
+					draw_line(Vector2(0, -6), Vector2(0, -6) + aim_dir * 25.0, Color(0.3, 0.35, 0.4), 4.5)
+					draw_arc(Vector2(0, -6) + aim_dir * 12.0, 14.0, 0, TAU, 16, Color(1.0, 0.5, 0.1), 2.0)
+
+			"sniper":
+				if is_a:
+					draw_line(Vector2(0, -14), Vector2(0, -14) + aim_dir * 110.0, Color(0.1, 1.0, 0.5, 0.7), 1.8)
+					draw_circle(Vector2(0, -14) + aim_dir * 110.0, 4.0, Color(0.2, 1.0, 0.6))
+				else:
+					draw_line(Vector2(0, -14), Vector2(0, -14) + aim_dir * 55.0, Color(0.4, 0.8, 1.0), 3.5)
+					draw_circle(Vector2(0, -14) + aim_dir * 25.0, 6.0, Color(0.6, 0.9, 1.0, 0.8))
+
+			"lightning_spire", "storm_tower":
+				if is_a:
+					for i in range(4):
+						var la = anim_time * 6.0 + i * (TAU / 4.0)
+						var lp = Vector2(cos(la) * 22.0, sin(la) * 12.0 - 20.0)
+						draw_circle(lp, 3.5, Color(0.3, 0.9, 1.0))
+						draw_line(Vector2(0, -20), lp, Color(1, 1, 1, 0.8), 1.5)
+				else:
+					draw_arc(Vector2(0, -22), 24.0, 0, TAU, 24, Color(0.8, 0.4, 1.0, 0.7), 3.0)
+					draw_circle(Vector2(0, -22), 8.0, Color(1.0, 0.8, 1.0))
+
+			"arcane_tower":
+				if is_a:
+					draw_arc(Vector2(0, -14), 22.0, anim_time * 2.0, anim_time * 2.0 + PI * 1.5, 20, Color(0.7, 0.2, 0.9), 3.0)
+					draw_circle(Vector2(0, -14), 7.0, Color(0.15, 0.05, 0.25))
+				else:
+					for i in range(3):
+						var ra = anim_time * 3.0 + i * (TAU / 3.0)
+						draw_circle(Vector2(0, -14) + Vector2(cos(ra) * 18.0, sin(ra) * 18.0), 4.0, Color(0.9, 0.3, 1.0))
+
+			"mortar":
+				if is_a:
+					draw_line(Vector2(0, -4), Vector2(0, -4) + aim_dir * 24.0, Color(0.2, 0.22, 0.26), 7.0)
+					draw_circle(Vector2(0, -4) + aim_dir * 24.0, 5.0, Color(0.85, 0.3, 0.1))
+				else:
+					for k in [-1, 0, 1]:
+						var kd = aim_dir.rotated(k * 0.28)
+						draw_line(Vector2(0, -4), Vector2(0, -4) + kd * 18.0, Color(0.3, 0.35, 0.4), 3.5)
+
+			"laser_crystal":
+				if is_a:
+					draw_line(Vector2(0, -12), Vector2(0, -12) + aim_dir * 90.0, Color(1.0, 0.1, 0.3, 0.85), 2.8)
+					draw_circle(Vector2(0, -12) + aim_dir * 90.0, 4.0, Color(1.0, 0.5, 0.7))
+				else:
+					draw_arc(Vector2(0, -12), 20.0, 0, TAU, 6, Color(0.4, 0.9, 1.0, 0.8), 2.5)
+
+			"sun_altar":
+				if is_a:
+					draw_circle(Vector2(0, -16), 12.0, Color(1.0, 0.75, 0.1, 0.9))
+					draw_arc(Vector2(0, -16), 20.0, 0, TAU, 18, Color(1.0, 0.9, 0.3), 2.5)
+				else:
+					for i in range(8):
+						var ra = anim_time * 1.5 + i * (TAU / 8.0)
+						draw_line(Vector2(0, -16), Vector2(0, -16) + Vector2(cos(ra) * 26.0, sin(ra) * 26.0), Color(1.0, 0.85, 0.4, 0.6), 1.8)
+
+			"frost_nova":
+				if is_a:
+					draw_arc(Vector2(0, -6), 28.0, 0, TAU, 24, Color(0.3, 0.85, 1.0, 0.8), 3.0)
+					draw_circle(Vector2(0, -6), 9.0, Color(0.7, 0.95, 1.0))
+				else:
+					for i in range(6):
+						var sa = anim_time * 4.0 + i * (TAU / 6.0)
+						draw_circle(Vector2(0, -6) + Vector2(cos(sa) * 22.0, sin(sa) * 12.0), 3.5, Color(0.85, 0.95, 1.0))
+
+			"barricade", "gold_shrine":
+				if is_a:
+					draw_rect(Rect2(-16, -14, 32, 28), Color(0.85, 0.7, 0.2, 0.6))
+					draw_arc(Vector2(0, 0), 22.0, 0, TAU, 16, Color(1.0, 0.85, 0.3), 2.0)
+				else:
+					draw_circle(Vector2(0, 0), 18.0, Color(0.2, 0.8, 0.4, 0.6))
+					draw_arc(Vector2(0, 0), 25.0, 0, TAU, 20, Color(0.3, 1.0, 0.6), 2.0)
 
 			_:
 				draw_circle(Vector2(-14, -8), 4.0, theme_col)

@@ -13,6 +13,8 @@ extends Control
 signal contract_chosen(contract_id: String)
 signal contract_dismissed()
 signal wave_report_closed()
+signal stage_briefing_closed()
+signal boss_reward_selected(choice_id: String)
 
 var economy_manager: EconomyManager = null
 
@@ -28,6 +30,9 @@ var wave_summary_modal: PanelContainer
 var wave_summary_content: VBoxContainer
 var tx_log_modal: PanelContainer
 var tx_log_list: VBoxContainer
+var stage_briefing_modal: PanelContainer
+var stage_briefing_content: VBoxContainer
+var boss_choice_modal: PanelContainer
 
 func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -35,6 +40,8 @@ func _ready() -> void:
 	_build_contract_modal()
 	_build_wave_summary_modal()
 	_build_tx_log_modal()
+	_build_stage_briefing_modal()
+	_build_boss_choice_modal()
 
 func setup(econ: EconomyManager) -> void:
 	economy_manager = econ
@@ -427,3 +434,319 @@ func refresh_tx_log() -> void:
 		else:
 			lbl.add_theme_color_override("font_color", Color(0.8, 0.85, 0.9))
 		tx_log_list.add_child(lbl)
+
+# ==============================================================================
+# 5. Phase 0 — Stage Briefing Modal (Раздел 28)
+# ==============================================================================
+
+func _build_stage_briefing_modal() -> void:
+	stage_briefing_modal = PanelContainer.new()
+	stage_briefing_modal.name = "StageBriefingModal"
+	stage_briefing_modal.visible = false
+	stage_briefing_modal.custom_minimum_size = Vector2(620, 420)
+	stage_briefing_modal.position = Vector2(330, 130)
+	stage_briefing_modal.mouse_filter = Control.MOUSE_FILTER_STOP
+	
+	var style = StyleBoxFlat.new()
+	style.bg_color = Color(0.06, 0.08, 0.12, 0.98)
+	style.border_width_left = 2
+	style.border_width_top = 2
+	style.border_width_right = 2
+	style.border_width_bottom = 2
+	style.border_color = Color(0.85, 0.70, 0.25, 0.95)
+	style.corner_radius_top_left = 12
+	style.corner_radius_top_right = 12
+	style.corner_radius_bottom_right = 12
+	style.corner_radius_bottom_left = 12
+	style.shadow_color = Color(0, 0, 0, 0.8)
+	style.shadow_size = 24
+	stage_briefing_modal.add_theme_stylebox_override("panel", style)
+	
+	var margin = MarginContainer.new()
+	margin.add_theme_constant_override("margin_left", 20)
+	margin.add_theme_constant_override("margin_top", 16)
+	margin.add_theme_constant_override("margin_right", 20)
+	margin.add_theme_constant_override("margin_bottom", 16)
+	
+	stage_briefing_content = VBoxContainer.new()
+	stage_briefing_content.add_theme_constant_override("separation", 10)
+	margin.add_child(stage_briefing_content)
+	
+	stage_briefing_modal.add_child(margin)
+	add_child(stage_briefing_modal)
+
+func show_stage_briefing(stage_info: Dictionary) -> void:
+	if not stage_briefing_modal:
+		_build_stage_briefing_modal()
+	if not stage_briefing_content:
+		return
+		
+	for c in stage_briefing_content.get_children():
+		c.queue_free()
+		
+	var ch_num = int(stage_info.get("chapter_num", 1))
+	var st_num = int(stage_info.get("stage_num", 1))
+	var st_title = str(stage_info.get("name", "Рубеж %d" % st_num))
+	var biome = str(stage_info.get("biome", "plains"))
+	var max_lvl = int(stage_info.get("max_tower_level", 3))
+	var start_g = int(stage_info.get("start_gold", 350))
+	var profile = str(stage_info.get("economy_profile", "standard"))
+	var waves_count = int(stage_info.get("wave_count", 10))
+	
+	# Заголовок
+	var title = Label.new()
+	title.text = "📋 БОЕВАЯ РАЗВЕДКА РУБЕЖА: ГЛАВА %d — КАТКА %d" % [ch_num, st_num]
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	title.add_theme_font_size_override("font_size", 16)
+	title.add_theme_color_override("font_color", Color(1.0, 0.85, 0.3))
+	stage_briefing_content.add_child(title)
+	
+	var sub = Label.new()
+	sub.text = "«%s» | Биом: %s" % [st_title, biome.capitalize()]
+	sub.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	sub.add_theme_font_size_override("font_size", 13)
+	sub.add_theme_color_override("font_color", Color(0.75, 0.85, 0.95))
+	stage_briefing_content.add_child(sub)
+	
+	var sep = HSeparator.new()
+	stage_briefing_content.add_child(sep)
+	
+	# Grid параметров
+	var grid = GridContainer.new()
+	grid.columns = 2
+	grid.add_theme_constant_override("h_separation", 24)
+	grid.add_theme_constant_override("v_separation", 6)
+	
+	var lvl_text = "🔒 Макс. Ур. %d" % max_lvl
+	if max_lvl == 5:
+		lvl_text += " (👑 Открыта Эволюция A/B!)"
+	elif max_lvl == 4:
+		lvl_text += " (Мастерские формы)"
+	else:
+		lvl_text += " (Кадетский гарнизон)"
+		
+	var params = [
+		["🛡️ Лимит башен:", lvl_text],
+		["🪙 Стартовая казна:", "%d золота" % start_g],
+		["📊 Профиль экономики:", "%s (Депозит до 15%%)" % profile.capitalize()],
+		["🌊 Напор орды:", "%d волн атаки" % waves_count]
+	]
+	
+	for p in params:
+		var l1 = Label.new()
+		l1.text = p[0]
+		l1.add_theme_color_override("font_color", Color(0.7, 0.75, 0.85))
+		l1.add_theme_font_size_override("font_size", 12)
+		var l2 = Label.new()
+		l2.text = p[1]
+		l2.add_theme_color_override("font_color", Color(1.0, 0.95, 0.75))
+		l2.add_theme_font_size_override("font_size", 12)
+		grid.add_child(l1)
+		grid.add_child(l2)
+	stage_briefing_content.add_child(grid)
+	
+	# Блок разведки угроз
+	var intel_panel = PanelContainer.new()
+	var ip_style = StyleBoxFlat.new()
+	ip_style.bg_color = Color(0.10, 0.13, 0.18, 0.9)
+	ip_style.set_corner_radius_all(6)
+	ip_style.content_margin_left = 10
+	ip_style.content_margin_right = 10
+	ip_style.content_margin_top = 8
+	ip_style.content_margin_bottom = 8
+	intel_panel.add_theme_stylebox_override("panel", ip_style)
+	
+	var intel_vbox = VBoxContainer.new()
+	var intel_lbl = Label.new()
+	intel_lbl.text = "🎯 Боевые задачи (Звёзды):"
+	intel_lbl.add_theme_color_override("font_color", Color(0.9, 0.8, 0.3))
+	intel_lbl.add_theme_font_size_override("font_size", 12)
+	intel_vbox.add_child(intel_lbl)
+	
+	var star_conds = [
+		"⭐ 1: Оборонить рубеж от всех волн орды",
+		"⭐ 2: Сохранить минимум 3 жизни королевских дев",
+		"⭐ 3: Выполнить военный контракт или скопить >200 золота"
+	]
+	for sc in star_conds:
+		var scl = Label.new()
+		scl.text = "  • %s" % sc
+		scl.add_theme_font_size_override("font_size", 11)
+		scl.add_theme_color_override("font_color", Color(0.85, 0.9, 0.95))
+		intel_vbox.add_child(scl)
+	intel_panel.add_child(intel_vbox)
+	stage_briefing_content.add_child(intel_panel)
+	
+	# Кнопки действия
+	var btn_hbox = HBoxContainer.new()
+	btn_hbox.alignment = BoxContainer.ALIGNMENT_CENTER
+	btn_hbox.add_theme_constant_override("separation", 16)
+	
+	var ready_btn = Button.new()
+	ready_btn.text = "⚔️ В БОЙ! (К обороне)"
+	ready_btn.custom_minimum_size = Vector2(180, 36)
+	ready_btn.pressed.connect(func():
+		stage_briefing_modal.visible = false
+		stage_briefing_closed.emit()
+	)
+	btn_hbox.add_child(ready_btn)
+	
+	var contracts_btn = Button.new()
+	contracts_btn.text = "📜 Контракты на волну"
+	contracts_btn.custom_minimum_size = Vector2(180, 36)
+	contracts_btn.pressed.connect(func():
+		stage_briefing_modal.visible = false
+		if economy_manager:
+			var contracts = economy_manager.get_available_contracts(2)
+			if not contracts.is_empty():
+				show_contracts(contracts)
+	)
+	btn_hbox.add_child(contracts_btn)
+	stage_briefing_content.add_child(btn_hbox)
+	
+	stage_briefing_modal.visible = true
+
+# ==============================================================================
+# 6. Boss Victory Reward Choice Modal (Раздел 26)
+# ==============================================================================
+
+func _build_boss_choice_modal() -> void:
+	boss_choice_modal = PanelContainer.new()
+	boss_choice_modal.name = "BossChoiceModal"
+	boss_choice_modal.visible = false
+	boss_choice_modal.custom_minimum_size = Vector2(580, 290)
+	boss_choice_modal.position = Vector2(350, 190)
+	boss_choice_modal.mouse_filter = Control.MOUSE_FILTER_STOP
+	
+	var style = StyleBoxFlat.new()
+	style.bg_color = Color(0.08, 0.06, 0.12, 0.98)
+	style.border_width_left = 3
+	style.border_width_top = 3
+	style.border_width_right = 3
+	style.border_width_bottom = 3
+	style.border_color = Color(1.0, 0.85, 0.25, 1.0)
+	style.corner_radius_top_left = 14
+	style.corner_radius_top_right = 14
+	style.corner_radius_bottom_right = 14
+	style.corner_radius_bottom_left = 14
+	style.shadow_color = Color(0, 0, 0, 0.85)
+	style.shadow_size = 28
+	boss_choice_modal.add_theme_stylebox_override("panel", style)
+	
+	var margin = MarginContainer.new()
+	margin.add_theme_constant_override("margin_left", 18)
+	margin.add_theme_constant_override("margin_top", 16)
+	margin.add_theme_constant_override("margin_right", 18)
+	margin.add_theme_constant_override("margin_bottom", 16)
+	
+	var vbox = VBoxContainer.new()
+	vbox.add_theme_constant_override("separation", 12)
+	
+	var title = Label.new()
+	title.text = "👑 ТРИУМФ НАД БОССОМ ГЛАВЫ!"
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	title.add_theme_font_size_override("font_size", 16)
+	title.add_theme_color_override("font_color", Color(1.0, 0.85, 0.2))
+	vbox.add_child(title)
+	
+	var sub = Label.new()
+	sub.text = "Король лично жалует вам выбор великой награды рубежа:"
+	sub.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	sub.add_theme_font_size_override("font_size", 12)
+	sub.add_theme_color_override("font_color", Color(0.85, 0.9, 0.95))
+	vbox.add_child(sub)
+	
+	var cards_hbox = HBoxContainer.new()
+	cards_hbox.alignment = BoxContainer.ALIGNMENT_CENTER
+	cards_hbox.add_theme_constant_override("separation", 18)
+	
+	# Card A: Королевская Казна
+	var card_a = PanelContainer.new()
+	card_a.custom_minimum_size = Vector2(250, 160)
+	var ca_style = StyleBoxFlat.new()
+	ca_style.bg_color = Color(0.12, 0.16, 0.24, 0.95)
+	ca_style.border_width_left = 2
+	ca_style.border_width_top = 2
+	ca_style.border_width_right = 2
+	ca_style.border_width_bottom = 2
+	ca_style.border_color = Color(0.4, 0.85, 0.4, 0.8)
+	ca_style.set_corner_radius_all(8)
+	ca_style.content_margin_left = 12
+	ca_style.content_margin_right = 12
+	ca_style.content_margin_top = 10
+	ca_style.content_margin_bottom = 10
+	card_a.add_theme_stylebox_override("panel", ca_style)
+	
+	var ca_vbox = VBoxContainer.new()
+	ca_vbox.add_theme_constant_override("separation", 6)
+	var ca_title = Label.new()
+	ca_title.text = "💰 Королевская Казна"
+	ca_title.add_theme_font_size_override("font_size", 14)
+	ca_title.add_theme_color_override("font_color", Color(0.4, 0.95, 0.4))
+	ca_vbox.add_child(ca_title)
+	var ca_desc = Label.new()
+	ca_desc.text = "• +150 Очков Славы (Glory)\n• +100 золота в следующей катке\n\nМощный экономический старт."
+	ca_desc.add_theme_font_size_override("font_size", 11)
+	ca_desc.add_theme_color_override("font_color", Color(0.85, 0.9, 0.95))
+	ca_vbox.add_child(ca_desc)
+	var ca_btn = Button.new()
+	ca_btn.text = "Выбрать Казну"
+	ca_btn.pressed.connect(func(): _on_boss_reward_picked("treasury"))
+	ca_vbox.add_child(ca_btn)
+	card_a.add_child(ca_vbox)
+	cards_hbox.add_child(card_a)
+	
+	# Card B: Печать Мастера
+	var card_b = PanelContainer.new()
+	card_b.custom_minimum_size = Vector2(250, 160)
+	var cb_style = StyleBoxFlat.new()
+	cb_style.bg_color = Color(0.18, 0.12, 0.16, 0.95)
+	cb_style.border_width_left = 2
+	cb_style.border_width_top = 2
+	cb_style.border_width_right = 2
+	cb_style.border_width_bottom = 2
+	cb_style.border_color = Color(0.95, 0.45, 0.25, 0.8)
+	cb_style.set_corner_radius_all(8)
+	cb_style.content_margin_left = 12
+	cb_style.content_margin_right = 12
+	cb_style.content_margin_top = 10
+	cb_style.content_margin_bottom = 10
+	card_b.add_theme_stylebox_override("panel", cb_style)
+	
+	var cb_vbox = VBoxContainer.new()
+	cb_vbox.add_theme_constant_override("separation", 6)
+	var cb_title = Label.new()
+	cb_title.text = "⚔️ Печать Мастера"
+	cb_title.add_theme_font_size_override("font_size", 14)
+	cb_title.add_theme_color_override("font_color", Color(1.0, 0.65, 0.25))
+	cb_vbox.add_child(cb_title)
+	var cb_desc = Label.new()
+	cb_desc.text = "• +100 Очков Славы (Glory)\n• +10% к урону всех башен\n\nБоевое мастерство гарнизона."
+	cb_desc.add_theme_font_size_override("font_size", 11)
+	cb_desc.add_theme_color_override("font_color", Color(0.85, 0.9, 0.95))
+	cb_vbox.add_child(cb_desc)
+	var cb_btn = Button.new()
+	cb_btn.text = "Выбрать Печать"
+	cb_btn.pressed.connect(func(): _on_boss_reward_picked("master_seal"))
+	cb_vbox.add_child(cb_btn)
+	card_b.add_child(cb_vbox)
+	cards_hbox.add_child(card_b)
+	
+	vbox.add_child(cards_hbox)
+	margin.add_child(vbox)
+	boss_choice_modal.add_child(margin)
+	add_child(boss_choice_modal)
+
+func show_boss_choice() -> void:
+	if not boss_choice_modal:
+		_build_boss_choice_modal()
+	if boss_choice_modal:
+		boss_choice_modal.visible = true
+
+func _on_boss_reward_picked(choice_id: String) -> void:
+	if boss_choice_modal:
+		boss_choice_modal.visible = false
+	if economy_manager:
+		economy_manager.grant_boss_reward(choice_id)
+	boss_reward_selected.emit(choice_id)
+

@@ -43,26 +43,37 @@ func test_tower_gating_by_chapter() -> void:
 	GlobalState.current_chapter = 0
 	assert_eq(t.get_chapter_max_level(), 5)
 	
-	# Chapter 1 gating
+	# Chapter 1 gating (max level 3)
 	GlobalState.current_chapter = 1
 	assert_eq(t.get_chapter_max_level(), 3)
 	assert_false(t.can_upgrade(), "Tower at level 3 must NOT be upgradable in Chapter 1")
 	assert_false(t.can_evolve(), "Tower must NOT be evolvable in Chapter 1")
 	
-	# Chapter 2 gating
+	# Chapter 2 gating (max level 3)
 	GlobalState.current_chapter = 2
+	assert_eq(t.get_chapter_max_level(), 3)
+	assert_false(t.can_upgrade(), "Tower at level 3 cannot upgrade in Chapter 2 (cap 3)")
+	assert_false(t.can_evolve(), "Tower must NOT be evolvable in Chapter 2")
+	
+	# Chapter 3 gating (max level 4)
+	GlobalState.current_chapter = 3
 	assert_eq(t.get_chapter_max_level(), 4)
-	assert_true(t.can_upgrade(), "Tower at level 3 CAN upgrade to level 4 in Chapter 2")
+	assert_true(t.can_upgrade(), "Tower at level 3 CAN upgrade to level 4 in Chapter 3")
 	t.current_level = 4
 	assert_false(t.can_upgrade(), "Tower at level 4 cannot upgrade further")
-	assert_false(t.can_evolve(), "Tower must NOT be evolvable to level 5 in Chapter 2")
+	assert_false(t.can_evolve(), "Tower must NOT be evolvable in Chapter 3 (cap 4)")
 	
-	# Chapter 3+ gating (Evolution unlocked)
-	GlobalState.current_chapter = 3
+	# Chapter 4 gating (max level 4)
+	GlobalState.current_chapter = 4
+	assert_eq(t.get_chapter_max_level(), 4)
+	assert_false(t.can_evolve(), "Tower must NOT be evolvable in Chapter 4 (cap 4)")
+	
+	# Chapter 5 gating (max level 5: Evolution A/B unlocked)
+	GlobalState.current_chapter = 5
 	assert_eq(t.get_chapter_max_level(), 5)
 	t.evolution_data_a = {"name": "Снайпер", "damage": 85, "range": 350}
 	t.evolution_data_b = {"name": "Пулемётчик", "damage": 18, "attack_speed": 6.5}
-	assert_true(t.can_evolve(), "Tower at level 4 CAN evolve in Chapter 3")
+	assert_true(t.can_evolve(), "Tower at level 4 CAN evolve in Chapter 5")
 	
 	# Clean up
 	GlobalState.current_chapter = 1

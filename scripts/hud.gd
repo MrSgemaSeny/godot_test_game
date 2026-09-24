@@ -3,6 +3,8 @@ extends Control
 
 signal start_wave_pressed()
 signal restart_pressed()
+signal next_stage_pressed()
+signal briefing_requested()
 signal tech_tree_pressed()
 signal speed_changed(multiplier: float)
 signal spell_targeting_requested(spell_id: String)
@@ -160,6 +162,21 @@ func _ready() -> void:
 	if is_instance_valid(speed1_btn): speed1_btn.pressed.connect(func(): set_game_speed(1.0))
 	if is_instance_valid(speed2_btn): speed2_btn.pressed.connect(func(): set_game_speed(2.0))
 		
+	var top_hbox = get_node_or_null("TopBar/MarginContainer/HBoxContainer")
+	if is_instance_valid(top_hbox) and top_hbox.get_node_or_null("BriefingButton") == null:
+		var br_btn = Button.new()
+		br_btn.name = "BriefingButton"
+		br_btn.text = "📋 Разведка"
+		br_btn.tooltip_text = "Открыть тактическую разведку рубежа"
+		br_btn.pressed.connect(func(): briefing_requested.emit())
+		var help_node = top_hbox.get_node_or_null("HelpButton")
+		if is_instance_valid(help_node):
+			top_hbox.add_child(br_btn)
+			top_hbox.move_child(br_btn, help_node.get_index())
+		else:
+			top_hbox.add_child(br_btn)
+			
+	_enhance_end_screen()
 	_setup_spell_buttons()
 
 func _setup_spell_buttons() -> void:
@@ -581,9 +598,17 @@ func _on_sell_clicked() -> void:
 	if not game_manager:
 		return
 		
-	var val = current_spot.get_sell_value()
-	game_manager.add_gold(val)
-	current_spot.sell_tower()
+	var econ = get_tree().get_first_node_in_group("economy_manager")
+	if econ and is_instance_valid(current_spot.current_tower):
+		var spent = current_spot.current_tower.total_spent if "total_spent" in current_spot.current_tower else 100
+		econ.register_tower_sell(spent)
+		current_spot.current_tower.queue_free()
+		current_spot.current_tower = null
+		current_spot.queue_redraw()
+	else:
+		var val = current_spot.get_sell_value()
+		game_manager.add_gold(val)
+		current_spot.sell_tower()
 	_refresh_action_panel()
 
 func _on_start_wave_clicked() -> void:
@@ -606,12 +631,12 @@ func _on_tech_tree_clicked() -> void:
 func _on_help_clicked() -> void:
 	if is_instance_valid(help_modal):
 		help_modal.visible = not help_modal.visible
+
 # ---------------------------------------------------------
 # HERO UI INTEGRATION (PHASE 5)
 # ---------------------------------------------------------
 func setup_hero_ui(hero_class: String) -> void:
 	print("Hero UI initialized for: ", hero_class)
-	# In a real setup, we would instance a HeroPanel.tscn here and add to HUD.
 
 func update_hero_health(current: float, max_val: float) -> void:
 	pass
@@ -626,7 +651,7 @@ func update_hero_ability_cooldown(slot: int, current_cd: float, max_cd: float) -
 	pass
 
 # ---------------------------------------------------------
-# ECONOMY WIDGET INTEGRATION
+# ECONOMY WIDGET & BRIEFING INTEGRATION (Разделы 26, 28, 29)
 # ---------------------------------------------------------
 func setup_economy(econ) -> void:
 	if is_instance_valid(economy_widget):
@@ -643,4 +668,193 @@ func show_wave_breakdown(breakdown: Dictionary) -> void:
 func toggle_tx_log() -> void:
 	if is_instance_valid(economy_widget):
 		economy_widget.toggle_tx_log()
+
+func show_stage_briefing(stage_info: Dictionary) -> void:
+	if is_instance_valid(economy_widget):
+		economy_widget.show_stage_briefing(stage_info)
+
+func show_boss_choice() -> void:
+	if is_instance_valid(economy_widget):
+		economy_widget.show_boss_choice()
+
+# ---------------------------------------------------------
+# RESULT / END SCREEN OVERHAUL (Разделы 29 & 30)
+# ---------------------------------------------------------
+func _enhance_end_screen() -> void:
+	if not is_instance_valid(end_screen):
+		return
+	var vbox = end_screen.get_node_or_null("VBoxContainer") as VBoxContainer
+	if not vbox:
+		return
+	if vbox.get_node_or_null("StarsPanel") != null:
+		return
+		
+	# 1. Стилизация рамки
+	var es_style = StyleBoxFlat.new()
+	es_style.bg_color = Color(0.06, 0.08, 0.12, 0.98)
+	es_style.border_width_left = 3
+	es_style.border_width_top = 3
+	es_style.border_width_right = 3
+	es_style.border_width_bottom = 3
+	es_style.border_color = Color(0.85, 0.70, 0.25, 1.0)
+	es_style.set_corner_radius_all(12)
+	es_style.content_margin_left = 24
+	es_style.content_margin_right = 24
+	es_style.content_margin_top = 18
+	es_style.content_margin_bottom = 18
+	es_style.shadow_color = Color(0, 0, 0, 0.85)
+	es_style.shadow_size = 28
+	end_screen.add_theme_stylebox_override("panel", es_style)
+	
+	# 2. Панель 3 звёзд
+	var stars_panel = PanelContainer.new()
+	stars_panel.name = "StarsPanel"
+	var sp_style = StyleBoxFlat.new()
+	sp_style.bg_color = Color(0.10, 0.14, 0.20, 0.9)
+	sp_style.set_corner_radius_all(8)
+	sp_style.content_margin_left = 12
+	sp_style.content_margin_right = 12
+	sp_style.content_margin_top = 8
+	sp_style.content_margin_bottom = 8
+	stars_panel.add_theme_stylebox_override("panel", sp_style)
+	
+	var stars_vbox = VBoxContainer.new()
+	stars_vbox.name = "StarsVBox"
+	stars_vbox.add_theme_constant_override("separation", 4)
+	stars_panel.add_child(stars_vbox)
+	vbox.add_child(stars_panel)
+	vbox.move_child(stars_panel, 2)
+	
+	# 3. Аудит казны и экономики
+	var audit_panel = PanelContainer.new()
+	audit_panel.name = "AuditPanel"
+	var ap_style = StyleBoxFlat.new()
+	ap_style.bg_color = Color(0.08, 0.10, 0.15, 0.9)
+	ap_style.set_corner_radius_all(8)
+	ap_style.content_margin_left = 12
+	ap_style.content_margin_right = 12
+	ap_style.content_margin_top = 8
+	ap_style.content_margin_bottom = 8
+	audit_panel.add_theme_stylebox_override("panel", ap_style)
+	
+	var audit_vbox = VBoxContainer.new()
+	audit_vbox.name = "AuditVBox"
+	audit_vbox.add_theme_constant_override("separation", 3)
+	audit_panel.add_child(audit_vbox)
+	vbox.add_child(audit_panel)
+	vbox.move_child(audit_panel, 3)
+	
+	# 4. HBox с кнопками действия
+	var btn_hbox = HBoxContainer.new()
+	btn_hbox.name = "EndButtonsHBox"
+	btn_hbox.alignment = BoxContainer.ALIGNMENT_CENTER
+	btn_hbox.add_theme_constant_override("separation", 10)
+	
+	var next_btn = Button.new()
+	next_btn.name = "NextStageButton"
+	next_btn.text = "⏭️ Следующая катка"
+	next_btn.custom_minimum_size = Vector2(160, 36)
+	var nb_style = StyleBoxFlat.new()
+	nb_style.bg_color = Color(0.2, 0.6, 0.3, 1.0)
+	nb_style.set_corner_radius_all(6)
+	next_btn.add_theme_stylebox_override("normal", nb_style)
+	next_btn.pressed.connect(func(): next_stage_pressed.emit())
+	btn_hbox.add_child(next_btn)
+	
+	var map_btn = Button.new()
+	map_btn.name = "WorldMapButton"
+	map_btn.text = "🗺️ Карта мира"
+	map_btn.custom_minimum_size = Vector2(140, 36)
+	var mb_style = StyleBoxFlat.new()
+	mb_style.bg_color = Color(0.2, 0.35, 0.55, 1.0)
+	mb_style.set_corner_radius_all(6)
+	map_btn.add_theme_stylebox_override("normal", mb_style)
+	map_btn.pressed.connect(func(): get_tree().change_scene_to_file("res://scenes/world_map.tscn"))
+	btn_hbox.add_child(map_btn)
+	
+	vbox.add_child(btn_hbox)
+
+func show_end_screen(is_victory: bool, ch_num: int, st_num: int, stars: int, econ_summary: Dictionary = {}, glory_reward: int = 30) -> void:
+	_enhance_end_screen()
+	if not is_instance_valid(end_screen):
+		return
+		
+	var vbox = end_screen.get_node_or_null("VBoxContainer")
+	if is_victory:
+		end_title.text = "👑 ПОБЕДА! КАТКА %d-%d ЗАВЕРШЕНА!" % [ch_num, st_num]
+		end_subtitle.text = "Вы спасли королевство и защитили всех жителей!\nНачислено %d Очков Славы!" % glory_reward
+	else:
+		end_title.text = "💀 ПОРАЖЕНИЕ..."
+		end_subtitle.text = "Оркам удалось сокрушить оборону рубежа.\nПерегруппируйтесь и попробуйте другую тактику!"
+		
+	# Обновление блока звёзд
+	var stars_vbox = vbox.get_node_or_null("StarsPanel/StarsVBox") as VBoxContainer
+	if is_instance_valid(stars_vbox):
+		for c in stars_vbox.get_children():
+			c.queue_free()
+		var hdr = Label.new()
+		hdr.text = "⭐ ОЦЕНКА РУБЕЖА: %d / 3" % (stars if is_victory else 0)
+		hdr.add_theme_font_size_override("font_size", 14)
+		hdr.add_theme_color_override("font_color", Color(1.0, 0.85, 0.3))
+		stars_vbox.add_child(hdr)
+		
+		var s1_checked = is_victory
+		var s2_checked = is_victory and stars >= 2
+		var s3_checked = is_victory and stars >= 3
+		
+		var conds = [
+			["%s 1. Победа над всеми волнами орды" % ("✅" if s1_checked else "❌"), s1_checked],
+			["%s 2. Защита рубежа (сохранено 3+ жизней)" % ("✅" if s2_checked else "❌"), s2_checked],
+			["%s 3. Экономика (контракт / банк > 200 золота)" % ("✅" if s3_checked else "❌"), s3_checked]
+		]
+		for c in conds:
+			var cl = Label.new()
+			cl.text = c[0]
+			cl.add_theme_font_size_override("font_size", 11)
+			cl.add_theme_color_override("font_color", Color(0.5, 0.95, 0.5) if c[1] else Color(0.7, 0.7, 0.7))
+			stars_vbox.add_child(cl)
+			
+	# Обновление блока аудита экономики
+	var audit_vbox = vbox.get_node_or_null("AuditPanel/AuditVBox") as VBoxContainer
+	if is_instance_valid(audit_vbox):
+		for c in audit_vbox.get_children():
+			c.queue_free()
+		var ahdr = Label.new()
+		ahdr.text = "📊 Финансовый аудит катки:"
+		ahdr.add_theme_font_size_override("font_size", 13)
+		ahdr.add_theme_color_override("font_color", Color(0.85, 0.95, 1.0))
+		audit_vbox.add_child(ahdr)
+		
+		var stats_list = [
+			["🪙 Всего заработано:", "+%d золота" % int(econ_summary.get("total_income", 0))],
+			["🏦 Пиковый банк:", "%d золота" % int(econ_summary.get("peak_gold", 0))],
+			["📈 Прибыль от депозита:", "+%d золота" % int(econ_summary.get("interest_profit", 0))],
+			["📜 Награда по контрактам:", "+%d золота" % int(econ_summary.get("contract_profit", 0))],
+			["📉 Потери на продажах:", "-%d золота" % int(econ_summary.get("sell_losses", 0))],
+			["🏗️ Инвестировано в оборону:", "%d золота" % int(econ_summary.get("total_spending", 0))]
+		]
+		var grid = GridContainer.new()
+		grid.columns = 2
+		grid.add_theme_constant_override("h_separation", 16)
+		grid.add_theme_constant_override("v_separation", 3)
+		for s in stats_list:
+			var l1 = Label.new()
+			l1.text = s[0]
+			l1.add_theme_font_size_override("font_size", 11)
+			l1.add_theme_color_override("font_color", Color(0.7, 0.75, 0.8))
+			var l2 = Label.new()
+			l2.text = s[1]
+			l2.add_theme_font_size_override("font_size", 11)
+			l2.add_theme_color_override("font_color", Color(1.0, 0.9, 0.6))
+			grid.add_child(l1)
+			grid.add_child(l2)
+		audit_vbox.add_child(grid)
+		
+	# Настройка видимости кнопок
+	var next_btn = vbox.get_node_or_null("EndButtonsHBox/NextStageButton") as Button
+	if is_instance_valid(next_btn):
+		next_btn.visible = is_victory
+		
+	end_screen.visible = true
+
 
