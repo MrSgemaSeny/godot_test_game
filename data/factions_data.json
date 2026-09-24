@@ -1,339 +1,490 @@
 [
   {
     "id": "royal_crown",
-    "name": "Royal Crown",
-    "description": "Order, discipline, and absolute authority. The Royal Crown commands the realm's armies.",
-    "leader": "Commander Harold",
+    "name": "Королевская Корона",
+    "title": "Royal Crown",
+    "description": "Порядок, дисциплина и абсолютная верность престолу. Королевская гвардия держит оборону столицы и передовых форпостов.",
+    "leader": "Командующий Гарольд",
     "rivals": ["outcasts", "shadow_syndicate"],
     "perks": {
       "Friendly": "royal_defense_1",
       "Honored": "royal_income_1",
+      "Revered": "royal_bastion_aura",
       "Exalted": "royal_champion_summon"
-    }
+    },
+    "contracts": [
+      {
+        "id": "rc_c1",
+        "title": "Оборона Восточного Редута",
+        "desc": "Уничтожьте 40 врагов на передовой без пробития укреплений.",
+        "type": "kill",
+        "target": 40,
+        "reward_gold": 250,
+        "reward_rep": 50
+      },
+      {
+        "id": "rc_c2",
+        "title": "Охота на Десятников",
+        "desc": "Ликвидируйте 10 элитных командиров орочьих орд.",
+        "type": "kill_elite",
+        "target": 10,
+        "reward_gold": 320,
+        "reward_rep": 65
+      },
+      {
+        "id": "rc_c3",
+        "title": "Королевская Поставка Провианта",
+        "desc": "Сохраните 100% жизней гарнизона на протяжении всей волны.",
+        "type": "perfect_wave",
+        "target": 1,
+        "reward_gold": 280,
+        "reward_rep": 60
+      },
+      {
+        "id": "rc_c4",
+        "title": "Искоренение Мятежа",
+        "desc": "Зачистите лагерь бунтовщиков в предгорьях.",
+        "type": "clear_region",
+        "target": 1,
+        "reward_gold": 400,
+        "reward_rep": 85
+      },
+      {
+        "id": "rc_c5",
+        "title": "Суд над Повелителем Войны",
+        "desc": "Убейте вождя вражеской армии силами мили-башен.",
+        "type": "boss_kill",
+        "target": 1,
+        "reward_gold": 500,
+        "reward_rep": 100
+      }
+    ]
   },
   {
     "id": "silver_order",
-    "name": "Silver Order",
-    "description": "Holy knights and clerics dedicated to purging the undead and demonic corruption.",
-    "leader": "High Priestess Althea",
+    "name": "Серебряный Орден",
+    "title": "Silver Order",
+    "description": "Священные рыцари и клирики, посвятившие жизнь очищению мира от нежити, скверны и порождений бездны.",
+    "leader": "Верховная Жрица Алтея",
     "rivals": ["ash_coven", "shadow_syndicate"],
     "perks": {
       "Friendly": "silver_smite_1",
       "Honored": "silver_healing_1",
+      "Revered": "silver_purification",
       "Exalted": "silver_resurrection"
-    }
+    },
+    "contracts": [
+      {
+        "id": "so_c1",
+        "title": "Очищение Склепов",
+        "desc": "Истребите 50 оживших мертвецов и скелетов.",
+        "type": "kill",
+        "target": 50,
+        "reward_gold": 260,
+        "reward_rep": 50
+      },
+      {
+        "id": "so_c2",
+        "title": "Изгнание Демона Тьмы",
+        "desc": "Нанесите священный урон высшему демону и изгоните его в небытие.",
+        "type": "holy_damage",
+        "target": 1,
+        "reward_gold": 350,
+        "reward_rep": 70
+      },
+      {
+        "id": "so_c3",
+        "title": "Священный Дозор",
+        "desc": "Не допустите прорыва нежити к алтарю веры (0 потерь жизней).",
+        "type": "defend",
+        "target": 1,
+        "reward_gold": 300,
+        "reward_rep": 60
+      },
+      {
+        "id": "so_c4",
+        "title": "Благословение Павших",
+        "desc": "Восстановите здоровье союзных защитников на 500 HP.",
+        "type": "heal",
+        "target": 500,
+        "reward_gold": 380,
+        "reward_rep": 80
+      },
+      {
+        "id": "so_c5",
+        "title": "Падение Архидемона",
+        "desc": "Победите босса волны без использования темной магии.",
+        "type": "boss_kill",
+        "target": 1,
+        "reward_gold": 550,
+        "reward_rep": 110
+      }
+    ]
   },
   {
     "id": "druid_circle",
-    "name": "Druid Circle",
-    "description": "Protectors of the Greenwood. Masters of nature, poisons, and slowing vines.",
-    "leader": "Archdruid Sylas",
+    "name": "Круг Друидов",
+    "title": "Druid Circle",
+    "description": "Хранители первозданной природы и Шепчущего Леса. Владеют смертельными природными ядами и лозами.",
+    "leader": "Архидруид Сайлас",
     "rivals": ["gear_mechanics", "ash_coven"],
     "perks": {
       "Friendly": "druid_toxin_1",
       "Honored": "druid_roots_1",
+      "Revered": "druid_nature_shield",
       "Exalted": "druid_treant_summon"
-    }
+    },
+    "contracts": [
+      {
+        "id": "dc_c1",
+        "title": "Защита Древа Жизни",
+        "desc": "Замедлите 60 врагов с помощью природных лоз и шипов.",
+        "type": "slow_enemies",
+        "target": 60,
+        "reward_gold": 240,
+        "reward_rep": 50
+      },
+      {
+        "id": "dc_c2",
+        "title": "Чумная Жатва",
+        "desc": "Уничтожьте 30 монстров эффектом периодического урона ядом.",
+        "type": "poison_kill",
+        "target": 30,
+        "reward_gold": 310,
+        "reward_rep": 65
+      },
+      {
+        "id": "dc_c3",
+        "title": "Очищение Родников",
+        "desc": "Ликвидируйте 15 оскверненных зверей чащи.",
+        "type": "kill",
+        "target": 15,
+        "reward_gold": 290,
+        "reward_rep": 55
+      },
+      {
+        "id": "dc_c4",
+        "title": "Пробуждение Древней",
+        "desc": "Призовите энтов на помощь обороне и удержите рубеж.",
+        "type": "summon",
+        "target": 3,
+        "reward_gold": 420,
+        "reward_rep": 85
+      },
+      {
+        "id": "dc_c5",
+        "title": "Искоренение Порчи",
+        "desc": "Сразите чудовищную болотную гидру в сердце трясины.",
+        "type": "boss_kill",
+        "target": 1,
+        "reward_gold": 520,
+        "reward_rep": 105
+      }
+    ]
   },
   {
     "id": "merchant_league",
-    "name": "Merchant League",
-    "description": "Wealth is power. The League provides gold bonuses and discounts.",
-    "leader": "Lady Moira",
+    "name": "Торговая Лига",
+    "title": "Merchant League",
+    "description": "Богатство — истинная власть. Купцы и банкиры финансируют войну, получая дивиденды с каждой пролитой капли крови.",
+    "leader": "Леди Мойра Златоуст",
     "rivals": [],
     "perks": {
       "Friendly": "merchant_discount_1",
       "Honored": "merchant_bounty_1",
+      "Revered": "merchant_interest_boost",
       "Exalted": "merchant_mercenary_army"
-    }
+    },
+    "contracts": [
+      {
+        "id": "ml_c1",
+        "title": "Сбор Пошлины",
+        "desc": "Заработайте 400 золота за одну волну за счет наград и процентов.",
+        "type": "gold_earned",
+        "target": 400,
+        "reward_gold": 220,
+        "reward_rep": 50
+      },
+      {
+        "id": "ml_c2",
+        "title": "Безопасный Караван",
+        "desc": "Остановите 10 воров золота до того, как они покинут карту.",
+        "type": "kill_thief",
+        "target": 10,
+        "reward_gold": 350,
+        "reward_rep": 75
+      },
+      {
+        "id": "ml_c3",
+        "title": "Инвестиции в Оборону",
+        "desc": "Улучшите 4 башни во время одной волны.",
+        "type": "upgrade_towers",
+        "target": 4,
+        "reward_gold": 300,
+        "reward_rep": 60
+      },
+      {
+        "id": "ml_c4",
+        "title": "Монополия на Рынок",
+        "desc": "Накопите не менее 1000 золота в казне и не потеряйте ни одной жизни.",
+        "type": "bank_threshold",
+        "target": 1000,
+        "reward_gold": 450,
+        "reward_rep": 90
+      },
+      {
+        "id": "ml_c5",
+        "title": "Ликвидация Конкурента",
+        "desc": "Убейте босса волны за менее чем 25 секунд с момента появления.",
+        "type": "fast_boss_kill",
+        "target": 1,
+        "reward_gold": 600,
+        "reward_rep": 120
+      }
+    ]
   },
   {
     "id": "shadow_syndicate",
-    "name": "Shadow Syndicate",
-    "description": "Assassins, smugglers, and thieves. Masters of critical strikes.",
-    "leader": "Shadowbroker Vex",
+    "name": "Синдикат Теней",
+    "title": "Shadow Syndicate",
+    "description": "Шпионы, наемные убийцы и контрабандисты. Наносят смертоносные критические удары из невидимости.",
+    "leader": "Теневой Брокер Векс",
     "rivals": ["royal_crown", "silver_order"],
     "perks": {
       "Friendly": "shadow_crit_1",
       "Honored": "shadow_black_market",
+      "Revered": "shadow_stealth_ambush",
       "Exalted": "shadow_assassination"
-    }
+    },
+    "contracts": [
+      {
+        "id": "ss_c1",
+        "title": "Тихий Заказ",
+        "desc": "Нанесите 30 критических ударов по элитным противникам.",
+        "type": "crits",
+        "target": 30,
+        "reward_gold": 270,
+        "reward_rep": 55
+      },
+      {
+        "id": "ss_c2",
+        "title": "Кража Трофеев",
+        "desc": "Уничтожьте вражеского казначея и заберите тайник.",
+        "type": "kill",
+        "target": 1,
+        "reward_gold": 380,
+        "reward_rep": 70
+      },
+      {
+        "id": "ss_c3",
+        "title": "Удар в Спину",
+        "desc": "Ликвидируйте 25 врагов, находящихся под действием эффектов контроля.",
+        "type": "kill_cc",
+        "target": 25,
+        "reward_gold": 320,
+        "reward_rep": 65
+      },
+      {
+        "id": "ss_c4",
+        "title": "Контрабанда Зелий",
+        "desc": "Примените 5 заклинаний или расходников за один бой.",
+        "type": "use_spells",
+        "target": 5,
+        "reward_gold": 410,
+        "reward_rep": 85
+      },
+      {
+        "id": "ss_c5",
+        "title": "Казнь Главы Клана",
+        "desc": "Обезглавьте босса критическим выстрелом героя-убийцы.",
+        "type": "hero_kill_boss",
+        "target": 1,
+        "reward_gold": 580,
+        "reward_rep": 115
+      }
+    ]
   },
   {
     "id": "ash_coven",
-    "name": "Ash Coven",
-    "description": "Warlocks and witches harnessing dark fire and curses.",
-    "leader": "Archmage Elirian",
+    "name": "Пепельный Ковен",
+    "title": "Ash Coven",
+    "description": "Чернокнижники и ведьмы, повелевающие адским пламенем, проклятиями и темными жертвоприношениями.",
+    "leader": "Архимаг Элириан",
     "rivals": ["silver_order", "druid_circle"],
     "perks": {
       "Friendly": "coven_curse_1",
       "Honored": "coven_hellfire_1",
+      "Revered": "coven_blood_transmutation",
       "Exalted": "coven_meteor_strike"
-    }
+    },
+    "contracts": [
+      {
+        "id": "ac_c1",
+        "title": "Жертвенное Пламя",
+        "desc": "Сожгите 70 противников адским огнем башен и заклинаний.",
+        "type": "burn_kill",
+        "target": 70,
+        "reward_gold": 280,
+        "reward_rep": 55
+      },
+      {
+        "id": "ac_c2",
+        "title": "Проклятие Бессилия",
+        "desc": "Накложите сайленс или ослабление на 20 вражеских магов.",
+        "type": "curse_enemies",
+        "target": 20,
+        "reward_gold": 340,
+        "reward_rep": 70
+      },
+      {
+        "id": "ac_c3",
+        "title": "Пакт с Инферно",
+        "desc": "Пройдите волну с активным договором повышенного урона врагов.",
+        "type": "contract_risk",
+        "target": 1,
+        "reward_gold": 390,
+        "reward_rep": 80
+      },
+      {
+        "id": "ac_c4",
+        "title": "Кровавая Баня",
+        "desc": "Уничтожьте 100 врагов в течение 45 секунд.",
+        "type": "fast_kills",
+        "target": 100,
+        "reward_gold": 460,
+        "reward_rep": 95
+      },
+      {
+        "id": "ac_c5",
+        "title": "Испепеление Титана",
+        "desc": "Уничтожьте механического или каменного босса огненными башнями.",
+        "type": "boss_kill",
+        "target": 1,
+        "reward_gold": 570,
+        "reward_rep": 115
+      }
+    ]
   },
   {
     "id": "gear_mechanics",
-    "name": "Gear Mechanics",
-    "description": "Inventors and engineers specializing in ballistics and explosive tech.",
-    "leader": "Master Artificer Thorne",
+    "name": "Механики Шестерни",
+    "title": "Gear Mechanics",
+    "description": "Гениальные инженеры и артиллеристы, создающие автоматические пулеметы, баллисты и ракетные комплексы.",
+    "leader": "Мастер-Механик Торн",
     "rivals": ["druid_circle"],
     "perks": {
       "Friendly": "gear_range_1",
       "Honored": "gear_shrapnel_1",
+      "Revered": "gear_overdrive_engine",
       "Exalted": "gear_orbital_cannon"
-    }
+    },
+    "contracts": [
+      {
+        "id": "gm_c1",
+        "title": "Калибровка Баллист",
+        "desc": "Уничтожьте 40 врагов из дальнобойных осадных орудий.",
+        "type": "ballistic_kill",
+        "target": 40,
+        "reward_gold": 260,
+        "reward_rep": 50
+      },
+      {
+        "id": "gm_c2",
+        "title": "Осколочный Град",
+        "desc": "Поразите сплэш-уроном не менее 80 противников за волну.",
+        "type": "aoe_hits",
+        "target": 80,
+        "reward_gold": 330,
+        "reward_rep": 65
+      },
+      {
+        "id": "gm_c3",
+        "title": "Полевые Испытания",
+        "desc": "Установите и примените 3 инженерные турели в бою.",
+        "type": "deploy_turret",
+        "target": 3,
+        "reward_gold": 310,
+        "reward_rep": 60
+      },
+      {
+        "id": "gm_c4",
+        "title": "Сбор Высокоточных Деталей",
+        "desc": "Уничтожьте 25 вражеских автоматонов для разборки на запчасти.",
+        "type": "kill",
+        "target": 25,
+        "reward_gold": 430,
+        "reward_rep": 85
+      },
+      {
+        "id": "gm_c5",
+        "title": "Демонтаж Дредноута",
+        "desc": "Разнесите бронированного босса концентрированным артиллерийским огнем.",
+        "type": "boss_kill",
+        "target": 1,
+        "reward_gold": 560,
+        "reward_rep": 110
+      }
+    ]
   },
   {
     "id": "outcasts",
-    "name": "Outcasts",
-    "description": "Mutants, allied orcs, and rebels looking for a place in the world.",
-    "leader": "Warlord Grok",
+    "name": "Отверженные",
+    "title": "Outcasts",
+    "description": "Повстанцы, вольные наемники и союзные орки, борющиеся за выживание и свободу на окраинах королевства.",
+    "leader": "Полководец Грок",
     "rivals": ["royal_crown"],
     "perks": {
       "Friendly": "outcast_mercs_1",
       "Honored": "outcast_scavenge_1",
+      "Revered": "outcast_guerrilla_tactics",
       "Exalted": "outcast_rebellion"
-    }
-  }
-
-  ,{
-    "id": "minor_faction_1",
-    "name": "Minor Guild 1",
-    "description": "A minor guild in the realm.",
-    "leader": "Guildmaster 1",
-    "rivals": [],
-    "perks": {}
-  }
-  ,{
-    "id": "minor_faction_2",
-    "name": "Minor Guild 2",
-    "description": "A minor guild in the realm.",
-    "leader": "Guildmaster 2",
-    "rivals": [],
-    "perks": {}
-  }
-  ,{
-    "id": "minor_faction_3",
-    "name": "Minor Guild 3",
-    "description": "A minor guild in the realm.",
-    "leader": "Guildmaster 3",
-    "rivals": [],
-    "perks": {}
-  }
-  ,{
-    "id": "minor_faction_4",
-    "name": "Minor Guild 4",
-    "description": "A minor guild in the realm.",
-    "leader": "Guildmaster 4",
-    "rivals": [],
-    "perks": {}
-  }
-  ,{
-    "id": "minor_faction_5",
-    "name": "Minor Guild 5",
-    "description": "A minor guild in the realm.",
-    "leader": "Guildmaster 5",
-    "rivals": [],
-    "perks": {}
-  }
-  ,{
-    "id": "minor_faction_6",
-    "name": "Minor Guild 6",
-    "description": "A minor guild in the realm.",
-    "leader": "Guildmaster 6",
-    "rivals": [],
-    "perks": {}
-  }
-  ,{
-    "id": "minor_faction_7",
-    "name": "Minor Guild 7",
-    "description": "A minor guild in the realm.",
-    "leader": "Guildmaster 7",
-    "rivals": [],
-    "perks": {}
-  }
-  ,{
-    "id": "minor_faction_8",
-    "name": "Minor Guild 8",
-    "description": "A minor guild in the realm.",
-    "leader": "Guildmaster 8",
-    "rivals": [],
-    "perks": {}
-  }
-  ,{
-    "id": "minor_faction_9",
-    "name": "Minor Guild 9",
-    "description": "A minor guild in the realm.",
-    "leader": "Guildmaster 9",
-    "rivals": [],
-    "perks": {}
-  }
-  ,{
-    "id": "minor_faction_10",
-    "name": "Minor Guild 10",
-    "description": "A minor guild in the realm.",
-    "leader": "Guildmaster 10",
-    "rivals": [],
-    "perks": {}
-  }
-  ,{
-    "id": "minor_faction_11",
-    "name": "Minor Guild 11",
-    "description": "A minor guild in the realm.",
-    "leader": "Guildmaster 11",
-    "rivals": [],
-    "perks": {}
-  }
-  ,{
-    "id": "minor_faction_12",
-    "name": "Minor Guild 12",
-    "description": "A minor guild in the realm.",
-    "leader": "Guildmaster 12",
-    "rivals": [],
-    "perks": {}
-  }
-  ,{
-    "id": "minor_faction_13",
-    "name": "Minor Guild 13",
-    "description": "A minor guild in the realm.",
-    "leader": "Guildmaster 13",
-    "rivals": [],
-    "perks": {}
-  }
-  ,{
-    "id": "minor_faction_14",
-    "name": "Minor Guild 14",
-    "description": "A minor guild in the realm.",
-    "leader": "Guildmaster 14",
-    "rivals": [],
-    "perks": {}
-  }
-  ,{
-    "id": "minor_faction_15",
-    "name": "Minor Guild 15",
-    "description": "A minor guild in the realm.",
-    "leader": "Guildmaster 15",
-    "rivals": [],
-    "perks": {}
-  }
-  ,{
-    "id": "minor_faction_16",
-    "name": "Minor Guild 16",
-    "description": "A minor guild in the realm.",
-    "leader": "Guildmaster 16",
-    "rivals": [],
-    "perks": {}
-  }
-  ,{
-    "id": "minor_faction_17",
-    "name": "Minor Guild 17",
-    "description": "A minor guild in the realm.",
-    "leader": "Guildmaster 17",
-    "rivals": [],
-    "perks": {}
-  }
-  ,{
-    "id": "minor_faction_18",
-    "name": "Minor Guild 18",
-    "description": "A minor guild in the realm.",
-    "leader": "Guildmaster 18",
-    "rivals": [],
-    "perks": {}
-  }
-  ,{
-    "id": "minor_faction_19",
-    "name": "Minor Guild 19",
-    "description": "A minor guild in the realm.",
-    "leader": "Guildmaster 19",
-    "rivals": [],
-    "perks": {}
-  }
-  ,{
-    "id": "minor_faction_20",
-    "name": "Minor Guild 20",
-    "description": "A minor guild in the realm.",
-    "leader": "Guildmaster 20",
-    "rivals": [],
-    "perks": {}
-  }
-  ,{
-    "id": "minor_faction_21",
-    "name": "Minor Guild 21",
-    "description": "A minor guild in the realm.",
-    "leader": "Guildmaster 21",
-    "rivals": [],
-    "perks": {}
-  }
-  ,{
-    "id": "minor_faction_22",
-    "name": "Minor Guild 22",
-    "description": "A minor guild in the realm.",
-    "leader": "Guildmaster 22",
-    "rivals": [],
-    "perks": {}
-  }
-  ,{
-    "id": "minor_faction_23",
-    "name": "Minor Guild 23",
-    "description": "A minor guild in the realm.",
-    "leader": "Guildmaster 23",
-    "rivals": [],
-    "perks": {}
-  }
-  ,{
-    "id": "minor_faction_24",
-    "name": "Minor Guild 24",
-    "description": "A minor guild in the realm.",
-    "leader": "Guildmaster 24",
-    "rivals": [],
-    "perks": {}
-  }
-  ,{
-    "id": "minor_faction_25",
-    "name": "Minor Guild 25",
-    "description": "A minor guild in the realm.",
-    "leader": "Guildmaster 25",
-    "rivals": [],
-    "perks": {}
-  }
-  ,{
-    "id": "minor_faction_26",
-    "name": "Minor Guild 26",
-    "description": "A minor guild in the realm.",
-    "leader": "Guildmaster 26",
-    "rivals": [],
-    "perks": {}
-  }
-  ,{
-    "id": "minor_faction_27",
-    "name": "Minor Guild 27",
-    "description": "A minor guild in the realm.",
-    "leader": "Guildmaster 27",
-    "rivals": [],
-    "perks": {}
-  }
-  ,{
-    "id": "minor_faction_28",
-    "name": "Minor Guild 28",
-    "description": "A minor guild in the realm.",
-    "leader": "Guildmaster 28",
-    "rivals": [],
-    "perks": {}
-  }
-  ,{
-    "id": "minor_faction_29",
-    "name": "Minor Guild 29",
-    "description": "A minor guild in the realm.",
-    "leader": "Guildmaster 29",
-    "rivals": [],
-    "perks": {}
-  }
-  ,{
-    "id": "minor_faction_30",
-    "name": "Minor Guild 30",
-    "description": "A minor guild in the realm.",
-    "leader": "Guildmaster 30",
-    "rivals": [],
-    "perks": {}
+    },
+    "contracts": [
+      {
+        "id": "oc_c1",
+        "title": "Партизанский Налет",
+        "desc": "Убейте 35 вражеских солдат на нейтральной территории.",
+        "type": "kill",
+        "target": 35,
+        "reward_gold": 250,
+        "reward_rep": 50
+      },
+      {
+        "id": "oc_c2",
+        "title": "Трофеи с Поля Бран",
+        "desc": "Соберите 10 выпавших с монстров сундуков и ящиков снабжения.",
+        "type": "collect_chests",
+        "target": 10,
+        "reward_gold": 340,
+        "reward_rep": 70
+      },
+      {
+        "id": "oc_c3",
+        "title": "Выручка Пленных",
+        "desc": "Спасите всех захваченных девушек без единой потери за матч.",
+        "type": "rescue_girls",
+        "target": 3,
+        "reward_gold": 380,
+        "reward_rep": 80
+      },
+      {
+        "id": "oc_c4",
+        "title": "Камбэк Отчаянных",
+        "desc": "Выиграйте волну при остатке менее чем 5 жизней крепости.",
+        "type": "low_hp_win",
+        "target": 1,
+        "reward_gold": 470,
+        "reward_rep": 95
+      },
+      {
+        "id": "oc_c5",
+        "title": "Свержение Карателя",
+        "desc": "Уничтожьте карательного командира босса силами ополчения.",
+        "type": "boss_kill",
+        "target": 1,
+        "reward_gold": 590,
+        "reward_rep": 120
+      }
+    ]
   }
 ]

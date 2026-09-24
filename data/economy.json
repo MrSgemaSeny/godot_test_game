@@ -145,7 +145,8 @@
       "hp_mult": 0.9,
       "speed_mult": 1.35,
       "kill_bounty_mult": 2.0,
-      "reward_mult": 1.0,
+      "reward_mult": 1.25,
+      "bonus_gold": 30,
       "risk_level": "extreme"
     }
   ],

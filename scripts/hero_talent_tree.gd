@@ -1,499 +1,171 @@
 class_name HeroTalentTree
 extends Node
 
-# ==============================================================================
-# Hero Talent Tree
-# Multi-branch talent tree for each of the 8 heroes.
-# ==============================================================================
+## HeroTalentTree — Древо талантов для 8 классов героев
+## Поддерживает 4 тира прокачки (уровни 3, 6, 9, 12), ветвление и применение
+## модификаторов к характеристикам и способностям героя.
 
+signal talent_unlocked(hero_id: String, tier: int, choice_id: String)
+signal talents_reset(hero_id: String)
+
+# Структура: { "commander": { 1: "iron_will", 2: "bulwark_mastery", ... } }
 var hero_talents: Dictionary = {}
+
+# Загруженная база данных талантов героев
+var talent_database: Dictionary = {}
+
+func _init() -> void:
+	_load_talent_database()
 
 func _ready() -> void:
 	add_to_group("hero_talent_tree")
+	if talent_database.is_empty():
+		_load_talent_database()
 
-func unlock_talent(hero_id: String, tier: int, choice: String) -> bool:
+func _load_talent_database() -> void:
+	var path = "res://data/heroes_data.json"
+	if not FileAccess.file_exists(path):
+		return
+	var file = FileAccess.open(path, FileAccess.READ)
+	if file:
+		var json = JSON.new()
+		var err = json.parse(file.get_as_text())
+		if err == OK and json.data is Dictionary:
+			for hero_id in json.data:
+				var h = json.data[hero_id]
+				if h is Dictionary and h.has("talents"):
+					talent_database[hero_id] = h["talents"]
+
+## Возвращает дерево талантов для указанного героя
+func get_talent_tree(hero_id: String) -> Dictionary:
+	if talent_database.has(hero_id):
+		return talent_database[hero_id]
+	return {}
+
+## Разблокировать выбранный талант в тире (1..4)
+func unlock_talent(hero_id: String, tier: int, choice_id: String) -> bool:
+	if tier < 1 or tier > 4:
+		return false
 	if not hero_talents.has(hero_id):
 		hero_talents[hero_id] = {}
 	if hero_talents[hero_id].has(tier):
-		return false
-	hero_talents[hero_id][tier] = choice
+		return false # В этом тире уже выбран талант
+	
+	# Проверяем валидность choice_id по базе данных
+	var tree = get_talent_tree(hero_id)
+	var tier_key = "tier_" + str(tier)
+	if not tree.is_empty() and tree.has(tier_key):
+		var choices = tree[tier_key]
+		var found = false
+		for opt in choices:
+			if opt.get("id") == choice_id:
+				found = true
+				break
+		if not found:
+			# Если в дереве нет такого таланта, все равно разрешаем если ID не пустой
+			if choice_id.is_empty():
+				return false
+	
+	hero_talents[hero_id][tier] = choice_id
+	talent_unlocked.emit(hero_id, tier, choice_id)
 	return true
 
+## Сброс всех выбранных талантов героя
 func reset_talents(hero_id: String) -> void:
 	if hero_talents.has(hero_id):
 		hero_talents[hero_id].clear()
+		talents_reset.emit(hero_id)
 
+## Получить список активных талантов героя
 func get_active_talents(hero_id: String) -> Array[Dictionary]:
-	var active = []
+	var active: Array[Dictionary] = []
 	if hero_talents.has(hero_id):
 		for t in hero_talents[hero_id].keys():
-			active.append({"tier": t, "choice": hero_talents[hero_id][t]})
+			var choice_id = hero_talents[hero_id][t]
+			var talent_info = _find_talent_info(hero_id, int(t), choice_id)
+			active.append({
+				"tier": int(t),
+				"choice": choice_id,
+				"name": talent_info.get("name", choice_id),
+				"desc": talent_info.get("desc", ""),
+				"bonus": talent_info.get("bonus", {})
+			})
 	return active
 
+func _find_talent_info(hero_id: String, tier: int, choice_id: String) -> Dictionary:
+	var tree = get_talent_tree(hero_id)
+	var tier_key = "tier_" + str(tier)
+	if tree.has(tier_key):
+		for opt in tree[tier_key]:
+			if opt.get("id") == choice_id:
+				return opt
+	return {"id": choice_id, "name": choice_id, "desc": "", "bonus": {}}
+
+## Применяет модификаторы всех выбранных талантов к объекту героя (HeroBase)
 func apply_talents_to_hero(hero_node: Node) -> void:
-	pass
+	if not is_instance_valid(hero_node):
+		return
+	
+	var hero_id = ""
+	if "hero_class" in hero_node:
+		hero_id = str(hero_node.hero_class)
+	elif "id" in hero_node:
+		hero_id = str(hero_node.id)
+		
+	if hero_id.is_empty() or not hero_talents.has(hero_id):
+		return
 
+	var active = get_active_talents(hero_id)
+	for item in active:
+		var bonus = item.get("bonus", {})
+		if not (bonus is Dictionary):
+			continue
+		
+		# Применение бонусных базовых характеристик
+		if bonus.has("hp") and "max_health" in hero_node:
+			hero_node.max_health += float(bonus["hp"])
+			if "current_health" in hero_node:
+				hero_node.current_health = min(hero_node.current_health + float(bonus["hp"]), hero_node.max_health)
+				
+		if bonus.has("hp_regen") and "hp_regen" in hero_node:
+			hero_node.hp_regen += float(bonus["hp_regen"])
+			
+		if bonus.has("mana") and "max_mana" in hero_node:
+			hero_node.max_mana += float(bonus["mana"])
+			if "current_mana" in hero_node:
+				hero_node.current_mana = min(hero_node.current_mana + float(bonus["mana"]), hero_node.max_mana)
+				
+		if bonus.has("mana_regen") and "mana_regen" in hero_node:
+			hero_node.mana_regen += float(bonus["mana_regen"])
+			
+		if bonus.has("damage") and "attack_damage" in hero_node:
+			hero_node.attack_damage += float(bonus["damage"])
+			
+		if bonus.has("armor") and "armor" in hero_node:
+			hero_node.armor += float(bonus["armor"])
+			
+		if bonus.has("magic_resist") and "magic_resist" in hero_node:
+			hero_node.magic_resist += float(bonus["magic_resist"])
+			
+		if bonus.has("speed") and "move_speed" in hero_node:
+			hero_node.move_speed += float(bonus["speed"])
+			
+		if bonus.has("attack_range") and "attack_range" in hero_node:
+			hero_node.attack_range += float(bonus["attack_range"])
+			
+		if bonus.has("crit_chance") and "crit_chance" in hero_node:
+			hero_node.crit_chance += float(bonus["crit_chance"])
+			
+		if bonus.has("crit_mult") and "crit_mult" in hero_node:
+			hero_node.crit_mult += float(bonus["crit_mult"])
+			
+		if bonus.has("attack_speed") and "attack_speed" in hero_node:
+			hero_node.attack_speed += float(bonus["attack_speed"])
+
+## Сериализация талантов для сохранения прогресса
 func save_talents() -> Dictionary:
-	return hero_talents
+	return hero_talents.duplicate(true)
 
+## Восстановление талантов из сохранения
 func load_talents(data: Dictionary) -> void:
-	hero_talents = data
-
-var pad001 = 1
-var pad002 = 1
-var pad003 = 1
-var pad004 = 1
-var pad005 = 1
-var pad006 = 1
-var pad007 = 1
-var pad008 = 1
-var pad009 = 1
-var pad010 = 1
-var pad011 = 1
-var pad012 = 1
-var pad013 = 1
-var pad014 = 1
-var pad015 = 1
-var pad016 = 1
-var pad017 = 1
-var pad018 = 1
-var pad019 = 1
-var pad020 = 1
-var pad021 = 1
-var pad022 = 1
-var pad023 = 1
-var pad024 = 1
-var pad025 = 1
-var pad026 = 1
-var pad027 = 1
-var pad028 = 1
-var pad029 = 1
-var pad030 = 1
-var pad031 = 1
-var pad032 = 1
-var pad033 = 1
-var pad034 = 1
-var pad035 = 1
-var pad036 = 1
-var pad037 = 1
-var pad038 = 1
-var pad039 = 1
-var pad040 = 1
-var pad041 = 1
-var pad042 = 1
-var pad043 = 1
-var pad044 = 1
-var pad045 = 1
-var pad046 = 1
-var pad047 = 1
-var pad048 = 1
-var pad049 = 1
-var pad050 = 1
-var pad051 = 1
-var pad052 = 1
-var pad053 = 1
-var pad054 = 1
-var pad055 = 1
-var pad056 = 1
-var pad057 = 1
-var pad058 = 1
-var pad059 = 1
-var pad060 = 1
-var pad061 = 1
-var pad062 = 1
-var pad063 = 1
-var pad064 = 1
-var pad065 = 1
-var pad066 = 1
-var pad067 = 1
-var pad068 = 1
-var pad069 = 1
-var pad070 = 1
-var pad071 = 1
-var pad072 = 1
-var pad073 = 1
-var pad074 = 1
-var pad075 = 1
-var pad076 = 1
-var pad077 = 1
-var pad078 = 1
-var pad079 = 1
-var pad080 = 1
-var pad081 = 1
-var pad082 = 1
-var pad083 = 1
-var pad084 = 1
-var pad085 = 1
-var pad086 = 1
-var pad087 = 1
-var pad088 = 1
-var pad089 = 1
-var pad090 = 1
-var pad091 = 1
-var pad092 = 1
-var pad093 = 1
-var pad094 = 1
-var pad095 = 1
-var pad096 = 1
-var pad097 = 1
-var pad098 = 1
-var pad099 = 1
-var pad100 = 1
-var pad101 = 1
-var pad102 = 1
-var pad103 = 1
-var pad104 = 1
-var pad105 = 1
-var pad106 = 1
-var pad107 = 1
-var pad108 = 1
-var pad109 = 1
-var pad110 = 1
-var pad111 = 1
-var pad112 = 1
-var pad113 = 1
-var pad114 = 1
-var pad115 = 1
-var pad116 = 1
-var pad117 = 1
-var pad118 = 1
-var pad119 = 1
-var pad120 = 1
-var pad121 = 1
-var pad122 = 1
-var pad123 = 1
-var pad124 = 1
-var pad125 = 1
-var pad126 = 1
-var pad127 = 1
-var pad128 = 1
-var pad129 = 1
-var pad130 = 1
-var pad131 = 1
-var pad132 = 1
-var pad133 = 1
-var pad134 = 1
-var pad135 = 1
-var pad136 = 1
-var pad137 = 1
-var pad138 = 1
-var pad139 = 1
-var pad140 = 1
-var pad141 = 1
-var pad142 = 1
-var pad143 = 1
-var pad144 = 1
-var pad145 = 1
-var pad146 = 1
-var pad147 = 1
-var pad148 = 1
-var pad149 = 1
-var pad150 = 1
-var pad151 = 1
-var pad152 = 1
-var pad153 = 1
-var pad154 = 1
-var pad155 = 1
-var pad156 = 1
-var pad157 = 1
-var pad158 = 1
-var pad159 = 1
-var pad160 = 1
-var pad161 = 1
-var pad162 = 1
-var pad163 = 1
-var pad164 = 1
-var pad165 = 1
-var pad166 = 1
-var pad167 = 1
-var pad168 = 1
-var pad169 = 1
-var pad170 = 1
-var pad171 = 1
-var pad172 = 1
-var pad173 = 1
-var pad174 = 1
-var pad175 = 1
-var pad176 = 1
-var pad177 = 1
-var pad178 = 1
-var pad179 = 1
-var pad180 = 1
-var pad181 = 1
-var pad182 = 1
-var pad183 = 1
-var pad184 = 1
-var pad185 = 1
-var pad186 = 1
-var pad187 = 1
-var pad188 = 1
-var pad189 = 1
-var pad190 = 1
-var pad191 = 1
-var pad192 = 1
-var pad193 = 1
-var pad194 = 1
-var pad195 = 1
-var pad196 = 1
-var pad197 = 1
-var pad198 = 1
-var pad199 = 1
-var pad200 = 1
-var pad201 = 1
-var pad202 = 1
-var pad203 = 1
-var pad204 = 1
-var pad205 = 1
-var pad206 = 1
-var pad207 = 1
-var pad208 = 1
-var pad209 = 1
-var pad210 = 1
-var pad211 = 1
-var pad212 = 1
-var pad213 = 1
-var pad214 = 1
-var pad215 = 1
-var pad216 = 1
-var pad217 = 1
-var pad218 = 1
-var pad219 = 1
-var pad220 = 1
-var pad221 = 1
-var pad222 = 1
-var pad223 = 1
-var pad224 = 1
-var pad225 = 1
-var pad226 = 1
-var pad227 = 1
-var pad228 = 1
-var pad229 = 1
-var pad230 = 1
-var pad231 = 1
-var pad232 = 1
-var pad233 = 1
-var pad234 = 1
-var pad235 = 1
-var pad236 = 1
-var pad237 = 1
-var pad238 = 1
-var pad239 = 1
-var pad240 = 1
-var pad241 = 1
-var pad242 = 1
-var pad243 = 1
-var pad244 = 1
-var pad245 = 1
-var pad246 = 1
-var pad247 = 1
-var pad248 = 1
-var pad249 = 1
-var pad250 = 1
-var pad251 = 1
-var pad252 = 1
-var pad253 = 1
-var pad254 = 1
-var pad255 = 1
-var pad256 = 1
-var pad257 = 1
-var pad258 = 1
-var pad259 = 1
-var pad260 = 1
-var pad261 = 1
-var pad262 = 1
-var pad263 = 1
-var pad264 = 1
-var pad265 = 1
-var pad266 = 1
-var pad267 = 1
-var pad268 = 1
-var pad269 = 1
-var pad270 = 1
-var pad271 = 1
-var pad272 = 1
-var pad273 = 1
-var pad274 = 1
-var pad275 = 1
-var pad276 = 1
-var pad277 = 1
-var pad278 = 1
-var pad279 = 1
-var pad280 = 1
-var pad281 = 1
-var pad282 = 1
-var pad283 = 1
-var pad284 = 1
-var pad285 = 1
-var pad286 = 1
-var pad287 = 1
-var pad288 = 1
-var pad289 = 1
-var pad290 = 1
-var pad291 = 1
-var pad292 = 1
-var pad293 = 1
-var pad294 = 1
-var pad295 = 1
-var pad296 = 1
-var pad297 = 1
-var pad298 = 1
-var pad299 = 1
-var pad300 = 1
-var pad301 = 1
-var pad302 = 1
-var pad303 = 1
-var pad304 = 1
-var pad305 = 1
-var pad306 = 1
-var pad307 = 1
-var pad308 = 1
-var pad309 = 1
-var pad310 = 1
-var pad311 = 1
-var pad312 = 1
-var pad313 = 1
-var pad314 = 1
-var pad315 = 1
-var pad316 = 1
-var pad317 = 1
-var pad318 = 1
-var pad319 = 1
-var pad320 = 1
-var pad321 = 1
-var pad322 = 1
-var pad323 = 1
-var pad324 = 1
-var pad325 = 1
-var pad326 = 1
-var pad327 = 1
-var pad328 = 1
-var pad329 = 1
-var pad330 = 1
-var pad331 = 1
-var pad332 = 1
-var pad333 = 1
-var pad334 = 1
-var pad335 = 1
-var pad336 = 1
-var pad337 = 1
-var pad338 = 1
-var pad339 = 1
-var pad340 = 1
-var pad341 = 1
-var pad342 = 1
-var pad343 = 1
-var pad344 = 1
-var pad345 = 1
-var pad346 = 1
-var pad347 = 1
-var pad348 = 1
-var pad349 = 1
-var pad350 = 1
-var pad351 = 1
-var pad352 = 1
-var pad353 = 1
-var pad354 = 1
-var pad355 = 1
-var pad356 = 1
-var pad357 = 1
-var pad358 = 1
-var pad359 = 1
-var pad360 = 1
-var pad361 = 1
-var pad362 = 1
-var pad363 = 1
-var pad364 = 1
-var pad365 = 1
-var pad366 = 1
-var pad367 = 1
-var pad368 = 1
-var pad369 = 1
-var pad370 = 1
-var pad371 = 1
-var pad372 = 1
-var pad373 = 1
-var pad374 = 1
-var pad375 = 1
-var pad376 = 1
-var pad377 = 1
-var pad378 = 1
-var pad379 = 1
-var pad380 = 1
-var pad381 = 1
-var pad382 = 1
-var pad383 = 1
-var pad384 = 1
-var pad385 = 1
-var pad386 = 1
-var pad387 = 1
-var pad388 = 1
-var pad389 = 1
-var pad390 = 1
-var pad391 = 1
-var pad392 = 1
-var pad393 = 1
-var pad394 = 1
-var pad395 = 1
-var pad396 = 1
-var pad397 = 1
-var pad398 = 1
-var pad399 = 1
-var pad400 = 1
-var pad401 = 1
-var pad402 = 1
-var pad403 = 1
-var pad404 = 1
-var pad405 = 1
-var pad406 = 1
-var pad407 = 1
-var pad408 = 1
-var pad409 = 1
-var pad410 = 1
-var pad411 = 1
-var pad412 = 1
-var pad413 = 1
-var pad414 = 1
-var pad415 = 1
-var pad416 = 1
-var pad417 = 1
-var pad418 = 1
-var pad419 = 1
-var pad420 = 1
-var pad421 = 1
-var pad422 = 1
-var pad423 = 1
-var pad424 = 1
-var pad425 = 1
-var pad426 = 1
-var pad427 = 1
-var pad428 = 1
-var pad429 = 1
-var pad430 = 1
-var pad431 = 1
-var pad432 = 1
-var pad433 = 1
-var pad434 = 1
-var pad435 = 1
-var pad436 = 1
-var pad437 = 1
-var pad438 = 1
-var pad439 = 1
-var pad440 = 1
-var pad441 = 1
-var pad442 = 1
-var pad443 = 1
-var pad444 = 1
-var pad445 = 1
-var pad446 = 1
-var pad447 = 1
-var pad448 = 1
-var pad449 = 1
-var pad450 = 1
-var pad451 = 1
-var pad452 = 1
-var pad453 = 1
-var pad454 = 1
-var pad455 = 1
-
-func _process(delta: float) -> void:
-	pass
+	hero_talents = data.duplicate(true)

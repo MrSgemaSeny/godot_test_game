@@ -1,0 +1,14 @@
+{
+  "tower_mastery_levels": [
+    { "level": 1, "xp_required": 100, "bonus_desc": "+3% урона", "modifiers": { "damage_mult": 1.03 } },
+    { "level": 2, "xp_required": 300, "bonus_desc": "+5% дальности атаки", "modifiers": { "range_mult": 1.05 } },
+    { "level": 3, "xp_required": 700, "bonus_desc": "+5% скорострельности", "modifiers": { "attack_speed_mult": 1.05 } },
+    { "level": 4, "xp_required": 1500, "bonus_desc": "+5% шанс крита", "modifiers": { "crit_chance": 0.05 } },
+    { "level": 5, "xp_required": 3000, "bonus_desc": "+10% урона и удешевление апгрейдов на 10%", "modifiers": { "damage_mult": 1.10, "upgrade_discount": 0.10 } }
+  ],
+  "enemy_mastery_tiers": [
+    { "tier": 1, "kills_required": 25, "bonus_desc": "Карточка в бестиарии: базовые характеристики", "damage_bonus": 0.0 },
+    { "tier": 2, "kills_required": 100, "bonus_desc": "Слабые места: +2% урона по данному типу врага", "damage_bonus": 0.02 },
+    { "tier": 3, "kills_required": 300, "bonus_desc": "Охотник на чудовищ: +5% урона и +10% золота при убийстве", "damage_bonus": 0.05, "gold_bonus": 0.10 }
+  ]
+}

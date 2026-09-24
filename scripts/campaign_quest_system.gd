@@ -25,9 +25,11 @@ var regions_cleared: Array[String] = []
 
 func _init() -> void:
 	add_to_group("campaign_quest_system")
+	_load_quests_db()
 
 func _ready() -> void:
-	_load_quests_db()
+	if quests_db.is_empty():
+		_load_quests_db()
 
 ## Load quests from JSON database
 func _load_quests_db() -> void:

@@ -1,455 +1,241 @@
 class_name RuneSocketSystem
 extends Node
 
-# ==============================================================================
-# Rune Socket System
-# Advanced socketing system for towers.
-# ==============================================================================
+## RuneSocketSystem — Система инкрустации рун в башни
+## Поддерживает 6 категорий рун (Attack, Support, Control, Elemental, Survival, Exotic),
+## слоты инкрустации (до 3 слотов на башню), рунические слова (Runewords) и слияние (Fusion).
+
+signal rune_socketed(tower: Node, slot_idx: int, rune_id: String)
+signal rune_unsocketed(tower: Node, slot_idx: int, rune_id: String)
+signal runes_fused(input_rune: String, result_rune: String)
+signal runeword_activated(tower: Node, runeword_name: String)
+
+# База данных рун: { "rune_blade_1": { ... } }
+var runes_db: Dictionary = {}
+
+# Рунические слова (комбинации категорий или типов рун в слотах одной башни)
+var runewords_recipes: Array[Dictionary] = [
+	{
+		"name": "Ярость Бури (Storm Fury)",
+		"required_categories": ["elemental", "attack"],
+		"bonus_desc": "+25% цепной урон молнией при каждом критическом попадании",
+		"modifiers": { "chain_on_crit": true, "bonus_damage_mult": 1.25 }
+	},
+	{
+		"name": "Абсолютная Крепость (Citadel Bastion)",
+		"required_categories": ["survival", "support"],
+		"bonus_desc": "Башня дает ауру защиты +20% HP базе и замедляет врагов вокруг на 20%",
+		"modifiers": { "citadel_slow_aura": 0.20, "leak_shield": 1 }
+	},
+	{
+		"name": "Хаос Стихий (Elemental Cataclysm)",
+		"required_categories": ["elemental", "control"],
+		"bonus_desc": "Периодический урон стихий замораживает и поджигает одновременно",
+		"modifiers": { "elemental_combo": true, "dot_amplify": 1.40 }
+	},
+	{
+		"name": "Смертоносная Тень (Deadly Shadow)",
+		"required_categories": ["attack", "exotic"],
+		"bonus_desc": "Каждая атака башни игнорирует броню и наносит чистый урон боссам",
+		"modifiers": { "pure_damage_bosses": true, "boss_bonus": 1.50 }
+	}
+]
+
+func _init() -> void:
+	load_runes_database()
 
 func _ready() -> void:
 	add_to_group("rune_socket_system")
+	if runes_db.is_empty():
+		load_runes_database()
 
-func socket_rune(tower_node: Node, slot_idx: int, rune_id: String) -> void:
-	pass
+func load_runes_database(path: String = "res://data/runes_database.json") -> void:
+	if not FileAccess.file_exists(path):
+		return
+	var file = FileAccess.open(path, FileAccess.READ)
+	if file:
+		var json = JSON.new()
+		var err = json.parse(file.get_as_text())
+		if err == OK and json.data is Dictionary:
+			var list = json.data.get("runes", [])
+			for r in list:
+				if r is Dictionary and r.has("id"):
+					runes_db[r["id"]] = r
 
-func unsocket_rune(tower_node: Node, slot_idx: int) -> void:
-	pass
+func get_rune_info(rune_id: String) -> Dictionary:
+	if runes_db.has(rune_id):
+		return runes_db[rune_id]
+	return {}
 
-func fuse_runes(rune_id: String) -> String:
-	return rune_id + "_upgraded"
+func get_all_runes() -> Array[Dictionary]:
+	var res: Array[Dictionary] = []
+	for k in runes_db:
+		res.append(runes_db[k])
+	return res
 
+## Проверить доступное количество слотов на башне (1 слот по умолчанию, +1 на 3 уровне, +1 на 5 уровне)
+func get_max_sockets_for_tower(tower_node: Node) -> int:
+	if not is_instance_valid(tower_node):
+		return 1
+	var lvl = int(tower_node.get("current_level")) if "current_level" in tower_node else 1
+	if lvl >= 5:
+		return 3
+	elif lvl >= 3:
+		return 2
+	return 1
+
+## Получить массив вставленных рун в башню
+func get_socketed_runes(tower_node: Node) -> Array:
+	if not is_instance_valid(tower_node):
+		return []
+	if tower_node.has_meta("socketed_runes"):
+		return tower_node.get_meta("socketed_runes")
+	var initial: Array = ["", "", ""]
+	tower_node.set_meta("socketed_runes", initial)
+	return initial
+
+## Установить руну в указанный слот башни (0..2)
+func socket_rune(tower_node: Node, slot_idx: int, rune_id: String) -> bool:
+	if not is_instance_valid(tower_node):
+		return false
+	if not runes_db.has(rune_id):
+		return false
+	var max_slots = get_max_sockets_for_tower(tower_node)
+	if slot_idx < 0 or slot_idx >= max_slots:
+		return false
+
+	var sockets = get_socketed_runes(tower_node)
+	while sockets.size() < 3:
+		sockets.append("")
+		
+	# Если слот уже занят, сначала извлекаем старую руну
+	if not sockets[slot_idx].is_empty():
+		unsocket_rune(tower_node, slot_idx)
+
+	sockets[slot_idx] = rune_id
+	tower_node.set_meta("socketed_runes", sockets)
+
+	# Сохраняем исходные параметры до модификации, если еще не сохранены
+	_backup_tower_base_stats(tower_node)
+	_reapply_tower_runes(tower_node)
+
+	rune_socketed.emit(tower_node, slot_idx, rune_id)
+	
+	# Проверяем активацию Runewords
+	var active_rw = get_active_runewords(tower_node)
+	for rw in active_rw:
+		runeword_activated.emit(tower_node, rw.get("name", ""))
+		
+	return true
+
+## Извлечь руну из слота
+func unsocket_rune(tower_node: Node, slot_idx: int) -> Dictionary:
+	if not is_instance_valid(tower_node):
+		return {}
+	var sockets = get_socketed_runes(tower_node)
+	if slot_idx < 0 or slot_idx >= sockets.size():
+		return {}
+	var rune_id = sockets[slot_idx]
+	if rune_id.is_empty():
+		return {}
+
+	sockets[slot_idx] = ""
+	tower_node.set_meta("socketed_runes", sockets)
+	_reapply_tower_runes(tower_node)
+
+	rune_unsocketed.emit(tower_node, slot_idx, rune_id)
+	return get_rune_info(rune_id)
+
+func _backup_tower_base_stats(tower_node: Node) -> void:
+	if not tower_node.has_meta("rune_base_stats"):
+		var base = {
+			"damage": float(tower_node.get("damage")) if "damage" in tower_node else 10.0,
+			"range_radius": float(tower_node.get("range_radius")) if "range_radius" in tower_node else 150.0,
+			"attack_speed": float(tower_node.get("attack_speed")) if "attack_speed" in tower_node else 1.0
+		}
+		tower_node.set_meta("rune_base_stats", base)
+
+func _reapply_tower_runes(tower_node: Node) -> void:
+	if not is_instance_valid(tower_node):
+		return
+	if not tower_node.has_meta("rune_base_stats"):
+		return
+
+	var base = tower_node.get_meta("rune_base_stats")
+	var base_dmg = float(base.get("damage", 10.0))
+	var base_rng = float(base.get("range_radius", 150.0))
+	var base_spd = float(base.get("attack_speed", 1.0))
+
+	var dmg_mult: float = 1.0
+	var rng_mult: float = 1.0
+	var spd_mult: float = 1.0
+	var extra_crit: float = 0.0
+
+	var sockets = get_socketed_runes(tower_node)
+	for r_id in sockets:
+		if r_id.is_empty() or not runes_db.has(r_id):
+			continue
+		var r = runes_db[r_id]
+		var mods = r.get("modifiers", {})
+		if mods.has("damage_mult"):
+			dmg_mult *= float(mods["damage_mult"])
+		if mods.has("range_mult"):
+			rng_mult *= float(mods["range_mult"])
+		if mods.has("attack_speed_mult"):
+			spd_mult *= float(mods["attack_speed_mult"])
+		if mods.has("crit_chance"):
+			extra_crit += float(mods["crit_chance"])
+
+	# Учитываем активные Runewords
+	var rwords = get_active_runewords(tower_node)
+	for rw in rwords:
+		var r_mods = rw.get("modifiers", {})
+		if r_mods.has("bonus_damage_mult"):
+			dmg_mult *= float(r_mods["bonus_damage_mult"])
+
+	if "damage" in tower_node:
+		tower_node.damage = int(round(base_dmg * dmg_mult))
+	if "range_radius" in tower_node:
+		tower_node.range_radius = base_rng * rng_mult
+	if "attack_speed" in tower_node:
+		tower_node.attack_speed = base_spd * spd_mult
+
+## Проверка активных рунических комбинаций (Runewords)
 func get_active_runewords(tower_node: Node) -> Array[Dictionary]:
-	return []
+	if not is_instance_valid(tower_node):
+		return []
+	var sockets = get_socketed_runes(tower_node)
+	var present_categories: Array[String] = []
+	for r_id in sockets:
+		if not r_id.is_empty() and runes_db.has(r_id):
+			var cat = str(runes_db[r_id].get("category", "")).to_lower()
+			if not present_categories.has(cat):
+				present_categories.append(cat)
 
-var dummy1 = 1
-var dummy2 = 1
-var dummy3 = 1
-var dummy4 = 1
-var dummy5 = 1
-var dummy6 = 1
-var dummy7 = 1
-var dummy8 = 1
-var dummy9 = 1
-var dummy10 = 1
-var dummy11 = 1
-var dummy12 = 1
-var dummy13 = 1
-var dummy14 = 1
-var dummy15 = 1
-var dummy16 = 1
-var dummy17 = 1
-var dummy18 = 1
-var dummy19 = 1
-var dummy20 = 1
-var dummy21 = 1
-var dummy22 = 1
-var dummy23 = 1
-var dummy24 = 1
-var dummy25 = 1
-var dummy26 = 1
-var dummy27 = 1
-var dummy28 = 1
-var dummy29 = 1
-var dummy30 = 1
-var dummy31 = 1
-var dummy32 = 1
-var dummy33 = 1
-var dummy34 = 1
-var dummy35 = 1
-var dummy36 = 1
-var dummy37 = 1
-var dummy38 = 1
-var dummy39 = 1
-var dummy40 = 1
-var dummy41 = 1
-var dummy42 = 1
-var dummy43 = 1
-var dummy44 = 1
-var dummy45 = 1
-var dummy46 = 1
-var dummy47 = 1
-var dummy48 = 1
-var dummy49 = 1
-var dummy50 = 1
-var dummy51 = 1
-var dummy52 = 1
-var dummy53 = 1
-var dummy54 = 1
-var dummy55 = 1
-var dummy56 = 1
-var dummy57 = 1
-var dummy58 = 1
-var dummy59 = 1
-var dummy60 = 1
-var dummy61 = 1
-var dummy62 = 1
-var dummy63 = 1
-var dummy64 = 1
-var dummy65 = 1
-var dummy66 = 1
-var dummy67 = 1
-var dummy68 = 1
-var dummy69 = 1
-var dummy70 = 1
-var dummy71 = 1
-var dummy72 = 1
-var dummy73 = 1
-var dummy74 = 1
-var dummy75 = 1
-var dummy76 = 1
-var dummy77 = 1
-var dummy78 = 1
-var dummy79 = 1
-var dummy80 = 1
-var dummy81 = 1
-var dummy82 = 1
-var dummy83 = 1
-var dummy84 = 1
-var dummy85 = 1
-var dummy86 = 1
-var dummy87 = 1
-var dummy88 = 1
-var dummy89 = 1
-var dummy90 = 1
-var dummy91 = 1
-var dummy92 = 1
-var dummy93 = 1
-var dummy94 = 1
-var dummy95 = 1
-var dummy96 = 1
-var dummy97 = 1
-var dummy98 = 1
-var dummy99 = 1
-var dummy100 = 1
-var dummy101 = 1
-var dummy102 = 1
-var dummy103 = 1
-var dummy104 = 1
-var dummy105 = 1
-var dummy106 = 1
-var dummy107 = 1
-var dummy108 = 1
-var dummy109 = 1
-var dummy110 = 1
-var dummy111 = 1
-var dummy112 = 1
-var dummy113 = 1
-var dummy114 = 1
-var dummy115 = 1
-var dummy116 = 1
-var dummy117 = 1
-var dummy118 = 1
-var dummy119 = 1
-var dummy120 = 1
-var dummy121 = 1
-var dummy122 = 1
-var dummy123 = 1
-var dummy124 = 1
-var dummy125 = 1
-var dummy126 = 1
-var dummy127 = 1
-var dummy128 = 1
-var dummy129 = 1
-var dummy130 = 1
-var dummy131 = 1
-var dummy132 = 1
-var dummy133 = 1
-var dummy134 = 1
-var dummy135 = 1
-var dummy136 = 1
-var dummy137 = 1
-var dummy138 = 1
-var dummy139 = 1
-var dummy140 = 1
-var dummy141 = 1
-var dummy142 = 1
-var dummy143 = 1
-var dummy144 = 1
-var dummy145 = 1
-var dummy146 = 1
-var dummy147 = 1
-var dummy148 = 1
-var dummy149 = 1
-var dummy150 = 1
-var dummy151 = 1
-var dummy152 = 1
-var dummy153 = 1
-var dummy154 = 1
-var dummy155 = 1
-var dummy156 = 1
-var dummy157 = 1
-var dummy158 = 1
-var dummy159 = 1
-var dummy160 = 1
-var dummy161 = 1
-var dummy162 = 1
-var dummy163 = 1
-var dummy164 = 1
-var dummy165 = 1
-var dummy166 = 1
-var dummy167 = 1
-var dummy168 = 1
-var dummy169 = 1
-var dummy170 = 1
-var dummy171 = 1
-var dummy172 = 1
-var dummy173 = 1
-var dummy174 = 1
-var dummy175 = 1
-var dummy176 = 1
-var dummy177 = 1
-var dummy178 = 1
-var dummy179 = 1
-var dummy180 = 1
-var dummy181 = 1
-var dummy182 = 1
-var dummy183 = 1
-var dummy184 = 1
-var dummy185 = 1
-var dummy186 = 1
-var dummy187 = 1
-var dummy188 = 1
-var dummy189 = 1
-var dummy190 = 1
-var dummy191 = 1
-var dummy192 = 1
-var dummy193 = 1
-var dummy194 = 1
-var dummy195 = 1
-var dummy196 = 1
-var dummy197 = 1
-var dummy198 = 1
-var dummy199 = 1
-var dummy200 = 1
-var dummy201 = 1
-var dummy202 = 1
-var dummy203 = 1
-var dummy204 = 1
-var dummy205 = 1
-var dummy206 = 1
-var dummy207 = 1
-var dummy208 = 1
-var dummy209 = 1
-var dummy210 = 1
-var dummy211 = 1
-var dummy212 = 1
-var dummy213 = 1
-var dummy214 = 1
-var dummy215 = 1
-var dummy216 = 1
-var dummy217 = 1
-var dummy218 = 1
-var dummy219 = 1
-var dummy220 = 1
-var dummy221 = 1
-var dummy222 = 1
-var dummy223 = 1
-var dummy224 = 1
-var dummy225 = 1
-var dummy226 = 1
-var dummy227 = 1
-var dummy228 = 1
-var dummy229 = 1
-var dummy230 = 1
-var dummy231 = 1
-var dummy232 = 1
-var dummy233 = 1
-var dummy234 = 1
-var dummy235 = 1
-var dummy236 = 1
-var dummy237 = 1
-var dummy238 = 1
-var dummy239 = 1
-var dummy240 = 1
-var dummy241 = 1
-var dummy242 = 1
-var dummy243 = 1
-var dummy244 = 1
-var dummy245 = 1
-var dummy246 = 1
-var dummy247 = 1
-var dummy248 = 1
-var dummy249 = 1
-var dummy250 = 1
-var dummy251 = 1
-var dummy252 = 1
-var dummy253 = 1
-var dummy254 = 1
-var dummy255 = 1
-var dummy256 = 1
-var dummy257 = 1
-var dummy258 = 1
-var dummy259 = 1
-var dummy260 = 1
-var dummy261 = 1
-var dummy262 = 1
-var dummy263 = 1
-var dummy264 = 1
-var dummy265 = 1
-var dummy266 = 1
-var dummy267 = 1
-var dummy268 = 1
-var dummy269 = 1
-var dummy270 = 1
-var dummy271 = 1
-var dummy272 = 1
-var dummy273 = 1
-var dummy274 = 1
-var dummy275 = 1
-var dummy276 = 1
-var dummy277 = 1
-var dummy278 = 1
-var dummy279 = 1
-var dummy280 = 1
-var dummy281 = 1
-var dummy282 = 1
-var dummy283 = 1
-var dummy284 = 1
-var dummy285 = 1
-var dummy286 = 1
-var dummy287 = 1
-var dummy288 = 1
-var dummy289 = 1
-var dummy290 = 1
-var dummy291 = 1
-var dummy292 = 1
-var dummy293 = 1
-var dummy294 = 1
-var dummy295 = 1
-var dummy296 = 1
-var dummy297 = 1
-var dummy298 = 1
-var dummy299 = 1
-var dummy300 = 1
-var dummy301 = 1
-var dummy302 = 1
-var dummy303 = 1
-var dummy304 = 1
-var dummy305 = 1
-var dummy306 = 1
-var dummy307 = 1
-var dummy308 = 1
-var dummy309 = 1
-var dummy310 = 1
-var dummy311 = 1
-var dummy312 = 1
-var dummy313 = 1
-var dummy314 = 1
-var dummy315 = 1
-var dummy316 = 1
-var dummy317 = 1
-var dummy318 = 1
-var dummy319 = 1
-var dummy320 = 1
-var dummy321 = 1
-var dummy322 = 1
-var dummy323 = 1
-var dummy324 = 1
-var dummy325 = 1
-var dummy326 = 1
-var dummy327 = 1
-var dummy328 = 1
-var dummy329 = 1
-var dummy330 = 1
-var dummy331 = 1
-var dummy332 = 1
-var dummy333 = 1
-var dummy334 = 1
-var dummy335 = 1
-var dummy336 = 1
-var dummy337 = 1
-var dummy338 = 1
-var dummy339 = 1
-var dummy340 = 1
-var dummy341 = 1
-var dummy342 = 1
-var dummy343 = 1
-var dummy344 = 1
-var dummy345 = 1
-var dummy346 = 1
-var dummy347 = 1
-var dummy348 = 1
-var dummy349 = 1
-var dummy350 = 1
-var dummy351 = 1
-var dummy352 = 1
-var dummy353 = 1
-var dummy354 = 1
-var dummy355 = 1
-var dummy356 = 1
-var dummy357 = 1
-var dummy358 = 1
-var dummy359 = 1
-var dummy360 = 1
-var dummy361 = 1
-var dummy362 = 1
-var dummy363 = 1
-var dummy364 = 1
-var dummy365 = 1
-var dummy366 = 1
-var dummy367 = 1
-var dummy368 = 1
-var dummy369 = 1
-var dummy370 = 1
-var dummy371 = 1
-var dummy372 = 1
-var dummy373 = 1
-var dummy374 = 1
-var dummy375 = 1
-var dummy376 = 1
-var dummy377 = 1
-var dummy378 = 1
-var dummy379 = 1
-var dummy380 = 1
-var dummy381 = 1
-var dummy382 = 1
-var dummy383 = 1
-var dummy384 = 1
-var dummy385 = 1
-var dummy386 = 1
-var dummy387 = 1
-var dummy388 = 1
-var dummy389 = 1
-var dummy390 = 1
-var dummy391 = 1
-var dummy392 = 1
-var dummy393 = 1
-var dummy394 = 1
-var dummy395 = 1
-var dummy396 = 1
-var dummy397 = 1
-var dummy398 = 1
-var dummy399 = 1
-var dummy400 = 1
-var dummy401 = 1
-var dummy402 = 1
-var dummy403 = 1
-var dummy404 = 1
-var dummy405 = 1
-var dummy406 = 1
-var dummy407 = 1
-var dummy408 = 1
-var dummy409 = 1
-var dummy410 = 1
-var dummy411 = 1
-var dummy412 = 1
-var dummy413 = 1
-var dummy414 = 1
-var dummy415 = 1
-var dummy416 = 1
-var dummy417 = 1
-var dummy418 = 1
-var dummy419 = 1
-var dummy420 = 1
-var dummy421 = 1
-var dummy422 = 1
-var dummy423 = 1
-var dummy424 = 1
-var dummy425 = 1
-var dummy426 = 1
-var dummy427 = 1
-var dummy428 = 1
-var dummy429 = 1
+	var active_rw: Array[Dictionary] = []
+	for rw in runewords_recipes:
+		var reqs: Array = rw.get("required_categories", [])
+		var matches_all = true
+		for req in reqs:
+			if not present_categories.has(str(req).to_lower()):
+				matches_all = false
+				break
+		if matches_all and not reqs.is_empty():
+			active_rw.append(rw)
 
-func _process(delta: float) -> void:
-	pass
+	return active_rw
+
+## Слияние рун: 3 одинаковые руны Tier N превращаются в 1 руну Tier N+1
+func fuse_runes(rune_id: String) -> String:
+	if not runes_db.has(rune_id):
+		return rune_id + "_upgraded"
+	var r = runes_db[rune_id]
+	var current_tier = int(r.get("tier", 1))
+	var next_tier = current_tier + 1
+	var base_id = rune_id
+	if base_id.ends_with("_" + str(current_tier)):
+		base_id = base_id.substr(0, base_id.length() - str(current_tier).length() - 1)
+	
+	var target_id = base_id + "_" + str(next_tier)
+	runes_fused.emit(rune_id, target_id)
+	return target_id

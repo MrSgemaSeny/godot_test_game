@@ -181,25 +181,29 @@ func _update_modifiers() -> void:
 	
 	match current_time_of_day:
 		TimeOfDay.NIGHT:
-			active_modifiers["tower_range_mult"] = 0.7
-			active_modifiers["stealth_spawn_rate"] = 1.2
+			active_modifiers["tower_range_mult"] = 0.8
+			active_modifiers["stealth_spawn_rate"] = 1.25
+			active_modifiers["ambush_bonus"] = 1.20
 			active_modifiers["undead_hp_mult"] = 1.25
 		TimeOfDay.DEEP_NIGHT:
-			active_modifiers["tower_range_mult"] = 0.5
+			active_modifiers["tower_range_mult"] = 0.6
 			active_modifiers["stealth_spawn_rate"] = 1.5
+			active_modifiers["ambush_bonus"] = 1.40
 			active_modifiers["undead_hp_mult"] = 1.50
 		TimeOfDay.DAY:
-			active_modifiers["tower_range_mult"] = 1.0
+			active_modifiers["tower_range_mult"] = 1.10
 			active_modifiers["fire_burn_duration_mult"] = 1.15
 		TimeOfDay.SOLAR_FLARE:
+			active_modifiers["tower_range_mult"] = 1.10
 			active_modifiers["fire_burn_duration_mult"] = 2.0
 			active_modifiers["enemy_speed_mult"] = 1.1
 		TimeOfDay.DAWN:
-			active_modifiers["tower_range_mult"] = 0.9
+			active_modifiers["tower_range_mult"] = 1.0
+			active_modifiers["hero_mana_regen_mult"] = 1.30
 			active_modifiers["gold_yield_mult"] = 1.1
 		TimeOfDay.DUSK:
-			active_modifiers["tower_range_mult"] = 0.85
-			active_modifiers["enemy_speed_mult"] = 1.1
+			active_modifiers["tower_range_mult"] = 0.95
+			active_modifiers["enemy_speed_mult"] = 1.05
 		TimeOfDay.BLOOD_MOON:
 			active_modifiers["tower_range_mult"] = 1.0
 			active_modifiers["enemy_attack_mult"] = 1.3

@@ -1,662 +1,1804 @@
 [
   {
-    "id": "wandering_merchant",
-    "name": "Wandering Merchant",
-    "description": "A mysterious merchant approaches your camp offering rare wares.",
-    "trigger_conditions": ["any"],
-    "repeatable": true,
+    "category": "invasion",
     "choices": [
       {
-        "text": "Buy Magic Artifact (500g)",
-        "cost": { "gold": 500 },
-        "reward": { "artifact": "random_rare" }
-      },
-      {
-        "text": "Buy Basic Supplies (100g)",
-        "cost": { "gold": 100 },
-        "reward": { "lives": 5 }
-      },
-      {
-        "text": "Ignore Him",
         "cost": {},
-        "reward": {}
+        "reward": {
+          "force_wave": "goblin_raid",
+          "gold": 150
+        },
+        "text": "Дать бой авангарду"
+      },
+      {
+        "cost": {
+          "gold": 120
+        },
+        "reward": {},
+        "text": "Откупиться золотом (120g)"
+      },
+      {
+        "cost": {
+          "lives": 3
+        },
+        "reward": {},
+        "text": "Пожертвовать припасами (-3 жизни)"
       }
-    
-  },
-  {
+    ],
+    "description": "Разведчики гоблинов атаковали тыловые обозы с припасами.",
     "id": "goblin_ambush",
-    "name": "Goblin Ambush!",
-    "description": "A scouting party of goblins attacks your supply lines.",
-    "trigger_conditions": ["valley", "greenwood", "royal_highway"],
+    "name": "Гоблинская Засада",
     "repeatable": true,
-    "choices": [
-      {
-        "text": "Fight them off (Battle)",
-        "cost": {},
-        "reward": { "force_wave": "goblin_raid" }
-      },
-      {
-        "text": "Pay them off (200g)",
-        "cost": { "gold": 200 },
-        "reward": {}
-      },
-      {
-        "text": "Let them loot (Lose 10 lives)",
-        "cost": { "lives": 10 },
-        "reward": {}
-      }
-    
+    "trigger_conditions": [
+      "valley",
+      "greenwood",
+      "royal_highway",
+      "any"
+    ]
   },
   {
-    "id": "arcane_storm",
-    "name": "Arcane Storm",
-    "description": "A violent storm of pure mana rolls across the region.",
-    "trigger_conditions": ["astral_ruins", "crystal_caves", "frost_peak"],
+    "category": "invasion",
+    "choices": [
+      {
+        "cost": {
+          "gold": 150
+        },
+        "reward": {
+          "holy_buff": true,
+          "reputation": 25
+        },
+        "text": "Освятить землю (150g)"
+      },
+      {
+        "cost": {},
+        "reward": {
+          "force_wave": "skeleton_swarm",
+          "gold": 220
+        },
+        "text": "Принять бой со скелетами"
+      },
+      {
+        "cost": {
+          "lives": 2
+        },
+        "reward": {},
+        "text": "Отступить к цитадели (-2 жизни)"
+      }
+    ],
+    "description": "Древние захоронения на холмах ожили под влиянием темной луны.",
+    "id": "undead_rising",
+    "name": "Восстание Мертвецов",
     "repeatable": true,
+    "trigger_conditions": [
+      "caves",
+      "swamp",
+      "any"
+    ]
+  },
+  {
+    "category": "invasion",
     "choices": [
       {
-        "text": "Harvest the mana (Risk damage)",
-        "cost": { "lives": 5 },
-        "reward": { "mana": 100 }
-      },
-      {
-        "text": "Shield the camp",
-        "cost": { "mana": 20 },
-        "reward": {}
-      },
-      {
-        "text": "Do nothing (Random effect)",
         "cost": {},
-        "reward": { "random_event": true }
+        "reward": {
+          "gold": 250,
+          "reputation": 20
+        },
+        "text": "Штурмовать лагерь разбойников"
+      },
+      {
+        "cost": {
+          "gold": 180
+        },
+        "reward": {},
+        "text": "Заплатить пошлину (180g)"
+      },
+      {
+        "cost": {},
+        "reward": {
+          "force_wave": "chaos_battle"
+        },
+        "text": "Натравить чудовищ на разбойников"
       }
-    
+    ],
+    "description": "Шайка разбойников перекрыла горный тракт и требует выкуп.",
+    "id": "bandit_blockade",
+    "name": "Блокада Разбойников",
+    "repeatable": true,
+    "trigger_conditions": [
+      "frost_peak",
+      "royal_highway",
+      "any"
+    ]
   },
   {
-    "id": "plague_outbreak",
-    "name": "Plague Outbreak",
-    "description": "Sickness spreads from the murky waters.",
-    "trigger_conditions": ["swamp", "sunken_kingdom"],
-    "repeatable": false,
+    "category": "invasion",
     "choices": [
       {
-        "text": "Quarantine the infected (Lose 5 lives)",
-        "cost": { "lives": 5 },
-        "reward": {}
+        "cost": {},
+        "reward": {
+          "gold": 200,
+          "rune": "ruby_1"
+        },
+        "text": "Встретить залпом баллист"
       },
       {
-        "text": "Buy exotic medicine (300g)",
-        "cost": { "gold": 300 },
-        "reward": { "faction_influence": { "mages_guild": 10 } }
+        "cost": {
+          "gold": 80
+        },
+        "reward": {
+          "lives": 2
+        },
+        "text": "Укрепить ворота гарнизона (80g)"
       },
       {
-        "text": "Seek the Royal Healers",
-        "cost": { "faction_influence": { "royal": -15 } },
-        "reward": { "lives": 2 }
+        "cost": {
+          "lives": 4
+        },
+        "reward": {},
+        "text": "Сдать внешнее кольцо (-4 жизни)"
       }
-    
+    ],
+    "description": "Тяжелые орочьи наездники на вепрях прорвали внешние палисады.",
+    "id": "orc_vanguard_raid",
+    "name": "Орочий Набег",
+    "repeatable": true,
+    "trigger_conditions": [
+      "valley",
+      "frontier",
+      "any"
+    ]
   },
   {
+    "category": "invasion",
+    "choices": [
+      {
+        "cost": {
+          "mana": 50
+        },
+        "reward": {
+          "glory": 30
+        },
+        "text": "Закрыть разлом маной героя (50 маны)"
+      },
+      {
+        "cost": {},
+        "reward": {
+          "force_wave": "abyss_incursion",
+          "gold": 300
+        },
+        "text": "Уничтожить порождения бездны"
+      },
+      {
+        "cost": {
+          "lives": 5
+        },
+        "reward": {},
+        "text": "Эвакуировать передовую (-5 жизней)"
+      }
+    ],
+    "description": "Пространственный разлом исторгает щупальца и теневых тварей.",
+    "id": "abyssal_rift_tear",
+    "name": "Прорыв Разлома Бездны",
+    "repeatable": true,
+    "trigger_conditions": [
+      "royal_heart",
+      "abyss_citadel",
+      "any"
+    ]
+  },
+  {
+    "category": "invasion",
+    "choices": [
+      {
+        "cost": {},
+        "reward": {
+          "gold": 180,
+          "reputation": 15
+        },
+        "text": "Приказать лучникам прикрыть небо"
+      },
+      {
+        "cost": {
+          "gold": 75
+        },
+        "reward": {
+          "smoke_cover": true
+        },
+        "text": "Разжечь дымовые костры (75g)"
+      },
+      {
+        "cost": {
+          "lives": 2
+        },
+        "reward": {},
+        "text": "Спрятаться в бункерах (-2 жизни)"
+      }
+    ],
+    "description": "Крылатые хищники пикируют на сторожевые башни сверху.",
+    "id": "wyvern_flock_attack",
+    "name": "Налет Стаи Виверн",
+    "repeatable": true,
+    "trigger_conditions": [
+      "frost_peak",
+      "ash_wastes",
+      "any"
+    ]
+  },
+  {
+    "category": "invasion",
+    "choices": [
+      {
+        "cost": {},
+        "reward": {
+          "glory": 20,
+          "gold": 220
+        },
+        "text": "Обезвредить заговорщиков силами героя"
+      },
+      {
+        "cost": {
+          "gold": 100
+        },
+        "reward": {
+          "reputation": 30
+        },
+        "text": "Подкупить осведомителя (100g)"
+      },
+      {
+        "cost": {
+          "gold": 100,
+          "lives": 3
+        },
+        "reward": {},
+        "text": "Взрыв склада (-3 жизни, потеря 100g)"
+      }
+    ],
+    "description": "Фанатики пытаются взорвать пороховые погреба цитадели.",
+    "id": "cultist_sabotage",
+    "name": "Диверсия Культистов",
+    "repeatable": true,
+    "trigger_conditions": [
+      "clockwork_city",
+      "ash_wastes",
+      "any"
+    ]
+  },
+  {
+    "category": "invasion",
+    "choices": [
+      {
+        "cost": {
+          "gold": 150
+        },
+        "reward": {
+          "boss_drop": "titan_scale",
+          "gold": 350
+        },
+        "text": "Заманить в ловушку с порохом (150g)"
+      },
+      {
+        "cost": {},
+        "reward": {
+          "force_wave": "worm_minions"
+        },
+        "text": "Обстрелять из катапульт"
+      },
+      {
+        "cost": {
+          "lives": 2
+        },
+        "reward": {},
+        "text": "Укрепить сваи (-2 жизни)"
+      }
+    ],
+    "description": "Гигантский червь сотрясает грунт под основанием защитных сооружений.",
+    "id": "sandworm_breach",
+    "name": "Пробуждение Подземного Червя",
+    "repeatable": true,
+    "trigger_conditions": [
+      "caves",
+      "ash_wastes",
+      "any"
+    ]
+  },
+  {
+    "category": "invasion",
+    "choices": [
+      {
+        "cost": {},
+        "reward": {
+          "gold": 140,
+          "rune": "sapphire_1"
+        },
+        "text": "Истребить волков"
+      },
+      {
+        "cost": {
+          "gold": 50
+        },
+        "reward": {},
+        "text": "Оставить приманку из мяса (50g)"
+      },
+      {
+        "cost": {
+          "lives": 1
+        },
+        "reward": {},
+        "text": "Отбиваться врукопашную (-1 жизнь)"
+      }
+    ],
+    "description": "Голодные морозные волки атакуют часовых на заставе.",
+    "id": "frost_wolf_hunt",
+    "name": "Бешеная Морозная Стая",
+    "repeatable": true,
+    "trigger_conditions": [
+      "frost_peak",
+      "any"
+    ]
+  },
+  {
+    "category": "invasion",
+    "choices": [
+      {
+        "cost": {},
+        "reward": {
+          "glory": 25,
+          "gold": 280
+        },
+        "text": "Переписать код управления (инженерный хак)"
+      },
+      {
+        "cost": {
+          "gold": 100
+        },
+        "reward": {},
+        "text": "Отключить питание реактора (100g)"
+      },
+      {
+        "cost": {},
+        "reward": {
+          "force_wave": "mech_uprising"
+        },
+        "text": "Разбить автоматонов силой"
+      }
+    ],
+    "description": "Сбой в главном сервере механического завода вызвал агрессию роботов.",
+    "id": "automaton_rebellion",
+    "name": "Бунт Заводских Автоматонов",
+    "repeatable": true,
+    "trigger_conditions": [
+      "clockwork_city",
+      "any"
+    ]
+  },
+  {
+    "category": "blessing",
+    "choices": [
+      {
+        "cost": {
+          "gold": 250
+        },
+        "reward": {
+          "rune": "rune_blade_1"
+        },
+        "text": "Купить редкую руну (250g)"
+      },
+      {
+        "cost": {
+          "gold": 100
+        },
+        "reward": {
+          "lives": 5
+        },
+        "text": "Закупить припасы гарнизона (100g)"
+      },
+      {
+        "cost": {},
+        "reward": {},
+        "text": "Отказаться от покупки"
+      }
+    ],
+    "description": "Таинственный купец в караване предлагает редкие заморские товары.",
+    "id": "wandering_merchant",
+    "name": "Странствующий Торговец",
+    "repeatable": true,
+    "trigger_conditions": [
+      "any"
+    ]
+  },
+  {
+    "category": "blessing",
+    "choices": [
+      {
+        "cost": {},
+        "reward": {
+          "glory": 15,
+          "tower_buff": "cosmic_power"
+        },
+        "text": "Принять благословение звезд (+20% урона)"
+      },
+      {
+        "cost": {},
+        "reward": {
+          "gold": 200
+        },
+        "text": "Сфокусировать свет на казне (+200g)"
+      },
+      {
+        "cost": {},
+        "reward": {
+          "lives": 4
+        },
+        "text": "Исцелить раненых защитников (+4 жизни)"
+      }
+    ],
+    "description": "Звезды выстроились в знак Могущества. Все башни наполняются космической энергией.",
     "id": "celestial_alignment",
-    "name": "Celestial Alignment",
-    "description": "The stars align, granting a moment of absolute clarity.",
-    "trigger_conditions": ["any"],
-    "repeatable": false,
-    "choices": [
-      {
-        "text": "Study the stars (Gain Research)",
-        "cost": {},
-        "reward": { "research_points": 50 }
-      },
-      {
-        "text": "Pray to the gods (Gain Lives)",
-        "cost": {},
-        "reward": { "lives": 10 }
-      }
-    
+    "name": "Парад Созвездий",
+    "repeatable": true,
+    "trigger_conditions": [
+      "any"
+    ]
   },
   {
-    "id": "rebel_uprising",
-    "name": "Rebel Uprising",
-    "description": "Local peasants are revolting against the crown.",
-    "trigger_conditions": ["stone_suburbs", "royal_heart", "royal_highway"],
-    "repeatable": true,
+    "category": "blessing",
     "choices": [
       {
-        "text": "Crush the rebellion (Royal favor)",
-        "cost": { "lives": 3 },
-        "reward": { "faction_influence": { "royal": 20 } }
-      },
-      {
-        "text": "Support the rebels (Mercenary favor)",
-        "cost": { "gold": 250 },
-        "reward": { "faction_influence": { "mercenaries": 20, "royal": -20 } }
-      },
-      {
-        "text": "Stay neutral",
         "cost": {},
-        "reward": {}
+        "reward": {
+          "gold": 300,
+          "reputation": 20
+        },
+        "text": "Принять золотую субсидию (+300g)"
+      },
+      {
+        "cost": {},
+        "reward": {
+          "free_tower_upgrade": true
+        },
+        "text": "Обменять на строительные материалы"
+      },
+      {
+        "cost": {},
+        "reward": {
+          "lives": 3
+        },
+        "text": "Нанять наемную роту (+3 жизни)"
       }
-    
+    ],
+    "description": "Купеческий конвой Лиги прибыл с пожертвованиями на войну.",
+    "id": "merchant_caravan_arrival",
+    "name": "Прибытие Золотого Каравана",
+    "repeatable": true,
+    "trigger_conditions": [
+      "any"
+    ]
   },
   {
-    "id": "ancient_shrine",
-    "name": "Ancient Shrine Awakening",
-    "description": "An old ruin hums with forgotten power.",
-    "trigger_conditions": ["greenwood", "astral_ruins", "sunken_kingdom"],
-    "repeatable": false,
+    "category": "blessing",
     "choices": [
       {
-        "text": "Offer blood (Sacrifice 10 lives)",
-        "cost": { "lives": 10 },
-        "reward": { "artifact": "legendary" }
-      },
-      {
-        "text": "Offer gold (Sacrifice 1000g)",
-        "cost": { "gold": 1000 },
-        "reward": { "artifact": "legendary" }
-      },
-      {
-        "text": "Leave it alone",
         "cost": {},
-        "reward": {}
+        "reward": {
+          "lives": 5
+        },
+        "text": "Испей целебной воды (+5 жизней базе)"
+      },
+      {
+        "cost": {},
+        "reward": {
+          "gold": 100,
+          "mana_buff": true
+        },
+        "text": "Наполнить фляги героя (полная мана + реген)"
+      },
+      {
+        "cost": {},
+        "reward": {
+          "tower_range_buff": 0.15
+        },
+        "text": "Освятить почву под башнями"
       }
-    
+    ],
+    "description": "Освященный родник забил среди руин цитадели.",
+    "id": "spring_bloom_fountain",
+    "name": "Весенний Источник Жизни",
+    "repeatable": true,
+    "trigger_conditions": [
+      "greenwood",
+      "valley",
+      "any"
+    ]
   },
   {
-    "id": "elite_invasion_valley",
-    "name": "Valley Overrun!",
-    "description": "The threat level has reached its maximum. An elite boss invades!",
-    "trigger_conditions": ["max_threat"],
-    "repeatable": true,
+    "category": "blessing",
     "choices": [
       {
-        "text": "Defend the Valley!",
         "cost": {},
-        "reward": { "force_wave": "boss_orc_elite" }
+        "reward": {
+          "glory": 25,
+          "rune": "rune_radiance_1"
+        },
+        "text": "Принести молитву света"
+      },
+      {
+        "cost": {},
+        "reward": {
+          "leak_shield": 2
+        },
+        "text": "Попросить защиты от врагов"
+      },
+      {
+        "cost": {
+          "gold": 50
+        },
+        "reward": {
+          "glory": 50
+        },
+        "text": "Оставить монету богам (-50g)"
       }
-    
+    ],
+    "description": "Руины забытых богов мерцают теплым светом надежды.",
+    "id": "ancient_shrine_whisper",
+    "name": "Шепот Древнего Алтаря",
+    "repeatable": true,
+    "trigger_conditions": [
+      "crystal_caves",
+      "frost_peak",
+      "any"
+    ]
   },
   {
-    "id": "merchant_caravan",
-    "name": "Stalled Caravan",
-    "description": "A merchant's cart has broken down.",
-    "trigger_conditions": ["royal_highway", "valley"],
-    "repeatable": true,
+    "category": "blessing",
     "choices": [
       {
-        "text": "Help repair it (Takes time)",
-        "cost": { "mana": 30 },
-        "reward": { "gold": 200, "faction_influence": { "merchants": 15 } }
-      },
-      {
-        "text": "Rob them!",
-        "cost": { "faction_influence": { "merchants": -30 } },
-        "reward": { "gold": 500 }
-      },
-      {
-        "text": "Walk away",
         "cost": {},
-        "reward": {}
+        "reward": {
+          "armor_pierce_buff": 0.25
+        },
+        "text": "Заточить баллисты (+25% пробития брони)"
+      },
+      {
+        "cost": {},
+        "reward": {
+          "hero_armor_buff": 15
+        },
+        "text": "Укрепить щиты (+15 брони герою)"
+      },
+      {
+        "cost": {
+          "gold": 150
+        },
+        "reward": {
+          "rune": "rune_precision_1"
+        },
+        "text": "Выковать руническую наковальню (150g)"
       }
-    
+    ],
+    "description": "Мастер из клана Железного Горна готов бесплатно заточить орудия гарнизона.",
+    "id": "master_blacksmith_visit",
+    "name": "Визит Легендарного Кузнеца",
+    "repeatable": true,
+    "trigger_conditions": [
+      "any"
+    ]
   },
   {
-    "id": "smuggler_cache",
-    "name": "Hidden Smuggler Cache",
-    "description": "You discover a hidden stash of illegal goods.",
-    "trigger_conditions": ["swamp", "stone_suburbs"],
-    "repeatable": false,
+    "category": "blessing",
     "choices": [
       {
-        "text": "Turn it in to the guards",
         "cost": {},
-        "reward": { "faction_influence": { "royal": 15 } }
+        "reward": {
+          "gold": 250
+        },
+        "text": "Трансмутировать сырье в золото (+250g)"
       },
       {
-        "text": "Sell it on the black market",
-        "cost": { "faction_influence": { "smugglers": 20 } },
-        "reward": { "gold": 800 }
+        "cost": {},
+        "reward": {
+          "splash_buff": 0.2
+        },
+        "text": "Улучшить пороховые снаряды (+20% сплэш)"
+      },
+      {
+        "cost": {},
+        "reward": {
+          "lives": 3
+        },
+        "text": "Создать целебное зелье (+3 жизни)"
       }
-    
+    ],
+    "description": "Ученые гарнизона открыли новый катализатор золота и пороха.",
+    "id": "alchemical_discovery",
+    "name": "Алхимическое Открытие",
+    "repeatable": true,
+    "trigger_conditions": [
+      "any"
+    ]
   },
   {
-    "id": "mage_tower_ruin",
-    "name": "Ruined Mage Tower",
-    "description": "A collapsed tower radiates dangerous energy.",
-    "trigger_conditions": ["crystal_caves", "astral_ruins"],
-    "repeatable": false,
+    "category": "blessing",
     "choices": [
       {
-        "text": "Search for artifacts",
-        "cost": { "lives": 8 },
-        "reward": { "artifact": "epic" }
+        "cost": {},
+        "reward": {
+          "attack_speed_buff": 0.2
+        },
+        "text": "Вдохновить защитников (+20% скорости атаки)"
       },
       {
-        "text": "Report to the Guild",
         "cost": {},
-        "reward": { "faction_influence": { "mages_guild": 25 } }
+        "reward": {
+          "lives": 4
+        },
+        "text": "Привлечь рекрутов в ополчение (+4 жизни)"
+      },
+      {
+        "cost": {},
+        "reward": {
+          "gold": 180
+        },
+        "text": "Получить дары от жителей (+180g)"
       }
-    
-  }
-
-  ,{
-    "id": "filler_event_1",
-    "name": "Filler Event 1",
-    "description": "A minor occurrence in the world... 1",
-    "trigger_conditions": ["any"],
+    ],
+    "description": "Подвиги героя воспевают барды во всех тавернах королевства.",
+    "id": "heroic_inspiration",
+    "name": "Героическое Воодушевление",
     "repeatable": true,
+    "trigger_conditions": [
+      "any"
+    ]
+  },
+  {
+    "category": "blessing",
     "choices": [
       {
-        "text": "Do something",
         "cost": {},
-        "reward": { "gold": 10 }
+        "reward": {
+          "tower_range_buff": 0.25
+        },
+        "text": "Увеличить дальность стрельбы башен (+25%)"
+      },
+      {
+        "cost": {},
+        "reward": {
+          "gold": 150
+        },
+        "text": "Ускорить караваны снабжения (+150g)"
+      },
+      {
+        "cost": {},
+        "reward": {
+          "stealth_reveal": true
+        },
+        "text": "Развеять туман войны"
       }
-    
-  }
-  ,{
-    "id": "filler_event_2",
-    "name": "Filler Event 2",
-    "description": "A minor occurrence in the world... 2",
-    "trigger_conditions": ["any"],
+    ],
+    "description": "Свежий бриз разгоняет пороховой дым и направляет стрелы лучников точно в цель.",
+    "id": "favorable_winds",
+    "name": "Попутный Ветер",
     "repeatable": true,
+    "trigger_conditions": [
+      "valley",
+      "frost_peak",
+      "any"
+    ]
+  },
+  {
+    "category": "blessing",
     "choices": [
       {
-        "text": "Do something",
         "cost": {},
-        "reward": { "gold": 10 }
+        "reward": {
+          "lives": 6
+        },
+        "text": "Накормить солдат (+6 жизней крепости)"
+      },
+      {
+        "cost": {},
+        "reward": {
+          "gold": 220
+        },
+        "text": "Продать излишки на ярмарке (+220g)"
+      },
+      {
+        "cost": {},
+        "reward": {
+          "life_regen_wave": 1
+        },
+        "text": "Законсервировать запасы (+1 жизнь каждую волну)"
       }
-    
-  }
-  ,{
-    "id": "filler_event_3",
-    "name": "Filler Event 3",
-    "description": "A minor occurrence in the world... 3",
-    "trigger_conditions": ["any"],
+    ],
+    "description": "Окрестные фермы собрали небывалый урожай и доставили провизию на фронт.",
+    "id": "bountiful_harvest",
+    "name": "Богатый Урожай",
     "repeatable": true,
+    "trigger_conditions": [
+      "valley",
+      "any"
+    ]
+  },
+  {
+    "category": "disaster",
     "choices": [
       {
-        "text": "Do something",
+        "cost": {
+          "gold": 120
+        },
+        "reward": {
+          "light_restored": true
+        },
+        "text": "Разжечь священные факелы (120g)"
+      },
+      {
         "cost": {},
-        "reward": { "gold": 10 }
+        "reward": {
+          "force_debuff": "eclipse_night"
+        },
+        "text": "Принять бой в полумраке (урон монстров +25%)"
+      },
+      {
+        "cost": {
+          "lives": 3
+        },
+        "reward": {},
+        "text": "Запереться в цитадели (-3 жизни)"
       }
-    
-  }
-  ,{
-    "id": "filler_event_4",
-    "name": "Filler Event 4",
-    "description": "A minor occurrence in the world... 4",
-    "trigger_conditions": ["any"],
+    ],
+    "description": "Тьма поглотила солнце. Магия тьмы усилилась, а свет башен померк.",
+    "id": "solar_eclipse_disaster",
+    "name": "Полное Солнечное Затмение",
     "repeatable": true,
+    "trigger_conditions": [
+      "any"
+    ]
+  },
+  {
+    "category": "disaster",
     "choices": [
       {
-        "text": "Do something",
+        "cost": {
+          "gold": 150
+        },
+        "reward": {},
+        "text": "Срочный ремонт фундаментов (150g)"
+      },
+      {
+        "cost": {
+          "lives": 4
+        },
+        "reward": {},
+        "text": "Смириться с разрушениями (-4 жизни)"
+      },
+      {
         "cost": {},
-        "reward": { "gold": 10 }
+        "reward": {
+          "tower_range_penalty": 0.2
+        },
+        "text": "Перенести орудия на скалы"
       }
-    
-  }
-  ,{
-    "id": "filler_event_5",
-    "name": "Filler Event 5",
-    "description": "A minor occurrence in the world... 5",
-    "trigger_conditions": ["any"],
+    ],
+    "description": "Подземные толчки раскалывают плиты укреплений и повреждают башни.",
+    "id": "earthquake_cataclysm",
+    "name": "Разрушительное Землетрясение",
     "repeatable": true,
+    "trigger_conditions": [
+      "caves",
+      "ash_wastes",
+      "any"
+    ]
+  },
+  {
+    "category": "disaster",
     "choices": [
       {
-        "text": "Do something",
+        "cost": {
+          "gold": 100
+        },
+        "reward": {},
+        "text": "Укрыть орудия просмоленными тентами (100g)"
+      },
+      {
         "cost": {},
-        "reward": { "gold": 10 }
+        "reward": {
+          "attack_speed_penalty": 0.2
+        },
+        "text": "Терпеть разъедание (скорострельность -20%)"
+      },
+      {
+        "cost": {
+          "lives": 2
+        },
+        "reward": {},
+        "text": "Потерять дозорных от яда (-2 жизни)"
       }
-    
-  }
-  ,{
-    "id": "filler_event_6",
-    "name": "Filler Event 6",
-    "description": "A minor occurrence in the world... 6",
-    "trigger_conditions": ["any"],
+    ],
+    "description": "Кислотные облака извергают едкую жижу, разъедающую деревянные и железные конструкции.",
+    "id": "toxic_rain_storm",
+    "name": "Ядовитый Ливень",
     "repeatable": true,
+    "trigger_conditions": [
+      "swamp",
+      "ash_wastes",
+      "any"
+    ]
+  },
+  {
+    "category": "disaster",
     "choices": [
       {
-        "text": "Do something",
-        "cost": {},
-        "reward": { "gold": 10 }
+        "cost": {
+          "lives": 4
+        },
+        "reward": {},
+        "text": "Жесткий карантин (-4 жизни)"
+      },
+      {
+        "cost": {
+          "gold": 180
+        },
+        "reward": {
+          "reputation": 20
+        },
+        "text": "Закупить панацею у алхимиков (180g)"
+      },
+      {
+        "cost": {
+          "mana": 40
+        },
+        "reward": {},
+        "text": "Очистить огнем заклинаний (40 маны)"
       }
-    
-  }
-  ,{
-    "id": "filler_event_7",
-    "name": "Filler Event 7",
-    "description": "A minor occurrence in the world... 7",
-    "trigger_conditions": ["any"],
+    ],
+    "description": "Смертоносная болезнь косит ряды гарнизона.",
+    "id": "plague_outbreak",
+    "name": "Вспышка Чумы",
     "repeatable": true,
+    "trigger_conditions": [
+      "swamp",
+      "city",
+      "any"
+    ]
+  },
+  {
+    "category": "disaster",
     "choices": [
       {
-        "text": "Do something",
+        "cost": {
+          "gold": 90
+        },
+        "reward": {},
+        "text": "Растопить лед огненной смесью (90g)"
+      },
+      {
         "cost": {},
-        "reward": { "gold": 10 }
+        "reward": {
+          "range_penalty": 0.3
+        },
+        "text": "Снизить радиус стрельбы башен на 30%"
+      },
+      {
+        "cost": {
+          "lives": 2
+        },
+        "reward": {},
+        "text": "Замерзание часовых (-2 жизни)"
       }
-    
-  }
-  ,{
-    "id": "filler_event_8",
-    "name": "Filler Event 8",
-    "description": "A minor occurrence in the world... 8",
-    "trigger_conditions": ["any"],
+    ],
+    "description": "Снежная буря сковала механизмы башен льдом.",
+    "id": "blinding_blizzard",
+    "name": "Ослепительная Метель",
     "repeatable": true,
+    "trigger_conditions": [
+      "frost_peak",
+      "any"
+    ]
+  },
+  {
+    "category": "disaster",
     "choices": [
       {
-        "text": "Do something",
-        "cost": {},
-        "reward": { "gold": 10 }
+        "cost": {
+          "gold": 80
+        },
+        "reward": {},
+        "text": "Выжечь рой огнеметами (80g)"
+      },
+      {
+        "cost": {
+          "lives": 3
+        },
+        "reward": {},
+        "text": "Потеря части продовольствия (-3 жизни)"
+      },
+      {
+        "cost": {
+          "gold": 120
+        },
+        "reward": {},
+        "text": "Убытки казны (-120g)"
       }
-    
-  }
-  ,{
-    "id": "filler_event_9",
-    "name": "Filler Event 9",
-    "description": "A minor occurrence in the world... 9",
-    "trigger_conditions": ["any"],
+    ],
+    "description": "Рой прожорливых тварей пожирает припасы и обшивку защитных стен.",
+    "id": "locust_plague",
+    "name": "Нашествие Саранчи Бездны",
     "repeatable": true,
+    "trigger_conditions": [
+      "any"
+    ]
+  },
+  {
+    "category": "disaster",
     "choices": [
       {
-        "text": "Do something",
+        "cost": {
+          "gold": 110
+        },
+        "reward": {
+          "stealth_reveal": true
+        },
+        "text": "Осветить дорогу сигнальными ракетами (110g)"
+      },
+      {
         "cost": {},
-        "reward": { "gold": 10 }
+        "reward": {
+          "miss_chance_debuff": 0.2
+        },
+        "text": "Принять бой вслепую (шанс промаха +20%)"
+      },
+      {
+        "cost": {
+          "lives": 2
+        },
+        "reward": {},
+        "text": "Пропустить передовые отряды (-2 жизни)"
       }
-    
-  }
-  ,{
-    "id": "filler_event_10",
-    "name": "Filler Event 10",
-    "description": "A minor occurrence in the world... 10",
-    "trigger_conditions": ["any"],
+    ],
+    "description": "Густые белые испарения скрывают шаги крадущихся чудовищ.",
+    "id": "cursed_fog_creeps",
+    "name": "Проклятый Туман",
     "repeatable": true,
+    "trigger_conditions": [
+      "swamp",
+      "valley",
+      "any"
+    ]
+  },
+  {
+    "category": "disaster",
     "choices": [
       {
-        "text": "Do something",
-        "cost": {},
-        "reward": { "gold": 10 }
+        "cost": {
+          "gold": 130
+        },
+        "reward": {},
+        "text": "Залить водой (потеря 130g на патроны)"
+      },
+      {
+        "cost": {
+          "hero_hp": 200
+        },
+        "reward": {
+          "glory": 20
+        },
+        "text": "Героически тушить пламя (герой получает 200 урона)"
+      },
+      {
+        "cost": {
+          "lives": 4
+        },
+        "reward": {},
+        "text": "Взрыв части укрепления (-4 жизни)"
       }
-    
-  }
-  ,{
-    "id": "filler_event_11",
-    "name": "Filler Event 11",
-    "description": "A minor occurrence in the world... 11",
-    "trigger_conditions": ["any"],
+    ],
+    "description": "Случайная искра грозит взрывом половины боеприпасов цитадели.",
+    "id": "powder_magazine_fire",
+    "name": "Пожар в Пороховом Погребе",
     "repeatable": true,
+    "trigger_conditions": [
+      "any"
+    ]
+  },
+  {
+    "category": "disaster",
     "choices": [
       {
-        "text": "Do something",
+        "cost": {
+          "gold": 100
+        },
+        "reward": {},
+        "text": "Охлаждать орудия вином и водой (100g)"
+      },
+      {
         "cost": {},
-        "reward": { "gold": 10 }
+        "reward": {
+          "attack_speed_penalty": 0.25
+        },
+        "text": "Снизить темп стрельбы на 25%"
+      },
+      {
+        "cost": {
+          "lives": 2
+        },
+        "reward": {},
+        "text": "Тепловые удары гарнизона (-2 жизни)"
       }
-    
-  }
-  ,{
-    "id": "filler_event_12",
-    "name": "Filler Event 12",
-    "description": "A minor occurrence in the world... 12",
-    "trigger_conditions": ["any"],
+    ],
+    "description": "Невыносимая жара перегревает металл стволов и истощает силы воинов.",
+    "id": "heatwave_drought_disaster",
+    "name": "Иссушающая Засуха",
     "repeatable": true,
+    "trigger_conditions": [
+      "ash_wastes",
+      "any"
+    ]
+  },
+  {
+    "category": "disaster",
     "choices": [
       {
-        "text": "Do something",
+        "cost": {
+          "gold": 140
+        },
+        "reward": {
+          "glory": 25
+        },
+        "text": "Очистить жилу ритуалом жрецов (140g)"
+      },
+      {
         "cost": {},
-        "reward": { "gold": 10 }
+        "reward": {
+          "mana_cost_debuff": 2.0
+        },
+        "text": "Блокировать магию (заклинания тратят вдвое больше маны)"
+      },
+      {
+        "cost": {
+          "lives": 3
+        },
+        "reward": {},
+        "text": "Магический взрыв (-3 жизни)"
       }
-    
-  }
-  ,{
-    "id": "filler_event_13",
-    "name": "Filler Event 13",
-    "description": "A minor occurrence in the world... 13",
-    "trigger_conditions": ["any"],
+    ],
+    "description": "Потоки маны под землей отравлены скверной Бездны.",
+    "id": "corrupted_leylines",
+    "name": "Осквернение Магических Жил",
     "repeatable": true,
+    "trigger_conditions": [
+      "crystal_caves",
+      "royal_heart",
+      "any"
+    ]
+  },
+  {
+    "category": "faction",
     "choices": [
       {
-        "text": "Do something",
         "cost": {},
-        "reward": { "gold": 10 }
+        "reward": {
+          "gold": 100,
+          "reputation_crown": 40
+        },
+        "text": "Поддержать Корону (+Rep Crown, +100g)"
+      },
+      {
+        "cost": {},
+        "reward": {
+          "reputation_syndicate": 40,
+          "rune": "rune_blade_1"
+        },
+        "text": "Помочь контрабандистам (+Rep Syndicate, +Редкая руна)"
+      },
+      {
+        "cost": {},
+        "reward": {},
+        "text": "Не вмешиваться в междоусобицу"
       }
-    
-  }
-  ,{
-    "id": "filler_event_14",
-    "name": "Filler Event 14",
-    "description": "A minor occurrence in the world... 14",
-    "trigger_conditions": ["any"],
+    ],
+    "description": "Королевские гвардейцы загнали в угол отряд Синдиката Теней с контрабандой.",
+    "id": "royal_patrol_vs_smugglers",
+    "name": "Стычка: Патруль vs Контрабандисты",
     "repeatable": true,
+    "trigger_conditions": [
+      "any"
+    ]
+  },
+  {
+    "category": "faction",
     "choices": [
       {
-        "text": "Do something",
         "cost": {},
-        "reward": { "gold": 10 }
+        "reward": {
+          "lives": 4,
+          "reputation_druids": 45
+        },
+        "text": "Встать на сторону Друидов (+Rep Druids, +4 жизни базе)"
+      },
+      {
+        "cost": {},
+        "reward": {
+          "ballista_upgrade": true,
+          "reputation_mechanics": 45
+        },
+        "text": "Поддержать Механиков (+Rep Mechanics, +Бесплатный апгрейд баллист)"
+      },
+      {
+        "cost": {
+          "gold": 150
+        },
+        "reward": {
+          "reputation_all": 20
+        },
+        "text": "Предложить мир за выкуп (150g)"
       }
-    
-  }
-  ,{
-    "id": "filler_event_15",
-    "name": "Filler Event 15",
-    "description": "A minor occurrence in the world... 15",
-    "trigger_conditions": ["any"],
+    ],
+    "description": "Инженеры Механиков вырубают священные рощи друидов для постройки осадных машин.",
+    "id": "druids_vs_lumberjacks",
+    "name": "Конфликт в Зеленом Лесу",
     "repeatable": true,
+    "trigger_conditions": [
+      "greenwood",
+      "any"
+    ]
+  },
+  {
+    "category": "faction",
     "choices": [
       {
-        "text": "Do something",
         "cost": {},
-        "reward": { "gold": 10 }
+        "reward": {
+          "holy_buff": true,
+          "reputation_silver": 50
+        },
+        "text": "Помочь Священному Ордену (+Rep Silver, святой урон +25%)"
+      },
+      {
+        "cost": {},
+        "reward": {
+          "gold": 300,
+          "reputation_coven": 50
+        },
+        "text": "Защитить Ковен (+Rep Coven, +300g и проклятие на врагов)"
+      },
+      {
+        "cost": {
+          "lives": 2
+        },
+        "reward": {
+          "artifact": "hunters_mark",
+          "gold": 200
+        },
+        "text": "Конфисковать артефакты обеих сторон"
       }
-    
-  }
-  ,{
-    "id": "filler_event_16",
-    "name": "Filler Event 16",
-    "description": "A minor occurrence in the world... 16",
-    "trigger_conditions": ["any"],
+    ],
+    "description": "Рыцари Серебряного Ордена штурмуют алтарь Пепельного Ковена.",
+    "id": "inquisition_vs_coven",
+    "name": "Инквизиция против Ковена",
     "repeatable": true,
+    "trigger_conditions": [
+      "any"
+    ]
+  },
+  {
+    "category": "faction",
     "choices": [
       {
-        "text": "Do something",
         "cost": {},
-        "reward": { "gold": 10 }
+        "reward": {
+          "gold": 350,
+          "reputation_crown": 40,
+          "reputation_league": -20
+        },
+        "text": "Собрать налог силой (+Rep Crown, +350g, -Rep League)"
+      },
+      {
+        "cost": {},
+        "reward": {
+          "discount_buff": 0.15,
+          "reputation_league": 50
+        },
+        "text": "Снизить пошлины (+Rep League, скидка 15% на апгрейды)"
+      },
+      {
+        "cost": {
+          "gold": 100
+        },
+        "reward": {
+          "glory": 30
+        },
+        "text": "Примирить стороны через компромисс"
       }
-    
-  }
-  ,{
-    "id": "filler_event_17",
-    "name": "Filler Event 17",
-    "description": "A minor occurrence in the world... 17",
-    "trigger_conditions": ["any"],
+    ],
+    "description": "Торговая Лига отказывается платить военный налог Короне.",
+    "id": "merchant_tax_revolt",
+    "name": "Бунт Налогоплательщиков",
     "repeatable": true,
+    "trigger_conditions": [
+      "city",
+      "any"
+    ]
+  },
+  {
+    "category": "faction",
     "choices": [
       {
-        "text": "Do something",
         "cost": {},
-        "reward": { "gold": 10 }
+        "reward": {
+          "lives": 6,
+          "reputation_crown": -15,
+          "reputation_outcasts": 50
+        },
+        "text": "Принять повстанцев в гарнизон (+Rep Outcasts, +6 жизней)"
+      },
+      {
+        "cost": {},
+        "reward": {
+          "gold": 250,
+          "reputation_crown": 40,
+          "reputation_outcasts": -30
+        },
+        "text": "Выдать их Королевскому Суду (+Rep Crown, +250g)"
+      },
+      {
+        "cost": {
+          "gold": 100
+        },
+        "reward": {
+          "glory": 20,
+          "reputation_outcasts": 30
+        },
+        "text": "Снабдить оружием и отправить в партизаны (100g)"
       }
-    
-  }
-  ,{
-    "id": "filler_event_18",
-    "name": "Filler Event 18",
-    "description": "A minor occurrence in the world... 18",
-    "trigger_conditions": ["any"],
+    ],
+    "description": "Повстанцы просят амнистии и убежища в стенах крепости в обмен на военную помощь.",
+    "id": "outcast_rebel_petition",
+    "name": "Петиция Отверженных",
     "repeatable": true,
+    "trigger_conditions": [
+      "any"
+    ]
+  },
+  {
+    "category": "faction",
     "choices": [
       {
-        "text": "Do something",
+        "cost": {
+          "gold": 200
+        },
+        "reward": {
+          "reputation_syndicate": 35,
+          "rune": "rune_titan_slayer_1"
+        },
+        "text": "Купить чертежи (200g, +Rep Syndicate)"
+      },
+      {
         "cost": {},
-        "reward": { "gold": 10 }
+        "reward": {
+          "gold": 150,
+          "reputation_crown": 35,
+          "reputation_syndicate": -20
+        },
+        "text": "Арестовать торговца (+Rep Crown, +150g)"
+      },
+      {
+        "cost": {},
+        "reward": {},
+        "text": "Отказаться от сомнительного предложения"
       }
-    
-  }
-  ,{
-    "id": "filler_event_19",
-    "name": "Filler Event 19",
-    "description": "A minor occurrence in the world... 19",
-    "trigger_conditions": ["any"],
+    ],
+    "description": "Синдикат Теней предлагает украденные из арсенала столицы чертежи экспериментальных орудий.",
+    "id": "black_market_deal",
+    "name": "Сделка на Черном Рынке",
     "repeatable": true,
+    "trigger_conditions": [
+      "any"
+    ]
+  },
+  {
+    "category": "faction",
     "choices": [
       {
-        "text": "Do something",
+        "cost": {
+          "gold": 150
+        },
+        "reward": {
+          "attack_speed_buff": 0.2,
+          "reputation_mechanics": 45
+        },
+        "text": "Оплатить лицензию (150g, +Rep Mechanics, скорострельность +20%)"
+      },
+      {
         "cost": {},
-        "reward": { "gold": 10 }
+        "reward": {
+          "reputation_crown": 30,
+          "reputation_mechanics": -25
+        },
+        "text": "Национализировать чертежи (+Rep Crown, -Rep Mechanics)"
+      },
+      {
+        "cost": {},
+        "reward": {},
+        "text": "Отказаться от артиллерии на 1 волну"
       }
-    
-  }
-  ,{
-    "id": "filler_event_20",
-    "name": "Filler Event 20",
-    "description": "A minor occurrence in the world... 20",
-    "trigger_conditions": ["any"],
+    ],
+    "description": "Гильдия Механиков требует плату за использование их артиллерийских патентов.",
+    "id": "clockwork_guild_patent",
+    "name": "Патент Механиков",
     "repeatable": true,
+    "trigger_conditions": [
+      "clockwork_city",
+      "any"
+    ]
+  },
+  {
+    "category": "faction",
     "choices": [
       {
-        "text": "Do something",
         "cost": {},
-        "reward": { "gold": 10 }
+        "reward": {
+          "artifact": "merchants_coin",
+          "reputation_silver": 50
+        },
+        "text": "Отбить реликвию силой (+Rep Silver, +Артефакт)"
+      },
+      {
+        "cost": {},
+        "reward": {
+          "gold": 350,
+          "reputation_coven": 45,
+          "reputation_silver": -30
+        },
+        "text": "Позволить Ковену завершить темный ритуал (+Rep Coven, +350g)"
+      },
+      {
+        "cost": {
+          "gold": 120
+        },
+        "reward": {
+          "glory": 35
+        },
+        "text": "Вернуть реликвию за выкуп (120g)"
       }
-    
-  }
-  ,{
-    "id": "filler_event_21",
-    "name": "Filler Event 21",
-    "description": "A minor occurrence in the world... 21",
-    "trigger_conditions": ["any"],
+    ],
+    "description": "Древний серебряный крест украден сектантами Пепельного Ковена.",
+    "id": "sacred_relic_theft",
+    "name": "Похищение Реликвии Ордена",
     "repeatable": true,
+    "trigger_conditions": [
+      "any"
+    ]
+  },
+  {
+    "category": "faction",
     "choices": [
       {
-        "text": "Do something",
         "cost": {},
-        "reward": { "gold": 10 }
+        "reward": {
+          "poison_buff": 0.3,
+          "reputation_druids": 45
+        },
+        "text": "Закрыть химические сливы (+Rep Druids, ядовитый урон +30%)"
+      },
+      {
+        "cost": {},
+        "reward": {
+          "gold": 200,
+          "reputation_druids": -20
+        },
+        "text": "Продолжить производство боевых ядов (+Rep Mechanics/Alch, +200g)"
+      },
+      {
+        "cost": {
+          "gold": 120
+        },
+        "reward": {
+          "glory": 25,
+          "lives": 2
+        },
+        "text": "Построить фильтры стоков (120g)"
       }
-    
-  }
-  ,{
-    "id": "filler_event_22",
-    "name": "Filler Event 22",
-    "description": "A minor occurrence in the world... 22",
-    "trigger_conditions": ["any"],
+    ],
+    "description": "Друиды просят очистить истоки ручья от отходов алхимических лабораторий.",
+    "id": "druid_sanctuary_plea",
+    "name": "Мольба Рощи Друидов",
     "repeatable": true,
+    "trigger_conditions": [
+      "greenwood",
+      "any"
+    ]
+  },
+  {
+    "category": "faction",
     "choices": [
       {
-        "text": "Do something",
         "cost": {},
-        "reward": { "gold": 10 }
+        "reward": {
+          "gold": 500,
+          "lives": 5,
+          "reputation_crown": 80
+        },
+        "text": "Присягнуть Королю (+Rep Crown +80, +500g, +5 жизней)"
+      },
+      {
+        "cost": {},
+        "reward": {
+          "glory": 40,
+          "reputation_outcasts": 50
+        },
+        "text": "Сохранить независимость военачальника (+Rep Outcasts, +40 Славы)"
+      },
+      {
+        "cost": {},
+        "reward": {
+          "gold": 400,
+          "reputation_league": 50
+        },
+        "text": "Заключить секретный пакт с Лигой Торговцев (+400g)"
       }
-    
-  }
-  ,{
-    "id": "filler_event_23",
-    "name": "Filler Event 23",
-    "description": "A minor occurrence in the world... 23",
-    "trigger_conditions": ["any"],
+    ],
+    "description": "Королевский герольд прибыл с предложением подписать эдикт о верховном командовании.",
+    "id": "coronation_oath",
+    "name": "Клятва Престолу",
     "repeatable": true,
+    "trigger_conditions": [
+      "royal_heart",
+      "any"
+    ]
+  },
+  {
+    "category": "anomaly",
     "choices": [
       {
-        "text": "Do something",
+        "cost": {
+          "mana": 30
+        },
+        "reward": {
+          "glory": 20
+        },
+        "text": "Стабилизировать поле маной (30 маны)"
+      },
+      {
         "cost": {},
-        "reward": { "gold": 10 }
+        "reward": {
+          "anomaly_gravity": true
+        },
+        "text": "Использовать гравитацию (враги замедлены на 50%, башни мажут на 20%)"
+      },
+      {
+        "cost": {
+          "gold": 100
+        },
+        "reward": {},
+        "text": "Эвакуировать орудия (-100g)"
       }
-    
-  }
-  ,{
-    "id": "filler_event_24",
-    "name": "Filler Event 24",
-    "description": "A minor occurrence in the world... 24",
-    "trigger_conditions": ["any"],
+    ],
+    "description": "В центре поля боя возникла пространственная черная дыра, затягивающая все снаряды.",
+    "id": "gravity_well_anomaly",
+    "name": "Гравитационный Колодец",
     "repeatable": true,
+    "trigger_conditions": [
+      "any"
+    ]
+  },
+  {
+    "category": "anomaly",
     "choices": [
       {
-        "text": "Do something",
+        "cost": {
+          "gold": 120
+        },
+        "reward": {},
+        "text": "Закрыть портал антимагическим зарядом (120g)"
+      },
+      {
         "cost": {},
-        "reward": { "gold": 10 }
+        "reward": {
+          "force_wave": "mirror_swarm",
+          "gold": 350
+        },
+        "text": "Сразиться с иллюзиями (х2 врагов, х2 золото)"
+      },
+      {
+        "cost": {
+          "lives": 3
+        },
+        "reward": {},
+        "text": "Прорыв зеркала (-3 жизни)"
       }
-    
-  }
-  ,{
-    "id": "filler_event_25",
-    "name": "Filler Event 25",
-    "description": "A minor occurrence in the world... 25",
-    "trigger_conditions": ["any"],
+    ],
+    "description": "Враги отражаются в параллельном мире, создавая двойников.",
+    "id": "mirror_dimension_portal",
+    "name": "Портал Зеркального Измерения",
     "repeatable": true,
+    "trigger_conditions": [
+      "any"
+    ]
+  },
+  {
+    "category": "anomaly",
     "choices": [
       {
-        "text": "Do something",
         "cost": {},
-        "reward": { "gold": 10 }
+        "reward": {
+          "cdr_buff": 0.5
+        },
+        "text": "Синхронизировать башни с хроно-полем (+50% перезарядки)"
+      },
+      {
+        "cost": {},
+        "reward": {
+          "slow_aura_global": 0.6
+        },
+        "text": "Оставить пузырь врагам (враги замедлены на 60%)"
+      },
+      {
+        "cost": {
+          "gold": 100
+        },
+        "reward": {
+          "clear_current_wave": true
+        },
+        "text": "Взорвать хроно-мину (100g, уничтожить волну)"
       }
-    
-  }
-  ,{
-    "id": "filler_event_26",
-    "name": "Filler Event 26",
-    "description": "A minor occurrence in the world... 26",
-    "trigger_conditions": ["any"],
+    ],
+    "description": "Время в секторе обороны течет в несколько раз медленнее обычного.",
+    "id": "time_dilation_bubble",
+    "name": "Хроно-Пузырь Замедления",
     "repeatable": true,
+    "trigger_conditions": [
+      "any"
+    ]
+  },
+  {
+    "category": "anomaly",
     "choices": [
       {
-        "text": "Do something",
         "cost": {},
-        "reward": { "gold": 10 }
+        "reward": {
+          "glory": 15,
+          "mana": 150
+        },
+        "text": "Уловить ману в накопители (+150 маны героя)"
+      },
+      {
+        "cost": {},
+        "reward": {
+          "magic_damage_buff": 0.4
+        },
+        "text": "Перегрузить кристаллы башен (+40% магического урона)"
+      },
+      {
+        "cost": {
+          "lives": 1
+        },
+        "reward": {
+          "gold": 100
+        },
+        "text": "Укрыться от молний (-1 жизнь)"
       }
-    
-  }
-  ,{
-    "id": "filler_event_27",
-    "name": "Filler Event 27",
-    "description": "A minor occurrence in the world... 27",
-    "trigger_conditions": ["any"],
+    ],
+    "description": "Буря чистой сырой магии бушует над укреплениями, заряжая кристаллы.",
+    "id": "arcane_storm",
+    "name": "Эфирный Шторм",
     "repeatable": true,
+    "trigger_conditions": [
+      "crystal_caves",
+      "frost_peak",
+      "any"
+    ]
+  },
+  {
+    "category": "anomaly",
     "choices": [
       {
-        "text": "Do something",
+        "cost": {
+          "gold": 100
+        },
+        "reward": {
+          "mana_regen_buff": 0.5
+        },
+        "text": "Построить насосную станцию (100g, мана реген +50%)"
+      },
+      {
         "cost": {},
-        "reward": { "gold": 10 }
+        "reward": {
+          "hero_buff": "mana_skin"
+        },
+        "text": "Выпить кристаллическую воду (герой получает +100 HP и щит)"
+      },
+      {
+        "cost": {},
+        "reward": {
+          "gold": 120
+        },
+        "text": "Оставить открытым"
       }
-    
-  }
-  ,{
-    "id": "filler_event_28",
-    "name": "Filler Event 28",
-    "description": "A minor occurrence in the world... 28",
-    "trigger_conditions": ["any"],
+    ],
+    "description": "Фонтан лазурного эфира бьет прямо из-под брусчатки дороги.",
+    "id": "mana_geyser_eruption",
+    "name": "Извержение Гейзера Маны",
     "repeatable": true,
+    "trigger_conditions": [
+      "any"
+    ]
+  },
+  {
+    "category": "anomaly",
     "choices": [
       {
-        "text": "Do something",
         "cost": {},
-        "reward": { "gold": 10 }
+        "reward": {
+          "glory": 30,
+          "rune": "rune_radiance_1"
+        },
+        "text": "Разбить обелиск святым молотом паладина"
+      },
+      {
+        "cost": {
+          "lives": 2
+        },
+        "reward": {
+          "gold": 300,
+          "rune": "rune_execution_1"
+        },
+        "text": "Изучить темные руны (герой получает проклятие, +300g)"
+      },
+      {
+        "cost": {},
+        "reward": {},
+        "text": "Игнорировать зов обелиска"
       }
-    
-  }
-  ,{
-    "id": "filler_event_29",
-    "name": "Filler Event 29",
-    "description": "A minor occurrence in the world... 29",
-    "trigger_conditions": ["any"],
+    ],
+    "description": "Черный обелиск издает низкий гул, сводящий с ума слабых духом.",
+    "id": "void_resonance_crystal",
+    "name": "Кристалл Резонанса Бездны",
     "repeatable": true,
+    "trigger_conditions": [
+      "royal_heart",
+      "abyss_citadel",
+      "any"
+    ]
+  },
+  {
+    "category": "anomaly",
     "choices": [
       {
-        "text": "Do something",
         "cost": {},
-        "reward": { "gold": 10 }
+        "reward": {
+          "phantom_guards": 4
+        },
+        "text": "Призвать призрачный легион на 3 волны (+4 призрака)"
+      },
+      {
+        "cost": {},
+        "reward": {
+          "glory": 50
+        },
+        "text": "Принять благословение павших полководцев (+50 очков Славы)"
+      },
+      {
+        "cost": {},
+        "reward": {
+          "gold": 250
+        },
+        "text": "Получить древнее золото предков (+250g)"
       }
-    
-  }
-  ,{
-    "id": "filler_event_30",
-    "name": "Filler Event 30",
-    "description": "A minor occurrence in the world... 30",
-    "trigger_conditions": ["any"],
+    ],
+    "description": "Призрачные силуэты древних защитников крепости встают плечом к плечу с вами.",
+    "id": "astral_echo_phantom",
+    "name": "Астральное Эхо Героев Прошлого",
     "repeatable": true,
+    "trigger_conditions": [
+      "any"
+    ]
+  },
+  {
+    "category": "anomaly",
     "choices": [
       {
-        "text": "Do something",
         "cost": {},
-        "reward": { "gold": 10 }
+        "reward": {
+          "elemental_buff": 0.35
+        },
+        "text": "Напитать элементальные башни (+35% ко всем стихиям)"
+      },
+      {
+        "cost": {
+          "gold": 150
+        },
+        "reward": {
+          "glory": 20,
+          "rune": "rune_flame_core_1"
+        },
+        "text": "Собрать стихийные осколки (+4 случайные руны)"
+      },
+      {
+        "cost": {
+          "mana": 40
+        },
+        "reward": {
+          "lives": 3
+        },
+        "text": "Разогнать бурю заклинанием очищения (40 маны)"
       }
-    
+    ],
+    "description": "Огонь, Вода, Земля и Воздух переплелись в неистовый вихрь.",
+    "id": "elemental_convergence_rift",
+    "name": "Слияние Четырех Стихий",
+    "repeatable": true,
+    "trigger_conditions": [
+      "any"
+    ]
+  },
+  {
+    "category": "anomaly",
+    "choices": [
+      {
+        "cost": {
+          "gold": 80
+        },
+        "reward": {
+          "artifact": "alchemist_chalice"
+        },
+        "text": "Исследовать мутаген в полевой лаборатории (80g)"
+      },
+      {
+        "cost": {},
+        "reward": {
+          "enemy_hp_penalty": 0.3
+        },
+        "text": "Отравить туман антидотом (враги теряют 30% HP)"
+      },
+      {
+        "cost": {
+          "lives": 2
+        },
+        "reward": {},
+        "text": "Мутация часовых (-2 жизни)"
+      }
+    ],
+    "description": "Химическая аномалия изменяет тела проходящих через нее существ.",
+    "id": "flesh_warping_mist",
+    "name": "Мутагенный Туман",
+    "repeatable": true,
+    "trigger_conditions": [
+      "swamp",
+      "any"
+    ]
+  },
+  {
+    "category": "anomaly",
+    "choices": [
+      {
+        "cost": {},
+        "reward": {
+          "lives": 5
+        },
+        "text": "Откатить время назад (+5 жизней крепости)"
+      },
+      {
+        "cost": {},
+        "reward": {
+          "gold": 200,
+          "reveal_boss": true
+        },
+        "text": "Заглянуть в будущее волн (+200g и разведка боссов)"
+      },
+      {
+        "cost": {},
+        "reward": {
+          "glory": 40
+        },
+        "text": "Стабилизировать временной континуум (+40 Славы)"
+      }
+    ],
+    "description": "Ткань пространства трещит по швам: возможность вернуть потерянные жизни крепости.",
+    "id": "chronos_rewind_tear",
+    "name": "Временная Петля Судьбы",
+    "repeatable": true,
+    "trigger_conditions": [
+      "any"
+    ]
   }
 ]

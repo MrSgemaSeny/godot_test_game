@@ -1,23 +1,27 @@
 [
   {
     "id": "valley",
-    "name": "Emerald Valley",
-    "description": "A lush, green valley that serves as the starting point for your journey.",
+    "name": "Изумрудная Долина (Emerald Valley)",
+    "description": "Цветущая долина, служащая отправной точкой вашего похода против орд тьмы.",
     "danger_level": 1,
     "start_unlocked": true,
     "biomes": ["plains", "forest"],
     "special_hazards": ["wildfire"],
     "connecting_regions": ["swamp", "greenwood"],
+    "region_boss": "warchief_boss",
+    "node_types": ["combat", "elite_combat", "shop", "world_event", "rest_site", "mystery", "boss"],
+    "node_rewards": { "gold": 150, "glory": 20, "draft_choices": 3, "guaranteed_rune_on_boss": true },
+    "draft_pool": ["archer", "ballista", "barracks", "cannon"],
     "outposts": [
       {
         "id": "valley_watch",
-        "name": "Valley Watchtower",
+        "name": "Сторожевая Башня Долины",
         "resource_yield": 10,
         "faction": "royal"
       },
       {
         "id": "river_mill",
-        "name": "River Mill",
+        "name": "Речная Мельница",
         "resource_yield": 15,
         "faction": "merchants"
       }
@@ -25,17 +29,21 @@
   },
   {
     "id": "swamp",
-    "name": "Whispering Swamps",
-    "description": "Murky waters and toxic fumes make this region highly hazardous.",
+    "name": "Шепчущие Болота (Whispering Swamps)",
+    "description": "Мутные топи и токсичные испарения делают этот регион смертельно опасным.",
     "danger_level": 2,
     "start_unlocked": false,
     "biomes": ["swamp", "marsh"],
     "special_hazards": ["flood", "poison_gas"],
     "connecting_regions": ["valley", "stone_suburbs", "royal_highway"],
+    "region_boss": "hydra_boss",
+    "node_types": ["combat", "elite_combat", "shop", "world_event", "rest_site", "mystery", "boss"],
+    "node_rewards": { "gold": 200, "glory": 25, "draft_choices": 3, "guaranteed_rune_on_boss": true },
+    "draft_pool": ["poison", "slow", "mortar", "alchemist"],
     "outposts": [
       {
         "id": "bog_settlement",
-        "name": "Bog Settlement",
+        "name": "Поселение Трясины",
         "resource_yield": 20,
         "faction": "mercenaries"
       }
@@ -43,23 +51,27 @@
   },
   {
     "id": "greenwood",
-    "name": "Greenwood Forest",
-    "description": "Dense ancient forests filled with elusive magic and wildlife.",
+    "name": "Зеленый Лес (Greenwood Forest)",
+    "description": "Густые древние чащи, наполненные неуловимой магией и дикими зверями.",
     "danger_level": 2,
     "start_unlocked": false,
     "biomes": ["forest", "deep_woods"],
     "special_hazards": ["wildfire"],
     "connecting_regions": ["valley", "royal_highway"],
+    "region_boss": "corrupted_treant_boss",
+    "node_types": ["combat", "elite_combat", "shop", "world_event", "rest_site", "mystery", "boss"],
+    "node_rewards": { "gold": 220, "glory": 30, "draft_choices": 3, "guaranteed_rune_on_boss": true },
+    "draft_pool": ["druid", "archer", "sniper", "magic"],
     "outposts": [
       {
         "id": "hunter_camp",
-        "name": "Hunter's Camp",
+        "name": "Лагерь Охотников",
         "resource_yield": 25,
         "faction": "mercenaries"
       },
       {
         "id": "druid_circle",
-        "name": "Druid Circle",
+        "name": "Круг Друидов",
         "resource_yield": 15,
         "faction": "mages_guild"
       }
@@ -67,17 +79,21 @@
   },
   {
     "id": "stone_suburbs",
-    "name": "Stone Suburbs",
-    "description": "The rocky outskirts of the grand capital.",
+    "name": "Каменное Предместье (Stone Suburbs)",
+    "description": "Скалистые окраины королевской столицы с укрепленными форпостами.",
     "danger_level": 3,
     "start_unlocked": false,
     "biomes": ["rocky", "hills"],
     "special_hazards": ["earthquake"],
     "connecting_regions": ["swamp", "crystal_caves"],
+    "region_boss": "shadow_assassin_boss",
+    "node_types": ["combat", "elite_combat", "shop", "world_event", "rest_site", "mystery", "boss"],
+    "node_rewards": { "gold": 250, "glory": 35, "draft_choices": 3, "guaranteed_rune_on_boss": true },
+    "draft_pool": ["barracks", "paladin", "cannon", "ballista"],
     "outposts": [
       {
         "id": "quarry",
-        "name": "Grand Quarry",
+        "name": "Главные Каменоломни",
         "resource_yield": 30,
         "faction": "royal"
       }
@@ -85,17 +101,21 @@
   },
   {
     "id": "royal_highway",
-    "name": "Royal Highway",
-    "description": "The main artery of the kingdom, frequently attacked by bandits.",
+    "name": "Королевский Тракт (Royal Highway)",
+    "description": "Главная торговая артерия королевства, подвергающаяся набегам разбойников.",
     "danger_level": 3,
     "start_unlocked": false,
     "biomes": ["plains", "road"],
     "special_hazards": [],
     "connecting_regions": ["swamp", "greenwood", "frost_peak", "royal_heart"],
+    "region_boss": "warchief_boss",
+    "node_types": ["combat", "elite_combat", "shop", "world_event", "rest_site", "mystery", "boss"],
+    "node_rewards": { "gold": 280, "glory": 40, "draft_choices": 3, "guaranteed_rune_on_boss": true },
+    "draft_pool": ["gold_generator", "archer", "cannon", "magic"],
     "outposts": [
       {
         "id": "toll_gate",
-        "name": "King's Toll Gate",
+        "name": "Королевская Таможня",
         "resource_yield": 40,
         "faction": "merchants"
       }
@@ -103,17 +123,21 @@
   },
   {
     "id": "crystal_caves",
-    "name": "Crystal Caves",
-    "description": "Deep underground caverns illuminated by humming crystals.",
+    "name": "Кристальные Пещеры (Crystal Caves)",
+    "description": "Глубокие подземные штольни, озаренные сиянием поющих эфирных кристаллов.",
     "danger_level": 4,
     "start_unlocked": false,
     "biomes": ["caves", "underground"],
     "special_hazards": ["crystal_resonance", "cave_in"],
     "connecting_regions": ["stone_suburbs", "ash_wastes"],
+    "region_boss": "archmage_boss",
+    "node_types": ["combat", "elite_combat", "shop", "world_event", "rest_site", "mystery", "boss"],
+    "node_rewards": { "gold": 320, "glory": 45, "draft_choices": 3, "guaranteed_rune_on_boss": true },
+    "draft_pool": ["magic", "chain_lightning", "tesla", "slow"],
     "outposts": [
       {
         "id": "mining_camp",
-        "name": "Deep Mining Camp",
+        "name": "Глубокий Рудник Кристаллов",
         "resource_yield": 50,
         "faction": "merchants"
       }
@@ -121,17 +145,21 @@
   },
   {
     "id": "frost_peak",
-    "name": "Frost Peak",
-    "description": "Freezing mountains that slow both friends and foes.",
+    "name": "Морозный Пик (Frost Peak)",
+    "description": "Ледяные высокогорья, скованные вечной мерзлотой и буранами.",
     "danger_level": 4,
     "start_unlocked": false,
     "biomes": ["snow", "mountain"],
     "special_hazards": ["blizzard", "avalanche"],
     "connecting_regions": ["royal_highway", "astral_ruins"],
+    "region_boss": "frost_colossus_boss",
+    "node_types": ["combat", "elite_combat", "shop", "world_event", "rest_site", "mystery", "boss"],
+    "node_rewards": { "gold": 350, "glory": 50, "draft_choices": 3, "guaranteed_rune_on_boss": true },
+    "draft_pool": ["frost", "ice", "sniper", "barracks"],
     "outposts": [
       {
         "id": "monastery",
-        "name": "High Monastery",
+        "name": "Высокогорный Монастырь",
         "resource_yield": 35,
         "faction": "mages_guild"
       }
@@ -139,17 +167,21 @@
   },
   {
     "id": "ash_wastes",
-    "name": "Ash Wastes",
-    "description": "A scorched wasteland where fire reigns supreme.",
+    "name": "Пепельные Пустоши (Ash Wastes)",
+    "description": "Выжженная земля, усеянная кратерами лавы и остовами механизмов.",
     "danger_level": 5,
     "start_unlocked": false,
     "biomes": ["wasteland", "volcanic"],
     "special_hazards": ["lava_pool", "ash_storm"],
     "connecting_regions": ["crystal_caves", "fire_chasms"],
+    "region_boss": "dreadnought_boss",
+    "node_types": ["combat", "elite_combat", "shop", "world_event", "rest_site", "mystery", "boss"],
+    "node_rewards": { "gold": 400, "glory": 60, "draft_choices": 3, "guaranteed_rune_on_boss": true },
+    "draft_pool": ["fire", "cannon", "artillery", "bomb"],
     "outposts": [
       {
         "id": "survivor_camp",
-        "name": "Scorched Survivor Camp",
+        "name": "Лагерь Выживших",
         "resource_yield": 20,
         "faction": "mercenaries"
       }
@@ -157,17 +189,21 @@
   },
   {
     "id": "fire_chasms",
-    "name": "Fire Chasms",
-    "description": "Deep rifts in the earth filled with molten magma.",
+    "name": "Огненные Расселины (Fire Chasms)",
+    "description": "Глубокие трещины в земной коре, извергающие магму и адское пламя.",
     "danger_level": 5,
     "start_unlocked": false,
     "biomes": ["volcanic"],
     "special_hazards": ["lava_pool", "geyser"],
     "connecting_regions": ["ash_wastes", "sunken_kingdom"],
+    "region_boss": "abyss_lord_boss",
+    "node_types": ["combat", "elite_combat", "shop", "world_event", "rest_site", "mystery", "boss"],
+    "node_rewards": { "gold": 450, "glory": 70, "draft_choices": 3, "guaranteed_rune_on_boss": true },
+    "draft_pool": ["fire", "meteor", "alchemist", "tesla"],
     "outposts": [
       {
         "id": "obsidian_forge",
-        "name": "Obsidian Forge",
+        "name": "Обсидиановая Кузница",
         "resource_yield": 60,
         "faction": "royal"
       }
@@ -175,17 +211,21 @@
   },
   {
     "id": "sunken_kingdom",
-    "name": "Sunken Kingdom",
-    "description": "Ruins of an ancient civilization partially submerged in the sea.",
+    "name": "Затонувшее Царство (Sunken Kingdom)",
+    "description": "Древние руины великой цивилизации, наполовину погребенные под морской пучиной.",
     "danger_level": 5,
     "start_unlocked": false,
     "biomes": ["ruins", "water"],
     "special_hazards": ["flood", "whirlpool"],
     "connecting_regions": ["fire_chasms", "astral_ruins"],
+    "region_boss": "hydra_boss",
+    "node_types": ["combat", "elite_combat", "shop", "world_event", "rest_site", "mystery", "boss"],
+    "node_rewards": { "gold": 480, "glory": 75, "draft_choices": 3, "guaranteed_rune_on_boss": true },
+    "draft_pool": ["slow", "magic", "frost", "poison"],
     "outposts": [
       {
         "id": "sunken_tower",
-        "name": "The Sunken Tower",
+        "name": "Затонувшая Башня",
         "resource_yield": 70,
         "faction": "mages_guild"
       }
@@ -193,17 +233,21 @@
   },
   {
     "id": "astral_ruins",
-    "name": "Astral Ruins",
-    "description": "Where the sky meets the earth, magic flows untamed.",
+    "name": "Астральные Руины (Astral Ruins)",
+    "description": "Место, где граница с потусторонним истончилась, а магия течет бурными реками.",
     "danger_level": 5,
     "start_unlocked": false,
     "biomes": ["ruins", "magic"],
     "special_hazards": ["crystal_resonance", "mana_storm"],
     "connecting_regions": ["frost_peak", "sunken_kingdom", "royal_heart"],
+    "region_boss": "archmage_boss",
+    "node_types": ["combat", "elite_combat", "shop", "world_event", "rest_site", "mystery", "boss"],
+    "node_rewards": { "gold": 500, "glory": 80, "draft_choices": 3, "guaranteed_rune_on_boss": true },
+    "draft_pool": ["magic", "time_dilation", "tesla", "sniper"],
     "outposts": [
       {
         "id": "observatory",
-        "name": "Grand Observatory",
+        "name": "Великая Обсерватория",
         "resource_yield": 80,
         "faction": "mages_guild"
       }
@@ -211,17 +255,21 @@
   },
   {
     "id": "royal_heart",
-    "name": "Royal Heart",
-    "description": "The heavily fortified capital of the kingdom.",
+    "name": "Сердце Королевства (Royal Heart)",
+    "description": "Цитадель столицы — последний бастион человечества перед Бездной.",
     "danger_level": 5,
     "start_unlocked": false,
     "biomes": ["city"],
     "special_hazards": ["riot"],
     "connecting_regions": ["royal_highway", "astral_ruins"],
+    "region_boss": "abyss_monarch_boss",
+    "node_types": ["combat", "elite_combat", "shop", "world_event", "rest_site", "mystery", "boss"],
+    "node_rewards": { "gold": 600, "glory": 100, "draft_choices": 3, "guaranteed_rune_on_boss": true },
+    "draft_pool": ["paladin", "cannon", "sniper", "magic", "mortar"],
     "outposts": [
       {
         "id": "throne_room",
-        "name": "The Throne Room",
+        "name": "Тронный Зал Короля",
         "resource_yield": 100,
         "faction": "royal"
       }

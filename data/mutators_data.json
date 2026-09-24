@@ -1,879 +1,1259 @@
 {
+  "accelerated_evolution": {
+    "category": "enemy_stats",
+    "description": "Каждая следующая волна получает +3% к здоровью сверх нормы",
+    "difficulty_rating": 3,
+    "id": "accelerated_evolution",
+    "incompatible_with": [],
+    "name": "Быстрая Эволюция",
+    "params": {
+      "hp_growth_bonus": 0.03
+    },
+    "score_multiplier": 1.35
+  },
+  "acid_rain": {
+    "category": "environmental",
+    "description": "Снижает сопротивление брони всех юнитов на карте на 50%",
+    "difficulty_rating": 3,
+    "id": "acid_rain",
+    "incompatible_with": [],
+    "name": "Кислотный Ливень",
+    "params": {
+      "armor_shred_global": 0.5
+    },
+    "score_multiplier": 1.2
+  },
+  "all_enemies_armored": {
+    "category": "enemy_abilities",
+    "description": "Все монстры получают +40 физической брони",
+    "difficulty_rating": 3,
+    "id": "all_enemies_armored",
+    "incompatible_with": [],
+    "name": "Тяжелая Броня",
+    "params": {
+      "bonus_armor": 40
+    },
+    "score_multiplier": 1.35
+  },
+  "all_enemies_stealth": {
+    "category": "enemy_abilities",
+    "description": "Все враги начинают путь в режиме невидимости на первые 8 секунд",
+    "difficulty_rating": 4,
+    "id": "all_enemies_stealth",
+    "incompatible_with": [],
+    "name": "Теневой Покров",
+    "params": {
+      "stealth_spawn": 8.0
+    },
+    "score_multiplier": 1.45
+  },
   "arcane_hyperdrive": {
-    "category": "gameplay",
-    "description": "Mutator description for arcane_hyperdrive",
+    "category": "chaos",
+    "description": "Все перезарядки способностей ускорены в 3 раза, но враги на 40% быстрее",
+    "difficulty_rating": 3,
     "id": "arcane_hyperdrive",
-    "name": "Arcane Hyperdrive",
-    "params": {},
-    "score_multiplier": 0.1
+    "incompatible_with": [],
+    "name": "Магический Гипердрайв",
+    "params": {
+      "cdr_mult": 0.33,
+      "enemy_speed_mult": 1.4
+    },
+    "score_multiplier": 1.35
+  },
+  "aura_healer": {
+    "category": "enemy_abilities",
+    "description": "Элитные монстры восстанавливают HP союзникам в радиусе 150px",
+    "difficulty_rating": 3,
+    "id": "aura_healer",
+    "incompatible_with": [],
+    "name": "Аура Исцеления",
+    "params": {
+      "heal_aura": 30.0
+    },
+    "score_multiplier": 1.3
+  },
+  "berserk_boss_50": {
+    "category": "boss_augments",
+    "description": "Боссы при здоровье ниже 50% удваивают урон и скорость атаки",
+    "difficulty_rating": 4,
+    "id": "berserk_boss_50",
+    "incompatible_with": [],
+    "name": "Бешенство Титана",
+    "params": {
+      "boss_berserk_threshold": 0.5
+    },
+    "score_multiplier": 1.45
+  },
+  "berserker_rush": {
+    "category": "enemy_stats",
+    "description": "При потере 50% HP враг удваивает свою скорость перемещения",
+    "difficulty_rating": 4,
+    "id": "berserker_rush",
+    "incompatible_with": [],
+    "name": "Ярость Берсерка",
+    "params": {
+      "berserk_speed_threshold": 0.5
+    },
+    "score_multiplier": 1.4
+  },
+  "blizzard_gale": {
+    "category": "environmental",
+    "description": "Ледяная метель замедляет снаряды и охлаждает башни",
+    "difficulty_rating": 3,
+    "id": "blizzard_gale",
+    "incompatible_with": [],
+    "name": "Снежный Буран",
+    "params": {
+      "projectile_speed_mult": 0.7
+    },
+    "score_multiplier": 1.25
+  },
+  "blood_moon": {
+    "category": "chaos",
+    "description": "Все враги получают вампиризм и иммунитет к замедлению",
+    "difficulty_rating": 4,
+    "id": "blood_moon",
+    "incompatible_with": [],
+    "name": "Кровавая Луна",
+    "params": {
+      "enemy_lifesteal": 0.3,
+      "slow_immune": true
+    },
+    "score_multiplier": 1.45
+  },
+  "boss_aura_fury": {
+    "category": "boss_augments",
+    "description": "Все враги рядом с боссом получают +40% к скорости и урону",
+    "difficulty_rating": 3,
+    "id": "boss_aura_fury",
+    "incompatible_with": [],
+    "name": "Аура Командующего",
+    "params": {
+      "boss_aura_buff": 0.4
+    },
+    "score_multiplier": 1.3
+  },
+  "boss_cc_immune": {
+    "category": "boss_augments",
+    "description": "Боссы полностью невосприимчивы к замедлению, заморозке и стану",
+    "difficulty_rating": 4,
+    "id": "boss_cc_immune",
+    "incompatible_with": [],
+    "name": "Непоколебимый",
+    "params": {
+      "boss_cc_immune": true
+    },
+    "score_multiplier": 1.4
+  },
+  "boss_enrage_timer": {
+    "category": "boss_augments",
+    "description": "Если босс жив дольше 60 секунд, он мгновенно уничтожает базу",
+    "difficulty_rating": 4,
+    "id": "boss_enrage_timer",
+    "incompatible_with": [],
+    "name": "Ограничение по Времени",
+    "params": {
+      "boss_enrage_time": 60.0
+    },
+    "score_multiplier": 1.5
+  },
+  "boss_mirror_armor": {
+    "category": "boss_augments",
+    "description": "Босс отражает 25% дальних снарядов обратно в башни",
+    "difficulty_rating": 4,
+    "id": "boss_mirror_armor",
+    "incompatible_with": [],
+    "name": "Зеркальный Доспех",
+    "params": {
+      "boss_reflect": 0.25
+    },
+    "score_multiplier": 1.45
+  },
+  "boss_shield_generator": {
+    "category": "boss_augments",
+    "description": "Босс защищен щитом, поглощающим первые 5000 урона",
+    "difficulty_rating": 3,
+    "id": "boss_shield_generator",
+    "incompatible_with": [],
+    "name": "Силовой Барьер Босса",
+    "params": {
+      "boss_shield": 5000
+    },
+    "score_multiplier": 1.35
+  },
+  "boss_spell_nullifier": {
+    "category": "boss_augments",
+    "description": "Босс рассеивает все заклинания игрока при входе в его радиус",
+    "difficulty_rating": 4,
+    "id": "boss_spell_nullifier",
+    "incompatible_with": [],
+    "name": "Подавитель Магии",
+    "params": {
+      "boss_dispel": true
+    },
+    "score_multiplier": 1.4
+  },
+  "boss_teleport_step": {
+    "category": "boss_augments",
+    "description": "Босс телепортируется на 150px вперед при потере каждых 25% HP",
+    "difficulty_rating": 4,
+    "id": "boss_teleport_step",
+    "incompatible_with": [],
+    "name": "Теневой Скачок",
+    "params": {
+      "boss_blink_step": 0.25
+    },
+    "score_multiplier": 1.5
+  },
+  "bounty_decay": {
+    "category": "economy_restrictions",
+    "description": "Золото за врагов уменьшается на 1% за каждую прошедшую волну",
+    "difficulty_rating": 3,
+    "id": "bounty_decay",
+    "incompatible_with": [],
+    "name": "Обесценивание Добычи",
+    "params": {
+      "bounty_decay_rate": 0.01
+    },
+    "score_multiplier": 1.35
+  },
+  "brittle_walls": {
+    "category": "player_handicap",
+    "description": "Любой прорыв монстра отнимает 3 жизни вместо 1",
+    "difficulty_rating": 4,
+    "id": "brittle_walls",
+    "incompatible_with": [],
+    "name": "Хрупкие Стены",
+    "params": {
+      "leak_damage_mult": 3
+    },
+    "score_multiplier": 1.4
+  },
+  "burrower_ambush": {
+    "category": "enemy_abilities",
+    "description": "Враги периодически зарываются под землю, избегая атак башен",
+    "difficulty_rating": 3,
+    "id": "burrower_ambush",
+    "incompatible_with": [],
+    "name": "Подземный Подкоп",
+    "params": {
+      "burrow_interval": 8.0
+    },
+    "score_multiplier": 1.35
+  },
+  "chain_reaction": {
+    "category": "chaos",
+    "description": "Гибель одного монстра с шансом 20% взрывает соседних",
+    "difficulty_rating": 3,
+    "id": "chain_reaction",
+    "incompatible_with": [],
+    "name": "Цепная Детонация",
+    "params": {
+      "chain_pop_chance": 0.2
+    },
+    "score_multiplier": 1.15
   },
   "chaos_spawns": {
-    "category": "gameplay",
-    "description": "Mutator description for chaos_spawns",
+    "category": "chaos",
+    "description": "Типы врагов в волнах выбираются совершенно случайно",
+    "difficulty_rating": 4,
     "id": "chaos_spawns",
-    "name": "Chaos Spawns",
-    "params": {},
-    "score_multiplier": 0.4
+    "incompatible_with": [],
+    "name": "Хаотический Спавн",
+    "params": {
+      "random_waves": true
+    },
+    "score_multiplier": 1.4
+  },
+  "clumsy_archers": {
+    "category": "player_handicap",
+    "description": "Все башни имеют 15% шанс промахнуться при выстреле",
+    "difficulty_rating": 3,
+    "id": "clumsy_archers",
+    "incompatible_with": [],
+    "name": "Неопытные Стрелки",
+    "params": {
+      "miss_chance": 0.15
+    },
+    "score_multiplier": 1.3
+  },
+  "cost_mult_150": {
+    "category": "economy_restrictions",
+    "description": "Все цены в игре увеличены на +50%",
+    "difficulty_rating": 4,
+    "id": "cost_mult_150",
+    "incompatible_with": [],
+    "name": "Кризис Снабжения",
+    "params": {
+      "global_cost_mult": 1.5
+    },
+    "score_multiplier": 1.45
+  },
+  "costly_upgrades": {
+    "category": "tower_restrictions",
+    "description": "Стоимость всех улучшений башен повышена на +50%",
+    "difficulty_rating": 3,
+    "id": "costly_upgrades",
+    "incompatible_with": [],
+    "name": "Дорогая Модернизация",
+    "params": {
+      "upgrade_cost_mult": 1.5
+    },
+    "score_multiplier": 1.35
+  },
+  "cursed_ground": {
+    "category": "player_handicap",
+    "description": "Башни нельзя строить рядом друг с другом (минимальная дистанция +50%)",
+    "difficulty_rating": 3,
+    "id": "cursed_ground",
+    "incompatible_with": [],
+    "name": "Проклятая Земля",
+    "params": {
+      "build_spacing_mult": 1.5
+    },
+    "score_multiplier": 1.35
+  },
+  "deep_shadows": {
+    "category": "environmental",
+    "description": "Враги полностью скрыты, пока не подойдут на 120px к башне",
+    "difficulty_rating": 4,
+    "id": "deep_shadows",
+    "incompatible_with": [],
+    "name": "Вечная Тьма",
+    "params": {
+      "stealth_proximity": 120
+    },
+    "score_multiplier": 1.4
+  },
+  "dense_fog": {
+    "category": "environmental",
+    "description": "Радиус атаки всех башен снижен на 35%",
+    "difficulty_rating": 3,
+    "id": "dense_fog",
+    "incompatible_with": [],
+    "name": "Густая Мгла",
+    "params": {
+      "range_mult": 0.65
+    },
+    "score_multiplier": 1.3
+  },
+  "disable_spells": {
+    "category": "tower_restrictions",
+    "description": "Магические свитки и заклинания героя заблокированы",
+    "difficulty_rating": 3,
+    "id": "disable_spells",
+    "incompatible_with": [],
+    "name": "Запрет Заклинаний",
+    "params": {
+      "disable_spells": true
+    },
+    "score_multiplier": 1.3
+  },
+  "double_boss": {
+    "category": "boss_augments",
+    "description": "Каждая волна босса призывает двух боссов одновременно",
+    "difficulty_rating": 4,
+    "id": "double_boss",
+    "incompatible_with": [],
+    "name": "Двойная Угроза",
+    "params": {
+      "boss_multiplier": 2
+    },
+    "score_multiplier": 1.7
+  },
+  "earthquake_tremor": {
+    "category": "environmental",
+    "description": "Точки постройки башен периодически блокируются землетрясениями",
+    "difficulty_rating": 3,
+    "id": "earthquake_tremor",
+    "incompatible_with": [],
+    "name": "Тектонический Сдвиг",
+    "params": {
+      "spot_lock_chance": 0.1
+    },
+    "score_multiplier": 1.3
+  },
+  "enemies_magic_immune": {
+    "category": "enemy_abilities",
+    "description": "Все враги обладают 100% невосприимчивостью к магическому урону",
+    "difficulty_rating": 4,
+    "id": "enemies_magic_immune",
+    "incompatible_with": [],
+    "name": "Антимагия",
+    "params": {
+      "magic_immune": true
+    },
+    "score_multiplier": 1.55
+  },
+  "enemy_cannibalism": {
+    "category": "chaos",
+    "description": "Враги поглощают павших союзников, восстанавливая здоровье и набирая силу",
+    "difficulty_rating": 4,
+    "id": "enemy_cannibalism",
+    "incompatible_with": [],
+    "name": "Каннибализм",
+    "params": {
+      "cannibal_buff": 0.1
+    },
+    "score_multiplier": 1.4
+  },
+  "enemy_hp_double": {
+    "category": "enemy_stats",
+    "description": "Здоровье всех врагов удвоено (+100% HP)",
+    "difficulty_rating": 4,
+    "id": "enemy_hp_double",
+    "incompatible_with": [],
+    "name": "Живучие Исполины",
+    "params": {
+      "enemy_hp_mult": 2.0
+    },
+    "score_multiplier": 1.5
+  },
+  "enemy_speed_150": {
+    "category": "enemy_stats",
+    "description": "Скорость перемещения всех врагов увеличена на +50%",
+    "difficulty_rating": 4,
+    "id": "enemy_speed_150",
+    "incompatible_with": [],
+    "name": "Спринтеры Бездны",
+    "params": {
+      "enemy_speed_mult": 1.5
+    },
+    "score_multiplier": 1.45
+  },
+  "expensive_upgrades": {
+    "category": "economy_restrictions",
+    "description": "Каждое следующее улучшение башни дороже на +25%",
+    "difficulty_rating": 3,
+    "id": "expensive_upgrades",
+    "incompatible_with": [],
+    "name": "Золотые Детали",
+    "params": {
+      "upgrade_inflation": 0.25
+    },
+    "score_multiplier": 1.3
   },
   "explosive_corpses": {
-    "category": "gameplay",
-    "description": "Mutator description for explosive_corpses",
+    "category": "chaos",
+    "description": "Трупы врагов детонируют, нанося урон всему живому вокруг",
+    "difficulty_rating": 3,
     "id": "explosive_corpses",
-    "name": "Explosive Corpses",
-    "params": {},
-    "score_multiplier": 0.2
+    "incompatible_with": [],
+    "name": "Взрывные Тела",
+    "params": {
+      "corpse_explosion": true
+    },
+    "score_multiplier": 1.35
+  },
+  "fixed_range": {
+    "category": "tower_restrictions",
+    "description": "Радиус атаки всех башен снижен на 30%",
+    "difficulty_rating": 3,
+    "id": "fixed_range",
+    "incompatible_with": [],
+    "name": "Ближний Бой",
+    "params": {
+      "range_mult": 0.7
+    },
+    "score_multiplier": 1.3
   },
   "fog_of_war": {
-    "category": "gameplay",
-    "description": "Mutator description for fog_of_war",
+    "category": "environmental",
+    "description": "Плотный туман снижает видимость и дальность стрельбы на 35%",
+    "difficulty_rating": 3,
     "id": "fog_of_war",
-    "name": "Fog Of War",
-    "params": {},
-    "score_multiplier": 0.4
+    "incompatible_with": [],
+    "name": "Туман Войны",
+    "params": {
+      "range_reduced": 0.35
+    },
+    "score_multiplier": 1.3
+  },
+  "fragile_towers": {
+    "category": "player_handicap",
+    "description": "Башни получают урон от взрывов и яда монстров",
+    "difficulty_rating": 4,
+    "id": "fragile_towers",
+    "incompatible_with": [],
+    "name": "Уязвимые Орудия",
+    "params": {
+      "tower_durability": true
+    },
+    "score_multiplier": 1.4
+  },
+  "frenzy_march": {
+    "category": "enemy_stats",
+    "description": "Враги ускоряются на +5% за каждые 10 секунд на карте",
+    "difficulty_rating": 3,
+    "id": "frenzy_march",
+    "incompatible_with": [],
+    "name": "Марш Безумия",
+    "params": {
+      "frenzy_ramp": 0.05
+    },
+    "score_multiplier": 1.35
+  },
+  "gargantuan_health": {
+    "category": "boss_augments",
+    "description": "HP босса увеличено на +150%",
+    "difficulty_rating": 4,
+    "id": "gargantuan_health",
+    "incompatible_with": [],
+    "name": "Колоссальное Здоровье",
+    "params": {
+      "boss_hp_mult": 2.5
+    },
+    "score_multiplier": 1.55
+  },
+  "giant_titans": {
+    "category": "enemy_stats",
+    "description": "Размер и HP врагов увеличены на 75%, но башни легче по ним попадают",
+    "difficulty_rating": 3,
+    "id": "giant_titans",
+    "incompatible_with": [],
+    "name": "Титанические Размеры",
+    "params": {
+      "enemy_hp_mult": 1.75,
+      "enemy_scale": 1.75
+    },
+    "score_multiplier": 1.3
   },
   "glass_cannon": {
-    "category": "gameplay",
-    "description": "Mutator description for glass_cannon",
+    "category": "chaos",
+    "description": "Башни наносят +100% урона, но база имеет всего 1 жизнь",
+    "difficulty_rating": 4,
     "id": "glass_cannon",
-    "name": "Glass Cannon",
-    "params": {},
-    "score_multiplier": 0.2
+    "incompatible_with": [],
+    "name": "Стеклянная Пушка",
+    "params": {
+      "lives": 1,
+      "tower_damage_mult": 2.0
+    },
+    "score_multiplier": 1.5
+  },
+  "gravity_anomaly": {
+    "category": "chaos",
+    "description": "Снаряды летят по непредсказуемым траекториям",
+    "difficulty_rating": 3,
+    "id": "gravity_anomaly",
+    "incompatible_with": [],
+    "name": "Гравитационная Аномалия",
+    "params": {
+      "ballistic_scatter": 0.3
+    },
+    "score_multiplier": 1.25
+  },
+  "half_bounty": {
+    "category": "economy_restrictions",
+    "description": "Награда за убийство монстров снижена на 50%",
+    "difficulty_rating": 4,
+    "id": "half_bounty",
+    "incompatible_with": [],
+    "name": "Скупые Трофеи",
+    "params": {
+      "bounty_mult": 0.5
+    },
+    "score_multiplier": 1.45
+  },
+  "half_range": {
+    "category": "player_handicap",
+    "description": "Дальность атаки всех башен и героя урезана наполовину (-50%)",
+    "difficulty_rating": 4,
+    "id": "half_range",
+    "incompatible_with": [],
+    "name": "Ограниченная Видимость",
+    "params": {
+      "range_mult": 0.5
+    },
+    "score_multiplier": 1.5
+  },
+  "heatwave_drought": {
+    "category": "environmental",
+    "description": "Башни перегреваются, их скорострельность падает на 20%",
+    "difficulty_rating": 3,
+    "id": "heatwave_drought",
+    "incompatible_with": [],
+    "name": "Палящий Зной",
+    "params": {
+      "attack_speed_mult": 0.8
+    },
+    "score_multiplier": 1.25
+  },
+  "heavy_plated": {
+    "category": "enemy_stats",
+    "description": "+50 к базовой физической броне всех монстров",
+    "difficulty_rating": 4,
+    "id": "heavy_plated",
+    "incompatible_with": [],
+    "name": "Литая Сталь",
+    "params": {
+      "bonus_armor": 50
+    },
+    "score_multiplier": 1.4
   },
   "infinite_gold": {
-    "category": "gameplay",
-    "description": "Mutator description for infinite_gold",
+    "category": "player_handicap",
+    "description": "+999999 золота на старте (множитель очков x0.1)",
+    "difficulty_rating": 1,
     "id": "infinite_gold",
-    "name": "Infinite Gold",
-    "params": {},
-    "score_multiplier": 0.3
+    "incompatible_with": [],
+    "name": "Бесконечная Казна (Песочница)",
+    "params": {
+      "starting_gold": 999999
+    },
+    "score_multiplier": 0.1
   },
   "inflation": {
-    "category": "gameplay",
-    "description": "Mutator description for inflation",
+    "category": "economy_restrictions",
+    "description": "Стоимость постройки всех башен увеличена на 50%",
+    "difficulty_rating": 4,
     "id": "inflation",
-    "name": "Inflation",
-    "params": {},
-    "score_multiplier": 0.0
-  },
-  "mutator_10": {
-    "category": "gameplay",
-    "description": "Mutator description for mutator_10",
-    "id": "mutator_10",
-    "name": "Mutator 10",
-    "params": {},
-    "score_multiplier": 0.0
-  },
-  "mutator_11": {
-    "category": "gameplay",
-    "description": "Mutator description for mutator_11",
-    "id": "mutator_11",
-    "name": "Mutator 11",
-    "params": {},
-    "score_multiplier": 0.1
-  },
-  "mutator_12": {
-    "category": "gameplay",
-    "description": "Mutator description for mutator_12",
-    "id": "mutator_12",
-    "name": "Mutator 12",
-    "params": {},
-    "score_multiplier": 0.2
-  },
-  "mutator_13": {
-    "category": "gameplay",
-    "description": "Mutator description for mutator_13",
-    "id": "mutator_13",
-    "name": "Mutator 13",
-    "params": {},
-    "score_multiplier": 0.3
-  },
-  "mutator_14": {
-    "category": "gameplay",
-    "description": "Mutator description for mutator_14",
-    "id": "mutator_14",
-    "name": "Mutator 14",
-    "params": {},
-    "score_multiplier": 0.4
-  },
-  "mutator_15": {
-    "category": "gameplay",
-    "description": "Mutator description for mutator_15",
-    "id": "mutator_15",
-    "name": "Mutator 15",
-    "params": {},
-    "score_multiplier": 0.0
-  },
-  "mutator_16": {
-    "category": "gameplay",
-    "description": "Mutator description for mutator_16",
-    "id": "mutator_16",
-    "name": "Mutator 16",
-    "params": {},
-    "score_multiplier": 0.1
-  },
-  "mutator_17": {
-    "category": "gameplay",
-    "description": "Mutator description for mutator_17",
-    "id": "mutator_17",
-    "name": "Mutator 17",
-    "params": {},
-    "score_multiplier": 0.2
-  },
-  "mutator_18": {
-    "category": "gameplay",
-    "description": "Mutator description for mutator_18",
-    "id": "mutator_18",
-    "name": "Mutator 18",
-    "params": {},
-    "score_multiplier": 0.3
-  },
-  "mutator_19": {
-    "category": "gameplay",
-    "description": "Mutator description for mutator_19",
-    "id": "mutator_19",
-    "name": "Mutator 19",
-    "params": {},
-    "score_multiplier": 0.4
-  },
-  "mutator_20": {
-    "category": "gameplay",
-    "description": "Mutator description for mutator_20",
-    "id": "mutator_20",
-    "name": "Mutator 20",
-    "params": {},
-    "score_multiplier": 0.0
-  },
-  "mutator_21": {
-    "category": "gameplay",
-    "description": "Mutator description for mutator_21",
-    "id": "mutator_21",
-    "name": "Mutator 21",
-    "params": {},
-    "score_multiplier": 0.1
-  },
-  "mutator_22": {
-    "category": "gameplay",
-    "description": "Mutator description for mutator_22",
-    "id": "mutator_22",
-    "name": "Mutator 22",
-    "params": {},
-    "score_multiplier": 0.2
-  },
-  "mutator_23": {
-    "category": "gameplay",
-    "description": "Mutator description for mutator_23",
-    "id": "mutator_23",
-    "name": "Mutator 23",
-    "params": {},
-    "score_multiplier": 0.3
-  },
-  "mutator_24": {
-    "category": "gameplay",
-    "description": "Mutator description for mutator_24",
-    "id": "mutator_24",
-    "name": "Mutator 24",
-    "params": {},
-    "score_multiplier": 0.4
-  },
-  "mutator_25": {
-    "category": "gameplay",
-    "description": "Mutator description for mutator_25",
-    "id": "mutator_25",
-    "name": "Mutator 25",
-    "params": {},
-    "score_multiplier": 0.0
-  },
-  "mutator_26": {
-    "category": "gameplay",
-    "description": "Mutator description for mutator_26",
-    "id": "mutator_26",
-    "name": "Mutator 26",
-    "params": {},
-    "score_multiplier": 0.1
-  },
-  "mutator_27": {
-    "category": "gameplay",
-    "description": "Mutator description for mutator_27",
-    "id": "mutator_27",
-    "name": "Mutator 27",
-    "params": {},
-    "score_multiplier": 0.2
-  },
-  "mutator_28": {
-    "category": "gameplay",
-    "description": "Mutator description for mutator_28",
-    "id": "mutator_28",
-    "name": "Mutator 28",
-    "params": {},
-    "score_multiplier": 0.3
-  },
-  "mutator_29": {
-    "category": "gameplay",
-    "description": "Mutator description for mutator_29",
-    "id": "mutator_29",
-    "name": "Mutator 29",
-    "params": {},
-    "score_multiplier": 0.4
-  },
-  "mutator_30": {
-    "category": "gameplay",
-    "description": "Mutator description for mutator_30",
-    "id": "mutator_30",
-    "name": "Mutator 30",
-    "params": {},
-    "score_multiplier": 0.0
-  },
-  "mutator_31": {
-    "category": "gameplay",
-    "description": "Mutator description for mutator_31",
-    "id": "mutator_31",
-    "name": "Mutator 31",
-    "params": {},
-    "score_multiplier": 0.1
-  },
-  "mutator_32": {
-    "category": "gameplay",
-    "description": "Mutator description for mutator_32",
-    "id": "mutator_32",
-    "name": "Mutator 32",
-    "params": {},
-    "score_multiplier": 0.2
-  },
-  "mutator_33": {
-    "category": "gameplay",
-    "description": "Mutator description for mutator_33",
-    "id": "mutator_33",
-    "name": "Mutator 33",
-    "params": {},
-    "score_multiplier": 0.3
-  },
-  "mutator_34": {
-    "category": "gameplay",
-    "description": "Mutator description for mutator_34",
-    "id": "mutator_34",
-    "name": "Mutator 34",
-    "params": {},
-    "score_multiplier": 0.4
-  },
-  "mutator_35": {
-    "category": "gameplay",
-    "description": "Mutator description for mutator_35",
-    "id": "mutator_35",
-    "name": "Mutator 35",
-    "params": {},
-    "score_multiplier": 0.0
-  },
-  "pad_mutator_1": {
-    "pad": 1
-  },
-  "pad_mutator_10": {
-    "pad": 1
-  },
-  "pad_mutator_100": {
-    "pad": 1
-  },
-  "pad_mutator_101": {
-    "pad": 1
-  },
-  "pad_mutator_102": {
-    "pad": 1
-  },
-  "pad_mutator_103": {
-    "pad": 1
-  },
-  "pad_mutator_104": {
-    "pad": 1
-  },
-  "pad_mutator_105": {
-    "pad": 1
-  },
-  "pad_mutator_106": {
-    "pad": 1
-  },
-  "pad_mutator_107": {
-    "pad": 1
-  },
-  "pad_mutator_108": {
-    "pad": 1
-  },
-  "pad_mutator_109": {
-    "pad": 1
-  },
-  "pad_mutator_11": {
-    "pad": 1
-  },
-  "pad_mutator_110": {
-    "pad": 1
-  },
-  "pad_mutator_111": {
-    "pad": 1
-  },
-  "pad_mutator_112": {
-    "pad": 1
-  },
-  "pad_mutator_113": {
-    "pad": 1
-  },
-  "pad_mutator_114": {
-    "pad": 1
-  },
-  "pad_mutator_115": {
-    "pad": 1
-  },
-  "pad_mutator_116": {
-    "pad": 1
-  },
-  "pad_mutator_117": {
-    "pad": 1
-  },
-  "pad_mutator_118": {
-    "pad": 1
-  },
-  "pad_mutator_119": {
-    "pad": 1
-  },
-  "pad_mutator_12": {
-    "pad": 1
-  },
-  "pad_mutator_120": {
-    "pad": 1
-  },
-  "pad_mutator_121": {
-    "pad": 1
-  },
-  "pad_mutator_122": {
-    "pad": 1
-  },
-  "pad_mutator_123": {
-    "pad": 1
-  },
-  "pad_mutator_124": {
-    "pad": 1
-  },
-  "pad_mutator_125": {
-    "pad": 1
-  },
-  "pad_mutator_126": {
-    "pad": 1
-  },
-  "pad_mutator_127": {
-    "pad": 1
-  },
-  "pad_mutator_128": {
-    "pad": 1
-  },
-  "pad_mutator_129": {
-    "pad": 1
-  },
-  "pad_mutator_13": {
-    "pad": 1
-  },
-  "pad_mutator_130": {
-    "pad": 1
-  },
-  "pad_mutator_131": {
-    "pad": 1
-  },
-  "pad_mutator_132": {
-    "pad": 1
-  },
-  "pad_mutator_133": {
-    "pad": 1
-  },
-  "pad_mutator_134": {
-    "pad": 1
-  },
-  "pad_mutator_135": {
-    "pad": 1
-  },
-  "pad_mutator_136": {
-    "pad": 1
-  },
-  "pad_mutator_137": {
-    "pad": 1
-  },
-  "pad_mutator_138": {
-    "pad": 1
-  },
-  "pad_mutator_139": {
-    "pad": 1
-  },
-  "pad_mutator_14": {
-    "pad": 1
-  },
-  "pad_mutator_140": {
-    "pad": 1
-  },
-  "pad_mutator_141": {
-    "pad": 1
-  },
-  "pad_mutator_142": {
-    "pad": 1
-  },
-  "pad_mutator_143": {
-    "pad": 1
-  },
-  "pad_mutator_144": {
-    "pad": 1
-  },
-  "pad_mutator_145": {
-    "pad": 1
-  },
-  "pad_mutator_146": {
-    "pad": 1
-  },
-  "pad_mutator_147": {
-    "pad": 1
-  },
-  "pad_mutator_148": {
-    "pad": 1
-  },
-  "pad_mutator_149": {
-    "pad": 1
-  },
-  "pad_mutator_15": {
-    "pad": 1
-  },
-  "pad_mutator_150": {
-    "pad": 1
-  },
-  "pad_mutator_151": {
-    "pad": 1
-  },
-  "pad_mutator_152": {
-    "pad": 1
-  },
-  "pad_mutator_153": {
-    "pad": 1
-  },
-  "pad_mutator_154": {
-    "pad": 1
-  },
-  "pad_mutator_155": {
-    "pad": 1
-  },
-  "pad_mutator_156": {
-    "pad": 1
-  },
-  "pad_mutator_157": {
-    "pad": 1
-  },
-  "pad_mutator_158": {
-    "pad": 1
-  },
-  "pad_mutator_159": {
-    "pad": 1
-  },
-  "pad_mutator_16": {
-    "pad": 1
-  },
-  "pad_mutator_160": {
-    "pad": 1
-  },
-  "pad_mutator_161": {
-    "pad": 1
-  },
-  "pad_mutator_162": {
-    "pad": 1
-  },
-  "pad_mutator_163": {
-    "pad": 1
-  },
-  "pad_mutator_164": {
-    "pad": 1
-  },
-  "pad_mutator_165": {
-    "pad": 1
-  },
-  "pad_mutator_166": {
-    "pad": 1
-  },
-  "pad_mutator_167": {
-    "pad": 1
-  },
-  "pad_mutator_168": {
-    "pad": 1
-  },
-  "pad_mutator_169": {
-    "pad": 1
-  },
-  "pad_mutator_17": {
-    "pad": 1
-  },
-  "pad_mutator_170": {
-    "pad": 1
-  },
-  "pad_mutator_171": {
-    "pad": 1
-  },
-  "pad_mutator_172": {
-    "pad": 1
-  },
-  "pad_mutator_173": {
-    "pad": 1
-  },
-  "pad_mutator_174": {
-    "pad": 1
-  },
-  "pad_mutator_175": {
-    "pad": 1
-  },
-  "pad_mutator_176": {
-    "pad": 1
-  },
-  "pad_mutator_177": {
-    "pad": 1
-  },
-  "pad_mutator_178": {
-    "pad": 1
-  },
-  "pad_mutator_179": {
-    "pad": 1
-  },
-  "pad_mutator_18": {
-    "pad": 1
-  },
-  "pad_mutator_180": {
-    "pad": 1
-  },
-  "pad_mutator_181": {
-    "pad": 1
-  },
-  "pad_mutator_182": {
-    "pad": 1
-  },
-  "pad_mutator_183": {
-    "pad": 1
-  },
-  "pad_mutator_184": {
-    "pad": 1
-  },
-  "pad_mutator_185": {
-    "pad": 1
-  },
-  "pad_mutator_186": {
-    "pad": 1
-  },
-  "pad_mutator_187": {
-    "pad": 1
-  },
-  "pad_mutator_188": {
-    "pad": 1
-  },
-  "pad_mutator_189": {
-    "pad": 1
-  },
-  "pad_mutator_19": {
-    "pad": 1
-  },
-  "pad_mutator_190": {
-    "pad": 1
-  },
-  "pad_mutator_191": {
-    "pad": 1
-  },
-  "pad_mutator_192": {
-    "pad": 1
-  },
-  "pad_mutator_193": {
-    "pad": 1
-  },
-  "pad_mutator_194": {
-    "pad": 1
-  },
-  "pad_mutator_195": {
-    "pad": 1
-  },
-  "pad_mutator_196": {
-    "pad": 1
-  },
-  "pad_mutator_197": {
-    "pad": 1
-  },
-  "pad_mutator_198": {
-    "pad": 1
-  },
-  "pad_mutator_199": {
-    "pad": 1
-  },
-  "pad_mutator_2": {
-    "pad": 1
-  },
-  "pad_mutator_20": {
-    "pad": 1
-  },
-  "pad_mutator_21": {
-    "pad": 1
-  },
-  "pad_mutator_22": {
-    "pad": 1
-  },
-  "pad_mutator_23": {
-    "pad": 1
-  },
-  "pad_mutator_24": {
-    "pad": 1
-  },
-  "pad_mutator_25": {
-    "pad": 1
-  },
-  "pad_mutator_26": {
-    "pad": 1
-  },
-  "pad_mutator_27": {
-    "pad": 1
-  },
-  "pad_mutator_28": {
-    "pad": 1
-  },
-  "pad_mutator_29": {
-    "pad": 1
-  },
-  "pad_mutator_3": {
-    "pad": 1
-  },
-  "pad_mutator_30": {
-    "pad": 1
-  },
-  "pad_mutator_31": {
-    "pad": 1
-  },
-  "pad_mutator_32": {
-    "pad": 1
-  },
-  "pad_mutator_33": {
-    "pad": 1
-  },
-  "pad_mutator_34": {
-    "pad": 1
-  },
-  "pad_mutator_35": {
-    "pad": 1
-  },
-  "pad_mutator_36": {
-    "pad": 1
-  },
-  "pad_mutator_37": {
-    "pad": 1
-  },
-  "pad_mutator_38": {
-    "pad": 1
-  },
-  "pad_mutator_39": {
-    "pad": 1
-  },
-  "pad_mutator_4": {
-    "pad": 1
-  },
-  "pad_mutator_40": {
-    "pad": 1
-  },
-  "pad_mutator_41": {
-    "pad": 1
-  },
-  "pad_mutator_42": {
-    "pad": 1
-  },
-  "pad_mutator_43": {
-    "pad": 1
-  },
-  "pad_mutator_44": {
-    "pad": 1
-  },
-  "pad_mutator_45": {
-    "pad": 1
-  },
-  "pad_mutator_46": {
-    "pad": 1
-  },
-  "pad_mutator_47": {
-    "pad": 1
-  },
-  "pad_mutator_48": {
-    "pad": 1
-  },
-  "pad_mutator_49": {
-    "pad": 1
-  },
-  "pad_mutator_5": {
-    "pad": 1
-  },
-  "pad_mutator_50": {
-    "pad": 1
-  },
-  "pad_mutator_51": {
-    "pad": 1
-  },
-  "pad_mutator_52": {
-    "pad": 1
-  },
-  "pad_mutator_53": {
-    "pad": 1
-  },
-  "pad_mutator_54": {
-    "pad": 1
-  },
-  "pad_mutator_55": {
-    "pad": 1
-  },
-  "pad_mutator_56": {
-    "pad": 1
-  },
-  "pad_mutator_57": {
-    "pad": 1
-  },
-  "pad_mutator_58": {
-    "pad": 1
-  },
-  "pad_mutator_59": {
-    "pad": 1
-  },
-  "pad_mutator_6": {
-    "pad": 1
-  },
-  "pad_mutator_60": {
-    "pad": 1
-  },
-  "pad_mutator_61": {
-    "pad": 1
-  },
-  "pad_mutator_62": {
-    "pad": 1
-  },
-  "pad_mutator_63": {
-    "pad": 1
-  },
-  "pad_mutator_64": {
-    "pad": 1
-  },
-  "pad_mutator_65": {
-    "pad": 1
-  },
-  "pad_mutator_66": {
-    "pad": 1
-  },
-  "pad_mutator_67": {
-    "pad": 1
-  },
-  "pad_mutator_68": {
-    "pad": 1
-  },
-  "pad_mutator_69": {
-    "pad": 1
-  },
-  "pad_mutator_7": {
-    "pad": 1
-  },
-  "pad_mutator_70": {
-    "pad": 1
-  },
-  "pad_mutator_71": {
-    "pad": 1
-  },
-  "pad_mutator_72": {
-    "pad": 1
-  },
-  "pad_mutator_73": {
-    "pad": 1
-  },
-  "pad_mutator_74": {
-    "pad": 1
-  },
-  "pad_mutator_75": {
-    "pad": 1
-  },
-  "pad_mutator_76": {
-    "pad": 1
-  },
-  "pad_mutator_77": {
-    "pad": 1
-  },
-  "pad_mutator_78": {
-    "pad": 1
-  },
-  "pad_mutator_79": {
-    "pad": 1
-  },
-  "pad_mutator_8": {
-    "pad": 1
-  },
-  "pad_mutator_80": {
-    "pad": 1
-  },
-  "pad_mutator_81": {
-    "pad": 1
-  },
-  "pad_mutator_82": {
-    "pad": 1
-  },
-  "pad_mutator_83": {
-    "pad": 1
-  },
-  "pad_mutator_84": {
-    "pad": 1
-  },
-  "pad_mutator_85": {
-    "pad": 1
-  },
-  "pad_mutator_86": {
-    "pad": 1
-  },
-  "pad_mutator_87": {
-    "pad": 1
-  },
-  "pad_mutator_88": {
-    "pad": 1
-  },
-  "pad_mutator_89": {
-    "pad": 1
-  },
-  "pad_mutator_9": {
-    "pad": 1
-  },
-  "pad_mutator_90": {
-    "pad": 1
-  },
-  "pad_mutator_91": {
-    "pad": 1
-  },
-  "pad_mutator_92": {
-    "pad": 1
-  },
-  "pad_mutator_93": {
-    "pad": 1
-  },
-  "pad_mutator_94": {
-    "pad": 1
-  },
-  "pad_mutator_95": {
-    "pad": 1
-  },
-  "pad_mutator_96": {
-    "pad": 1
-  },
-  "pad_mutator_97": {
-    "pad": 1
-  },
-  "pad_mutator_98": {
-    "pad": 1
-  },
-  "pad_mutator_99": {
-    "pad": 1
+    "incompatible_with": [],
+    "name": "Инфляция",
+    "params": {
+      "build_cost_mult": 1.5
+    },
+    "score_multiplier": 1.4
+  },
+  "iron_standard": {
+    "category": "economy_restrictions",
+    "description": "Убийства дают только 1 золото независимо от силы врага",
+    "difficulty_rating": 4,
+    "id": "iron_standard",
+    "incompatible_with": [],
+    "name": "Золотой Дефицит",
+    "params": {
+      "fixed_bounty": 1
+    },
+    "score_multiplier": 1.6
+  },
+  "kamikaze_detonation": {
+    "category": "enemy_abilities",
+    "description": "Враги взрываются при смерти, нанося урон близлежащим башням",
+    "difficulty_rating": 4,
+    "id": "kamikaze_detonation",
+    "incompatible_with": [],
+    "name": "Опасный Осадок",
+    "params": {
+      "death_explosion_damage": 100
+    },
+    "score_multiplier": 1.4
+  },
+  "leaden_tread": {
+    "category": "enemy_stats",
+    "description": "Враги очень медленные (-35%), но имеют 80% сопротивление контролю",
+    "difficulty_rating": 3,
+    "id": "leaden_tread",
+    "incompatible_with": [],
+    "name": "Свинцовая Поступь",
+    "params": {
+      "cc_resist": 0.8,
+      "enemy_speed_mult": 0.65
+    },
+    "score_multiplier": 1.25
+  },
+  "leaking_treasury": {
+    "category": "player_handicap",
+    "description": "Каждую секунду крепость теряет 1 золотую монету",
+    "difficulty_rating": 3,
+    "id": "leaking_treasury",
+    "incompatible_with": [],
+    "name": "Дырявая Казна",
+    "params": {
+      "gold_drain_per_sec": 1
+    },
+    "score_multiplier": 1.35
+  },
+  "loot_goblin_invasion": {
+    "category": "chaos",
+    "description": "Каждую волну бежит быстрый гоблин-вор, похищающий золото",
+    "difficulty_rating": 3,
+    "id": "loot_goblin_invasion",
+    "incompatible_with": [],
+    "name": "Нашествие Гоблинов",
+    "params": {
+      "thief_spawn": true
+    },
+    "score_multiplier": 1.25
+  },
+  "luxury_tax": {
+    "category": "economy_restrictions",
+    "description": "Если в казне больше 500 золота, цены вырастают в 2 раза",
+    "difficulty_rating": 3,
+    "id": "luxury_tax",
+    "incompatible_with": [],
+    "name": "Налог на Роскошь",
+    "params": {
+      "luxury_threshold": 500
+    },
+    "score_multiplier": 1.3
+  },
+  "magic_immune": {
+    "category": "player_handicap",
+    "description": "Все враги невосприимчивы к магическому урону",
+    "difficulty_rating": 4,
+    "id": "magic_immune",
+    "incompatible_with": [],
+    "name": "Антимагия",
+    "params": {
+      "magic_immune": true
+    },
+    "score_multiplier": 1.55
+  },
+  "magic_towers_only": {
+    "category": "tower_restrictions",
+    "description": "Разрешено строить только магические и элементальные башни",
+    "difficulty_rating": 4,
+    "id": "magic_towers_only",
+    "incompatible_with": [],
+    "name": "Обитель Чародеев",
+    "params": {
+      "allow_tower_group": "magic"
+    },
+    "score_multiplier": 1.4
+  },
+  "mana_vampire": {
+    "category": "enemy_abilities",
+    "description": "Проходящие враги вытягивают по 2 ед. маны героя в секунду",
+    "difficulty_rating": 3,
+    "id": "mana_vampire",
+    "incompatible_with": [],
+    "name": "Пожиратели Маны",
+    "params": {
+      "mana_drain_rate": 2.0
+    },
+    "score_multiplier": 1.3
+  },
+  "mercenary_greed": {
+    "category": "economy_restrictions",
+    "description": "Призыв и способности героя стоят на 50% больше ресурсов",
+    "difficulty_rating": 3,
+    "id": "mercenary_greed",
+    "incompatible_with": [],
+    "name": "Жадные Наемники",
+    "params": {
+      "hero_cost_mult": 1.5
+    },
+    "score_multiplier": 1.2
+  },
+  "military_towers_only": {
+    "category": "tower_restrictions",
+    "description": "Разрешены только баллисты, казармы и пушки",
+    "difficulty_rating": 3,
+    "id": "military_towers_only",
+    "incompatible_with": [],
+    "name": "Стальной Легион",
+    "params": {
+      "allow_tower_group": "military"
+    },
+    "score_multiplier": 1.35
+  },
+  "minion_summoner_boss": {
+    "category": "boss_augments",
+    "description": "Босс каждые 10 секунд призывает элитную свиту приспешников",
+    "difficulty_rating": 4,
+    "id": "minion_summoner_boss",
+    "incompatible_with": [],
+    "name": "Призыватель Орды",
+    "params": {
+      "boss_summon_interval": 10.0
+    },
+    "score_multiplier": 1.4
+  },
+  "night_stealth_curse": {
+    "category": "environmental",
+    "description": "Ночью враги получают +20% скорости и скрытность",
+    "difficulty_rating": 3,
+    "id": "night_stealth_curse",
+    "incompatible_with": [],
+    "name": "Глухая Полночь",
+    "params": {
+      "night_buff_stealth": true
+    },
+    "score_multiplier": 1.35
+  },
+  "no_artillery": {
+    "category": "tower_restrictions",
+    "description": "Осадные и катапультные орудия заблокированы",
+    "difficulty_rating": 3,
+    "id": "no_artillery",
+    "incompatible_with": [],
+    "name": "Без Тяжелой Артиллерии",
+    "params": {
+      "ban_tower": "catapult"
+    },
+    "score_multiplier": 1.25
+  },
+  "no_hero": {
+    "category": "player_handicap",
+    "description": "Герой недоступен в этом сражении",
+    "difficulty_rating": 3,
+    "id": "no_hero",
+    "incompatible_with": [],
+    "name": "Без Полководца",
+    "params": {
+      "disable_hero": true
+    },
+    "score_multiplier": 1.35
+  },
+  "no_interest": {
+    "category": "economy_restrictions",
+    "description": "Проценты на остаток золота отключены",
+    "difficulty_rating": 3,
+    "id": "no_interest",
+    "incompatible_with": [],
+    "name": "Банкротство Банка",
+    "params": {
+      "disable_interest": true
+    },
+    "score_multiplier": 1.2
+  },
+  "no_magic": {
+    "category": "tower_restrictions",
+    "description": "Постройка магических и стихийных башен запрещена",
+    "difficulty_rating": 3,
+    "id": "no_magic",
+    "incompatible_with": [],
+    "name": "Без Магии",
+    "params": {
+      "ban_tower_type": "magic"
+    },
+    "score_multiplier": 1.35
+  },
+  "no_relics": {
+    "category": "player_handicap",
+    "description": "Все бонусы экипировки и артефактов отключены",
+    "difficulty_rating": 3,
+    "id": "no_relics",
+    "incompatible_with": [],
+    "name": "Без Артефактов",
+    "params": {
+      "disable_relics": true
+    },
+    "score_multiplier": 1.3
+  },
+  "no_sales": {
+    "category": "tower_restrictions",
+    "description": "Продажа построенных башен запрещена",
+    "difficulty_rating": 3,
+    "id": "no_sales",
+    "incompatible_with": [],
+    "name": "Окончательное Решение",
+    "params": {
+      "disable_selling": true
+    },
+    "score_multiplier": 1.2
+  },
+  "no_upgrades": {
+    "category": "tower_restrictions",
+    "description": "Башни нельзя улучшать выше 1 уровня",
+    "difficulty_rating": 4,
+    "id": "no_upgrades",
+    "incompatible_with": [],
+    "name": "Без Улучшений",
+    "params": {
+      "max_tower_level": 1
+    },
+    "score_multiplier": 1.5
+  },
+  "one_life": {
+    "category": "player_handicap",
+    "description": "Ровно 1 жизнь крепости. Любая утечка монстра — мгновенное поражение",
+    "difficulty_rating": 4,
+    "id": "one_life",
+    "incompatible_with": [],
+    "name": "Железный Человек",
+    "params": {
+      "lives": 1
+    },
+    "score_multiplier": 1.6
+  },
+  "only_military": {
+    "category": "tower_restrictions",
+    "description": "Доступны только физические, лучные и осадные башни",
+    "difficulty_rating": 3,
+    "id": "only_military",
+    "incompatible_with": [],
+    "name": "Только Военные",
+    "params": {
+      "allow_tower_group": "military"
+    },
+    "score_multiplier": 1.35
+  },
+  "only_support_and_traps": {
+    "category": "tower_restrictions",
+    "description": "Запрещены прямые атакующие башни — только замедление и ловушки",
+    "difficulty_rating": 4,
+    "id": "only_support_and_traps",
+    "incompatible_with": [],
+    "name": "Пацифист",
+    "params": {
+      "allow_support_only": true
+    },
+    "score_multiplier": 1.6
+  },
+  "pacifist": {
+    "category": "player_handicap",
+    "description": "Разрешено строить только башни поддержки и ловушки",
+    "difficulty_rating": 4,
+    "id": "pacifist",
+    "incompatible_with": [],
+    "name": "Пацифист",
+    "params": {
+      "allow_support_only": true
+    },
+    "score_multiplier": 1.6
+  },
+  "polymorph_curse": {
+    "category": "chaos",
+    "description": "При получении критического удара монстр с шансом 10% превращается в слизня",
+    "difficulty_rating": 3,
+    "id": "polymorph_curse",
+    "incompatible_with": [],
+    "name": "Полиморф",
+    "params": {
+      "polymorph_chance": 0.1
+    },
+    "score_multiplier": 1.1
+  },
+  "portal_inversion": {
+    "category": "chaos",
+    "description": "Каждые 30 секунд монстры телепортируются вперед на 100px",
+    "difficulty_rating": 4,
+    "id": "portal_inversion",
+    "incompatible_with": [],
+    "name": "Пространственный Сдвиг",
+    "params": {
+      "blink_forward": 100
+    },
+    "score_multiplier": 1.45
+  },
+  "poverty": {
+    "category": "player_handicap",
+    "description": "Стартовое золото снижено до 50 вместо 200",
+    "difficulty_rating": 3,
+    "id": "poverty",
+    "incompatible_with": [],
+    "name": "Нищета",
+    "params": {
+      "starting_gold": 50
+    },
+    "score_multiplier": 1.3
+  },
+  "range_reduced_35": {
+    "category": "environmental",
+    "description": "Дальнобойность орудий урезана на 35%",
+    "difficulty_rating": 3,
+    "id": "range_reduced_35",
+    "incompatible_with": [],
+    "name": "Слепая Зона",
+    "params": {
+      "range_mult": 0.65
+    },
+    "score_multiplier": 1.3
+  },
+  "reflective_carapace": {
+    "category": "enemy_abilities",
+    "description": "15% полученного урона отражается обратно по атакующим башням",
+    "difficulty_rating": 4,
+    "id": "reflective_carapace",
+    "incompatible_with": [],
+    "name": "Зеркальный Панцирь",
+    "params": {
+      "damage_reflect": 0.15
+    },
+    "score_multiplier": 1.5
+  },
+  "regenerator_blood": {
+    "category": "enemy_abilities",
+    "description": "Враги восстанавливают 5% максимального здоровья каждую секунду",
+    "difficulty_rating": 4,
+    "id": "regenerator_blood",
+    "incompatible_with": [],
+    "name": "Кровь Регенерации",
+    "params": {
+      "enemy_hp_regen_pct": 0.05
+    },
+    "score_multiplier": 1.45
+  },
+  "shielded_legion": {
+    "category": "enemy_abilities",
+    "description": "Все враги появляются с магическим щитом на 200 ед. прочности",
+    "difficulty_rating": 3,
+    "id": "shielded_legion",
+    "incompatible_with": [],
+    "name": "Энергетический Щит",
+    "params": {
+      "spawn_shield": 200
+    },
+    "score_multiplier": 1.35
+  },
+  "slow_cooldowns": {
+    "category": "player_handicap",
+    "description": "Все перезарядки заклинаний увеличены на +50%",
+    "difficulty_rating": 3,
+    "id": "slow_cooldowns",
+    "incompatible_with": [],
+    "name": "Тяжелая Усталость",
+    "params": {
+      "spell_cd_mult": 1.5
+    },
+    "score_multiplier": 1.3
+  },
+  "slow_mana_pool": {
+    "category": "player_handicap",
+    "description": "Регенерация маны героя замедлена на 70%",
+    "difficulty_rating": 3,
+    "id": "slow_mana_pool",
+    "incompatible_with": [],
+    "name": "Истощенный Эфир",
+    "params": {
+      "mana_regen_mult": 0.3
+    },
+    "score_multiplier": 1.25
+  },
+  "slow_reload": {
+    "category": "tower_restrictions",
+    "description": "Скорострельность всех башен снижена на 25%",
+    "difficulty_rating": 3,
+    "id": "slow_reload",
+    "incompatible_with": [],
+    "name": "Тугой Механизм",
+    "params": {
+      "attack_speed_mult": 0.75
+    },
+    "score_multiplier": 1.35
+  },
+  "solar_flare": {
+    "category": "environmental",
+    "description": "Магия тратит вдвое больше маны, но наносит +25% урона",
+    "difficulty_rating": 3,
+    "id": "solar_flare",
+    "incompatible_with": [],
+    "name": "Солнечная Вспышка",
+    "params": {
+      "magic_damage_mult": 1.25,
+      "mana_cost_mult": 2.0
+    },
+    "score_multiplier": 1.3
+  },
+  "speed_beacon": {
+    "category": "enemy_abilities",
+    "description": "Каждый 5-й враг дает +25% скорости соседним спутникам",
+    "difficulty_rating": 3,
+    "id": "speed_beacon",
+    "incompatible_with": [],
+    "name": "Ускоряющий Горн",
+    "params": {
+      "speed_aura": 0.25
+    },
+    "score_multiplier": 1.25
   },
   "speed_freaks": {
-    "category": "gameplay",
-    "description": "Mutator description for speed_freaks",
+    "category": "player_handicap",
+    "description": "Скорость всех врагов увеличена на +50%",
+    "difficulty_rating": 4,
     "id": "speed_freaks",
-    "name": "Speed Freaks",
-    "params": {},
-    "score_multiplier": 0.1
+    "incompatible_with": [],
+    "name": "Спринтеры",
+    "params": {
+      "enemy_speed_mult": 1.5
+    },
+    "score_multiplier": 1.45
   },
-  "thick_hide": {
-    "category": "gameplay",
-    "description": "Mutator description for thick_hide",
-    "id": "thick_hide",
-    "name": "Thick Hide",
-    "params": {},
-    "score_multiplier": 0.3
+  "splitter_curse": {
+    "category": "enemy_abilities",
+    "description": "При гибели любой крупный враг распадается на 3 мелких осколка",
+    "difficulty_rating": 4,
+    "id": "splitter_curse",
+    "incompatible_with": [],
+    "name": "Проклятие Деления",
+    "params": {
+      "split_on_death": 3
+    },
+    "score_multiplier": 1.4
+  },
+  "start_gold_50": {
+    "category": "economy_restrictions",
+    "description": "Стартовое золото уменьшено до 50 ед.",
+    "difficulty_rating": 3,
+    "id": "start_gold_50",
+    "incompatible_with": [],
+    "name": "Пустая Казна",
+    "params": {
+      "starting_gold": 50
+    },
+    "score_multiplier": 1.3
+  },
+  "stealth_swarm": {
+    "category": "player_handicap",
+    "description": "Все враги становятся скрытными/невидимыми",
+    "difficulty_rating": 4,
+    "id": "stealth_swarm",
+    "incompatible_with": [],
+    "name": "Теневая орда",
+    "params": {
+      "all_enemies_stealth": true
+    },
+    "score_multiplier": 1.45
+  },
+  "swamp_miasma": {
+    "category": "environmental",
+    "description": "Герой и союзники получают периодический урон от испарений",
+    "difficulty_rating": 3,
+    "id": "swamp_miasma",
+    "incompatible_with": [],
+    "name": "Болотные Миазмы",
+    "params": {
+      "miasma_dot": 5.0
+    },
+    "score_multiplier": 1.25
+  },
+  "swarm_incursion": {
+    "category": "enemy_stats",
+    "description": "Количество легких врагов в волнах увеличено в 2 раза, но их HP снижено на 40%",
+    "difficulty_rating": 3,
+    "id": "swarm_incursion",
+    "incompatible_with": [],
+    "name": "Рой Саранчи",
+    "params": {
+      "enemy_hp_mult": 0.6,
+      "spawn_count_mult": 2.0
+    },
+    "score_multiplier": 1.3
+  },
+  "swift_runners": {
+    "category": "enemy_stats",
+    "description": "+30% к базовой скорости всех небронированных юнитов",
+    "difficulty_rating": 3,
+    "id": "swift_runners",
+    "incompatible_with": [],
+    "name": "Легконогие Разведчики",
+    "params": {
+      "light_speed_mult": 1.3
+    },
+    "score_multiplier": 1.2
+  },
+  "tanky_horde": {
+    "category": "enemy_stats",
+    "description": "+40% HP всех врагов, но их скорость снижена на 15%",
+    "difficulty_rating": 3,
+    "id": "tanky_horde",
+    "incompatible_with": [],
+    "name": "Тяжелобронированная Орда",
+    "params": {
+      "enemy_hp_mult": 1.4,
+      "enemy_speed_mult": 0.85
+    },
+    "score_multiplier": 1.25
+  },
+  "tax_collector_tithe": {
+    "category": "economy_restrictions",
+    "description": "Каждую волну 15% текущего золота списывается как налог",
+    "difficulty_rating": 3,
+    "id": "tax_collector_tithe",
+    "incompatible_with": [],
+    "name": "Королевская Десятина",
+    "params": {
+      "wave_tax_pct": 0.15
+    },
+    "score_multiplier": 1.35
+  },
+  "thick_armor": {
+    "category": "player_handicap",
+    "description": "Все враги получают +40 к показателю брони",
+    "difficulty_rating": 3,
+    "id": "thick_armor",
+    "incompatible_with": [],
+    "name": "Тяжелая броня",
+    "params": {
+      "bonus_armor": 40
+    },
+    "score_multiplier": 1.35
+  },
+  "thunderstorm_emp": {
+    "category": "environmental",
+    "description": "Периодические молнии временно парализуют случайные башни на 3 сек",
+    "difficulty_rating": 4,
+    "id": "thunderstorm_emp",
+    "incompatible_with": [],
+    "name": "Грозовые Разряды",
+    "params": {
+      "emp_lightning": true
+    },
+    "score_multiplier": 1.4
+  },
+  "time_warp_instability": {
+    "category": "chaos",
+    "description": "Скорость игры случайным образом скачет от 0.5x до 2.0x",
+    "difficulty_rating": 3,
+    "id": "time_warp_instability",
+    "incompatible_with": [],
+    "name": "Искажение Времени",
+    "params": {
+      "random_speed_scale": true
+    },
+    "score_multiplier": 1.3
+  },
+  "titan_regeneration": {
+    "category": "boss_augments",
+    "description": "Босс восстанавливает 2% HP в секунду, если не получает урона 3 секунды",
+    "difficulty_rating": 3,
+    "id": "titan_regeneration",
+    "incompatible_with": [],
+    "name": "Регенерация Исполина",
+    "params": {
+      "boss_regen_rate": 0.02
+    },
+    "score_multiplier": 1.35
+  },
+  "unstoppable_momentum": {
+    "category": "enemy_stats",
+    "description": "Врагов невозможно отбросить назад или оглушить",
+    "difficulty_rating": 4,
+    "id": "unstoppable_momentum",
+    "incompatible_with": [],
+    "name": "Неудержимый Натиск",
+    "params": {
+      "push_immune": true,
+      "stun_immune": true
+    },
+    "score_multiplier": 1.4
+  },
+  "veteran": {
+    "category": "player_handicap",
+    "description": "Здоровье всех врагов увеличено на +100%",
+    "difficulty_rating": 4,
+    "id": "veteran",
+    "incompatible_with": [],
+    "name": "Ветеран",
+    "params": {
+      "enemy_hp_mult": 2.0
+    },
+    "score_multiplier": 1.5
+  },
+  "zero_sell_value": {
+    "category": "economy_restrictions",
+    "description": "Продажа башни возвращает ровно 0 золота",
+    "difficulty_rating": 3,
+    "id": "zero_sell_value",
+    "incompatible_with": [],
+    "name": "Утилизация в Ноль",
+    "params": {
+      "sell_ratio": 0.0
+    },
+    "score_multiplier": 1.25
+  },
+  "zero_starting_mana": {
+    "category": "player_handicap",
+    "description": "Герой начинает матч с 0 маны",
+    "difficulty_rating": 3,
+    "id": "zero_starting_mana",
+    "incompatible_with": [],
+    "name": "Сухой Старт",
+    "params": {
+      "starting_mana": 0
+    },
+    "score_multiplier": 1.15
   }
 }

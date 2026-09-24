@@ -1,561 +1,209 @@
 class_name CityHubManager
 extends Node
 
-# ==============================================================================
-# City Hub Manager
-# Manages the full player Hub City between missions.
-# Buildings: town_hall, forge, alchemy_lab, library, market, black_market,
-# warehouse, observatory, temple, barracks.
-# ==============================================================================
+## CityHubManager — Менеджер Центрального Городского Хаба
+## Управляет 20 постоянными городскими зданиями в 5 категориях
+## (Военные, Экономические, Магические, Социальные, Секретные фракционные).
+## Предоставляет пассивные глобальные бонусы для экспедиций и боев.
 
+signal building_upgraded(building_id: String, new_level: int)
+signal building_unlocked(building_id: String)
+signal hub_production_collected(resources: Dictionary)
+
+# Состояние прокачки зданий: { "arsenal": { "level": 1 }, ... }
 var buildings: Dictionary = {}
-var production_accumulated: Dictionary = {}
+var buildings_database: Dictionary = {}
+var production_accumulated: Dictionary = { "gold": 0, "glory": 0 }
 var last_tick_time: int = 0
-var tick_interval: int = 60 # seconds
+var tick_interval: int = 60 # секунды
+
+func _init() -> void:
+	load_buildings_database()
+	_init_buildings_state()
 
 func _ready() -> void:
 	add_to_group("city_hub_manager")
-	_init_buildings()
+	if buildings_database.is_empty():
+		load_buildings_database()
+	if buildings.is_empty():
+		_init_buildings_state()
 
-func _init_buildings() -> void:
-	var b_ids = ["town_hall", "forge", "alchemy_lab", "library", "market", "black_market", "warehouse", "observatory", "temple", "barracks"]
-	for b in b_ids:
-		buildings[b] = {"level": 0}
+func load_buildings_database(path: String = "res://data/city_buildings.json") -> void:
+	if not FileAccess.file_exists(path):
+		return
+	var file = FileAccess.open(path, FileAccess.READ)
+	if file:
+		var json = JSON.new()
+		var err = json.parse(file.get_as_text())
+		if err == OK and json.data is Dictionary:
+			buildings_database = json.data.get("buildings", {})
 
+func _init_buildings_state() -> void:
+	for b_id in buildings_database.keys():
+		if not buildings.has(b_id):
+			var b_data = buildings_database[b_id]
+			var is_unlocked = bool(b_data.get("unlocked", true))
+			buildings[b_id] = {
+				"level": 1 if is_unlocked else 0,
+				"unlocked": is_unlocked
+			}
+
+## Проверить доступность улучшения здания
+func can_upgrade(b_id: String, available_glory: int) -> bool:
+	if not buildings.has(b_id) or not buildings_database.has(b_id):
+		return false
+	var current_lvl = int(buildings[b_id].get("level", 0))
+	var max_lvl = int(buildings_database[b_id].get("max_level", 5))
+	if current_lvl >= max_lvl:
+		return false
+	var cost = get_upgrade_cost(b_id)
+	return available_glory >= cost
+
+## Получить стоимость улучшения в Очках Славы
+func get_upgrade_cost(b_id: String) -> int:
+	if not buildings_database.has(b_id):
+		return 999999
+	var costs: Array = buildings_database[b_id].get("costs_glory", [50, 100, 200, 350, 500])
+	var current_lvl = int(buildings.get(b_id, {}).get("level", 0))
+	if current_lvl < costs.size():
+		return int(costs[current_lvl])
+	return int(costs[costs.size() - 1])
+
+## Улучшить здание
 func upgrade_building(b_id: String) -> bool:
 	if not buildings.has(b_id):
 		return false
-	var current_level = buildings[b_id].level
-	if current_level >= 5:
+	var current_lvl = int(buildings[b_id].get("level", 0))
+	var max_lvl = int(buildings_database.get(b_id, {}).get("max_level", 5))
+	if current_lvl >= max_lvl:
 		return false
-	buildings[b_id].level += 1
+	
+	buildings[b_id]["level"] = current_lvl + 1
+	buildings[b_id]["unlocked"] = true
+	building_upgraded.emit(b_id, current_lvl + 1)
 	return true
 
+## Разблокировать секретное здание при достижении репутации с фракцией
+func check_faction_unlocks(faction_id: String, tier_name: String) -> void:
+	for b_id in buildings_database.keys():
+		var b_data = buildings_database[b_id]
+		if b_data.has("required_reputation"):
+			var req = b_data["required_reputation"]
+			if req.get("faction") == faction_id:
+				var req_tier = str(req.get("tier", "Honored"))
+				if _is_tier_sufficient(tier_name, req_tier):
+					if not buildings.has(b_id) or not bool(buildings[b_id].get("unlocked", false)):
+						buildings[b_id] = { "level": 1, "unlocked": true }
+						building_unlocked.emit(b_id)
+
+func _is_tier_sufficient(current_tier: String, required_tier: String) -> bool:
+	var tiers = ["Hated", "Hostile", "Neutral", "Friendly", "Honored", "Revered", "Exalted"]
+	var c_idx = tiers.find(current_tier)
+	var r_idx = tiers.find(required_tier)
+	return c_idx >= r_idx and c_idx >= 0 and r_idx >= 0
+
 func get_building_info(b_id: String) -> Dictionary:
+	var info: Dictionary = {}
+	if buildings_database.has(b_id):
+		info = buildings_database[b_id].duplicate(true)
 	if buildings.has(b_id):
-		return buildings[b_id]
-	return {}
+		for k in buildings[b_id].keys():
+			info[k] = buildings[b_id][k]
+	return info
+
+func get_all_buildings() -> Array[Dictionary]:
+	var list: Array[Dictionary] = []
+	for b_id in buildings_database.keys():
+		list.append(get_building_info(b_id))
+	return list
+
+## Рассчитать суммарные глобальные пассивные бонусы города для боя
+func get_aggregate_bonuses() -> Dictionary:
+	var agg: Dictionary = {
+		"starting_gold_bonus": 0,
+		"base_starting_lives": 0,
+		"interest_rate_bonus": 0.0,
+		"interest_cap_bonus": 0,
+		"spell_cost_discount_pct": 0.0,
+		"glory_gain_mult": 1.0,
+		"hero_xp_gain_mult": 1.0,
+		"archer_range_mult": 1.0,
+		"archer_crit_chance": 0.0,
+		"dot_damage_mult": 1.0,
+		"elemental_damage_mult": 1.0,
+		"boss_damage_mult": 1.0,
+		"reputation_gain_mult": 1.0,
+		"leak_shield_charges": 0
+	}
+
+	for b_id in buildings.keys():
+		var b_state = buildings[b_id]
+		var lvl = int(b_state.get("level", 0))
+		if lvl <= 0 or not bool(b_state.get("unlocked", false)):
+			continue
+		if not buildings_database.has(b_id):
+			continue
+
+		var mods = buildings_database[b_id].get("modifiers", {})
+		var factor = float(lvl)
+
+		if mods.has("starting_gold_bonus"):
+			agg["starting_gold_bonus"] += int(mods["starting_gold_bonus"]) * lvl
+		if mods.has("base_starting_lives"):
+			agg["base_starting_lives"] += int(mods["base_starting_lives"]) * lvl
+		if mods.has("interest_rate_bonus"):
+			agg["interest_rate_bonus"] += float(mods["interest_rate_bonus"]) * factor * 0.5
+		if mods.has("interest_cap_bonus"):
+			agg["interest_cap_bonus"] += int(mods["interest_cap_bonus"]) * lvl
+		if mods.has("spell_cost_discount_pct"):
+			agg["spell_cost_discount_pct"] = min(0.40, agg["spell_cost_discount_pct"] + float(mods["spell_cost_discount_pct"]) * factor * 0.2)
+		if mods.has("glory_gain_mult"):
+			agg["glory_gain_mult"] += (float(mods["glory_gain_mult"]) - 1.0) * factor * 0.2
+		if mods.has("hero_xp_gain_mult"):
+			agg["hero_xp_gain_mult"] += (float(mods["hero_xp_gain_mult"]) - 1.0) * factor * 0.2
+		if mods.has("archer_range_mult"):
+			agg["archer_range_mult"] += (float(mods["archer_range_mult"]) - 1.0) * factor * 0.2
+		if mods.has("archer_crit_chance"):
+			agg["archer_crit_chance"] += float(mods["archer_crit_chance"]) * factor * 0.2
+		if mods.has("dot_damage_mult"):
+			agg["dot_damage_mult"] += (float(mods["dot_damage_mult"]) - 1.0) * factor * 0.2
+		if mods.has("elemental_damage_mult"):
+			agg["elemental_damage_mult"] += (float(mods["elemental_damage_mult"]) - 1.0) * factor * 0.2
+		if mods.has("boss_damage_mult"):
+			agg["boss_damage_mult"] += (float(mods["boss_damage_mult"]) - 1.0) * factor * 0.2
+		if mods.has("reputation_gain_mult"):
+			agg["reputation_gain_mult"] += (float(mods["reputation_gain_mult"]) - 1.0) * factor * 0.2
+		if mods.has("leak_shield_charges"):
+			agg["leak_shield_charges"] += int(mods["leak_shield_charges"])
+
+	return agg
+
+## Применить модификаторы города к игре
+func apply_city_bonuses_to_game(game_manager: Node) -> void:
+	if not is_instance_valid(game_manager):
+		return
+	var bonuses = get_aggregate_bonuses()
+	if bonuses["starting_gold_bonus"] > 0 and "gold" in game_manager:
+		game_manager.gold += bonuses["starting_gold_bonus"]
+	if bonuses["base_starting_lives"] > 0 and "lives" in game_manager:
+		game_manager.lives += bonuses["base_starting_lives"]
 
 func process_city_tick() -> void:
-	pass
+	var bonuses = get_aggregate_bonuses()
+	var gold_produced = 20
+	if buildings.has("town_hall"):
+		gold_produced += int(buildings["town_hall"].get("level", 0)) * 15
+	production_accumulated["gold"] = int(production_accumulated.get("gold", 0)) + gold_produced
+	hub_production_collected.emit(production_accumulated)
 
 func save_city_state() -> Dictionary:
-	return {"buildings": buildings, "production_accumulated": production_accumulated}
+	return {
+		"buildings": buildings.duplicate(true),
+		"production_accumulated": production_accumulated.duplicate(true)
+	}
 
 func load_city_state(data: Dictionary) -> void:
-	if data.has("buildings"):
-		buildings = data.buildings
-
-var dummy1 = 1
-var dummy2 = 1
-var dummy3 = 1
-var dummy4 = 1
-var dummy5 = 1
-var dummy6 = 1
-var dummy7 = 1
-var dummy8 = 1
-var dummy9 = 1
-var dummy10 = 1
-var dummy11 = 1
-var dummy12 = 1
-var dummy13 = 1
-var dummy14 = 1
-var dummy15 = 1
-var dummy16 = 1
-var dummy17 = 1
-var dummy18 = 1
-var dummy19 = 1
-var dummy20 = 1
-var dummy21 = 1
-var dummy22 = 1
-var dummy23 = 1
-var dummy24 = 1
-var dummy25 = 1
-var dummy26 = 1
-var dummy27 = 1
-var dummy28 = 1
-var dummy29 = 1
-var dummy30 = 1
-var dummy31 = 1
-var dummy32 = 1
-var dummy33 = 1
-var dummy34 = 1
-var dummy35 = 1
-var dummy36 = 1
-var dummy37 = 1
-var dummy38 = 1
-var dummy39 = 1
-var dummy40 = 1
-var dummy41 = 1
-var dummy42 = 1
-var dummy43 = 1
-var dummy44 = 1
-var dummy45 = 1
-var dummy46 = 1
-var dummy47 = 1
-var dummy48 = 1
-var dummy49 = 1
-var dummy50 = 1
-var dummy51 = 1
-var dummy52 = 1
-var dummy53 = 1
-var dummy54 = 1
-var dummy55 = 1
-var dummy56 = 1
-var dummy57 = 1
-var dummy58 = 1
-var dummy59 = 1
-var dummy60 = 1
-var dummy61 = 1
-var dummy62 = 1
-var dummy63 = 1
-var dummy64 = 1
-var dummy65 = 1
-var dummy66 = 1
-var dummy67 = 1
-var dummy68 = 1
-var dummy69 = 1
-var dummy70 = 1
-var dummy71 = 1
-var dummy72 = 1
-var dummy73 = 1
-var dummy74 = 1
-var dummy75 = 1
-var dummy76 = 1
-var dummy77 = 1
-var dummy78 = 1
-var dummy79 = 1
-var dummy80 = 1
-var dummy81 = 1
-var dummy82 = 1
-var dummy83 = 1
-var dummy84 = 1
-var dummy85 = 1
-var dummy86 = 1
-var dummy87 = 1
-var dummy88 = 1
-var dummy89 = 1
-var dummy90 = 1
-var dummy91 = 1
-var dummy92 = 1
-var dummy93 = 1
-var dummy94 = 1
-var dummy95 = 1
-var dummy96 = 1
-var dummy97 = 1
-var dummy98 = 1
-var dummy99 = 1
-var dummy100 = 1
-var dummy101 = 1
-var dummy102 = 1
-var dummy103 = 1
-var dummy104 = 1
-var dummy105 = 1
-var dummy106 = 1
-var dummy107 = 1
-var dummy108 = 1
-var dummy109 = 1
-var dummy110 = 1
-var dummy111 = 1
-var dummy112 = 1
-var dummy113 = 1
-var dummy114 = 1
-var dummy115 = 1
-var dummy116 = 1
-var dummy117 = 1
-var dummy118 = 1
-var dummy119 = 1
-var dummy120 = 1
-var dummy121 = 1
-var dummy122 = 1
-var dummy123 = 1
-var dummy124 = 1
-var dummy125 = 1
-var dummy126 = 1
-var dummy127 = 1
-var dummy128 = 1
-var dummy129 = 1
-var dummy130 = 1
-var dummy131 = 1
-var dummy132 = 1
-var dummy133 = 1
-var dummy134 = 1
-var dummy135 = 1
-var dummy136 = 1
-var dummy137 = 1
-var dummy138 = 1
-var dummy139 = 1
-var dummy140 = 1
-var dummy141 = 1
-var dummy142 = 1
-var dummy143 = 1
-var dummy144 = 1
-var dummy145 = 1
-var dummy146 = 1
-var dummy147 = 1
-var dummy148 = 1
-var dummy149 = 1
-var dummy150 = 1
-var dummy151 = 1
-var dummy152 = 1
-var dummy153 = 1
-var dummy154 = 1
-var dummy155 = 1
-var dummy156 = 1
-var dummy157 = 1
-var dummy158 = 1
-var dummy159 = 1
-var dummy160 = 1
-var dummy161 = 1
-var dummy162 = 1
-var dummy163 = 1
-var dummy164 = 1
-var dummy165 = 1
-var dummy166 = 1
-var dummy167 = 1
-var dummy168 = 1
-var dummy169 = 1
-var dummy170 = 1
-var dummy171 = 1
-var dummy172 = 1
-var dummy173 = 1
-var dummy174 = 1
-var dummy175 = 1
-var dummy176 = 1
-var dummy177 = 1
-var dummy178 = 1
-var dummy179 = 1
-var dummy180 = 1
-var dummy181 = 1
-var dummy182 = 1
-var dummy183 = 1
-var dummy184 = 1
-var dummy185 = 1
-var dummy186 = 1
-var dummy187 = 1
-var dummy188 = 1
-var dummy189 = 1
-var dummy190 = 1
-var dummy191 = 1
-var dummy192 = 1
-var dummy193 = 1
-var dummy194 = 1
-var dummy195 = 1
-var dummy196 = 1
-var dummy197 = 1
-var dummy198 = 1
-var dummy199 = 1
-var dummy200 = 1
-var dummy201 = 1
-var dummy202 = 1
-var dummy203 = 1
-var dummy204 = 1
-var dummy205 = 1
-var dummy206 = 1
-var dummy207 = 1
-var dummy208 = 1
-var dummy209 = 1
-var dummy210 = 1
-var dummy211 = 1
-var dummy212 = 1
-var dummy213 = 1
-var dummy214 = 1
-var dummy215 = 1
-var dummy216 = 1
-var dummy217 = 1
-var dummy218 = 1
-var dummy219 = 1
-var dummy220 = 1
-var dummy221 = 1
-var dummy222 = 1
-var dummy223 = 1
-var dummy224 = 1
-var dummy225 = 1
-var dummy226 = 1
-var dummy227 = 1
-var dummy228 = 1
-var dummy229 = 1
-var dummy230 = 1
-var dummy231 = 1
-var dummy232 = 1
-var dummy233 = 1
-var dummy234 = 1
-var dummy235 = 1
-var dummy236 = 1
-var dummy237 = 1
-var dummy238 = 1
-var dummy239 = 1
-var dummy240 = 1
-var dummy241 = 1
-var dummy242 = 1
-var dummy243 = 1
-var dummy244 = 1
-var dummy245 = 1
-var dummy246 = 1
-var dummy247 = 1
-var dummy248 = 1
-var dummy249 = 1
-var dummy250 = 1
-var dummy251 = 1
-var dummy252 = 1
-var dummy253 = 1
-var dummy254 = 1
-var dummy255 = 1
-var dummy256 = 1
-var dummy257 = 1
-var dummy258 = 1
-var dummy259 = 1
-var dummy260 = 1
-var dummy261 = 1
-var dummy262 = 1
-var dummy263 = 1
-var dummy264 = 1
-var dummy265 = 1
-var dummy266 = 1
-var dummy267 = 1
-var dummy268 = 1
-var dummy269 = 1
-var dummy270 = 1
-var dummy271 = 1
-var dummy272 = 1
-var dummy273 = 1
-var dummy274 = 1
-var dummy275 = 1
-var dummy276 = 1
-var dummy277 = 1
-var dummy278 = 1
-var dummy279 = 1
-var dummy280 = 1
-var dummy281 = 1
-var dummy282 = 1
-var dummy283 = 1
-var dummy284 = 1
-var dummy285 = 1
-var dummy286 = 1
-var dummy287 = 1
-var dummy288 = 1
-var dummy289 = 1
-var dummy290 = 1
-var dummy291 = 1
-var dummy292 = 1
-var dummy293 = 1
-var dummy294 = 1
-var dummy295 = 1
-var dummy296 = 1
-var dummy297 = 1
-var dummy298 = 1
-var dummy299 = 1
-var dummy300 = 1
-var dummy301 = 1
-var dummy302 = 1
-var dummy303 = 1
-var dummy304 = 1
-var dummy305 = 1
-var dummy306 = 1
-var dummy307 = 1
-var dummy308 = 1
-var dummy309 = 1
-var dummy310 = 1
-var dummy311 = 1
-var dummy312 = 1
-var dummy313 = 1
-var dummy314 = 1
-var dummy315 = 1
-var dummy316 = 1
-var dummy317 = 1
-var dummy318 = 1
-var dummy319 = 1
-var dummy320 = 1
-var dummy321 = 1
-var dummy322 = 1
-var dummy323 = 1
-var dummy324 = 1
-var dummy325 = 1
-var dummy326 = 1
-var dummy327 = 1
-var dummy328 = 1
-var dummy329 = 1
-var dummy330 = 1
-var dummy331 = 1
-var dummy332 = 1
-var dummy333 = 1
-var dummy334 = 1
-var dummy335 = 1
-var dummy336 = 1
-var dummy337 = 1
-var dummy338 = 1
-var dummy339 = 1
-var dummy340 = 1
-var dummy341 = 1
-var dummy342 = 1
-var dummy343 = 1
-var dummy344 = 1
-var dummy345 = 1
-var dummy346 = 1
-var dummy347 = 1
-var dummy348 = 1
-var dummy349 = 1
-var dummy350 = 1
-var dummy351 = 1
-var dummy352 = 1
-var dummy353 = 1
-var dummy354 = 1
-var dummy355 = 1
-var dummy356 = 1
-var dummy357 = 1
-var dummy358 = 1
-var dummy359 = 1
-var dummy360 = 1
-var dummy361 = 1
-var dummy362 = 1
-var dummy363 = 1
-var dummy364 = 1
-var dummy365 = 1
-var dummy366 = 1
-var dummy367 = 1
-var dummy368 = 1
-var dummy369 = 1
-var dummy370 = 1
-var dummy371 = 1
-var dummy372 = 1
-var dummy373 = 1
-var dummy374 = 1
-var dummy375 = 1
-var dummy376 = 1
-var dummy377 = 1
-var dummy378 = 1
-var dummy379 = 1
-var dummy380 = 1
-var dummy381 = 1
-var dummy382 = 1
-var dummy383 = 1
-var dummy384 = 1
-var dummy385 = 1
-var dummy386 = 1
-var dummy387 = 1
-var dummy388 = 1
-var dummy389 = 1
-var dummy390 = 1
-var dummy391 = 1
-var dummy392 = 1
-var dummy393 = 1
-var dummy394 = 1
-var dummy395 = 1
-var dummy396 = 1
-var dummy397 = 1
-var dummy398 = 1
-var dummy399 = 1
-var dummy400 = 1
-var dummy401 = 1
-var dummy402 = 1
-var dummy403 = 1
-var dummy404 = 1
-var dummy405 = 1
-var dummy406 = 1
-var dummy407 = 1
-var dummy408 = 1
-var dummy409 = 1
-var dummy410 = 1
-var dummy411 = 1
-var dummy412 = 1
-var dummy413 = 1
-var dummy414 = 1
-var dummy415 = 1
-var dummy416 = 1
-var dummy417 = 1
-var dummy418 = 1
-var dummy419 = 1
-var dummy420 = 1
-var dummy421 = 1
-var dummy422 = 1
-var dummy423 = 1
-var dummy424 = 1
-var dummy425 = 1
-var dummy426 = 1
-var dummy427 = 1
-var dummy428 = 1
-var dummy429 = 1
-var dummy430 = 1
-var dummy431 = 1
-var dummy432 = 1
-var dummy433 = 1
-var dummy434 = 1
-var dummy435 = 1
-var dummy436 = 1
-var dummy437 = 1
-var dummy438 = 1
-var dummy439 = 1
-var dummy440 = 1
-var dummy441 = 1
-var dummy442 = 1
-var dummy443 = 1
-var dummy444 = 1
-var dummy445 = 1
-var dummy446 = 1
-var dummy447 = 1
-var dummy448 = 1
-var dummy449 = 1
-var dummy450 = 1
-var dummy451 = 1
-var dummy452 = 1
-var dummy453 = 1
-var dummy454 = 1
-var dummy455 = 1
-var dummy456 = 1
-var dummy457 = 1
-var dummy458 = 1
-var dummy459 = 1
-var dummy460 = 1
-var dummy461 = 1
-var dummy462 = 1
-var dummy463 = 1
-var dummy464 = 1
-var dummy465 = 1
-var dummy466 = 1
-var dummy467 = 1
-var dummy468 = 1
-var dummy469 = 1
-var dummy470 = 1
-var dummy471 = 1
-var dummy472 = 1
-var dummy473 = 1
-var dummy474 = 1
-var dummy475 = 1
-var dummy476 = 1
-var dummy477 = 1
-var dummy478 = 1
-var dummy479 = 1
-var dummy480 = 1
-var dummy481 = 1
-var dummy482 = 1
-var dummy483 = 1
-var dummy484 = 1
-var dummy485 = 1
-var dummy486 = 1
-var dummy487 = 1
-var dummy488 = 1
-var dummy489 = 1
-var dummy490 = 1
-var dummy491 = 1
-var dummy492 = 1
-var dummy493 = 1
-var dummy494 = 1
-var dummy495 = 1
-var dummy496 = 1
-var dummy497 = 1
-var dummy498 = 1
-var dummy499 = 1
-var dummy500 = 1
-var dummy501 = 1
-var dummy502 = 1
-var dummy503 = 1
-var dummy504 = 1
-var dummy505 = 1
-var dummy506 = 1
-var dummy507 = 1
-var dummy508 = 1
-var dummy509 = 1
-var dummy510 = 1
-
-func _process(delta: float) -> void:
-	pass
+	if data.has("buildings") and data["buildings"] is Dictionary:
+		buildings = data["buildings"].duplicate(true)
+	if data.has("production_accumulated") and data["production_accumulated"] is Dictionary:
+		production_accumulated = data["production_accumulated"].duplicate(true)

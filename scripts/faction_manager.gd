@@ -41,10 +41,14 @@ var unlocked_perks: Dictionary = {}
 
 func _init() -> void:
 	add_to_group("faction_manager")
-
-func _ready() -> void:
 	_load_factions_data()
 	_initialize_player_reputation()
+
+func _ready() -> void:
+	if factions_data.is_empty():
+		_load_factions_data()
+	if player_reputation.is_empty():
+		_initialize_player_reputation()
 
 ## Loads the faction JSON definitions.
 func _load_factions_data() -> void:

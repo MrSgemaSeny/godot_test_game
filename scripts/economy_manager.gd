@@ -427,6 +427,8 @@ func resolve_contract(success: bool) -> int:
 	if success:
 		var mult = float(c.get("reward_mult", 1.25)) - 1.0
 		var bonus_gold = int(ceil(calculate_wave_reward(1) * mult))
+		if bonus_gold <= 0:
+			bonus_gold = int(c.get("bonus_gold", 25))
 		if bonus_gold > 0:
 			add_gold(bonus_gold, "contract", "Выполнен контракт: %s" % c.get("name", ""))
 		contract_history.append({"contract": c, "status": "success", "reward": bonus_gold})

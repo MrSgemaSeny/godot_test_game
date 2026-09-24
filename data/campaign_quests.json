@@ -1,361 +1,377 @@
 [
   {
     "id": "act1_main",
-    "title": "The Gathering Threat",
-    "description": "Clear the Valley and reach the Royal Highway.",
+    "title": "Очищение Долины",
+    "description": "Зачистите начальные секторы Долины и обеспечьте безопасность Королевского Тракта.",
     "type": "explore",
     "target_regions": ["valley", "royal_highway"],
     "act": 1,
-    "amount": 2
+    "chapter": 1,
+    "amount": 2,
+    "rewards": { "glory": 30, "gold": 120 }
+  },
+  {
+    "id": "ch1_q1",
+    "title": "Истребление Лазутчиков",
+    "description": "Уничтожьте 60 гоблинов и рядовых пехотинцев на передовой.",
+    "type": "kill",
+    "target_enemy": "grunt",
+    "amount": 60,
+    "act": 1,
+    "chapter": 1,
+    "rewards": { "glory": 25, "gold": 100 }
+  },
+  {
+    "id": "ch1_q2",
+    "title": "Стальная Дисциплина",
+    "description": "Остановите 15 тяжелых орочьих берсерков до того, как они пробьют палисад.",
+    "type": "kill",
+    "target_enemy": "orc_berserker",
+    "amount": 15,
+    "act": 1,
+    "chapter": 1,
+    "rewards": { "glory": 30, "gold": 150 }
   },
   {
     "id": "act1_boss",
-    "title": "Warchief's Fall",
-    "description": "Defeat the Orc Warchief at the gates.",
+    "title": "Падение Вождя",
+    "description": "Сразите Орочьего Вождя у южных врат крепости.",
     "type": "kill",
     "target_enemy": "warchief_boss",
     "amount": 1,
-    "act": 1
+    "act": 1,
+    "chapter": 1,
+    "rewards": { "glory": 50, "rune": "ruby_1" }
   },
   {
+    "id": "ch1_q4",
+    "title": "Казна Авангарда",
+    "description": "Накопите не менее 600 золота в резерве во время защиты укреплений.",
+    "type": "economy",
+    "amount": 600,
+    "act": 1,
+    "chapter": 1,
+    "rewards": { "glory": 35, "gold": 200 }
+  },
+  {
+    "id": "ch1_q5",
+    "title": "Неприступная Оборона",
+    "description": "Завершите этап 1 главы без потери единой жизни крепости.",
+    "type": "defend",
+    "amount": 1,
+    "act": 1,
+    "chapter": 1,
+    "rewards": { "glory": 40, "rune": "rune_blade_1" }
+  },
+  {
+    "id": "ch1_q6",
+    "title": "Испытание Стрелков",
+    "description": "Одержите победу на рубеже, полагаясь только на башни дальнего боя.",
+    "type": "generic",
+    "amount": 1,
+    "act": 1,
+    "chapter": 1,
+    "rewards": { "glory": 35, "artifact": "hunters_mark" }
+  },
+
+  {
     "id": "act2_main",
-    "title": "War of the Factions",
-    "description": "Secure the Crystal Caves and the Greenwood.",
+    "title": "Война в Шепчущих Лесах",
+    "description": "Обеспечьте контроль над Кристальными Пещерами и Зеленым Лесом.",
     "type": "explore",
     "target_regions": ["crystal_caves", "greenwood"],
     "act": 2,
-    "amount": 2
+    "chapter": 2,
+    "amount": 2,
+    "rewards": { "glory": 45, "gold": 220 }
+  },
+  {
+    "id": "ch2_q1",
+    "title": "Охота на Невидимок",
+    "description": "Уничтожьте 30 скрытных убийц и теневых хищников.",
+    "type": "kill",
+    "target_enemy": "shadow_stalker",
+    "amount": 30,
+    "act": 2,
+    "chapter": 2,
+    "rewards": { "glory": 40, "gold": 180 }
+  },
+  {
+    "id": "ch2_q2",
+    "title": "Болотная Отрава",
+    "description": "Истребите 20 ядовитых ползунов, угрожающих источникам пресной воды.",
+    "type": "kill",
+    "target_enemy": "poison_crawler",
+    "amount": 20,
+    "act": 2,
+    "chapter": 2,
+    "rewards": { "glory": 45, "rune": "rune_venom_gland_1" }
   },
   {
     "id": "act2_boss",
-    "title": "The Archmage's Folly",
-    "description": "Slay the rogue Archmage.",
+    "title": "Безумие Архимага",
+    "description": "Остановите мятежного Архимага в сердце кристальных штолен.",
     "type": "kill",
     "target_enemy": "archmage_boss",
     "amount": 1,
-    "act": 2
+    "act": 2,
+    "chapter": 2,
+    "rewards": { "glory": 75, "rune": "rune_frost_slow_1" }
   },
+  {
+    "id": "ch2_q4",
+    "title": "Контракты Гильдии",
+    "description": "Успешно заключите и выполните 3 рискованных экономических контракта волны.",
+    "type": "generic",
+    "amount": 3,
+    "act": 2,
+    "chapter": 2,
+    "rewards": { "glory": 50, "gold": 300 }
+  },
+  {
+    "id": "ch2_q5",
+    "title": "Огненный Заслон",
+    "description": "Уничтожьте 100 противников уроном огня или взрывов.",
+    "type": "kill",
+    "target_enemy": "generic",
+    "amount": 100,
+    "act": 2,
+    "chapter": 2,
+    "rewards": { "glory": 50, "rune": "rune_flame_core_1" }
+  },
+  {
+    "id": "ch2_q6",
+    "title": "Защита Экспедиции",
+    "description": "Одержите идеальную победу на болотах с полным здоровьем базы.",
+    "type": "defend",
+    "amount": 1,
+    "act": 2,
+    "chapter": 2,
+    "rewards": { "glory": 55, "artifact": "merchants_coin" }
+  },
+
   {
     "id": "act3_main",
-    "title": "Frozen Shadows & Ash",
-    "description": "Survive the Frost Peak and explore the Ash Wastes.",
+    "title": "Ледяные Безмолвия",
+    "description": "Преодолейте Перевал Морозного Пика и исследуйте древние катакомбы.",
     "type": "explore",
-    "target_regions": ["frost_peak", "ash_wastes"],
+    "target_regions": ["frost_peak", "subterranean_caves"],
     "act": 3,
-    "amount": 2
+    "chapter": 3,
+    "amount": 2,
+    "rewards": { "glory": 60, "gold": 280 }
   },
   {
-    "id": "act4_main",
-    "title": "The Convergence",
-    "description": "Reach the Royal Heart.",
-    "type": "explore",
-    "target_regions": ["royal_heart"],
-    "act": 4,
-    "amount": 1
-  },
-  {
-    "id": "side_culling",
-    "title": "Cull the Herd",
-    "description": "Kill 50 grunts.",
+    "id": "ch3_q1",
+    "title": "Ледяной Панцирь",
+    "description": "Сокрушите 30 ледяных големов и тяжелобронированных троллей.",
     "type": "kill",
-    "target_enemy": "grunt",
-    "amount": 50,
-    "act": 1
+    "target_enemy": "frost_golem",
+    "amount": 30,
+    "act": 3,
+    "chapter": 3,
+    "rewards": { "glory": 60, "gold": 250 }
   },
   {
-    "id": "side_troll_hunter",
-    "title": "Troll Hunter",
-    "description": "Kill 10 trolls.",
+    "id": "ch3_q2",
+    "title": "Охота на Гигантов",
+    "description": "Поразите 20 морозных исполинов с помощью бронебойных орудий.",
     "type": "kill",
     "target_enemy": "troll",
-    "amount": 10,
-    "act": 2
+    "amount": 20,
+    "act": 3,
+    "chapter": 3,
+    "rewards": { "glory": 65, "rune": "rune_armor_pierce_1" }
   },
   {
-    "id": "side_royal_favor",
-    "title": "For the Crown",
-    "description": "Complete 3 contracts for the Royal Crown.",
-    "type": "generic",
-    "amount": 3,
-    "act": 1
+    "id": "act3_boss",
+    "title": "Владыка Ледника",
+    "description": "Уничтожьте Ледяного Колосса на вершине перевала.",
+    "type": "kill",
+    "target_enemy": "frost_colossus_boss",
+    "amount": 1,
+    "act": 3,
+    "chapter": 3,
+    "rewards": { "glory": 100, "rune": "rune_deep_freeze_1" }
   },
   {
-    "id": "side_druid_favor",
-    "title": "Nature's Balance",
-    "description": "Complete 3 contracts for the Druid Circle.",
+    "id": "ch3_q4",
+    "title": "Банковский Процент",
+    "description": "Заработайте не менее 150 золота исключительно на процентах депозита за матч.",
+    "type": "economy",
+    "amount": 150,
+    "act": 3,
+    "chapter": 3,
+    "rewards": { "glory": 70, "gold": 350 }
+  },
+  {
+    "id": "ch3_q5",
+    "title": "Магия Глубокой Заморозки",
+    "description": "Заморозьте или замедлите более 80 монстров с помощью ледяных рун и башен.",
     "type": "generic",
-    "amount": 3,
-    "act": 2
-  }
+    "amount": 80,
+    "act": 3,
+    "chapter": 3,
+    "rewards": { "glory": 65, "rune": "rune_frostbite_1" }
+  },
+  {
+    "id": "ch3_q6",
+    "title": "Ледяная Стойкость",
+    "description": "Пройдите этап 3 главы без единой огненной башни.",
+    "type": "generic",
+    "amount": 1,
+    "act": 3,
+    "chapter": 3,
+    "rewards": { "glory": 75, "artifact": "emergency_reserve" }
+  },
 
-  ,{
-    "id": "filler_quest_1",
-    "title": "Filler Quest 1",
-    "description": "A minor task for the realm... 1",
-    "type": "generic",
-    "target_enemy": "",
+  {
+    "id": "act4_main",
+    "title": "Пепельные Пустоши",
+    "description": "Разведайте индустриальный сектор Пепельных Пустошей и Город Механиков.",
+    "type": "explore",
+    "target_regions": ["ash_wastes", "clockwork_city"],
+    "act": 4,
+    "chapter": 4,
+    "amount": 2,
+    "rewards": { "glory": 80, "gold": 320 }
+  },
+  {
+    "id": "ch4_q1",
+    "title": "Слом Механизмов",
+    "description": "Уничтожьте 50 боевых автоматонов и осадных баллист противника.",
+    "type": "kill",
+    "target_enemy": "automaton",
+    "amount": 50,
+    "act": 4,
+    "chapter": 4,
+    "rewards": { "glory": 80, "gold": 350 }
+  },
+  {
+    "id": "ch4_q2",
+    "title": "Пороховая Угроза",
+    "description": "Ликвидируйте 40 подрывников-камикадзе до того, как они приблизятся к стенам.",
+    "type": "kill",
+    "target_enemy": "bomber",
+    "amount": 40,
+    "act": 4,
+    "chapter": 4,
+    "rewards": { "glory": 85, "rune": "rune_chain_lightning_1" }
+  },
+  {
+    "id": "act4_boss",
+    "title": "Гибель Дредноута",
+    "description": "Уничтожьте механизированный флагман Дредноут в жерле завода.",
+    "type": "kill",
+    "target_enemy": "dreadnought_boss",
     "amount": 1,
-    "act": 1
-  }
-  ,{
-    "id": "filler_quest_2",
-    "title": "Filler Quest 2",
-    "description": "A minor task for the realm... 2",
+    "act": 4,
+    "chapter": 4,
+    "rewards": { "glory": 120, "rune": "rune_overcharge_1" }
+  },
+  {
+    "id": "ch4_q4",
+    "title": "Техническое Превосходство",
+    "description": "Улучшите минимум 3 башни до 4 уровня в течение одной миссии.",
     "type": "generic",
-    "target_enemy": "",
+    "amount": 3,
+    "act": 4,
+    "chapter": 4,
+    "rewards": { "glory": 90, "gold": 400 }
+  },
+  {
+    "id": "ch4_q5",
+    "title": "Броня Пепла",
+    "description": "Завершите сложный этап в Пепельных Пустошах с идеальным счетом без потерь жизней.",
+    "type": "defend",
     "amount": 1,
-    "act": 1
-  }
-  ,{
-    "id": "filler_quest_3",
-    "title": "Filler Quest 3",
-    "description": "A minor task for the realm... 3",
+    "act": 4,
+    "chapter": 4,
+    "rewards": { "glory": 100, "rune": "rune_precision_1" }
+  },
+  {
+    "id": "ch4_q6",
+    "title": "Химический Катализ",
+    "description": "Активируйте способности героя или башен 10 раз за одну волну.",
     "type": "generic",
-    "target_enemy": "",
+    "amount": 10,
+    "act": 4,
+    "chapter": 4,
+    "rewards": { "glory": 85, "artifact": "alchemist_chalice" }
+  },
+
+  {
+    "id": "act5_main",
+    "title": "Сердце Королевства и Бездна",
+    "description": "Доберитесь до Королевского Сердца и прорвитесь к Цитадели Тьмы.",
+    "type": "explore",
+    "target_regions": ["royal_heart", "abyss_citadel"],
+    "act": 5,
+    "chapter": 5,
+    "amount": 2,
+    "rewards": { "glory": 150, "gold": 600 }
+  },
+  {
+    "id": "ch5_q1",
+    "title": "Истребление Порождений Тьмы",
+    "description": "Уничтожьте 80 призраков бездны и высших демонов.",
+    "type": "kill",
+    "target_enemy": "abyssal_specter",
+    "amount": 80,
+    "act": 5,
+    "chapter": 5,
+    "rewards": { "glory": 110, "gold": 450 }
+  },
+  {
+    "id": "ch5_q2",
+    "title": "Владыки Разлома",
+    "description": "Убейте 30 генералов бездны с защитными щитами.",
+    "type": "kill",
+    "target_enemy": "abyss_lord",
+    "amount": 30,
+    "act": 5,
+    "chapter": 5,
+    "rewards": { "glory": 120, "rune": "rune_execution_1" }
+  },
+  {
+    "id": "act5_boss",
+    "title": "Свержение Монарха Бездны",
+    "description": "Победите финального босса на 59 этапе кампании и положите конец вторжению.",
+    "type": "kill",
+    "target_enemy": "abyss_monarch_boss",
     "amount": 1,
-    "act": 1
-  }
-  ,{
-    "id": "filler_quest_4",
-    "title": "Filler Quest 4",
-    "description": "A minor task for the realm... 4",
+    "act": 5,
+    "chapter": 5,
+    "rewards": { "glory": 250, "rune": "rune_titan_slayer_1" }
+  },
+  {
+    "id": "ch5_q4",
+    "title": "Вершина Мастерства",
+    "description": "Разблокируйте и примените эволюцию 5 уровня хотя бы для двух башен.",
     "type": "generic",
-    "target_enemy": "",
+    "amount": 2,
+    "act": 5,
+    "chapter": 5,
+    "rewards": { "glory": 130, "gold": 500 }
+  },
+  {
+    "id": "ch5_q5",
+    "title": "Триумф Короны",
+    "description": "Заработайте 3 звезды на финальном 59 рубеже королевства.",
+    "type": "defend",
     "amount": 1,
-    "act": 1
-  }
-  ,{
-    "id": "filler_quest_5",
-    "title": "Filler Quest 5",
-    "description": "A minor task for the realm... 5",
+    "act": 5,
+    "chapter": 5,
+    "rewards": { "glory": 200, "rune": "rune_citadel_bastion_1" }
+  },
+  {
+    "id": "ch5_q6",
+    "title": "Очищающий Свет",
+    "description": "Нанесите колоссальный священный урон по боссам и закройте разлом навсегда.",
     "type": "generic",
-    "target_enemy": "",
     "amount": 1,
-    "act": 1
-  }
-  ,{
-    "id": "filler_quest_6",
-    "title": "Filler Quest 6",
-    "description": "A minor task for the realm... 6",
-    "type": "generic",
-    "target_enemy": "",
-    "amount": 1,
-    "act": 1
-  }
-  ,{
-    "id": "filler_quest_7",
-    "title": "Filler Quest 7",
-    "description": "A minor task for the realm... 7",
-    "type": "generic",
-    "target_enemy": "",
-    "amount": 1,
-    "act": 1
-  }
-  ,{
-    "id": "filler_quest_8",
-    "title": "Filler Quest 8",
-    "description": "A minor task for the realm... 8",
-    "type": "generic",
-    "target_enemy": "",
-    "amount": 1,
-    "act": 1
-  }
-  ,{
-    "id": "filler_quest_9",
-    "title": "Filler Quest 9",
-    "description": "A minor task for the realm... 9",
-    "type": "generic",
-    "target_enemy": "",
-    "amount": 1,
-    "act": 1
-  }
-  ,{
-    "id": "filler_quest_10",
-    "title": "Filler Quest 10",
-    "description": "A minor task for the realm... 10",
-    "type": "generic",
-    "target_enemy": "",
-    "amount": 1,
-    "act": 1
-  }
-  ,{
-    "id": "filler_quest_11",
-    "title": "Filler Quest 11",
-    "description": "A minor task for the realm... 11",
-    "type": "generic",
-    "target_enemy": "",
-    "amount": 1,
-    "act": 1
-  }
-  ,{
-    "id": "filler_quest_12",
-    "title": "Filler Quest 12",
-    "description": "A minor task for the realm... 12",
-    "type": "generic",
-    "target_enemy": "",
-    "amount": 1,
-    "act": 1
-  }
-  ,{
-    "id": "filler_quest_13",
-    "title": "Filler Quest 13",
-    "description": "A minor task for the realm... 13",
-    "type": "generic",
-    "target_enemy": "",
-    "amount": 1,
-    "act": 1
-  }
-  ,{
-    "id": "filler_quest_14",
-    "title": "Filler Quest 14",
-    "description": "A minor task for the realm... 14",
-    "type": "generic",
-    "target_enemy": "",
-    "amount": 1,
-    "act": 1
-  }
-  ,{
-    "id": "filler_quest_15",
-    "title": "Filler Quest 15",
-    "description": "A minor task for the realm... 15",
-    "type": "generic",
-    "target_enemy": "",
-    "amount": 1,
-    "act": 1
-  }
-  ,{
-    "id": "filler_quest_16",
-    "title": "Filler Quest 16",
-    "description": "A minor task for the realm... 16",
-    "type": "generic",
-    "target_enemy": "",
-    "amount": 1,
-    "act": 1
-  }
-  ,{
-    "id": "filler_quest_17",
-    "title": "Filler Quest 17",
-    "description": "A minor task for the realm... 17",
-    "type": "generic",
-    "target_enemy": "",
-    "amount": 1,
-    "act": 1
-  }
-  ,{
-    "id": "filler_quest_18",
-    "title": "Filler Quest 18",
-    "description": "A minor task for the realm... 18",
-    "type": "generic",
-    "target_enemy": "",
-    "amount": 1,
-    "act": 1
-  }
-  ,{
-    "id": "filler_quest_19",
-    "title": "Filler Quest 19",
-    "description": "A minor task for the realm... 19",
-    "type": "generic",
-    "target_enemy": "",
-    "amount": 1,
-    "act": 1
-  }
-  ,{
-    "id": "filler_quest_20",
-    "title": "Filler Quest 20",
-    "description": "A minor task for the realm... 20",
-    "type": "generic",
-    "target_enemy": "",
-    "amount": 1,
-    "act": 1
-  }
-  ,{
-    "id": "filler_quest_21",
-    "title": "Filler Quest 21",
-    "description": "A minor task for the realm... 21",
-    "type": "generic",
-    "target_enemy": "",
-    "amount": 1,
-    "act": 1
-  }
-  ,{
-    "id": "filler_quest_22",
-    "title": "Filler Quest 22",
-    "description": "A minor task for the realm... 22",
-    "type": "generic",
-    "target_enemy": "",
-    "amount": 1,
-    "act": 1
-  }
-  ,{
-    "id": "filler_quest_23",
-    "title": "Filler Quest 23",
-    "description": "A minor task for the realm... 23",
-    "type": "generic",
-    "target_enemy": "",
-    "amount": 1,
-    "act": 1
-  }
-  ,{
-    "id": "filler_quest_24",
-    "title": "Filler Quest 24",
-    "description": "A minor task for the realm... 24",
-    "type": "generic",
-    "target_enemy": "",
-    "amount": 1,
-    "act": 1
-  }
-  ,{
-    "id": "filler_quest_25",
-    "title": "Filler Quest 25",
-    "description": "A minor task for the realm... 25",
-    "type": "generic",
-    "target_enemy": "",
-    "amount": 1,
-    "act": 1
-  }
-  ,{
-    "id": "filler_quest_26",
-    "title": "Filler Quest 26",
-    "description": "A minor task for the realm... 26",
-    "type": "generic",
-    "target_enemy": "",
-    "amount": 1,
-    "act": 1
-  }
-  ,{
-    "id": "filler_quest_27",
-    "title": "Filler Quest 27",
-    "description": "A minor task for the realm... 27",
-    "type": "generic",
-    "target_enemy": "",
-    "amount": 1,
-    "act": 1
-  }
-  ,{
-    "id": "filler_quest_28",
-    "title": "Filler Quest 28",
-    "description": "A minor task for the realm... 28",
-    "type": "generic",
-    "target_enemy": "",
-    "amount": 1,
-    "act": 1
-  }
-  ,{
-    "id": "filler_quest_29",
-    "title": "Filler Quest 29",
-    "description": "A minor task for the realm... 29",
-    "type": "generic",
-    "target_enemy": "",
-    "amount": 1,
-    "act": 1
-  }
-  ,{
-    "id": "filler_quest_30",
-    "title": "Filler Quest 30",
-    "description": "A minor task for the realm... 30",
-    "type": "generic",
-    "target_enemy": "",
-    "amount": 1,
-    "act": 1
+    "act": 5,
+    "chapter": 5,
+    "rewards": { "glory": 150, "rune": "rune_radiance_1" }
   }
 ]

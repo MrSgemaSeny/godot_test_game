@@ -54,7 +54,8 @@ func run_all_tests() -> void:
 		preload("res://tests/test_economy_chapters_and_evolutions.gd"),
 		preload("res://tests/test_economy_manager_v2.gd"),
 		preload("res://tests/test_campaign_59_stages.gd"),
-		preload("res://tests/test_campaign_polish_and_boss_economy.gd")
+		preload("res://tests/test_campaign_polish_and_boss_economy.gd"),
+		preload("res://tests/test_horizontal_scale.gd")
 	]
 	
 	for test_cls in test_classes:
