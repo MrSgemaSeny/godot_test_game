@@ -20,6 +20,98 @@ var map_obj_script = preload("res://scripts/interactive_map_obj.gd")
 var floating_text_script = preload("res://scripts/floating_text.gd")
 
 var total_girls: int = 5
+
+const MAP_LAYOUTS: Dictionary = {
+	"valley": {
+		"curve": [
+			Vector2(-40, 240), Vector2(260, 240), Vector2(400, 420),
+			Vector2(700, 420), Vector2(880, 260), Vector2(1060, 260),
+			Vector2(1060, 560), Vector2(1140, 560)
+		],
+		"spots": [
+			Vector2(180, 170), Vector2(250, 310), Vector2(340, 170),
+			Vector2(330, 490), Vector2(470, 490), Vector2(550, 340),
+			Vector2(650, 490), Vector2(760, 340), Vector2(840, 490),
+			Vector2(950, 190), Vector2(980, 330), Vector2(980, 490)
+		],
+		"village": Vector2(1120, 540),
+		"barrels": [Vector2(400, 350), Vector2(700, 350)],
+		"chest": Vector2(880, 190),
+		"bridge": Vector2(550, 420)
+	},
+	"swamp": {
+		"curve": [
+			Vector2(-40, 420), Vector2(220, 420), Vector2(320, 600),
+			Vector2(640, 600), Vector2(640, 200), Vector2(920, 200),
+			Vector2(920, 480), Vector2(1140, 480)
+		],
+		"spots": [
+			Vector2(140, 350), Vector2(240, 510), Vector2(180, 600),
+			Vector2(420, 530), Vector2(550, 530), Vector2(560, 380),
+			Vector2(560, 270), Vector2(720, 270), Vector2(820, 270),
+			Vector2(840, 400), Vector2(1000, 400), Vector2(1000, 560)
+		],
+		"village": Vector2(1120, 460),
+		"barrels": [Vector2(320, 520), Vector2(640, 380)],
+		"chest": Vector2(920, 120),
+		"bridge": Vector2(640, 400)
+	},
+	"caves": {
+		"curve": [
+			Vector2(-40, 180), Vector2(320, 180), Vector2(320, 480),
+			Vector2(680, 480), Vector2(680, 220), Vector2(1000, 220),
+			Vector2(1000, 620), Vector2(1140, 620)
+		],
+		"spots": [
+			Vector2(180, 250), Vector2(250, 110), Vector2(390, 250),
+			Vector2(390, 410), Vector2(500, 550), Vector2(610, 550),
+			Vector2(610, 350), Vector2(750, 150), Vector2(860, 150),
+			Vector2(930, 290), Vector2(930, 450), Vector2(1070, 540)
+		],
+		"village": Vector2(1120, 600),
+		"barrels": [Vector2(320, 330), Vector2(680, 350)],
+		"chest": Vector2(500, 410),
+		"bridge": Vector2(680, 350)
+	},
+	"frost_peak": {
+		"curve": [
+			Vector2(-40, 560), Vector2(280, 560), Vector2(280, 240),
+			Vector2(600, 240), Vector2(600, 500), Vector2(900, 500),
+			Vector2(900, 220), Vector2(1140, 220)
+		],
+		"spots": [
+			Vector2(160, 490), Vector2(210, 630), Vector2(350, 450),
+			Vector2(350, 310), Vector2(460, 170), Vector2(530, 310),
+			Vector2(670, 310), Vector2(670, 430), Vector2(780, 570),
+			Vector2(830, 430), Vector2(970, 310), Vector2(1040, 150)
+		],
+		"village": Vector2(1120, 200),
+		"barrels": [Vector2(280, 400), Vector2(600, 370)],
+		"chest": Vector2(750, 430),
+		"bridge": Vector2(600, 380)
+	},
+	"besieged_citadel": {
+		"curve": [
+			Vector2(-40, 360), Vector2(260, 360), Vector2(440, 180),
+			Vector2(740, 180), Vector2(740, 540), Vector2(960, 540),
+			Vector2(960, 360), Vector2(1140, 360)
+		],
+		"spots": [
+			Vector2(140, 290), Vector2(140, 430), Vector2(320, 260),
+			Vector2(360, 430), Vector2(560, 110), Vector2(620, 250),
+			Vector2(670, 390), Vector2(670, 610), Vector2(820, 610),
+			Vector2(880, 470), Vector2(1030, 470), Vector2(1030, 290)
+		],
+		"village": Vector2(1120, 340),
+		"barrels": [Vector2(440, 260), Vector2(740, 360)],
+		"chest": Vector2(560, 250),
+		"bridge": Vector2(740, 360)
+	}
+}
+
+func _get_current_layout() -> Dictionary:
+	var b = GlobalState.selected_map if GlobalState.selected_map != "" else "valley"
+	return MAP_LAYOUTS.get(b, MAP_LAYOUTS["valley"])
 var scene_anim_time: float = 0.0
 var tip_timer: float = 0.0
 var tip_index: int = 0
@@ -99,6 +191,50 @@ func _setup_expansion_systems() -> void:
 		"frost_peak": weather_system.set_weather("snow")
 		"caves": weather_system.set_weather("fog")
 		_: weather_system.set_weather("clear")
+		
+	# Инициализация особых игровых режимов
+	_setup_game_mode()
+
+func _setup_game_mode() -> void:
+	match GlobalState.game_mode:
+		"nightmare":
+			var nm = NightmareController.new()
+			add_child(nm)
+			nm.enable_nightmare()
+			game_manager.lives = 1
+			game_manager.max_lives = 1
+			game_manager.gold = int(game_manager.gold * 0.5)
+			_spawn_floating_text("💀 РЕЖИМ КОШМАРА: 1 ЖИЗНЬ!", Color(1.0, 0.2, 0.2), Vector2(640, 200), 22)
+		"boss_rush":
+			var br = BossRushController.new()
+			add_child(br)
+			br.start_boss_rush()
+			_spawn_floating_text("👹 БИТВА С БОССАМИ!", Color(1.0, 0.3, 0.3), Vector2(640, 200), 22)
+		"ng_plus":
+			var ng = NGPlusController.new()
+			add_child(ng)
+			ng.start_ng_plus(meta_manager)
+			_spawn_floating_text("👑 NEW GAME+ АКТИВИРОВАН!", Color(1.0, 0.85, 0.3), Vector2(640, 200), 22)
+		"endless":
+			var end_ctrl = EndlessController.new()
+			add_child(end_ctrl)
+			end_ctrl.start_endless()
+			_spawn_floating_text("♾️ БЕСКОНЕЧНЫЙ ШТУРМ!", Color(0.4, 0.8, 1.0), Vector2(640, 200), 22)
+		"challenge":
+			if GlobalState.selected_challenge != "":
+				var ch = ChallengeManager.new()
+				add_child(ch)
+				ch.start_challenge(GlobalState.selected_challenge)
+				_spawn_floating_text("🎯 ИСПЫТАНИЕ АКТИВИРОВАНО!", Color(0.4, 1.0, 0.5), Vector2(640, 200), 22)
+		"weekly":
+			var wk = WeeklyChallengeController.new()
+			add_child(wk)
+			_spawn_floating_text("📅 ЕЖЕНЕДЕЛЬНОЕ ИСПЫТАНИЕ!", Color(0.85, 0.6, 1.0), Vector2(640, 200), 22)
+		"draft":
+			var dr = DraftModeController.new()
+			add_child(dr)
+			dr.start_draft_run(randi())
+			_spawn_floating_text("🃏 ДРАФТ-РЕЖИМ БАШЕН!", Color(1.0, 0.7, 0.2), Vector2(640, 200), 22)
 
 func _generate_decorations() -> void:
 	var rng = RandomNumberGenerator.new()
@@ -155,17 +291,10 @@ func _setup_signals() -> void:
 		wave_controller.all_waves_completed.connect(_on_all_waves_completed)
 
 func _setup_path() -> void:
+	var layout = _get_current_layout()
 	var curve = Curve2D.new()
-	curve.add_point(Vector2(-40, 460))
-	curve.add_point(Vector2(300, 460))
-	curve.add_point(Vector2(300, 330))
-	curve.add_point(Vector2(840, 330))
-	curve.add_point(Vector2(840, 650))
-	curve.add_point(Vector2(260, 650))
-	curve.add_point(Vector2(260, 530))
-	curve.add_point(Vector2(950, 530))
-	curve.add_point(Vector2(950, 680))
-	curve.add_point(Vector2(1120, 680))
+	for pt in layout.get("curve", []):
+		curve.add_point(pt)
 	path2d.curve = curve
 
 func _setup_build_spots() -> void:
@@ -173,17 +302,8 @@ func _setup_build_spots() -> void:
 		for child in build_spots_container.get_children():
 			child.queue_free()
 		
-	var spot_positions = [
-		Vector2(190, 525), Vector2(250, 525),
-		Vector2(330, 260),
-		Vector2(430, 260),
-		Vector2(440, 390),
-		Vector2(430, 525),
-		Vector2(310, 695),
-		Vector2(730, 580), Vector2(785, 580),
-		Vector2(785, 390), Vector2(785, 450),
-		Vector2(800, 610)
-	]
+	var layout = _get_current_layout()
+	var spot_positions = layout.get("spots", [])
 	
 	if is_instance_valid(build_spots_container):
 		for pos in spot_positions:
@@ -198,7 +318,8 @@ func _setup_interactive_objects() -> void:
 		for child in interactive_container.get_children():
 			child.queue_free()
 		
-		var barrel_positions = [Vector2(260, 370), Vector2(600, 350), Vector2(940, 370)]
+		var layout = _get_current_layout()
+		var barrel_positions = layout.get("barrels", [])
 		for pos in barrel_positions:
 			var barrel = Area2D.new()
 			barrel.set_script(map_obj_script)
@@ -210,7 +331,7 @@ func _setup_interactive_objects() -> void:
 		var chest = Area2D.new()
 		chest.set_script(map_obj_script)
 		chest.object_type = "chest"
-		chest.position = Vector2(1120, 420)
+		chest.position = layout.get("chest", Vector2(1000, 300))
 		interactive_container.add_child(chest)
 
 func _setup_girls() -> void:
@@ -218,11 +339,12 @@ func _setup_girls() -> void:
 		for child in girls_container.get_children():
 			child.queue_free()
 		
-		var village_center = Vector2(1150, 530)
+		var layout = _get_current_layout()
+		var village_center = layout.get("village", Vector2(1120, 540))
 		for i in range(total_girls):
 			var girl = Node2D.new()
 			girl.set_script(girl_script)
-			girl.position = village_center + Vector2(randf_range(-30, 30), randf_range(-30, 30))
+			girl.position = village_center + Vector2(randf_range(-25, 25), randf_range(-25, 25))
 			girl.add_to_group("girls")
 			girl.rescued.connect(_on_girl_rescued)
 			girls_container.add_child(girl)
@@ -512,6 +634,7 @@ func _draw() -> void:
 			draw_arc(spot.position, r, 0, TAU, 48, Color(0.4, 0.9, 1.0, 0.6), 2.0)
 
 func _draw_valley_biome() -> void:
+	var layout = _get_current_layout()
 	# Изумрудная долина
 	draw_rect(Rect2(0, 0, 1280, 720), Color(0.30, 0.62, 0.23))
 	var hill_col1 = Color(0.36, 0.70, 0.28)
@@ -526,10 +649,9 @@ func _draw_valley_biome() -> void:
 	# Пруд и песчаный берег
 	var pond_water = Color(0.35, 0.72, 0.90)
 	var sand_col = Color(0.92, 0.84, 0.58)
-	draw_circle(Vector2(550, 240), 65, sand_col)
-	draw_circle(Vector2(550, 240), 50, pond_water)
-	draw_circle(Vector2(950, 210), 80, sand_col)
-	draw_circle(Vector2(960, 190), 55, pond_water)
+	var br = layout.get("bridge", Vector2(550, 420))
+	draw_circle(br, 75, sand_col)
+	draw_circle(br, 60, pond_water)
 	
 	# Цветочные полянки
 	for flower in flower_patches:
@@ -542,10 +664,11 @@ func _draw_valley_biome() -> void:
 	_draw_road(Color(0.92, 0.82, 0.56), Color(0.58, 0.52, 0.38))
 	
 	# Деревянный мостик
-	_draw_bridge(Vector2(550, 240))
-	_draw_village(Vector2(980, 620), Color(0.85, 0.35, 0.2))
+	_draw_bridge(br)
+	_draw_village(layout.get("village", Vector2(1120, 540)), Color(0.85, 0.35, 0.2))
 
 func _draw_swamp_biome() -> void:
+	var layout = _get_current_layout()
 	# Грибные топи: мрачно-зеленая земля и кислотные лужи
 	draw_rect(Rect2(0, 0, 1280, 720), Color(0.16, 0.24, 0.18))
 	draw_circle(Vector2(200, 150), 220, Color(0.13, 0.20, 0.15))
@@ -554,8 +677,8 @@ func _draw_swamp_biome() -> void:
 	
 	# Токсичные зеленые топи
 	var slime_col = Color(0.22, 0.65, 0.30, 0.75)
-	draw_circle(Vector2(550, 240), 70, slime_col)
-	draw_circle(Vector2(950, 210), 85, slime_col)
+	draw_circle(Vector2(450, 400), 75, slime_col)
+	draw_circle(Vector2(800, 360), 85, slime_col)
 	
 	# Светящиеся грибы
 	for m in swamp_mushrooms:
@@ -564,10 +687,11 @@ func _draw_swamp_biome() -> void:
 		
 	# Гнилая темная тропа
 	_draw_road(Color(0.40, 0.35, 0.28), Color(0.25, 0.22, 0.18))
-	_draw_bridge(Vector2(550, 240))
-	_draw_village(Vector2(980, 620), Color(0.45, 0.35, 0.55))
+	_draw_bridge(layout.get("bridge", Vector2(640, 400)))
+	_draw_village(layout.get("village", Vector2(1120, 460)), Color(0.45, 0.35, 0.55))
 
 func _draw_caves_biome() -> void:
+	var layout = _get_current_layout()
 	# Хрустальные пещеры: глубокий базальт и светящиеся кристаллы
 	draw_rect(Rect2(0, 0, 1280, 720), Color(0.09, 0.09, 0.13))
 	draw_circle(Vector2(250, 160), 200, Color(0.12, 0.12, 0.18))
@@ -581,9 +705,11 @@ func _draw_caves_biome() -> void:
 		
 	# Каменная дорога с лавово-энергетическими прожилками
 	_draw_road(Color(0.28, 0.26, 0.35), Color(0.18, 0.16, 0.22))
-	_draw_village(Vector2(980, 620), Color(0.3, 0.5, 0.8))
+	_draw_bridge(layout.get("bridge", Vector2(680, 350)))
+	_draw_village(layout.get("village", Vector2(1120, 600)), Color(0.3, 0.5, 0.8))
 
 func _draw_frost_biome() -> void:
+	var layout = _get_current_layout()
 	# Морозный пик: лед, снег и сине-белая палитра
 	draw_rect(Rect2(0, 0, 1280, 720), Color(0.82, 0.88, 0.94))
 	draw_circle(Vector2(200, 150), 210, Color(0.88, 0.93, 0.98))
@@ -592,14 +718,16 @@ func _draw_frost_biome() -> void:
 	
 	# Замерзший бирюзовый ледник
 	var ice_col = Color(0.45, 0.80, 0.92, 0.85)
-	draw_circle(Vector2(550, 240), 65, ice_col)
-	draw_circle(Vector2(950, 210), 80, ice_col)
+	draw_circle(Vector2(500, 380), 70, ice_col)
+	draw_circle(Vector2(850, 360), 80, ice_col)
 	
 	# Заснеженная дорога
 	_draw_road(Color(0.70, 0.78, 0.86), Color(0.50, 0.58, 0.66))
-	_draw_village(Vector2(980, 620), Color(0.4, 0.6, 0.85))
+	_draw_bridge(layout.get("bridge", Vector2(600, 380)))
+	_draw_village(layout.get("village", Vector2(1120, 200)), Color(0.4, 0.6, 0.85))
 
 func _draw_citadel_biome() -> void:
+	var layout = _get_current_layout()
 	# Осажденный город: мощеная площадь, факелы и бастионы
 	draw_rect(Rect2(0, 0, 1280, 720), Color(0.22, 0.23, 0.26))
 	draw_circle(Vector2(300, 160), 220, Color(0.27, 0.28, 0.32))
@@ -608,7 +736,8 @@ func _draw_citadel_biome() -> void:
 	
 	# Мощеная мостовая
 	_draw_road(Color(0.38, 0.39, 0.42), Color(0.18, 0.19, 0.21))
-	_draw_village(Vector2(980, 620), Color(0.8, 0.2, 0.2))
+	_draw_bridge(layout.get("bridge", Vector2(740, 360)))
+	_draw_village(layout.get("village", Vector2(1120, 340)), Color(0.8, 0.2, 0.2))
 
 func _draw_road(fill_col: Color, border_col: Color) -> void:
 	if path2d and path2d.curve:

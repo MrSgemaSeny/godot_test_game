@@ -86,3 +86,10 @@ text = "Load Map"
 [node name="StatusLabel" type="Label" parent="CanvasLayer/Panel/VBoxContainer"]
 layout_mode = 2
 autowrap_mode = 2
+
+[node name="HSeparator4" type="HSeparator" parent="CanvasLayer/Panel/VBoxContainer"]
+layout_mode = 2
+
+[node name="BtnBack" type="Button" parent="CanvasLayer/Panel/VBoxContainer"]
+layout_mode = 2
+text = "⬅️ Назад в меню"

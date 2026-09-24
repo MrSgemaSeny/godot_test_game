@@ -97,6 +97,12 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 16
 text = "🏆 Достижения (40 наград)"
 
+[node name="EditorButton" type="Button" parent="MarginContainer/VBoxContainer/Buttons"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "🛠️ Редактор Карт (Map Editor)"
+
 [node name="ResetButton" type="Button" parent="MarginContainer/VBoxContainer/Buttons"]
 custom_minimum_size = Vector2(0, 36)
 layout_mode = 2

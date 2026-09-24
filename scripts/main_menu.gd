@@ -7,6 +7,7 @@ extends Control
 @onready var meta_btn: Button = $MarginContainer/VBoxContainer/Buttons/MetaButton
 @onready var bestiary_btn: Button = $MarginContainer/VBoxContainer/Buttons/BestiaryButton
 @onready var achievements_btn: Button = $MarginContainer/VBoxContainer/Buttons/AchievementsButton
+@onready var editor_btn: Button = get_node_or_null("MarginContainer/VBoxContainer/Buttons/EditorButton")
 @onready var reset_btn: Button = $MarginContainer/VBoxContainer/Buttons/ResetButton
 
 @onready var dim_backdrop: ColorRect = $DimBackdrop
@@ -33,6 +34,8 @@ func _ready() -> void:
 		bestiary_btn.pressed.connect(_on_bestiary_pressed)
 	if is_instance_valid(achievements_btn):
 		achievements_btn.pressed.connect(_on_achievements_pressed)
+	if is_instance_valid(editor_btn):
+		editor_btn.pressed.connect(_on_editor_pressed)
 	if is_instance_valid(reset_btn):
 		reset_btn.pressed.connect(_on_reset_pressed)
 		
@@ -51,7 +54,7 @@ func _ready() -> void:
 	_style_menu_buttons()
 
 func _style_menu_buttons() -> void:
-	var buttons = [campaign_btn, modes_btn, meta_btn, bestiary_btn, achievements_btn]
+	var buttons = [campaign_btn, modes_btn, meta_btn, bestiary_btn, achievements_btn, editor_btn]
 	for btn in buttons:
 		if not is_instance_valid(btn): continue
 		var normal_style = StyleBoxFlat.new()
@@ -124,6 +127,9 @@ func _on_achievements_pressed() -> void:
 		achievements_modal.refresh_ui()
 		achievements_modal.visible = true
 
+
+func _on_editor_pressed() -> void:
+	get_tree().change_scene_to_file("res://scenes/map_editor.tscn")
 
 func _on_reset_pressed() -> void:
 	if meta_manager:

@@ -107,9 +107,10 @@ func start_current_wave(is_early: bool = false) -> bool:
 		total_to_spawn += count
 		for i in range(count):
 			var spawn_time = delay + (i * interval)
+			var final_type = _adapt_enemy_for_biome(etype)
 			spawn_queue.append({
 				"time": spawn_time,
-				"enemy_type": etype,
+				"enemy_type": final_type,
 				"spawned": false
 			})
 			
@@ -165,3 +166,31 @@ func _check_wave_completion() -> void:
 		wave_completed.emit(completed_wave_num, is_last)
 		if is_last:
 			all_waves_completed.emit()
+
+func _adapt_enemy_for_biome(enemy_type: String) -> String:
+	if enemy_type.contains("boss"):
+		return enemy_type
+	var map_id = GlobalState.selected_map if "selected_map" in GlobalState else ""
+	var roll = randf()
+	match map_id:
+		"swamp":
+			if enemy_type == "grunt" and roll < 0.6:
+				return "fish_mosquito" if roll < 0.3 else "splitter"
+			elif enemy_type == "berserker" and roll < 0.5:
+				return "spore_flyer"
+		"caves":
+			if enemy_type == "grunt" and roll < 0.6:
+				return "stone_golem" if roll < 0.3 else "stealth"
+			elif enemy_type == "berserker" and roll < 0.5:
+				return "shadow_wolf"
+		"frost_peak":
+			if enemy_type == "grunt" and roll < 0.6:
+				return "frost_orc" if roll < 0.3 else "windwing"
+			elif enemy_type == "armored" and roll < 0.5:
+				return "carapace_beetle"
+		"besieged_citadel":
+			if enemy_type == "grunt" and roll < 0.6:
+				return "iron_guard" if roll < 0.3 else "exploding_troll"
+			elif enemy_type == "berserker" and roll < 0.5:
+				return "carrion_griffin"
+	return enemy_type

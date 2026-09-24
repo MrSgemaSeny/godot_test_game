@@ -32,6 +32,54 @@ func _ready() -> void:
 	add_child(proc_gen)
 	set_process_input(true)
 	_push_undo_state()
+	_connect_ui_buttons()
+
+func _connect_ui_buttons() -> void:
+	var btn_path = get_node_or_null("CanvasLayer/Panel/VBoxContainer/BtnPath") as Button
+	if is_instance_valid(btn_path): btn_path.pressed.connect(func(): set_mode(EditMode.PLACE_PATH))
+	
+	var btn_build = get_node_or_null("CanvasLayer/Panel/VBoxContainer/BtnBuild") as Button
+	if is_instance_valid(btn_build): btn_build.pressed.connect(func(): set_mode(EditMode.PLACE_BUILD_SPOT))
+	
+	var btn_deco = get_node_or_null("CanvasLayer/Panel/VBoxContainer/BtnDeco") as Button
+	if is_instance_valid(btn_deco): btn_deco.pressed.connect(func(): set_mode(EditMode.PLACE_DECORATION))
+	
+	var btn_erase = get_node_or_null("CanvasLayer/Panel/VBoxContainer/BtnErase") as Button
+	if is_instance_valid(btn_erase): btn_erase.pressed.connect(func(): set_mode(EditMode.ERASE))
+	
+	var btn_gen = get_node_or_null("CanvasLayer/Panel/VBoxContainer/BtnGen") as Button
+	if is_instance_valid(btn_gen): btn_gen.pressed.connect(func(): generate_random_map(randi()))
+	
+	var btn_save = get_node_or_null("CanvasLayer/Panel/VBoxContainer/BtnSave") as Button
+	if is_instance_valid(btn_save): btn_save.pressed.connect(func(): 
+		save_map("custom_map")
+		_set_status("Карта сохранена!")
+	)
+	
+	var btn_load = get_node_or_null("CanvasLayer/Panel/VBoxContainer/BtnLoad") as Button
+	if is_instance_valid(btn_load): btn_load.pressed.connect(func(): 
+		if load_map("custom_map"):
+			_set_status("Карта загружена!")
+		else:
+			_set_status("Файл не найден")
+	)
+	
+	var btn_back = get_node_or_null("CanvasLayer/Panel/VBoxContainer/BtnBack") as Button
+	if is_instance_valid(btn_back): btn_back.pressed.connect(func():
+		get_tree().change_scene_to_file("res://scenes/main_menu.tscn")
+	)
+	
+	var opt_biome = get_node_or_null("CanvasLayer/Panel/VBoxContainer/OptionBiome") as OptionButton
+	if is_instance_valid(opt_biome):
+		opt_biome.item_selected.connect(func(idx):
+			selected_biome = opt_biome.get_item_text(idx)
+			queue_redraw()
+		)
+
+func _set_status(txt: String) -> void:
+	var lbl = get_node_or_null("CanvasLayer/Panel/VBoxContainer/StatusLabel") as Label
+	if is_instance_valid(lbl):
+		lbl.text = txt
 
 func _push_undo_state() -> void:
 	var state = {
