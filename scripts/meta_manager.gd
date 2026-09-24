@@ -195,6 +195,17 @@ func set_map_stars(biome_id: String, stars: int) -> void:
 		save_data()
 		map_stars_changed.emit(biome_id, stars)
 
+func record_map_stars(biome_id: String, stars: int) -> void:
+	set_map_stars(biome_id, stars)
+
+func record_victory(biome_id: String = "", stars: int = 3) -> void:
+	if statistics.has("total_victories"):
+		statistics["total_victories"] += 1
+	if biome_id != "":
+		set_map_stars(biome_id, stars)
+	else:
+		save_data()
+
 func get_total_stars() -> int:
 	var total = 0
 	for b in map_stars:

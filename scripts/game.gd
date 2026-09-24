@@ -589,13 +589,15 @@ func _update_wave_preview(next_wave: int) -> void:
 func _on_all_waves_completed() -> void:
 	if is_instance_valid(game_manager):
 		game_manager.set_state(GameManager.GameState.VICTORY)
+	var lives = game_manager.lives if is_instance_valid(game_manager) else 5
+	var stars = 3 if lives >= 5 else (2 if lives >= 3 else 1)
 	if is_instance_valid(hud):
 		hud.end_title.text = "👑 ПОБЕДА В БИОМЕ!"
-		hud.end_subtitle.text = "Вы спасли королевство и защитили всех жителей!\nНачислено 30 Очков Славы!"
+		hud.end_subtitle.text = "Вы спасли королевство и защитили всех жителей!\nНачислено 30 Очков Славы! ⭐ x%d" % stars
 		hud.end_screen.visible = true
 	if is_instance_valid(meta_manager):
 		meta_manager.add_glory(30)
-		meta_manager.record_map_stars(GlobalState.selected_map, 3)
+		meta_manager.set_map_stars(GlobalState.selected_map, stars)
 
 
 func _on_lives_changed(new_lives: int) -> void:
