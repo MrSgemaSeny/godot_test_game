@@ -635,142 +635,294 @@ func _draw() -> void:
 
 func _draw_valley_biome() -> void:
 	var layout = _get_current_layout()
-	# Изумрудная долина
-	draw_rect(Rect2(0, 0, 1280, 720), Color(0.30, 0.62, 0.23))
-	var hill_col1 = Color(0.36, 0.70, 0.28)
-	var hill_col2 = Color(0.25, 0.55, 0.20)
-	draw_circle(Vector2(160, 140), 190, hill_col1)
-	draw_circle(Vector2(520, 130), 220, hill_col1)
-	draw_circle(Vector2(920, 150), 230, hill_col1)
-	draw_circle(Vector2(140, 680), 200, hill_col2)
-	draw_circle(Vector2(550, 680), 230, hill_col2)
-	draw_circle(Vector2(1050, 680), 220, hill_col2)
+	# 1. Богатый живописный ландшафт Изумрудной долины (холмы и луга)
+	draw_rect(Rect2(0, 0, 1280, 720), Color(0.26, 0.52, 0.20))
 	
-	# Пруд и песчаный берег
-	var pond_water = Color(0.35, 0.72, 0.90)
-	var sand_col = Color(0.92, 0.84, 0.58)
+	# Мягкие контуры холмов и перепады рельефа
+	var meadow_light = Color(0.32, 0.60, 0.24)
+	var meadow_mid = Color(0.24, 0.48, 0.18)
+	var meadow_shadow = Color(0.18, 0.38, 0.14)
+	
+	# Верхний ярус холмов
+	var hill_poly_1 = PackedVector2Array([
+		Vector2(0, 0), Vector2(1280, 0), Vector2(1280, 160),
+		Vector2(950, 190), Vector2(650, 140), Vector2(350, 200), Vector2(0, 150)
+	])
+	draw_colored_polygon(hill_poly_1, meadow_light)
+	draw_polyline(hill_poly_1, meadow_mid, 3.0)
+	
+	# Нижний ярус холмов
+	var hill_poly_2 = PackedVector2Array([
+		Vector2(0, 720), Vector2(1280, 720), Vector2(1280, 620),
+		Vector2(1000, 580), Vector2(600, 640), Vector2(250, 590), Vector2(0, 650)
+	])
+	draw_colored_polygon(hill_poly_2, meadow_mid)
+	draw_polyline(hill_poly_2, meadow_shadow, 2.5)
+	
+	# 2. Озеро с песчаной береговой линией, бирюзовой глубиной и водной пеной
 	var br = layout.get("bridge", Vector2(550, 420))
-	draw_circle(br, 75, sand_col)
-	draw_circle(br, 60, pond_water)
+	# Песчаный пологий берег
+	draw_set_transform(br, 0.0, Vector2(1.2, 0.75))
+	draw_circle(Vector2.ZERO, 78.0, Color(0.85, 0.75, 0.48))
+	draw_circle(Vector2.ZERO, 72.0, Color(0.92, 0.84, 0.56))
+	# Водная гладь: мелководье и глубокая вода
+	draw_circle(Vector2.ZERO, 64.0, Color(0.35, 0.72, 0.85))
+	draw_circle(Vector2(-4, -2), 48.0, Color(0.20, 0.52, 0.75))
+	draw_circle(Vector2(-6, -4), 32.0, Color(0.12, 0.38, 0.62))
+	# Береговая белая пенка
+	draw_arc(Vector2.ZERO, 64.0, 0, TAU, 32, Color(1.0, 1.0, 1.0, 0.55), 1.5)
+	draw_set_transform(Vector2.ZERO, 0.0, Vector2(1.0, 1.0))
 	
-	# Цветочные полянки
+	# 3. Текстурные травинки и полевые цветы
 	for flower in flower_patches:
-		draw_circle(flower["pos"], flower["size"], flower["col"])
+		var fp = flower["pos"]
+		var fcol: Color = flower["col"]
+		# Стебель и лепестки
+		draw_line(fp, fp + Vector2(0, -3), Color(0.18, 0.45, 0.15), 1.2)
+		draw_circle(fp + Vector2(0, -4), 2.2, fcol)
+		draw_circle(fp + Vector2(0, -4), 1.0, Color(1.0, 0.95, 0.5))
 		
-	# Деревья
+	# 4. Деревья и рощи
 	_draw_trees()
 		
-	# Извилистая песчаная дорога
-	_draw_road(Color(0.92, 0.82, 0.56), Color(0.58, 0.52, 0.38))
+	# 5. Извилистая мощеная дорога с каменной брусчаткой
+	_draw_road(Color(0.82, 0.74, 0.55), Color(0.55, 0.48, 0.36))
 	
-	# Деревянный мостик
+	# 6. Деревянный мост и средневековая деревушка
 	_draw_bridge(br)
-	_draw_village(layout.get("village", Vector2(1120, 540)), Color(0.85, 0.35, 0.2))
+	_draw_village(layout.get("village", Vector2(1120, 540)), Color(0.82, 0.30, 0.18))
 
 func _draw_swamp_biome() -> void:
 	var layout = _get_current_layout()
-	# Грибные топи: мрачно-зеленая земля и кислотные лужи
-	draw_rect(Rect2(0, 0, 1280, 720), Color(0.16, 0.24, 0.18))
-	draw_circle(Vector2(200, 150), 220, Color(0.13, 0.20, 0.15))
-	draw_circle(Vector2(600, 180), 250, Color(0.13, 0.20, 0.15))
-	draw_circle(Vector2(1000, 200), 240, Color(0.13, 0.20, 0.15))
+	# Мрачные торфяные болота
+	draw_rect(Rect2(0, 0, 1280, 720), Color(0.14, 0.20, 0.15))
 	
-	# Токсичные зеленые топи
-	var slime_col = Color(0.22, 0.65, 0.30, 0.75)
-	draw_circle(Vector2(450, 400), 75, slime_col)
-	draw_circle(Vector2(800, 360), 85, slime_col)
+	# Топи и трясина
+	var mud_poly = PackedVector2Array([
+		Vector2(0, 0), Vector2(1280, 0), Vector2(1280, 220),
+		Vector2(850, 180), Vector2(500, 240), Vector2(0, 170)
+	])
+	draw_colored_polygon(mud_poly, Color(0.10, 0.16, 0.12))
 	
-	# Светящиеся грибы
+	# Кислотные ядовитые заводи со светящейся ряской
+	var br = layout.get("bridge", Vector2(640, 400))
+	draw_set_transform(br, 0.0, Vector2(1.3, 0.7))
+	draw_circle(Vector2.ZERO, 72.0, Color(0.18, 0.35, 0.22))
+	draw_circle(Vector2.ZERO, 58.0, Color(0.25, 0.65, 0.32, 0.85))
+	draw_circle(Vector2(-3, 0), 38.0, Color(0.35, 0.85, 0.40, 0.7))
+	draw_set_transform(Vector2.ZERO, 0.0, Vector2(1.0, 1.0))
+	
+	# Биолюминесцентные гигантские грибы
 	for m in swamp_mushrooms:
-		draw_circle(m["pos"], m["size"], Color(0.2, 0.8, 0.4, 0.8))
-		draw_circle(m["pos"] + Vector2(0, -m["size"] * 0.3), m["size"] * 0.4, Color(0.6, 1.0, 0.6))
+		var mp = m["pos"]
+		var ms = m["size"]
+		# Ножка гриба
+		draw_line(mp, mp + Vector2(0, -ms * 0.9), Color(0.75, 0.72, 0.65), 3.0)
+		# Шляпка с точками
+		var cap = PackedVector2Array([
+			mp + Vector2(-ms, -ms * 0.7), mp + Vector2(0, -ms * 1.6), mp + Vector2(ms, -ms * 0.7)
+		])
+		draw_colored_polygon(cap, Color(0.20, 0.80, 0.45, 0.9))
+		draw_circle(mp + Vector2(0, -ms * 1.2), ms * 0.2, Color(0.8, 1.0, 0.7))
+		draw_circle(mp + Vector2(-ms * 0.4, -ms * 0.9), ms * 0.15, Color(0.8, 1.0, 0.7))
+		draw_circle(mp + Vector2(ms * 0.4, -ms * 0.9), ms * 0.15, Color(0.8, 1.0, 0.7))
 		
-	# Гнилая темная тропа
-	_draw_road(Color(0.40, 0.35, 0.28), Color(0.25, 0.22, 0.18))
-	_draw_bridge(layout.get("bridge", Vector2(640, 400)))
-	_draw_village(layout.get("village", Vector2(1120, 460)), Color(0.45, 0.35, 0.55))
+	# Гнилая гать / тропа
+	_draw_road(Color(0.35, 0.30, 0.24), Color(0.22, 0.18, 0.14))
+	_draw_bridge(br)
+	_draw_village(layout.get("village", Vector2(1120, 460)), Color(0.40, 0.30, 0.50))
 
 func _draw_caves_biome() -> void:
 	var layout = _get_current_layout()
-	# Хрустальные пещеры: глубокий базальт и светящиеся кристаллы
-	draw_rect(Rect2(0, 0, 1280, 720), Color(0.09, 0.09, 0.13))
-	draw_circle(Vector2(250, 160), 200, Color(0.12, 0.12, 0.18))
-	draw_circle(Vector2(650, 180), 230, Color(0.12, 0.12, 0.18))
-	draw_circle(Vector2(1000, 180), 220, Color(0.12, 0.12, 0.18))
+	# Базальтовые пещеры с кристаллами
+	draw_rect(Rect2(0, 0, 1280, 720), Color(0.08, 0.08, 0.11))
 	
-	# Кристальные друзы
+	# Гранитные уступы
+	var rock_poly = PackedVector2Array([
+		Vector2(0, 0), Vector2(1280, 0), Vector2(1280, 180),
+		Vector2(900, 150), Vector2(500, 200), Vector2(0, 160)
+	])
+	draw_colored_polygon(rock_poly, Color(0.12, 0.12, 0.16))
+	
+	# Светящиеся кристаллические друзы с фасетками
 	for cr in crystals:
-		draw_circle(cr["pos"], cr["size"], cr["col"])
-		draw_circle(cr["pos"], cr["size"] * 0.4, Color(1, 1, 1, 0.9))
+		var cp = cr["pos"]
+		var cs = cr["size"]
+		var c_col: Color = cr["col"]
+		var cr_poly = PackedVector2Array([
+			cp + Vector2(0, -cs * 1.5), cp + Vector2(cs * 0.6, 0),
+			cp + Vector2(0, cs * 0.4), cp + Vector2(-cs * 0.6, 0)
+		])
+		draw_colored_polygon(cr_poly, c_col)
+		draw_colored_polygon(PackedVector2Array([cp + Vector2(0, -cs * 1.5), cp + Vector2(cs * 0.6, 0), cp + Vector2(0, cs * 0.4)]), c_col.lightened(0.4))
+		draw_polyline(cr_poly, Color(1, 1, 1, 0.8), 1.2)
 		
-	# Каменная дорога с лавово-энергетическими прожилками
-	_draw_road(Color(0.28, 0.26, 0.35), Color(0.18, 0.16, 0.22))
+	# Дорога из вулканического камня
+	_draw_road(Color(0.26, 0.24, 0.32), Color(0.16, 0.14, 0.20))
 	_draw_bridge(layout.get("bridge", Vector2(680, 350)))
-	_draw_village(layout.get("village", Vector2(1120, 600)), Color(0.3, 0.5, 0.8))
+	_draw_village(layout.get("village", Vector2(1120, 600)), Color(0.25, 0.45, 0.75))
 
 func _draw_frost_biome() -> void:
 	var layout = _get_current_layout()
-	# Морозный пик: лед, снег и сине-белая палитра
-	draw_rect(Rect2(0, 0, 1280, 720), Color(0.82, 0.88, 0.94))
-	draw_circle(Vector2(200, 150), 210, Color(0.88, 0.93, 0.98))
-	draw_circle(Vector2(600, 170), 230, Color(0.88, 0.93, 0.98))
-	draw_circle(Vector2(1000, 190), 220, Color(0.88, 0.93, 0.98))
+	# Заснеженные горы и ледник
+	draw_rect(Rect2(0, 0, 1280, 720), Color(0.84, 0.90, 0.95))
 	
-	# Замерзший бирюзовый ледник
-	var ice_col = Color(0.45, 0.80, 0.92, 0.85)
-	draw_circle(Vector2(500, 380), 70, ice_col)
-	draw_circle(Vector2(850, 360), 80, ice_col)
+	# Лазурные снежные сугробы
+	var drift_poly = PackedVector2Array([
+		Vector2(0, 0), Vector2(1280, 0), Vector2(1280, 190),
+		Vector2(880, 150), Vector2(480, 210), Vector2(0, 170)
+	])
+	draw_colored_polygon(drift_poly, Color(0.75, 0.84, 0.92))
+	
+	# Замерзшее лазурное озеро с трещинами
+	var br = layout.get("bridge", Vector2(600, 380))
+	draw_set_transform(br, 0.0, Vector2(1.2, 0.65))
+	draw_circle(Vector2.ZERO, 68.0, Color(0.45, 0.80, 0.92, 0.85))
+	draw_circle(Vector2.ZERO, 45.0, Color(0.60, 0.90, 0.98, 0.9))
+	# Трещины во льду
+	draw_line(Vector2(-30, -10), Vector2(25, 15), Color(1.0, 1.0, 1.0, 0.85), 1.5)
+	draw_line(Vector2(5, 0), Vector2(-10, 25), Color(1.0, 1.0, 1.0, 0.7), 1.2)
+	draw_set_transform(Vector2.ZERO, 0.0, Vector2(1.0, 1.0))
 	
 	# Заснеженная дорога
-	_draw_road(Color(0.70, 0.78, 0.86), Color(0.50, 0.58, 0.66))
-	_draw_bridge(layout.get("bridge", Vector2(600, 380)))
-	_draw_village(layout.get("village", Vector2(1120, 200)), Color(0.4, 0.6, 0.85))
+	_draw_road(Color(0.68, 0.76, 0.84), Color(0.46, 0.54, 0.62))
+	_draw_bridge(br)
+	_draw_village(layout.get("village", Vector2(1120, 200)), Color(0.35, 0.55, 0.80))
 
 func _draw_citadel_biome() -> void:
 	var layout = _get_current_layout()
-	# Осажденный город: мощеная площадь, факелы и бастионы
-	draw_rect(Rect2(0, 0, 1280, 720), Color(0.22, 0.23, 0.26))
-	draw_circle(Vector2(300, 160), 220, Color(0.27, 0.28, 0.32))
-	draw_circle(Vector2(700, 180), 240, Color(0.27, 0.28, 0.32))
-	draw_circle(Vector2(1050, 180), 230, Color(0.27, 0.28, 0.32))
+	# Каменная площадь имперской цитадели
+	draw_rect(Rect2(0, 0, 1280, 720), Color(0.24, 0.25, 0.28))
+	
+	# Каменные стены крепости
+	var fort_poly = PackedVector2Array([
+		Vector2(0, 0), Vector2(1280, 0), Vector2(1280, 170),
+		Vector2(950, 140), Vector2(550, 180), Vector2(0, 150)
+	])
+	draw_colored_polygon(fort_poly, Color(0.30, 0.32, 0.36))
 	
 	# Мощеная мостовая
-	_draw_road(Color(0.38, 0.39, 0.42), Color(0.18, 0.19, 0.21))
+	_draw_road(Color(0.38, 0.40, 0.44), Color(0.18, 0.19, 0.22))
 	_draw_bridge(layout.get("bridge", Vector2(740, 360)))
-	_draw_village(layout.get("village", Vector2(1120, 340)), Color(0.8, 0.2, 0.2))
+	_draw_village(layout.get("village", Vector2(1120, 340)), Color(0.85, 0.25, 0.20))
 
 func _draw_road(fill_col: Color, border_col: Color) -> void:
 	if path2d and path2d.curve:
 		var pts = path2d.curve.get_baked_points()
 		if pts.size() > 1:
-			draw_polyline(pts, Color(0.0, 0.0, 0.0, 0.25), 72.0)
-			draw_polyline(pts, border_col, 62.0)
-			draw_polyline(pts, fill_col, 48.0)
-			draw_polyline(pts, fill_col.darkened(0.1), 22.0)
+			# 1. Мягкая внешняя грунтовая тень
+			draw_polyline(pts, Color(0.0, 0.0, 0.0, 0.28), 68.0)
+			# 2. Земляной бордюр дороги
+			draw_polyline(pts, border_col, 56.0)
+			# 3. Основная песчано-гравийная насыпь
+			draw_polyline(pts, fill_col, 44.0)
+			# 4. Колеи от повозок
+			draw_polyline(pts, fill_col.darkened(0.16), 18.0)
+			# 5. Каменные булыжники вдоль дороги (брусчатка)
+			for i in range(0, pts.size(), 4):
+				var p = pts[i]
+				var stone_col = fill_col.lightened(0.15) if (i % 8 == 0) else fill_col.darkened(0.12)
+				draw_circle(p + Vector2(sin(float(i)) * 6.0, cos(float(i)) * 4.0), 2.2, stone_col)
 
 func _draw_bridge(b_pos: Vector2) -> void:
-	draw_rect(Rect2(b_pos.x - 45, b_pos.y - 20, 90, 40), Color(0.55, 0.38, 0.22))
-	for b_i in range(8):
-		var px = b_pos.x - 40 + b_i * 11
-		draw_rect(Rect2(px, b_pos.y - 22, 9, 44), Color(0.68, 0.48, 0.28))
+	# 2.5D Арочный бревенчатый мост через реку
+	var wood_dark = Color(0.35, 0.22, 0.12)
+	var wood_mid = Color(0.55, 0.38, 0.22)
+	var wood_light = Color(0.70, 0.50, 0.30)
+	
+	# Тень моста на воде
+	draw_rect(Rect2(b_pos.x - 48, b_pos.y - 12, 96, 38), Color(0.0, 0.0, 0.0, 0.35))
+	
+	# Несущие сваи в воде
+	draw_rect(Rect2(b_pos.x - 42, b_pos.y - 24, 8, 48), wood_dark)
+	draw_rect(Rect2(b_pos.x + 34, b_pos.y - 24, 8, 48), wood_dark)
+	
+	# Настил из дубовых досок
+	for b_i in range(9):
+		var px = b_pos.x - 44 + b_i * 10
+		var plank_col = wood_mid if b_i % 2 == 0 else wood_light
+		draw_rect(Rect2(px, b_pos.y - 20, 9, 40), plank_col)
+		# Шляпки гвоздей
+		draw_circle(Vector2(px + 4.5, b_pos.y - 17), 1.0, Color(0.2, 0.2, 0.2))
+		draw_circle(Vector2(px + 4.5, b_pos.y + 17), 1.0, Color(0.2, 0.2, 0.2))
+		
+	# Перила моста (верхние и нижние)
+	draw_line(Vector2(b_pos.x - 46, b_pos.y - 20), Vector2(b_pos.x + 46, b_pos.y - 20), wood_dark, 3.5)
+	draw_line(Vector2(b_pos.x - 46, b_pos.y + 20), Vector2(b_pos.x + 46, b_pos.y + 20), wood_dark, 3.5)
 
 func _draw_trees() -> void:
 	for t in trees:
 		var p = t["pos"]
 		var s = t["scale"]
-		draw_rect(Rect2(p.x - 4 * s, p.y, 8 * s, 14 * s), Color(0.45, 0.28, 0.15))
-		draw_circle(p + Vector2(0, -4 * s), 16 * s, Color(0.18, 0.45, 0.18))
-		draw_circle(p + Vector2(0, -12 * s), 12 * s, Color(0.24, 0.54, 0.22))
+		# Тень под кроной дерева в ракурсе 2.5D
+		draw_set_transform(Vector2.ZERO, 0.0, Vector2(1.0, 0.45))
+		draw_circle(Vector2(p.x + 6 * s, (p.y + 14 * s) / 0.45), 18.0 * s, Color(0.0, 0.0, 0.0, 0.32))
+		draw_set_transform(Vector2.ZERO, 0.0, Vector2(1.0, 1.0))
+		
+		# Кряжистый ствол с корой и корнями
+		var trunk_dark = Color(0.32, 0.18, 0.08)
+		var trunk_light = Color(0.48, 0.28, 0.14)
+		draw_rect(Rect2(p.x - 4 * s, p.y - 4 * s, 8 * s, 18 * s), trunk_dark)
+		draw_line(Vector2(p.x - 1 * s, p.y - 4 * s), Vector2(p.x - 1 * s, p.y + 14 * s), trunk_light, 2.0 * s)
+		# Корни дерева
+		draw_line(Vector2(p.x - 3 * s, p.y + 12 * s), Vector2(p.x - 7 * s, p.y + 16 * s), trunk_dark, 2.0 * s)
+		draw_line(Vector2(p.x + 3 * s, p.y + 12 * s), Vector2(p.x + 7 * s, p.y + 16 * s), trunk_dark, 2.0 * s)
+		
+		# Объемная многоярусная листва с освещением сверху-слева
+		var fol_shadow = Color(0.12, 0.32, 0.14)
+		var fol_mid = Color(0.20, 0.50, 0.22)
+		var fol_light = Color(0.34, 0.68, 0.28)
+		var fol_highlight = Color(0.50, 0.82, 0.35)
+		
+		# Нижний теневой ярус
+		draw_circle(p + Vector2(0, -6 * s), 18 * s, fol_shadow)
+		# Средний ярус
+		draw_circle(p + Vector2(0, -12 * s), 15 * s, fol_mid)
+		# Освещенный верхний ярус
+		draw_circle(p + Vector2(-3 * s, -16 * s), 11 * s, fol_light)
+		# Солнечный блик
+		draw_circle(p + Vector2(-5 * s, -18 * s), 5 * s, fol_highlight)
 
 func _draw_village(v_pos: Vector2, roof_col: Color) -> void:
-	draw_circle(v_pos + Vector2(80, 50), 90.0, Color(0.65, 0.62, 0.58))
-	var h1 = v_pos + Vector2(25, -20)
-	draw_rect(Rect2(h1.x, h1.y, 48, 42), Color(0.85, 0.80, 0.72))
-	draw_polygon(PackedVector2Array([h1 + Vector2(-6, 0), h1 + Vector2(24, -24), h1 + Vector2(54, 0)]), PackedColorArray([roof_col, roof_col, roof_col]))
+	# Деревенский мощеный двор
+	draw_set_transform(Vector2.ZERO, 0.0, Vector2(1.0, 0.6))
+	draw_circle(Vector2(v_pos.x + 60, (v_pos.y + 40) / 0.6), 75.0, Color(0.58, 0.55, 0.50, 0.8))
+	draw_set_transform(Vector2.ZERO, 0.0, Vector2(1.0, 1.0))
 	
-	var h2 = v_pos + Vector2(80, 15)
-	draw_rect(Rect2(h2.x, h2.y, 42, 38), Color(0.80, 0.75, 0.68))
-	draw_polygon(PackedVector2Array([h2 + Vector2(-5, 0), h2 + Vector2(21, -20), h2 + Vector2(47, 0)]), PackedColorArray([roof_col.darkened(0.15), roof_col.darkened(0.15), roof_col.darkened(0.15)]))
+	# Домик 1: Главная фахверковая изба с каменной трубой
+	var h1 = v_pos + Vector2(15, -25)
+	# Каменный цоколь и стены
+	draw_rect(Rect2(h1.x, h1.y + 10, 52, 35), Color(0.88, 0.84, 0.76))
+	# Деревянные фахверковые балки
+	draw_line(Vector2(h1.x, h1.y + 10), Vector2(h1.x + 52, h1.y + 10), Color(0.32, 0.20, 0.10), 2.5)
+	draw_line(Vector2(h1.x, h1.y + 45), Vector2(h1.x + 52, h1.y + 45), Color(0.32, 0.20, 0.10), 2.5)
+	draw_line(Vector2(h1.x + 26, h1.y + 10), Vector2(h1.x + 26, h1.y + 45), Color(0.32, 0.20, 0.10), 2.0)
+	# Дверь и светящееся окошко
+	draw_rect(Rect2(h1.x + 8, h1.y + 24, 12, 21), Color(0.42, 0.24, 0.12))
+	draw_rect(Rect2(h1.x + 32, h1.y + 20, 12, 12), Color(0.98, 0.85, 0.35))
+	draw_line(Vector2(h1.x + 38, h1.y + 20), Vector2(h1.x + 38, h1.y + 32), Color(0.32, 0.20, 0.10), 1.2)
+	draw_line(Vector2(h1.x + 32, h1.y + 26), Vector2(h1.x + 44, h1.y + 26), Color(0.32, 0.20, 0.10), 1.2)
+	
+	# Каменная печная труба с дымком
+	draw_rect(Rect2(h1.x + 38, h1.y - 18, 8, 20), Color(0.45, 0.46, 0.50))
+	draw_circle(Vector2(h1.x + 42, h1.y - 24), 3.0, Color(0.85, 0.85, 0.90, 0.6))
+	draw_circle(Vector2(h1.x + 45, h1.y - 30), 4.5, Color(0.85, 0.85, 0.90, 0.4))
+	
+	# Черепичная остроконечная крыша
+	var roof1 = PackedVector2Array([
+		Vector2(h1.x - 6, h1.y + 10), Vector2(h1.x + 26, h1.y - 16), Vector2(h1.x + 58, h1.y + 10)
+	])
+	draw_colored_polygon(roof1, roof_col)
+	draw_polyline(roof1, roof_col.darkened(0.3), 2.2)
+	
+	# Домик 2: Уютный амбар
+	var h2 = v_pos + Vector2(75, 12)
+	draw_rect(Rect2(h2.x, h2.y + 8, 44, 30), Color(0.75, 0.70, 0.62))
+	var roof2 = PackedVector2Array([
+		Vector2(h2.x - 4, h2.y + 8), Vector2(h2.x + 22, h2.y - 12), Vector2(h2.x + 48, h2.y + 8)
+	])
+	draw_colored_polygon(roof2, roof_col.darkened(0.18))
+	draw_polyline(roof2, roof_col.darkened(0.4), 2.0)
 
 func _draw_weather_overlay() -> void:
 	if not is_instance_valid(weather_system):

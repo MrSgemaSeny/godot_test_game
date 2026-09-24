@@ -91,57 +91,93 @@ func _start_running_home() -> void:
 func _draw() -> void:
 	var bounce = sin(bounce_anim) * 2.5 if current_state != State.IN_VILLAGE else sin(bounce_anim * 0.5) * 1.0
 	
-	# Мягкая тень под ногами
-	draw_circle(Vector2(0, 10), 8.0, Color(0.0, 0.0, 0.0, 0.25))
+	# Мягкая эллиптическая тень под ножками
+	draw_set_transform(Vector2.ZERO, 0.0, Vector2(1.0, 0.5))
+	draw_circle(Vector2(0, 24), 9.0, Color(0.0, 0.0, 0.0, 0.28))
+	draw_set_transform(Vector2.ZERO, 0.0, Vector2(1.0, 1.0))
 	
-	# Пышное сказочное платьице
-	var dress_poly = PackedVector2Array([
-		Vector2(0, -5 + bounce),
-		Vector2(10, 9 + bounce),
-		Vector2(-10, 9 + bounce)
+	# Кожаные туфельки
+	var leg_swing = sin(bounce_anim * 1.5) * 2.0 if current_state == State.RUNNING_HOME else 0.0
+	draw_circle(Vector2(-3.5 + leg_swing, 11), 2.5, Color(0.28, 0.16, 0.08))
+	draw_circle(Vector2(3.5 - leg_swing, 11), 2.5, Color(0.28, 0.16, 0.08))
+	
+	# Пышная юбка с оборками и складками ткани
+	var skirt_pts = PackedVector2Array([
+		Vector2(-4, -1 + bounce),
+		Vector2(4, -1 + bounce),
+		Vector2(11, 10 + bounce),
+		Vector2(6, 11 + bounce),
+		Vector2(0, 10 + bounce),
+		Vector2(-6, 11 + bounce),
+		Vector2(-11, 10 + bounce)
 	])
-	draw_polygon(dress_poly, PackedColorArray([dress_color, dress_color, dress_color]))
-	# Белый передничек
-	draw_polygon(
-		PackedVector2Array([Vector2(0, -3 + bounce), Vector2(5, 9 + bounce), Vector2(-5, 9 + bounce)]),
-		PackedColorArray([Color(1.0, 1.0, 1.0, 0.9), Color(1.0, 1.0, 1.0, 0.9), Color(1.0, 1.0, 1.0, 0.9)])
-	)
+	draw_colored_polygon(skirt_pts, dress_color)
+	draw_polyline(skirt_pts, dress_color.darkened(0.25), 1.5)
 	
-	# Голова
-	draw_circle(Vector2(0, -12 + bounce), 8.0, Color(1.0, 0.9, 0.82))
-	# Румянец на щечках
-	draw_circle(Vector2(-4.5, -9 + bounce), 2.0, Color(1.0, 0.5, 0.6, 0.6))
-	draw_circle(Vector2(4.5, -9 + bounce), 2.0, Color(1.0, 0.5, 0.6, 0.6))
+	# Белый кружевной передничек
+	var apron_pts = PackedVector2Array([
+		Vector2(-2.5, 0 + bounce), Vector2(2.5, 0 + bounce),
+		Vector2(5, 9 + bounce), Vector2(-5, 9 + bounce)
+	])
+	draw_colored_polygon(apron_pts, Color(0.96, 0.96, 0.98, 0.92))
 	
-	# Волосы и пышные хвостики с бантиками
-	draw_circle(Vector2(-8, -13 + bounce), 4.5, hair_color)
-	draw_circle(Vector2(8, -13 + bounce), 4.5, hair_color)
-	draw_circle(Vector2(-8, -17 + bounce), 2.0, Color(1.0, 0.3, 0.5)) # Бантик слева
-	draw_circle(Vector2(8, -17 + bounce), 2.0, Color(1.0, 0.3, 0.5)) # Бантик справа
-	draw_arc(Vector2(0, -14 + bounce), 8.0, PI, TAU, 14, hair_color, 3.5)
+	# Корсаж со шнуровкой
+	draw_rect(Rect2(-4, -6 + bounce, 8, 6), dress_color.darkened(0.35))
+	draw_line(Vector2(-2, -5 + bounce), Vector2(2, -3 + bounce), Color(0.95, 0.85, 0.4), 1.2)
+	draw_line(Vector2(-2, -3 + bounce), Vector2(2, -5 + bounce), Color(0.95, 0.85, 0.4), 1.2)
+	
+	# Рукава-фонарики
+	draw_circle(Vector2(-5.5, -4 + bounce), 2.8, Color(0.96, 0.96, 0.98))
+	draw_circle(Vector2(5.5, -4 + bounce), 2.8, Color(0.96, 0.96, 0.98))
+	
+	# Голова и личико
+	var face_col = Color(1.0, 0.92, 0.84)
+	draw_circle(Vector2(0, -12 + bounce), 7.5, face_col)
+	# Мягкий девичий румянец
+	draw_circle(Vector2(-4.2, -10 + bounce), 2.2, Color(1.0, 0.45, 0.55, 0.5))
+	draw_circle(Vector2(4.2, -10 + bounce), 2.2, Color(1.0, 0.45, 0.55, 0.5))
+	
+	# Прическа: пышные косы/хвостики с ленточками
+	var hair_dark = hair_color.darkened(0.2)
+	# Задняя масса волос
+	draw_circle(Vector2(-8, -13 + bounce), 4.8, hair_color)
+	draw_circle(Vector2(8, -13 + bounce), 4.8, hair_color)
+	draw_circle(Vector2(-9, -8 + bounce), 3.5, hair_dark)
+	draw_circle(Vector2(9, -8 + bounce), 3.5, hair_dark)
+	
+	# Шелковые бантики
+	draw_circle(Vector2(-8, -16 + bounce), 2.5, Color(1.0, 0.25, 0.45))
+	draw_circle(Vector2(8, -16 + bounce), 2.5, Color(1.0, 0.25, 0.45))
+	draw_circle(Vector2(-8, -16 + bounce), 1.2, Color(1.0, 0.85, 0.9))
+	draw_circle(Vector2(8, -16 + bounce), 1.2, Color(1.0, 0.85, 0.9))
+	
+	# Челка с прядями
+	draw_arc(Vector2(0, -13.5 + bounce), 7.5, PI * 0.9, TAU * 1.05, 16, hair_color, 4.0)
+	draw_line(Vector2(-3, -15 + bounce), Vector2(-1, -12 + bounce), hair_dark, 1.5)
+	draw_line(Vector2(2, -15 + bounce), Vector2(4, -12 + bounce), hair_dark, 1.5)
 	
 	if current_state == State.BEING_CARRIED:
-		# Испуганные глазки
-		draw_line(Vector2(-3.5, -13 + bounce), Vector2(-1.5, -11 + bounce), Color(0.2, 0.2, 0.3), 2.0)
-		draw_line(Vector2(1.5, -11 + bounce), Vector2(3.5, -13 + bounce), Color(0.2, 0.2, 0.3), 2.0)
-		# Значок паники
-		draw_circle(Vector2(0, -26 + bounce), 6.0, Color(1.0, 0.2, 0.2, 0.85))
-		draw_line(Vector2(0, -29 + bounce), Vector2(0, -25 + bounce), Color(1.0, 1.0, 1.0), 2.0)
-		draw_circle(Vector2(0, -23 + bounce), 1.0, Color(1.0, 1.0, 1.0))
+		# Испуганные аниме-глазки
+		draw_line(Vector2(-4, -12 + bounce), Vector2(-1.5, -10.5 + bounce), Color(0.2, 0.18, 0.28), 2.2)
+		draw_line(Vector2(1.5, -10.5 + bounce), Vector2(4, -12 + bounce), Color(0.2, 0.18, 0.28), 2.2)
+		# Значок паники / восклицание
+		draw_circle(Vector2(0, -25 + bounce), 5.5, Color(1.0, 0.2, 0.2, 0.9))
+		draw_line(Vector2(0, -28 + bounce), Vector2(0, -24 + bounce), Color(1.0, 1.0, 1.0), 2.0)
+		draw_circle(Vector2(0, -22 + bounce), 1.0, Color(1.0, 1.0, 1.0))
 	elif current_state == State.RUNNING_HOME:
 		# Счастливые глазки-дуги
-		draw_arc(Vector2(-3.5, -12 + bounce), 2.2, PI, TAU, 6, Color(0.2, 0.2, 0.3), 2.0)
-		draw_arc(Vector2(3.5, -12 + bounce), 2.2, PI, TAU, 6, Color(0.2, 0.2, 0.3), 2.0)
-		# Сердечко над головой
-		draw_circle(Vector2(-2.5, -25 + bounce), 3.0, Color(1.0, 0.2, 0.45))
-		draw_circle(Vector2(2.5, -25 + bounce), 3.0, Color(1.0, 0.2, 0.45))
-		draw_polygon(
+		draw_arc(Vector2(-3.2, -11 + bounce), 2.4, PI, TAU, 8, Color(0.2, 0.18, 0.28), 2.2)
+		draw_arc(Vector2(3.2, -11 + bounce), 2.4, PI, TAU, 8, Color(0.2, 0.18, 0.28), 2.2)
+		# Сердечко радости над головой
+		draw_circle(Vector2(-2.5, -25 + bounce), 3.2, Color(1.0, 0.18, 0.45))
+		draw_circle(Vector2(2.5, -25 + bounce), 3.2, Color(1.0, 0.18, 0.45))
+		draw_colored_polygon(
 			PackedVector2Array([Vector2(-5.5, -24 + bounce), Vector2(5.5, -24 + bounce), Vector2(0, -18 + bounce)]),
-			PackedColorArray([Color(1.0, 0.2, 0.45), Color(1.0, 0.2, 0.45), Color(1.0, 0.2, 0.45)])
+			Color(1.0, 0.18, 0.45)
 		)
 	else:
-		# Милые круглые глазки с бликами
-		draw_circle(Vector2(-3.5, -12 + bounce), 1.8, Color(0.2, 0.2, 0.3))
-		draw_circle(Vector2(3.5, -12 + bounce), 1.8, Color(0.2, 0.2, 0.3))
-		draw_circle(Vector2(-3.0, -12.5 + bounce), 0.7, Color(1.0, 1.0, 1.0))
-		draw_circle(Vector2(4.0, -12.5 + bounce), 0.7, Color(1.0, 1.0, 1.0))
+		# Выразительные глаза с бликами
+		draw_circle(Vector2(-3.2, -11 + bounce), 2.0, Color(0.18, 0.22, 0.35))
+		draw_circle(Vector2(3.2, -11 + bounce), 2.0, Color(0.18, 0.22, 0.35))
+		draw_circle(Vector2(-2.6, -11.6 + bounce), 0.8, Color(1.0, 1.0, 1.0))
+		draw_circle(Vector2(3.8, -11.6 + bounce), 0.8, Color(1.0, 1.0, 1.0))

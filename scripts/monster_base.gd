@@ -923,55 +923,141 @@ func _draw() -> void:
 				draw_line(Vector2(-bs * 0.5, ry), Vector2(bs * 0.5, ry), Color(0.4, 0.6, 1.0, 0.4), 1.5)
 
 		_:
-			# DEFAULT: grunt, soldier, heavy, and all unspecified types
-			# Grunt/soldier - standard orc with armor distinction
-			draw_circle(Vector2(0, bounce), bs, draw_col)
-			draw_circle(Vector2(-bs * 0.28, bounce - bs * 0.28), bs * 0.45, draw_col.lightened(0.22))
-			draw_arc(Vector2(0, bounce), bs, 0, TAU, 20, Color(0.1, 0.15, 0.08, 0.85), 2.5)
-			# Armor plates for heavy units
-			if armor >= 40.0:
-				draw_arc(Vector2(0, bounce), bs * 0.88, -PI * 0.7, PI * 0.7, 12, Color(0.75, 0.8, 0.88), 3.5)
-				draw_arc(Vector2(0, bounce), bs * 0.72, -PI * 0.4, PI * 0.4, 8, Color(0.65, 0.7, 0.78), 2.0)
-			# Horns (grunt/berserker style)
-			var horn_count = 3 if monster_type == "grunt" else 2
-			for i in range(horn_count):
-				var ang = -PI * 0.6 + i * (PI * 0.6 / max(horn_count - 1, 1))
-				var p1 = Vector2(cos(ang), sin(ang)) * bs + Vector2(0, bounce)
-				var p2 = Vector2(cos(ang), sin(ang)) * (bs + 6.0) + Vector2(0, bounce)
-				draw_line(p1, p2, Color(0.22, 0.12, 0.06), 3.0)
+			# 2.5D БОЕВОЙ ОРК (Grunt / Soldier / Heavy и базовые типы)
+			var look_dir = 1.0 if current_state == MonsterState.ADVANCING else -1.0
+			var leg_stride = sin(walk_anim * 3.0) * (bs * 0.4)
+			var skin_dark = draw_col.darkened(0.28)
+			var skin_light = draw_col.lightened(0.18)
+			var leather = Color(0.35, 0.22, 0.12)
+			var iron = Color(0.45, 0.48, 0.52)
+			var iron_dark = Color(0.22, 0.24, 0.26)
+			
+			# 1. Шагающие ноги в кожано-стальных поножах
+			draw_circle(Vector2(-bs * 0.35 + leg_stride, bounce + bs * 0.75), bs * 0.25, leather)
+			draw_circle(Vector2(bs * 0.35 - leg_stride, bounce + bs * 0.75), bs * 0.25, leather)
+			
+			# 2. Могучий торс в стеганом дублете с ремнями
+			var torso = PackedVector2Array([
+				Vector2(-bs * 0.65, bounce - bs * 0.2), Vector2(bs * 0.65, bounce - bs * 0.2),
+				Vector2(bs * 0.45, bounce + bs * 0.65), Vector2(-bs * 0.45, bounce + bs * 0.65)
+			])
+			draw_colored_polygon(torso, draw_col)
+			# Кожаный ремень с железной пряжкой
+			draw_line(Vector2(-bs * 0.45, bounce + bs * 0.45), Vector2(bs * 0.45, bounce + bs * 0.45), leather, 2.8)
+			draw_rect(Rect2(-2.5, bounce + bs * 0.45 - 2.5, 5, 5), Color(0.85, 0.72, 0.25))
+			
+			# Нагрудный железный панцирь для бронированных пехотинцев
+			if armor >= 20.0:
+				var plate = PackedVector2Array([
+					Vector2(-bs * 0.5, bounce - bs * 0.15), Vector2(bs * 0.5, bounce - bs * 0.15),
+					Vector2(bs * 0.35, bounce + bs * 0.35), Vector2(-bs * 0.35, bounce + bs * 0.35)
+				])
+				draw_colored_polygon(plate, iron)
+				draw_polyline(plate, iron_dark, 1.5)
+				draw_line(Vector2(-bs * 0.5, bounce - bs * 0.15), Vector2(bs * 0.35, bounce + bs * 0.35), iron_dark, 1.2)
+				
+			# 3. Руки и оружие
+			# Левая рука со щитом-баклером
+			var shield_x = -bs * 0.7 * look_dir
+			var shield_y = bounce + bs * 0.15
+			draw_circle(Vector2(shield_x, shield_y), bs * 0.38, iron_dark)
+			draw_circle(Vector2(shield_x, shield_y), bs * 0.25, iron)
+			draw_circle(Vector2(shield_x, shield_y), bs * 0.1, Color(0.85, 0.2, 0.2)) # Умбон щита
+			
+			# Правая рука с занесенным боевым топором
+			var arm_swing = sin(walk_anim * 3.0) * 4.0
+			var axe_x = bs * 0.75 * look_dir
+			var axe_y = bounce - bs * 0.1 + arm_swing
+			# Топорище
+			draw_line(Vector2(axe_x - 3.0 * look_dir, axe_y + 10.0), Vector2(axe_x + 5.0 * look_dir, axe_y - 12.0), leather, 2.5)
+			# Зубчатое железное лезвие топора
+			var blade = PackedVector2Array([
+				Vector2(axe_x + 5.0 * look_dir, axe_y - 12.0),
+				Vector2(axe_x + 13.0 * look_dir, axe_y - 16.0),
+				Vector2(axe_x + 15.0 * look_dir, axe_y - 8.0),
+				Vector2(axe_x + 10.0 * look_dir, axe_y - 5.0)
+			])
+			draw_colored_polygon(blade, iron)
+			draw_polyline(blade, Color(0.85, 0.88, 0.92), 1.2)
+			
+			# Шипастые наплечники (pauldrons)
+			draw_circle(Vector2(-bs * 0.6, bounce - bs * 0.2), bs * 0.3, iron_dark)
+			draw_circle(Vector2(bs * 0.6, bounce - bs * 0.2), bs * 0.3, iron_dark)
+			draw_circle(Vector2(-bs * 0.6, bounce - bs * 0.2), bs * 0.18, iron)
+			draw_circle(Vector2(bs * 0.6, bounce - bs * 0.2), bs * 0.18, iron)
+			
+			# 4. Голова орка: грозная челюсть, клыки, шлем и свирепые глаза
+			var head_y = bounce - bs * 0.55
+			# Остроконечные уши
+			draw_colored_polygon(PackedVector2Array([
+				Vector2(-bs * 0.45, head_y), Vector2(-bs * 0.8, head_y - 3), Vector2(-bs * 0.4, head_y + 4)
+			]), draw_col)
+			draw_colored_polygon(PackedVector2Array([
+				Vector2(bs * 0.45, head_y), Vector2(bs * 0.8, head_y - 3), Vector2(bs * 0.4, head_y + 4)
+			]), draw_col)
+			
+			# Череп
+			draw_circle(Vector2(0, head_y), bs * 0.48, draw_col)
+			
+			# Железный боевой шлем с наносником
+			draw_arc(Vector2(0, head_y), bs * 0.5, PI, TAU, 14, iron_dark, 3.5)
+			draw_line(Vector2(0, head_y - bs * 0.5), Vector2(0, head_y + 2), iron, 2.5)
+			# Рога на шлеме
+			draw_line(Vector2(-bs * 0.35, head_y - bs * 0.3), Vector2(-bs * 0.65, head_y - bs * 0.7), Color(0.85, 0.80, 0.68), 3.0)
+			draw_line(Vector2(bs * 0.35, head_y - bs * 0.3), Vector2(bs * 0.65, head_y - bs * 0.7), Color(0.85, 0.80, 0.68), 3.0)
+			
+			# Свирепые светящиеся янтарно-красные глаза под тяжелыми надбровными дугами
+			draw_line(Vector2(-bs * 0.3, head_y - 1), Vector2(-bs * 0.08, head_y + 1), iron_dark, 2.5) # Бровь левая
+			draw_line(Vector2(bs * 0.3, head_y - 1), Vector2(bs * 0.08, head_y + 1), iron_dark, 2.5)  # Бровь правая
+			draw_circle(Vector2(-bs * 0.18 + look_dir * 1.5, head_y + 1.5), 1.8, Color(1.0, 0.3, 0.1)) # Светящийся зрачок
+			draw_circle(Vector2(bs * 0.18 + look_dir * 1.5, head_y + 1.5), 1.8, Color(1.0, 0.3, 0.1))
+			draw_circle(Vector2(-bs * 0.18 + look_dir * 1.5, head_y + 1.5), 0.8, Color(1.0, 0.95, 0.4))
+			draw_circle(Vector2(bs * 0.18 + look_dir * 1.5, head_y + 1.5), 0.8, Color(1.0, 0.95, 0.4))
+			
+			# Массивные острые клыки из нижней челюсти
+			var tusk_l = PackedVector2Array([
+				Vector2(-bs * 0.25, head_y + bs * 0.35), Vector2(-bs * 0.2, head_y + bs * 0.1), Vector2(-bs * 0.15, head_y + bs * 0.35)
+			])
+			var tusk_r = PackedVector2Array([
+				Vector2(bs * 0.15, head_y + bs * 0.35), Vector2(bs * 0.2, head_y + bs * 0.1), Vector2(bs * 0.25, head_y + bs * 0.35)
+			])
+			draw_colored_polygon(tusk_l, Color(0.95, 0.94, 0.85))
+			draw_colored_polygon(tusk_r, Color(0.95, 0.94, 0.85))
 
-	# --- Shared eyes for non-special types ---
-	if not is_boss and not is_stealth and not is_flyer:
-		var look_dir = 1.0 if current_state == MonsterState.ADVANCING else -1.0
-		var ey = bounce - bs * 0.18
-		var eye_r = bs * 0.22
-		draw_circle(Vector2(-bs * 0.28, ey), eye_r, Color(1.0, 1.0, 1.0))
-		draw_circle(Vector2(bs * 0.28, ey), eye_r, Color(1.0, 1.0, 1.0))
-		draw_circle(Vector2(-bs * 0.28 + look_dir * 1.5, ey), eye_r * 0.5, Color(0.08, 0.06, 0.08))
-		draw_circle(Vector2(bs * 0.28 + look_dir * 1.5, ey), eye_r * 0.5, Color(0.08, 0.06, 0.08))
-		# Tusk / fang detail
-		draw_line(Vector2(-bs * 0.18, bounce + bs * 0.2), Vector2(-bs * 0.28, bounce + bs * 0.5), Color(0.95, 0.92, 0.82), 2.0)
-		draw_line(Vector2(bs * 0.18, bounce + bs * 0.2), Vector2(bs * 0.28, bounce + bs * 0.5), Color(0.95, 0.92, 0.82), 2.0)
-
-	# --- Magic Shield ring ---
+	# --- Магический щитовой барьер ---
 	if shield > 0.0 and not is_boss:
-		draw_arc(Vector2(0, bounce), bs + 6.0, 0, TAU, 24, Color(0.55, 0.25, 0.95, 0.75), 2.5)
+		draw_arc(Vector2(0, bounce), bs + 6.0, 0, TAU, 24, Color(0.4, 0.75, 1.0, 0.8), 2.5)
+		draw_arc(Vector2(0, bounce), bs + 9.0, 0, TAU, 20, Color(0.6, 0.3, 1.0, 0.4), 1.5)
 
 	_draw_hp_bar(bs, bounce)
 
 func _draw_hp_bar(bs: float, bounce: float) -> void:
-	var bar_w = bs * 2.4
-	var bar_h = 5.0 if is_boss else 4.0
-	var bar_y = -bs - (16.0 if is_boss else 9.0) + bounce
-	var bg = Rect2(-bar_w / 2.0, bar_y, bar_w, bar_h)
-	draw_rect(bg, Color(0.08, 0.08, 0.1, 0.88))
+	var bar_w = bs * 2.5
+	var bar_h = 5.0 if is_boss else 4.2
+	var bar_y = -bs - (18.0 if is_boss else 12.0) + bounce
+	
+	# Стальная рамка подложки
+	var bg_frame = Rect2(-bar_w / 2.0 - 1.5, bar_y - 1.0, bar_w + 3.0, bar_h + 2.0)
+	draw_rect(bg_frame, Color(0.12, 0.14, 0.16, 0.95))
+	draw_rect(Rect2(-bar_w / 2.0, bar_y, bar_w, bar_h), Color(0.04, 0.04, 0.06, 0.9))
+	
+	# Заполнение здоровья с сочным градиентом
 	var ratio = clamp(current_health / max_health, 0.0, 1.0)
-	var hp_col = Color(0.2, 0.9, 0.2).lerp(Color(0.95, 0.15, 0.15), 1.0 - ratio)
-	draw_rect(Rect2(-bar_w / 2.0, bar_y, bar_w * ratio, bar_h), hp_col)
-	draw_rect(bg, Color(0.0, 0.0, 0.0, 0.9), false, 1.0)
-	# Shield bar overlay (blue)
+	if ratio > 0.0:
+		var hp_col = Color(0.15, 0.85, 0.25).lerp(Color(0.95, 0.18, 0.15), 1.0 - ratio)
+		draw_rect(Rect2(-bar_w / 2.0, bar_y, bar_w * ratio, bar_h), hp_col)
+		# Глянцевый блик по верхней кромке бара
+		draw_line(Vector2(-bar_w / 2.0, bar_y + 0.5), Vector2(-bar_w / 2.0 + bar_w * ratio, bar_y + 0.5), Color(1.0, 1.0, 1.0, 0.45), 1.0)
+		
+	# Тонкая золотая окантовка для боссов
+	if is_boss:
+		draw_rect(bg_frame, Color(0.95, 0.80, 0.25, 0.9), false, 1.2)
+	else:
+		draw_rect(bg_frame, Color(0.25, 0.28, 0.32, 0.85), false, 1.0)
+		
+	# Индикатор щита
 	if shield > 0.0 and max_shield > 0.0:
 		var shld_ratio = clamp(shield / max_shield, 0.0, 1.0)
-		draw_rect(Rect2(-bar_w / 2.0, bar_y - bar_h - 1.0, bar_w * shld_ratio, bar_h - 1.0), Color(0.4, 0.3, 1.0, 0.85))
+		draw_rect(Rect2(-bar_w / 2.0, bar_y - bar_h - 1.5, bar_w * shld_ratio, bar_h - 1.0), Color(0.35, 0.75, 1.0, 0.9))
 
 
