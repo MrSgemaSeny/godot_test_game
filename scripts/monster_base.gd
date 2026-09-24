@@ -403,6 +403,9 @@ func take_damage(amount: float, damage_type: String = "physical", source: Node =
 	var d_type = damage_type.to_lower()
 	var actual_damage = calculate_actual_damage(amount, d_type)
 	if actual_damage <= 0.0:
+		took_damage.emit(0.0, "blocked")
+		hit_flash_timer = 0.05
+		queue_redraw()
 		return
 		
 	# Mirror reflect mechanic
@@ -775,6 +778,48 @@ func _draw() -> void:
 			var px = cos(ang) * bs * 1.2
 			var py = sin(ang) * bs * 1.2 + bounce
 			draw_circle(Vector2(px, py), bs * 0.3, draw_col.lightened(0.4))
+		_draw_hp_bar(bs, bounce)
+		return
+	elif "beetle" in m_lower or "carapace" in m_lower or "scarab" in m_lower or "bug" in m_lower:
+		# 2.5D Тяжелый бронированный жук-панцирник
+		var look_dir = 1.0 if current_state == MonsterState.ADVANCING else -1.0
+		var ch_dark = Color(0.22, 0.12, 0.05)
+		var ch_mid = draw_col
+		var ch_highlight = Color(0.85, 0.65, 0.35)
+		
+		# Шесть суставчатых лапок жука в ракурсе
+		for leg_i in range(3):
+			var leg_stride = sin(walk_anim * 3.5 + leg_i * 1.5) * 4.0
+			var lx = (-bs * 0.4 + leg_i * (bs * 0.4))
+			draw_line(Vector2(lx, bounce), Vector2(lx - bs * 0.7, bounce - 5.0 + leg_stride), ch_dark, 2.5)
+			draw_line(Vector2(lx - bs * 0.7, bounce - 5.0 + leg_stride), Vector2(lx - bs * 0.9, bounce + 6.0 + leg_stride), ch_dark, 2.0)
+			draw_line(Vector2(lx, bounce), Vector2(lx + bs * 0.7, bounce - 5.0 - leg_stride), ch_dark, 2.5)
+			draw_line(Vector2(lx + bs * 0.7, bounce - 5.0 - leg_stride), Vector2(lx + bs * 0.9, bounce + 6.0 - leg_stride), ch_dark, 2.0)
+			
+		# Куполообразный толстый хитиновый панцирь
+		var shell_pts = PackedVector2Array([
+			Vector2(-bs * 0.85, bounce + 2), Vector2(-bs * 0.6, bounce - bs * 0.8),
+			Vector2(bs * 0.6, bounce - bs * 0.8), Vector2(bs * 0.85, bounce + 2),
+			Vector2(bs * 0.5, bounce + bs * 0.7), Vector2(-bs * 0.5, bounce + bs * 0.7)
+		])
+		draw_colored_polygon(shell_pts, ch_mid)
+		draw_polyline(shell_pts, ch_dark, 2.0)
+		
+		# Броневые щитки и центральный шов
+		draw_line(Vector2(0, bounce - bs * 0.8), Vector2(0, bounce + bs * 0.7), ch_dark, 2.5)
+		draw_line(Vector2(-bs * 0.6, bounce - bs * 0.2), Vector2(bs * 0.6, bounce - bs * 0.2), ch_dark, 1.8)
+		draw_line(Vector2(-bs * 0.35, bounce - bs * 0.65), Vector2(-bs * 0.1, bounce - bs * 0.65), ch_highlight, 1.5)
+		
+		# Голова с клешнями-жвалами
+		var head_x = bs * 0.75 * look_dir
+		var head_pos = Vector2(head_x, bounce - 2)
+		draw_circle(head_pos, bs * 0.35, ch_dark)
+		draw_line(head_pos + Vector2(0, -3), head_pos + Vector2(7 * look_dir, -6), ch_highlight, 2.2)
+		draw_line(head_pos + Vector2(0, 3), head_pos + Vector2(7 * look_dir, 6), ch_highlight, 2.2)
+		# Глаза
+		draw_circle(head_pos + Vector2(2 * look_dir, -3), 1.8, Color(1.0, 0.15, 0.2))
+		draw_circle(head_pos + Vector2(2 * look_dir, 3), 1.8, Color(1.0, 0.15, 0.2))
+		
 		_draw_hp_bar(bs, bounce)
 		return
 	elif "crab" in m_lower or "crawler" in m_lower or "angler" in m_lower or "spider" in m_lower:

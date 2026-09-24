@@ -226,10 +226,10 @@
   },
   "carapace_beetle": {
     "name": "Панцирник",
-    "description": "Бронированный жук с непробиваемым панцирем. Полный иммунитет к физическому урону, уязвим к магии.",
-    "max_health": 220,
+    "description": "Тяжелобронированный жук. Крепкий хитиновый панцирь и броня поглощают часть ударов, но он уязвим к магии и огню.",
+    "max_health": 200,
     "speed": 50.0,
-    "armor": 80,
+    "armor": 45,
     "gold_reward": 26,
     "color": "#713f12",
     "size": 21,
@@ -241,17 +241,16 @@
     "split_enemy_type": "",
     "split_count": 0,
     "resistances": {
-      "magic": -0.25,
-      "fire": -0.20
+      "physical": 0.35,
+      "magic": -0.60,
+      "fire": -0.50
     },
-    "immunities": [
-      "physical"
-    ]
+    "immunities": []
   },
   "stone_golem": {
     "name": "Каменный голем",
-    "description": "Огромный монолитный голем. Абсолютный иммунитет к заклинаниям и магии, пробивается только физикой.",
-    "max_health": 800,
+    "description": "Огромный монолитный голем. Высочайшее сопротивление к магии, но уязвим к дробящему физическому урону.",
+    "max_health": 600,
     "speed": 40.0,
     "armor": 30,
     "gold_reward": 55,
@@ -265,11 +264,10 @@
     "split_enemy_type": "",
     "split_count": 0,
     "resistances": {
-      "physical": 0.20
+      "magic": 0.65,
+      "physical": -0.20
     },
-    "immunities": [
-      "magic"
-    ]
+    "immunities": []
   },
   "iron_guard": {
     "name": "Железный страж",
@@ -329,11 +327,10 @@
     "split_enemy_type": "",
     "split_count": 0,
     "resistances": {
-      "poison": 0.80
+      "poison": 0.75,
+      "fire": -0.30
     },
-    "immunities": [
-      "poison"
-    ]
+    "immunities": []
   },
   "carrion_griffin": {
     "name": "Грифон",
@@ -392,12 +389,10 @@
     "split_enemy_type": "",
     "split_count": 0,
     "resistances": {
-      "cold": 1.0,
-      "fire": -0.30
+      "cold": 0.75,
+      "fire": -0.40
     },
-    "immunities": [
-      "cold"
-    ]
+    "immunities": []
   },
   "exploding_troll": {
     "name": "Взрывной тролль",

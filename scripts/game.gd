@@ -482,6 +482,9 @@ func _spawn_monster(enemy_type: String) -> void:
 	path2d.add_child(monster)
 
 func _on_monster_took_damage(dmg: float, type: String, pos: Vector2) -> void:
+	if dmg <= 0.0 or type == "blocked":
+		_spawn_floating_text("🛡️ Броня!", Color(0.78, 0.80, 0.88), pos + Vector2(0, -10), 12)
+		return
 	var col = Color(1.0, 1.0, 1.0)
 	match type:
 		"fire": col = Color(1.0, 0.4, 0.1)
