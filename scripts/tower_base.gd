@@ -233,7 +233,7 @@ func _process(delta: float) -> void:
 	if is_instance_valid(current_target):
 		var target_angle = (current_target.global_position - global_position).angle()
 		turret_angle = lerp_angle(turret_angle, target_angle, delta * 12.0)
-		queue_redraw()
+	queue_redraw()
 		
 	if shoot_timer <= 0.0:
 		if tower_type == "bastion":
@@ -437,65 +437,216 @@ func _draw() -> void:
 	# Аура активных баффов
 	if not active_buffs.is_empty():
 		var aura_alpha = 0.35 + sin(anim_time * 2.5) * 0.18
-		draw_arc(Vector2(0, -6), 22.0, 0, TAU, 24, Color(1.0, 0.85, 0.2, aura_alpha), 2.2)
-		draw_arc(Vector2(0, -6), 26.0, 0, TAU, 24, Color(1.0, 0.95, 0.4, aura_alpha * 0.5), 1.0)
+		draw_arc(Vector2(0, -6), 24.0, 0, TAU, 24, Color(1.0, 0.85, 0.2, aura_alpha), 2.2)
+		draw_arc(Vector2(0, -6), 28.0, 0, TAU, 24, Color(1.0, 0.95, 0.4, aura_alpha * 0.5), 1.0)
 
 	var aim_dir = Vector2(cos(turret_angle), sin(turret_angle))
 
-	# Мягкая глубинная тень под башней в ракурсе 2.5D
-	draw_set_transform(Vector2.ZERO, 0.0, Vector2(1.0, 0.52))
-	draw_circle(Vector2(3, 20), 18.0, Color(0.0, 0.0, 0.0, 0.36))
+	# 1. Сияющий рунический круг у основания башни в ракурсе 2.5D (как в оригинале «Башенок»)
+	var base_aura_alpha = 0.55 + sin(anim_time * 2.5) * 0.15
+	draw_set_transform(Vector2.ZERO, 0.0, Vector2(1.0, 0.54))
+	# Мягкая световая проекция на траву
+	draw_circle(Vector2(0, 10), 28.0, Color(0.2, 0.65, 1.0, base_aura_alpha * 0.22))
+	# Двойное руническое кольцо
+	draw_arc(Vector2(0, 10), 26.0, 0, TAU, 32, Color(0.35, 0.85, 1.0, base_aura_alpha * 0.75), 2.2)
+	draw_arc(Vector2(0, 10), 22.0, 0, TAU, 28, Color(0.55, 0.95, 1.0, base_aura_alpha * 0.45), 1.2)
+	# Радиальные рунические лучи
+	for i in range(8):
+		var ra = i * (TAU / 8.0) + anim_time * 0.3
+		var rp1 = Vector2(cos(ra) * 20.0, sin(ra) * 20.0 + 10)
+		var rp2 = Vector2(cos(ra) * 26.0, sin(ra) * 26.0 + 10)
+		draw_line(rp1, rp2, Color(0.6, 0.95, 1.0, base_aura_alpha * 0.6), 1.4)
+	# Мягкая тень под башней
+	draw_circle(Vector2(2, 16), 18.0, Color(0.0, 0.0, 0.0, 0.42))
 	draw_set_transform(Vector2.ZERO, 0.0, Vector2(1.0, 1.0))
 
 	match tower_type:
 
-		"archer", "crossbowman":
-			# 2.5D Деревянная дозорная вышка с лучником и черепичным навесом
-			var wood_dark = Color(0.32, 0.18, 0.08)
-			var wood_mid = Color(0.54, 0.34, 0.16)
-			var wood_light = Color(0.68, 0.46, 0.24)
-			var tile_col = Color(0.72, 0.28, 0.20)
+		"archer", "crossbowman", "watchtower":
+			# 2.5D Массивная каменная башня-цитадель из серых замшелых гранитных блоков с зубцами и бойницами
+			var stone_light = Color(0.62, 0.68, 0.60)
+			var stone_mid = Color(0.42, 0.48, 0.40)
+			var stone_dark = Color(0.26, 0.30, 0.24)
+			var moss_base = Color(0.24, 0.46, 0.20)
+			var mortar_line = Color(0.18, 0.22, 0.17, 0.85)
 			
-			# Четыре опорных бревенчатых столба
-			draw_line(Vector2(-12, 6), Vector2(-9, -16), wood_dark, 3.5)
-			draw_line(Vector2(12, 6), Vector2(9, -16), wood_dark, 3.5)
-			draw_line(Vector2(-12, 6), Vector2(12, 6), wood_mid, 3.0)
-			# Диагональные балки жесткости
-			draw_line(Vector2(-10, 4), Vector2(8, -14), wood_dark, 1.8)
-			draw_line(Vector2(10, 4), Vector2(-8, -14), wood_dark, 1.8)
+			# 1. Тело цилиндрической башни (вертикальный градиент и цилиндрическая светотень)
+			var tower_h = 36.0
+			var tower_w = 26.0
+			var tw_half = tower_w / 2.0
 			
-			# Боевая деревянная платформа с перилами
-			draw_colored_polygon(PackedVector2Array([
-				Vector2(-13, -14), Vector2(13, -14),
-				Vector2(11, -8), Vector2(-11, -8)
-			]), wood_light)
-			draw_polyline(PackedVector2Array([
-				Vector2(-13, -14), Vector2(13, -14),
-				Vector2(11, -8), Vector2(-11, -8), Vector2(-13, -14)
-			]), wood_dark, 1.5)
+			# Левая освещенная сторона башни
+			draw_rect(Rect2(-tw_half, -tower_h, tw_half, tower_h + 4.0), stone_light)
+			# Правая затененная сторона башни
+			draw_rect(Rect2(0, -tower_h, tw_half, tower_h + 4.0), stone_dark)
+			# Центральная грань перехода
+			draw_rect(Rect2(-tw_half * 0.3, -tower_h, tw_half * 0.8, tower_h + 4.0), stone_mid)
 			
-			# Фигурка лучника на вышке
-			draw_circle(Vector2(0, -16), 4.5, Color(0.24, 0.48, 0.22)) # Зеленый охотничий капюшон
-			draw_circle(Vector2(0, -17), 3.0, Color(0.95, 0.85, 0.72)) # Лицо
+			# Замшелое подножие башни
+			draw_rect(Rect2(-tw_half - 1.0, 0, tower_w + 2.0, 6.0), moss_base)
+			draw_line(Vector2(-tw_half - 2.0, 6), Vector2(tw_half + 2.0, 6), stone_dark, 2.0)
 			
-			# Лук / Арбалет, поворачивающийся к цели
-			var bow_pos = Vector2(0, -15) + aim_dir * 8.0
-			draw_line(bow_pos - aim_dir.orthogonal() * 7.0, bow_pos + aim_dir.orthogonal() * 7.0, wood_dark, 2.5)
-			draw_line(bow_pos - aim_dir.orthogonal() * 7.0, bow_pos - aim_dir * 4.0, Color(0.9, 0.9, 0.85), 1.2)
-			draw_line(bow_pos + aim_dir.orthogonal() * 7.0, bow_pos - aim_dir * 4.0, Color(0.9, 0.9, 0.85), 1.2)
-			# Наложенная стрела
-			draw_line(bow_pos - aim_dir * 4.0, bow_pos + aim_dir * 8.0, Color(0.7, 0.7, 0.75), 1.8)
-			draw_circle(bow_pos + aim_dir * 8.0, 1.5, Color(0.9, 0.2, 0.2)) # Оперение
+			# Горизонтальные швы каменной кладки
+			for row in range(5):
+				var ry = -tower_h + 6.0 + row * 6.5
+				draw_line(Vector2(-tw_half, ry), Vector2(tw_half, ry), mortar_line, 1.2)
+				# Вертикальные стыки блоков со смещением
+				var x_off = (row % 2) * 5.0 - 6.0
+				draw_line(Vector2(x_off, ry), Vector2(x_off, ry + 6.5), mortar_line, 1.0)
+				draw_line(Vector2(x_off + 11.0, ry), Vector2(x_off + 11.0, ry + 6.5), mortar_line, 1.0)
 			
-			# Черепичная остроконечная крыша
-			var roof = PackedVector2Array([
-				Vector2(-15, -20), Vector2(0, -32), Vector2(15, -20)
+			# 2. Арочные узкие бойницы с теплым светом факелов внутри
+			for wy in [-10.0, -22.0]:
+				draw_rect(Rect2(-3, wy, 6, 7), Color(0.12, 0.14, 0.12))
+				draw_rect(Rect2(-1.5, wy + 1.0, 3, 5), Color(1.0, 0.82, 0.28, 0.9))
+				draw_circle(Vector2(0, wy + 1.0), 1.5, Color(1.0, 0.95, 0.7))
+			
+			# 3. Карниз машикулей (расширение под боевой площадкой)
+			var mach_y = -tower_h - 2.0
+			draw_rect(Rect2(-tw_half - 2.0, mach_y, tower_w + 4.0, 4.0), stone_light)
+			draw_line(Vector2(-tw_half - 2.0, mach_y + 4.0), Vector2(tw_half + 2.0, mach_y + 4.0), stone_dark, 1.5)
+			
+			# 4. Каменные зубцы (мерлоны / кренеляж) на крыше башни
+			var merlon_h = 7.0
+			var merlon_y = mach_y - merlon_h
+			# Задний бортик
+			draw_rect(Rect2(-tw_half - 1.0, merlon_y + 2.0, tower_w + 2.0, merlon_h - 2.0), stone_dark)
+			# Внутренний деревянный боевой настил
+			draw_rect(Rect2(-tw_half, merlon_y + 4.0, tower_w, 3.0), Color(0.38, 0.24, 0.14))
+			
+			# 4 передних зубца с 3D-гранями
+			var merlon_xs = [-tw_half - 2.0, -tw_half + 5.0, 3.0, tw_half - 4.0]
+			for mx in merlon_xs:
+				draw_rect(Rect2(mx, merlon_y, 6.0, merlon_h), stone_light)
+				draw_rect(Rect2(mx + 3.0, merlon_y, 3.0, merlon_h), stone_dark)
+				draw_line(Vector2(mx, merlon_y), Vector2(mx + 6.0, merlon_y), Color(0.78, 0.82, 0.75), 1.2)
+			
+			# 5. Поворотная баллиста / стрелок на вершине башни
+			var deck_center = Vector2(0, merlon_y + 2.0)
+			# Поворотная деревянная станина
+			draw_circle(deck_center, 4.5, Color(0.32, 0.18, 0.10))
+			draw_circle(deck_center, 3.0, Color(0.55, 0.35, 0.18))
+			
+			# Арбалетная дуга и стрела в сторону цели
+			var wpn_tip = deck_center + aim_dir * 12.0
+			var bow_arm = aim_dir.orthogonal()
+			draw_line(deck_center - bow_arm * 8.0, deck_center + bow_arm * 8.0, Color(0.20, 0.12, 0.08), 2.8)
+			draw_line(deck_center - bow_arm * 8.0, wpn_tip - aim_dir * 2.0, Color(0.85, 0.85, 0.85), 1.2)
+			draw_line(deck_center + bow_arm * 8.0, wpn_tip - aim_dir * 2.0, Color(0.85, 0.85, 0.85), 1.2)
+			# Стрела с оперением
+			draw_line(deck_center - aim_dir * 4.0, wpn_tip + aim_dir * 4.0, Color(0.72, 0.75, 0.80), 2.0)
+			draw_circle(wpn_tip + aim_dir * 4.0, 2.0, Color(0.95, 0.25, 0.25))
+
+		"tesla", "auto_turret":
+			# 2.5D Башня Теслы в точности как на фото: тренога из темного чугуна, медные катушки и сияющая плазменная сфера с молниями
+			var iron_dark = Color(0.18, 0.20, 0.25)
+			var iron_light = Color(0.42, 0.46, 0.54)
+			var copper_coil = Color(0.86, 0.48, 0.22)
+			var copper_bright = Color(1.0, 0.72, 0.42)
+			var brass_trim = Color(0.92, 0.78, 0.32)
+			var plasma_blue = Color(0.30, 0.85, 1.0)
+			
+			# 1. Чугунная тренога (3 мощные кованые изогнутые лапы)
+			# Задняя лапа
+			draw_line(Vector2(0, -10), Vector2(0, 8), iron_dark, 4.0)
+			draw_circle(Vector2(0, 8), 2.5, brass_trim)
+			# Левая передняя лапа с заклепками
+			draw_line(Vector2(-2, -8), Vector2(-15, 8), iron_dark, 4.5)
+			draw_line(Vector2(-2, -8), Vector2(-15, 8), iron_light, 1.5)
+			draw_circle(Vector2(-15, 8), 3.0, brass_trim)
+			# Правая передняя лапа
+			draw_line(Vector2(2, -8), Vector2(15, 8), iron_dark, 4.5)
+			draw_line(Vector2(2, -8), Vector2(15, 8), iron_light, 1.5)
+			draw_circle(Vector2(15, 8), 3.0, brass_trim)
+			
+			# Центральная консоль с заклепками
+			draw_rect(Rect2(-8, -12, 16, 6), iron_dark)
+			draw_rect(Rect2(-6, -11, 12, 4), iron_light)
+			
+			# 2. Вертикальная колонна индуктора с медными кольцами
+			for tier in range(4):
+				var ty = -14.0 - tier * 5.0
+				# Керамический изолятор
+				draw_rect(Rect2(-4, ty, 8, 4.5), Color(0.88, 0.90, 0.95))
+				# Медная намотка катушки
+				draw_rect(Rect2(-7, ty + 0.8, 14, 3.0), copper_coil)
+				draw_line(Vector2(-7, ty + 1.2), Vector2(7, ty + 1.2), copper_bright, 1.2)
+			
+			# 3. Латунная корона-электрод
+			var crown_y = -34.0
+			draw_rect(Rect2(-8, crown_y, 16, 4.0), brass_trim)
+			draw_circle(Vector2(-7, crown_y), 2.0, brass_trim)
+			draw_circle(Vector2(7, crown_y), 2.0, brass_trim)
+			
+			# 4. Светящаяся голубая плазменная сфера Теслы
+			var sphere_pos = Vector2(0, crown_y - 8.0)
+			# Пульсирующий внешний ореол
+			var pulse_r = 13.0 + sin(anim_time * 6.0) * 1.8
+			draw_circle(sphere_pos, pulse_r, Color(0.2, 0.7, 1.0, 0.35))
+			# Стеклянный корпус сферы
+			draw_circle(sphere_pos, 10.0, Color(0.15, 0.4, 0.8, 0.55))
+			# Внутреннее светящееся плазменное ядро
+			draw_circle(sphere_pos, 6.5, plasma_blue)
+			draw_circle(sphere_pos, 3.2, Color(1.0, 1.0, 1.0, 0.95))
+			
+			# Электрические разряды вокруг сферы
+			for s in range(3):
+				var sa = anim_time * 7.0 + s * (TAU / 3.0)
+				var sp = sphere_pos + Vector2(cos(sa) * 11.0, sin(sa) * 11.0)
+				draw_line(sphere_pos, sp, Color(0.8, 0.95, 1.0), 1.5)
+				draw_circle(sp, 1.8, Color(1, 1, 1))
+				
+			# Анимированная молния в сторону цели
+			if is_instance_valid(current_target):
+				var arc_pts: Array[Vector2] = [sphere_pos]
+				var arc_step = aim_dir * 10.0
+				var arc_norm = aim_dir.orthogonal()
+				for k in range(3):
+					var jitter = sin(anim_time * 18.0 + k * 3.0) * 6.0
+					arc_pts.append(sphere_pos + arc_step * (k + 1) + arc_norm * jitter)
+				draw_polyline(PackedVector2Array(arc_pts), Color(0.4, 0.9, 1.0, 0.9), 2.5)
+				draw_polyline(PackedVector2Array(arc_pts), Color(1, 1, 1), 1.2)
+
+		"ice_mage":
+			# 2.5D Сине-золотой рунический тотем-обелиск с парящими кристаллами (как на фото)
+			var cobalt_blue = Color(0.15, 0.38, 0.72)
+			var gold_trim = Color(0.94, 0.80, 0.28)
+			var rune_cyan = Color(0.40, 0.95, 1.0)
+			
+			# 1. Круглое ступенчатое сине-золотое основание
+			draw_rect(Rect2(-12, 0, 24, 7), cobalt_blue)
+			draw_line(Vector2(-13, 0), Vector2(13, 0), gold_trim, 2.0)
+			draw_line(Vector2(-14, 7), Vector2(14, 7), gold_trim, 2.0)
+			
+			# 2. Каннелированный пьедестал
+			draw_rect(Rect2(-9, -22, 18, 22), cobalt_blue)
+			draw_line(Vector2(-9, -22), Vector2(-9, 0), gold_trim, 1.8)
+			draw_line(Vector2(9, -22), Vector2(9, 0), gold_trim, 1.8)
+			# Светящаяся вертикальная руническая дорожка
+			draw_line(Vector2(0, -20), Vector2(0, -2), rune_cyan, 2.0)
+			draw_circle(Vector2(0, -11), 3.0, rune_cyan)
+			
+			# 3. Латунная фигурная чаша капители
+			draw_rect(Rect2(-11, -26, 22, 4), gold_trim)
+			draw_circle(Vector2(-10, -26), 3.0, gold_trim)
+			draw_circle(Vector2(10, -26), 3.0, gold_trim)
+			
+			# 4. Парящий кристалл с левитацией и орбитальными сателлитами
+			var cry_y = -36.0 + sin(anim_time * 2.2) * 3.5
+			var c_pts = PackedVector2Array([
+				Vector2(0, cry_y - 12), Vector2(7, cry_y),
+				Vector2(0, cry_y + 6), Vector2(-7, cry_y)
 			])
-			draw_colored_polygon(roof, tile_col)
-			draw_polyline(roof, tile_col.darkened(0.3), 2.0)
-			# Коньковый вымпел
-			draw_line(Vector2(0, -32), Vector2(0, -37), wood_dark, 1.5)
-			draw_colored_polygon(PackedVector2Array([Vector2(0, -37), Vector2(6, -34), Vector2(0, -31)]), Color(0.9, 0.8, 0.2))
+			draw_colored_polygon(c_pts, Color(0.2, 0.6, 0.95))
+			draw_colored_polygon(PackedVector2Array([Vector2(0, cry_y - 12), Vector2(7, cry_y), Vector2(0, cry_y + 6)]), Color(0.5, 0.88, 1.0))
+			draw_polyline(c_pts, Color(1, 1, 1), 1.2)
+			
+			# Вращающиеся сателлиты
+			for s in range(3):
+				var sa = anim_time * 2.5 + s * (TAU / 3.0)
+				var sp = Vector2(cos(sa) * 14.0, sin(sa) * 6.0 + cry_y)
+				draw_circle(sp, 2.8, Color(0.6, 0.95, 1.0))
+				draw_circle(sp, 1.2, Color(1, 1, 1))
 
 		"cannon", "siege_cannon":
 			# 2.5D Гранитный форт с поворотной чугунной мортирой
@@ -534,73 +685,6 @@ func _draw() -> void:
 			# Жерло пушки с темным отверстием
 			draw_circle(barrel_end, 3.8, iron_highlight)
 			draw_circle(barrel_end, 2.4, Color(0.06, 0.06, 0.08))
-
-		"ice_mage":
-			# 2.5D Ледяной монумент с левитирующими сапфировыми кристаллами
-			var float_y = sin(anim_time * 2.0) * 3.5
-			var ice_deep = Color(0.12, 0.35, 0.65)
-			var ice_mid = Color(0.28, 0.65, 0.92)
-			var ice_bright = Color(0.70, 0.94, 1.0)
-			
-			# Рунический ледяной обелиск-основание
-			var base_poly = PackedVector2Array([
-				Vector2(-12, 8), Vector2(12, 8),
-				Vector2(7, -8), Vector2(-7, -8)
-			])
-			draw_colored_polygon(base_poly, ice_deep)
-			draw_polyline(base_poly, ice_bright, 1.5)
-			
-			# Парящий в воздухе граненый центральный ледяной кристалл
-			var crystal_pts = PackedVector2Array([
-				Vector2(0, -26 + float_y),
-				Vector2(8, -13 + float_y),
-				Vector2(0, 0 + float_y),
-				Vector2(-8, -13 + float_y)
-			])
-			draw_colored_polygon(crystal_pts, ice_mid)
-			# Световые грани кристалла
-			draw_colored_polygon(PackedVector2Array([Vector2(0, -26 + float_y), Vector2(0, 0 + float_y), Vector2(-8, -13 + float_y)]), ice_deep)
-			draw_colored_polygon(PackedVector2Array([Vector2(0, -26 + float_y), Vector2(0, 0 + float_y), Vector2(8, -13 + float_y)]), ice_bright)
-			draw_polyline(crystal_pts, Color(1.0, 1.0, 1.0, 0.9), 1.5)
-			
-			# 3 вращающихся сателлитных кристаллика
-			for i in range(3):
-				var ang = anim_time * 1.8 + i * (TAU / 3.0)
-				var c_pos = Vector2(cos(ang) * 14.0, sin(ang) * 6.0 - 13.0 + float_y)
-				draw_circle(c_pos, 2.5, ice_bright)
-				draw_circle(c_pos, 1.2, Color(1, 1, 1))
-
-		"tesla", "auto_turret":
-			# 2.5D Медная электростанция с керамическими изоляторами и молниями
-			var copper = Color(0.75, 0.42, 0.20)
-			var brass = Color(0.88, 0.72, 0.30)
-			var ceramic = Color(0.85, 0.88, 0.92)
-			var arc_col = Color(0.35, 0.85, 1.0)
-			
-			# Цилиндрический медный генератор
-			draw_rect(Rect2(-11, -2, 22, 12), copper)
-			draw_rect(Rect2(-9, -2, 18, 3), brass)
-			
-			# Керамические кольца-изоляторы
-			for i in range(3):
-				var iy = -6 - i * 6
-				draw_rect(Rect2(-7, iy, 14, 4), ceramic)
-				draw_rect(Rect2(-5, iy + 1, 10, 2), copper)
-				
-			# Верхняя сфера Теслы
-			var sphere_pos = Vector2(0, -24)
-			draw_circle(sphere_pos, 7.5, brass)
-			draw_circle(sphere_pos, 5.0, arc_col)
-			draw_circle(sphere_pos, 2.5, Color(1, 1, 1))
-			
-			# Анимированные электрические разряды в сторону цели
-			var spark_t = anim_time * 8.0
-			var spark_pts: Array[Vector2] = [sphere_pos]
-			for step in range(3):
-				var seg = sphere_pos + aim_dir * (float(step + 1) * 7.0) + aim_dir.orthogonal() * sin(spark_t + step * 2.0) * 4.0
-				spark_pts.append(seg)
-			draw_polyline(PackedVector2Array(spark_pts), arc_col, 2.0)
-			draw_polyline(PackedVector2Array(spark_pts), Color(1, 1, 1), 1.0)
 
 		"bastion", "wall":
 			# 2.5D Могучая цитадель с бойницами и гербовым щитом

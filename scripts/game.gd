@@ -908,64 +908,233 @@ func _draw() -> void:
 	if active_targeting_spell != "":
 		_draw_spell_targeting_reticle()
 
+	# 6. Резная древняя каменная рамка экрана в стиле оригинальных «Башенок»
+	_draw_fantasy_screen_border()
+
 func _draw_valley_biome() -> void:
 	var layout = _get_current_layout()
-	# 1. Богатый живописный ландшафт Изумрудной долины (холмы и луга)
-	draw_rect(Rect2(0, 0, 1280, 720), Color(0.26, 0.52, 0.20))
 	
-	# Мягкие контуры холмов и перепады рельефа
-	var meadow_light = Color(0.32, 0.60, 0.24)
-	var meadow_mid = Color(0.24, 0.48, 0.18)
-	var meadow_shadow = Color(0.18, 0.38, 0.14)
-	
-	# Верхний ярус холмов
-	var hill_poly_1 = PackedVector2Array([
-		Vector2(0, 0), Vector2(1280, 0), Vector2(1280, 160),
-		Vector2(950, 190), Vector2(650, 140), Vector2(350, 200), Vector2(0, 150)
+	# 1. Небо и бездна (небесный лазурный градиент)
+	draw_rect(Rect2(0, 0, 1280, 720), Color(0.52, 0.70, 0.86))
+	# Мягкая туманная дымка над бездной
+	var sky_poly = PackedVector2Array([
+		Vector2(0, 180), Vector2(1280, 180),
+		Vector2(1280, 720), Vector2(0, 720)
 	])
-	draw_colored_polygon(hill_poly_1, meadow_light)
-	draw_polyline(hill_poly_1, meadow_mid, 3.0)
+	draw_colored_polygon(sky_poly, Color(0.68, 0.80, 0.90, 0.65))
 	
-	# Нижний ярус холмов
-	var hill_poly_2 = PackedVector2Array([
-		Vector2(0, 720), Vector2(1280, 720), Vector2(1280, 620),
-		Vector2(1000, 580), Vector2(600, 640), Vector2(250, 590), Vector2(0, 650)
+	# Плывущие белые перистые облака в глубине ущелий под островами
+	for i in range(7):
+		var cx = fposmod(i * 210.0 + scene_anim_time * 8.0, 1400.0) - 80.0
+		var cy = 280.0 + (i % 3) * 110.0 + sin(scene_anim_time * 0.5 + i) * 15.0
+		var cr = 48.0 + (i % 3) * 12.0
+		draw_circle(Vector2(cx, cy), cr, Color(1.0, 1.0, 1.0, 0.38))
+		draw_circle(Vector2(cx + cr * 0.6, cy + 4), cr * 0.8, Color(1.0, 1.0, 1.0, 0.32))
+		draw_circle(Vector2(cx - cr * 0.5, cy + 6), cr * 0.75, Color(1.0, 1.0, 1.0, 0.30))
+
+	# Цветовая палитра 3D-скал и травы парящих островов (как в оригинале «Башенок»)
+	var rock_dark = Color(0.24, 0.20, 0.16)
+	var rock_mid = Color(0.38, 0.32, 0.24)
+	var rock_light = Color(0.52, 0.44, 0.34)
+	var grass_deep = Color(0.34, 0.62, 0.18)
+	var grass_mid = Color(0.46, 0.76, 0.24)
+	var grass_highlight = Color(0.60, 0.86, 0.32)
+
+	# 2. ОСТРОВ 1: Северо-западное плато (деревушка и начальная оборона)
+	var isl1_top = PackedVector2Array([
+		Vector2(-20, -10), Vector2(460, -10), Vector2(480, 160),
+		Vector2(420, 260), Vector2(440, 360), Vector2(280, 390),
+		Vector2(140, 370), Vector2(-20, 330)
 	])
-	draw_colored_polygon(hill_poly_2, meadow_mid)
-	draw_polyline(hill_poly_2, meadow_shadow, 2.5)
+	# 3D Вертикальный скальный срез острова 1 (глубина обрыва в облака)
+	var isl1_cliff = PackedVector2Array([
+		Vector2(480, 160), Vector2(420, 260), Vector2(440, 360),
+		Vector2(280, 390), Vector2(140, 370), Vector2(-20, 330),
+		Vector2(-20, 385), Vector2(140, 425), Vector2(280, 445),
+		Vector2(440, 415), Vector2(420, 315), Vector2(480, 215)
+	])
+	draw_colored_polygon(isl1_cliff, rock_mid)
+	draw_polyline(isl1_cliff, rock_dark, 2.0)
+	# Скальные вертикальные трещины и слоистость
+	for c_i in range(5):
+		var tx = 60.0 + c_i * 75.0
+		draw_line(Vector2(tx, 350 + c_i * 10), Vector2(tx + 8, 410 + c_i * 8), rock_dark, 2.0)
+		draw_line(Vector2(tx - 10, 380), Vector2(tx + 40, 385), rock_light, 1.2)
+	# Травяное плато острова 1
+	draw_colored_polygon(isl1_top, grass_mid)
+	draw_polyline(isl1_top, grass_highlight, 3.0)
+
+	# 3. ОСТРОВ 2: Северо-восточное плато (высокие смотровые рубежи)
+	var isl2_top = PackedVector2Array([
+		Vector2(760, -10), Vector2(1300, -10), Vector2(1300, 370),
+		Vector2(1100, 380), Vector2(880, 340), Vector2(760, 240)
+	])
+	var isl2_cliff = PackedVector2Array([
+		Vector2(760, 240), Vector2(880, 340), Vector2(1100, 380),
+		Vector2(1300, 370), Vector2(1300, 430), Vector2(1100, 440),
+		Vector2(880, 400), Vector2(760, 300)
+	])
+	draw_colored_polygon(isl2_cliff, rock_mid)
+	draw_polyline(isl2_cliff, rock_dark, 2.0)
+	for c_i in range(4):
+		var tx = 800.0 + c_i * 90.0
+		draw_line(Vector2(tx, 300 + c_i * 15), Vector2(tx + 10, 370 + c_i * 12), rock_dark, 2.0)
+	draw_colored_polygon(isl2_top, grass_mid)
+	draw_polyline(isl2_top, grass_highlight, 3.0)
+
+	# 4. ОСТРОВ 3: Центральное и южное плато цитадели
+	var isl3_top = PackedVector2Array([
+		Vector2(200, 430), Vector2(380, 400), Vector2(860, 400),
+		Vector2(1120, 430), Vector2(1140, 560), Vector2(1200, 560),
+		Vector2(1200, 730), Vector2(160, 730), Vector2(160, 520)
+	])
+	var isl3_cliff = PackedVector2Array([
+		Vector2(200, 430), Vector2(380, 400), Vector2(860, 400),
+		Vector2(1120, 430), Vector2(1120, 470), Vector2(860, 445),
+		Vector2(380, 445), Vector2(200, 475)
+	])
+	draw_colored_polygon(isl3_cliff, rock_mid)
+	draw_polyline(isl3_cliff, rock_dark, 2.0)
+	draw_colored_polygon(isl3_top, grass_mid)
+	draw_polyline(isl3_top, grass_highlight, 3.0)
+
+	# 5. ОСТРОВ БОССА: Парящий круглый остров-гнездо в центре карты (в точности как на фото)
+	var boss_island_center = Vector2(640, 195)
+	var bi_r = 54.0
+	var bi_cliff = PackedVector2Array([
+		boss_island_center + Vector2(-bi_r, 4),
+		boss_island_center + Vector2(bi_r, 4),
+		boss_island_center + Vector2(24, 65),
+		boss_island_center + Vector2(0, 85),
+		boss_island_center + Vector2(-24, 65)
+	])
+	draw_colored_polygon(bi_cliff, rock_mid)
+	draw_polyline(bi_cliff, rock_dark, 2.0)
+	draw_line(boss_island_center + Vector2(0, 4), boss_island_center + Vector2(0, 85), rock_dark, 2.2)
+	draw_line(boss_island_center + Vector2(-20, 15), boss_island_center + Vector2(-15, 60), rock_light, 1.5)
 	
-	# 2. Озеро с песчаной береговой линией, бирюзовой глубиной и водной пеной
-	var br = layout.get("bridge", Vector2(550, 420))
-	# Песчаный пологий берег
-	draw_set_transform(br, 0.0, Vector2(1.2, 0.75))
-	draw_circle(Vector2.ZERO, 78.0, Color(0.85, 0.75, 0.48))
-	draw_circle(Vector2.ZERO, 72.0, Color(0.92, 0.84, 0.56))
-	# Водная гладь: мелководье и глубокая вода
-	draw_circle(Vector2.ZERO, 64.0, Color(0.35, 0.72, 0.85))
-	draw_circle(Vector2(-4, -2), 48.0, Color(0.20, 0.52, 0.75))
-	draw_circle(Vector2(-6, -4), 32.0, Color(0.12, 0.38, 0.62))
-	# Береговая белая пенка
-	draw_arc(Vector2.ZERO, 64.0, 0, TAU, 32, Color(1.0, 1.0, 1.0, 0.55), 1.5)
+	# Верхняя травяная площадка острова босса
+	draw_set_transform(boss_island_center, 0.0, Vector2(1.0, 0.65))
+	draw_circle(Vector2.ZERO, bi_r, grass_mid)
+	draw_circle(Vector2(-3, -2), bi_r * 0.85, grass_highlight)
+	draw_arc(Vector2.ZERO, bi_r, 0, TAU, 36, grass_deep, 2.0)
 	draw_set_transform(Vector2.ZERO, 0.0, Vector2(1.0, 1.0))
 	
-	# 3. Текстурные травинки и полевые цветы
+	# Плетеное гнездо босса из сучьев и веток
+	var nest_y = boss_island_center.y - 4.0
+	draw_set_transform(Vector2(boss_island_center.x, nest_y), 0.0, Vector2(1.0, 0.58))
+	draw_circle(Vector2.ZERO, 34.0, Color(0.28, 0.18, 0.10))
+	draw_circle(Vector2.ZERO, 28.0, Color(0.42, 0.28, 0.16))
+	draw_circle(Vector2.ZERO, 20.0, Color(0.18, 0.12, 0.08))
+	for b_i in range(16):
+		var ba = b_i * (TAU / 16.0)
+		var bp1 = Vector2(cos(ba) * 18.0, sin(ba) * 18.0)
+		var bp2 = Vector2(cos(ba + 0.4) * 35.0, sin(ba + 0.4) * 35.0)
+		draw_line(bp1, bp2, Color(0.55, 0.38, 0.22), 2.0)
+	draw_set_transform(Vector2.ZERO, 0.0, Vector2(1.0, 1.0))
+	
+	# Волшебная пыльца и искры над гнездом босса
+	for sp_i in range(6):
+		var sa = scene_anim_time * 1.8 + sp_i * (TAU / 6.0)
+		var s_rad = 32.0 + sin(scene_anim_time * 2.5 + sp_i) * 8.0
+		var s_pos = Vector2(boss_island_center.x + cos(sa) * s_rad, nest_y + sin(sa) * (s_rad * 0.55) - 10.0)
+		var spark_col = Color(1.0, 0.90, 0.4, 0.85) if (sp_i % 2 == 0) else Color(0.85, 0.4, 1.0, 0.85)
+		draw_circle(s_pos, 2.5, spark_col)
+		draw_circle(s_pos, 1.2, Color(1, 1, 1))
+
+	# 6. СИЯЮЩАЯ РАДУГА НАД УЩЕЛЬЕМ (в точности как в оригинале «Башенок»)
+	var rainbow_alpha = 0.38 + sin(scene_anim_time * 2.0) * 0.08
+	var rainbow_colors = [
+		Color(1.0, 0.25, 0.25, rainbow_alpha * 0.7),
+		Color(1.0, 0.60, 0.15, rainbow_alpha * 0.75),
+		Color(1.0, 0.92, 0.20, rainbow_alpha * 0.8),
+		Color(0.25, 0.90, 0.35, rainbow_alpha * 0.75),
+		Color(0.20, 0.75, 1.00, rainbow_alpha * 0.7),
+		Color(0.65, 0.30, 0.95, rainbow_alpha * 0.65)
+	]
+	var rb_start = Vector2(360, 395)
+	var rb_end = Vector2(820, 395)
+	for r_idx in range(rainbow_colors.size()):
+		var arc_pts: Array[Vector2] = []
+		var r_col = rainbow_colors[r_idx]
+		var y_lift = float(r_idx) * 2.2
+		for step in range(21):
+			var t = float(step) / 20.0
+			var px = lerp(rb_start.x, rb_end.x, t)
+			var py = lerp(rb_start.y, rb_end.y, t) - sin(t * PI) * 38.0 + y_lift
+			arc_pts.append(Vector2(px, py))
+		draw_polyline(PackedVector2Array(arc_pts), r_col, 3.5)
+
+	# 7. Деревянные висячие подвесные мосты через ущелья
+	var br = layout.get("bridge", Vector2(550, 420))
+	_draw_bridge(br)
+	_draw_bridge(Vector2(320, 390))
+
+	# 8. Извилистые песчаные дорожки по островам
+	_draw_road(Color(0.88, 0.80, 0.58), Color(0.60, 0.52, 0.38))
+
+	# 9. Травяные бугорки и цветы
 	for flower in flower_patches:
 		var fp = flower["pos"]
 		var fcol: Color = flower["col"]
-		# Стебель и лепестки
-		draw_line(fp, fp + Vector2(0, -3), Color(0.18, 0.45, 0.15), 1.2)
-		draw_circle(fp + Vector2(0, -4), 2.2, fcol)
-		draw_circle(fp + Vector2(0, -4), 1.0, Color(1.0, 0.95, 0.5))
+		draw_line(fp, fp + Vector2(0, -3), Color(0.22, 0.50, 0.18), 1.2)
+		draw_circle(fp + Vector2(0, -4), 2.4, fcol)
+		draw_circle(fp + Vector2(0, -4), 1.0, Color(1.0, 0.95, 0.6))
 		
-	# 4. Деревья и рощи
+	# 10. Сосны и дубы по краям утесов
 	_draw_trees()
-		
-	# 5. Извилистая мощеная дорога с каменной брусчаткой
-	_draw_road(Color(0.82, 0.74, 0.55), Color(0.55, 0.48, 0.36))
 	
-	# 6. Деревянный мост и средневековая деревушка
-	_draw_bridge(br)
-	_draw_village(layout.get("village", Vector2(1120, 540)), Color(0.82, 0.30, 0.18))
+	# 11. Средневековая деревушка (уютные фахверковые домики с черепицей)
+	_draw_village(Vector2(110, 80), Color(0.86, 0.35, 0.18))
+
+func _draw_fantasy_screen_border() -> void:
+	# Аутентичная резная каменная рамка экрана в стиле «Башенок»
+	var w = 1280.0
+	var h = 720.0
+	var border_w = 14.0
+	
+	var stone_frame_dark = Color(0.18, 0.16, 0.14)
+	var stone_frame_mid = Color(0.36, 0.34, 0.30)
+	var stone_frame_light = Color(0.58, 0.54, 0.46)
+	var bronze_gold = Color(0.82, 0.68, 0.28)
+	var rune_gold = Color(1.0, 0.88, 0.45)
+	
+	# 4 планки каменной рамы (верх, низ, лево, право)
+	draw_rect(Rect2(0, 0, w, border_w), stone_frame_mid)
+	draw_line(Vector2(0, border_w), Vector2(w, border_w), stone_frame_dark, 2.0)
+	draw_line(Vector2(0, 2), Vector2(w, 2), stone_frame_light, 1.5)
+	
+	draw_rect(Rect2(0, h - border_w, w, border_w), stone_frame_mid)
+	draw_line(Vector2(0, h - border_w), Vector2(w, h - border_w), stone_frame_light, 1.5)
+	draw_line(Vector2(0, h - 2), Vector2(w, h - 2), stone_frame_dark, 2.0)
+	
+	draw_rect(Rect2(0, 0, border_w, h), stone_frame_mid)
+	draw_line(Vector2(border_w, 0), Vector2(border_w, h), stone_frame_dark, 2.0)
+	draw_line(Vector2(2, 0), Vector2(2, h), stone_frame_light, 1.5)
+	
+	draw_rect(Rect2(w - border_w, 0, border_w, h), stone_frame_mid)
+	draw_line(Vector2(w - border_w, 0), Vector2(w - border_w, h), stone_frame_light, 1.5)
+	draw_line(Vector2(w - 2, 0), Vector2(w - 2, h), stone_frame_dark, 2.0)
+	
+	# Бронзовые угловые накладки с заклепками и самоцветами
+	var corners = [Vector2(0, 0), Vector2(w, 0), Vector2(0, h), Vector2(w, h)]
+	for c_idx in range(corners.size()):
+		var cp = corners[c_idx]
+		var sx = 1.0 if cp.x == 0 else -1.0
+		var sy = 1.0 if cp.y == 0 else -1.0
+		
+		var bracket_poly = PackedVector2Array([
+			cp,
+			cp + Vector2(sx * 36, 0),
+			cp + Vector2(sx * 36, sy * 12),
+			cp + Vector2(sx * 12, sy * 12),
+			cp + Vector2(sx * 12, sy * 36),
+			cp + Vector2(0, sy * 36)
+		])
+		draw_colored_polygon(bracket_poly, bronze_gold)
+		draw_polyline(bracket_poly, stone_frame_dark, 2.0)
+		draw_circle(cp + Vector2(sx * 18, sy * 18), 3.5, rune_gold)
+		draw_circle(cp + Vector2(sx * 18, sy * 18), 1.8, Color(0.95, 0.25, 0.25))
 
 func _draw_swamp_biome() -> void:
 	var layout = _get_current_layout()

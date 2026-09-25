@@ -178,6 +178,7 @@ func _ready() -> void:
 			
 	_enhance_end_screen()
 	_setup_spell_buttons()
+	_apply_alawar_fantasy_skin()
 
 func _setup_spell_buttons() -> void:
 	var spells = [
@@ -303,14 +304,12 @@ func update_mana(cur: int, max_m: int) -> void:
 
 func update_girls_count(girls_left: int) -> void:
 	if is_instance_valid(girls_label):
-		var hearts = ""
-		for i in range(girls_left):
-			hearts += "❤️"
-		girls_label.text = "👧 %s (%d)" % [hearts, girls_left]
+		girls_label.text = "🕯️ %d" % girls_left
+		girls_label.tooltip_text = "Жители деревни / Жизни: %d" % girls_left
 
 func update_wave(current: int, total: int) -> void:
 	if is_instance_valid(wave_label):
-		wave_label.text = "🌊 Волна %d/%d" % [current, total]
+		wave_label.text = "⚔️ %d / %d" % [current, total]
 
 func update_weather(weather_name: String) -> void:
 	if not is_instance_valid(weather_label):
@@ -498,35 +497,139 @@ func _rebuild_tower_buttons(current_gold: int) -> void:
 		var cost = int(tdata.get("cost", 100))
 		var t_name = str(tdata.get("name", t_type))
 		
+		var icon_str = "🏰"
+		match t_type:
+			"archer", "crossbowman", "watchtower": icon_str = "🏰"
+			"tesla", "auto_turret": icon_str = "⚡"
+			"ice_mage": icon_str = "🔮"
+			"cannon", "siege_cannon": icon_str = "💣"
+			"bastion", "wall": icon_str = "🛡️"
+			"flame_tower": icon_str = "🔥"
+			"poison_tower": icon_str = "🧪"
+			"trading_post", "gold_shrine": icon_str = "💰"
+			"necromancer": icon_str = "💀"
+			"sun_altar": icon_str = "☀️"
+			_: icon_str = "🏛️"
+
 		var btn = Button.new()
-		btn.text = "%s\n%d 🪙" % [t_name, cost]
-		btn.custom_minimum_size = Vector2(150, 52)
+		btn.text = "%s %s\n🪙 %d" % [icon_str, t_name, cost]
+		btn.custom_minimum_size = Vector2(138, 56)
 		btn.disabled = current_gold < cost
 		
+		# Стиль резной каменной стойки башен (как в оригинале «Башенок»)
 		var b_norm = StyleBoxFlat.new()
-		b_norm.bg_color = Color(0.12, 0.16, 0.22, 0.95)
-		b_norm.border_width_left = 2
-		b_norm.border_width_top = 1
-		b_norm.border_width_right = 2
-		b_norm.border_width_bottom = 2
-		b_norm.border_color = Color(0.70, 0.55, 0.20, 0.8)
-		b_norm.set_corner_radius_all(8)
+		b_norm.bg_color = Color(0.24, 0.22, 0.19, 0.96)
+		b_norm.border_width_left = 3
+		b_norm.border_width_top = 2
+		b_norm.border_width_right = 3
+		b_norm.border_width_bottom = 3
+		b_norm.border_color = Color(0.78, 0.65, 0.28, 0.9)
+		b_norm.set_corner_radius_all(6)
+		b_norm.shadow_color = Color(0, 0, 0, 0.6)
+		b_norm.shadow_size = 4
 		btn.add_theme_stylebox_override("normal", b_norm)
 		
 		var b_hov = StyleBoxFlat.new()
-		b_hov.bg_color = Color(0.20, 0.28, 0.40, 1.0)
+		b_hov.bg_color = Color(0.36, 0.32, 0.26, 1.0)
 		b_hov.border_width_left = 3
 		b_hov.border_width_top = 2
 		b_hov.border_width_right = 3
 		b_hov.border_width_bottom = 3
-		b_hov.border_color = Color(1.0, 0.85, 0.25, 1.0)
-		b_hov.set_corner_radius_all(8)
+		b_hov.border_color = Color(1.0, 0.88, 0.38, 1.0)
+		b_hov.set_corner_radius_all(6)
+		b_hov.shadow_color = Color(1.0, 0.85, 0.2, 0.45)
+		b_hov.shadow_size = 8
 		btn.add_theme_stylebox_override("hover", b_hov)
+		
+		var b_dis = b_norm.duplicate()
+		b_dis.bg_color = Color(0.16, 0.15, 0.14, 0.8)
+		b_dis.border_color = Color(0.4, 0.38, 0.34, 0.6)
+		btn.add_theme_stylebox_override("disabled", b_dis)
 
 		btn.pressed.connect(func(): _on_build_tower_clicked(t_type))
 		btn.mouse_entered.connect(func(): _on_tower_btn_hover(t_type, true))
 		btn.mouse_exited.connect(func(): _on_tower_btn_hover(t_type, false))
 		build_buttons_box.add_child(btn)
+
+func _apply_alawar_fantasy_skin() -> void:
+	# 1. Стилизация Верхней панели (TopBar): состаренный гранит с бронзовой инкрустацией
+	var top_bar = get_node_or_null("TopBar") as PanelContainer
+	if is_instance_valid(top_bar):
+		var top_style = StyleBoxFlat.new()
+		top_style.bg_color = Color(0.18, 0.16, 0.14, 0.94)
+		top_style.border_width_left = 3
+		top_style.border_width_top = 2
+		top_style.border_width_right = 3
+		top_style.border_width_bottom = 3
+		top_style.border_color = Color(0.82, 0.68, 0.28, 0.95)
+		top_style.set_corner_radius_all(6)
+		top_style.shadow_color = Color(0, 0, 0, 0.7)
+		top_style.shadow_size = 8
+		top_bar.add_theme_stylebox_override("panel", top_style)
+
+	# Стилизация каменных скрижалей (Таблички Золота, Жителей-свечи, Волны, Маны)
+	var plaque_style = StyleBoxFlat.new()
+	plaque_style.bg_color = Color(0.12, 0.10, 0.08, 0.92)
+	plaque_style.border_width_left = 2
+	plaque_style.border_width_top = 2
+	plaque_style.border_width_right = 2
+	plaque_style.border_width_bottom = 2
+	plaque_style.border_color = Color(0.68, 0.58, 0.28, 0.8)
+	plaque_style.set_corner_radius_all(4)
+	plaque_style.content_margin_left = 8
+	plaque_style.content_margin_right = 8
+	plaque_style.content_margin_top = 4
+	plaque_style.content_margin_bottom = 4
+
+	for lbl in [gold_label, girls_label, wave_label, mana_label, timer_label]:
+		if is_instance_valid(lbl):
+			lbl.add_theme_stylebox_override("normal", plaque_style.duplicate())
+
+	# 2. Кнопка «МЕНЮ» в правом верхнем углу (как на фото)
+	var top_hbox = get_node_or_null("TopBar/MarginContainer/HBoxContainer")
+	if is_instance_valid(top_hbox):
+		var menu_button_node = top_hbox.get_node_or_null("MainMenuHeaderBtn")
+		if menu_button_node == null:
+			var m_btn = Button.new()
+			m_btn.name = "MainMenuHeaderBtn"
+			m_btn.text = "МЕНЮ"
+			m_btn.custom_minimum_size = Vector2(80, 36)
+			
+			var m_style = StyleBoxFlat.new()
+			m_style.bg_color = Color(0.28, 0.24, 0.18, 0.98)
+			m_style.border_width_left = 3
+			m_style.border_width_top = 2
+			m_style.border_width_right = 3
+			m_style.border_width_bottom = 3
+			m_style.border_color = Color(0.95, 0.82, 0.30)
+			m_style.set_corner_radius_all(6)
+			m_style.shadow_color = Color(0, 0, 0, 0.6)
+			m_style.shadow_size = 4
+			m_btn.add_theme_stylebox_override("normal", m_style)
+			
+			var m_hov = m_style.duplicate()
+			m_hov.bg_color = Color(0.38, 0.32, 0.22)
+			m_hov.border_color = Color(1.0, 0.95, 0.5)
+			m_btn.add_theme_stylebox_override("hover", m_hov)
+			
+			m_btn.add_theme_color_override("font_color", Color(1.0, 0.90, 0.35))
+			m_btn.add_theme_font_size_override("font_size", 14)
+			m_btn.pressed.connect(_on_help_clicked)
+			top_hbox.add_child(m_btn)
+
+	# 3. Стилизация панели заклинаний (каменные круглые медальоны)
+	var spell_bar = get_node_or_null("SpellBar") as PanelContainer
+	if is_instance_valid(spell_bar):
+		var sb_style = StyleBoxFlat.new()
+		sb_style.bg_color = Color(0.16, 0.14, 0.12, 0.92)
+		sb_style.border_width_left = 2
+		sb_style.border_width_top = 2
+		sb_style.border_width_right = 2
+		sb_style.border_width_bottom = 2
+		sb_style.border_color = Color(0.75, 0.62, 0.25, 0.85)
+		sb_style.set_corner_radius_all(8)
+		sb_style.shadow_size = 8
+		spell_bar.add_theme_stylebox_override("panel", sb_style)
 
 
 func _on_tower_btn_hover(tower_type: String, is_hover: bool) -> void:
