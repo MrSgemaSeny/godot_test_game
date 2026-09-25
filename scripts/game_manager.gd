@@ -17,7 +17,7 @@ enum GameState {
 	VICTORY
 }
 
-const BASE_GOLD: int = 200
+const BASE_GOLD: int = 400
 const BASE_LIVES: int = 20
 const TOTAL_WAVES: int = 10
 const PRE_WAVE_TIME: float = 30.0

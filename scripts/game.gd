@@ -653,13 +653,17 @@ func _on_wave_completed(wave_num: int, is_last_wave: bool) -> void:
 			var contract_success = lives_lost == 0
 			contract_bonus = economy_manager.resolve_contract(contract_success)
 			
-		var total_wave_gold = wave_clear_reward + interest_earned + perfect_bonus + contract_bonus
-		_spawn_floating_text("🪙 +%d Золота (Волна: +%d | Процент: +%d)!" % [total_wave_gold, wave_clear_reward, interest_earned], Color(1.0, 0.88, 0.25), Vector2(640, 210), 17)
+		# 5. Бонус зачистки волны (масштабируется с волной и главой)
+		var clear_stipend = 25 + wave_num * 5 + (cur_chapter - 1) * 20
+		economy_manager.add_gold(clear_stipend, "wave_bonus", "Бонус зачистки волны %d" % wave_num)
+			
+		var total_wave_gold = wave_clear_reward + interest_earned + perfect_bonus + contract_bonus + clear_stipend
+		_spawn_floating_text("🪙 +%d Золота (Волна: +%d | Процент: +%d)!" % [total_wave_gold, wave_clear_reward + clear_stipend, interest_earned], Color(1.0, 0.88, 0.25), Vector2(640, 210), 17)
 		
 		if is_instance_valid(hud):
 			hud.show_wave_breakdown({
 				"wave_num": wave_num,
-				"wave_reward": wave_clear_reward,
+				"wave_reward": wave_clear_reward + clear_stipend,
 				"bounty_gold": 0,
 				"interest_gold": interest_earned,
 				"perfect_wave_bonus": perfect_bonus,

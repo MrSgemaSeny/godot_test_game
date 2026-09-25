@@ -103,12 +103,51 @@ func _load_enemy_data() -> void:
 			
 		var data = dict.get(key, {})
 		monster_name = data.get("name", "Орк")
-		max_health = float(data.get("max_health", 80.0))
+		var raw_hp = float(data.get("max_health", 160.0))
+		
+		# Dynamic Health Scaling: wave, chapter, stage, contracts, nightmare, NG+
+		var total_hp_mult: float = 1.0
+		var wave_num: int = 1
+		if is_inside_tree() and get_tree() != null:
+			var gm = get_tree().get_first_node_in_group("game_manager") as GameManager
+			if gm and gm.current_wave > 0:
+				wave_num = gm.current_wave
+		
+		var cur_ch: int = 1
+		var cur_st: int = 1
+		if GlobalState.current_chapter > 0:
+			cur_ch = GlobalState.current_chapter
+		if GlobalState.current_stage > 0:
+			cur_st = GlobalState.current_stage
+			
+		var wave_scale: float = 1.0 + float(wave_num - 1) * 0.18 + pow(float(max(0, wave_num - 1)), 1.35) * 0.03
+		var ch_scale: float = 1.0 + float(cur_ch - 1) * 0.45
+		var st_scale: float = 1.0 + float(cur_st - 1) * 0.04
+		total_hp_mult = wave_scale * ch_scale * st_scale
+		
+		if is_inside_tree() and get_tree() != null:
+			var econ = get_tree().get_first_node_in_group("economy_manager")
+			if econ and "active_contract" in econ and not econ.active_contract.is_empty():
+				var c_mods = econ.get_active_contract_modifiers()
+				if c_mods.has("hp_mult"):
+					total_hp_mult *= float(c_mods["hp_mult"])
+					
+			var nightmare = get_tree().get_first_node_in_group("nightmare_controller")
+			if nightmare and nightmare.has_method("get_enemy_hp_multiplier"):
+				total_hp_mult *= float(nightmare.get_enemy_hp_multiplier())
+				
+			var ng_ctrl = get_tree().get_first_node_in_group("ng_plus_controller")
+			if ng_ctrl and ng_ctrl.has_method("get_ng_enemy_modifier"):
+				var ng_mod = ng_ctrl.get_ng_enemy_modifier(monster_type)
+				if ng_mod.has("hp_mult"):
+					total_hp_mult *= float(ng_mod["hp_mult"])
+
+		max_health = raw_hp * total_hp_mult
 		current_health = max_health
 		base_speed = float(data.get("speed", 85.0))
 		speed = base_speed
 		armor = float(data.get("armor", 0.0))
-		gold_reward = int(data.get("gold_reward", 10))
+		gold_reward = int(data.get("gold_reward", 16))
 		economic_role = str(data.get("economic_role", "boss" if bool(data.get("is_boss", false)) else "standard"))
 		is_boss = bool(data.get("is_boss", false))
 		is_flyer = bool(data.get("is_flyer", false))
